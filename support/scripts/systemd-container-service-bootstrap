@@ -1,0 +1,46 @@
+#!/bin/sh
+
+service_name="phoenix-todo-list"
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+  echo "This script bootstraps this project's user-level systemd service file.
+
+It does the following:
+- Runs the user-level systemd service file generator (for containers)
+- Reloads the user-level systemd daemons
+- Enables the service on startup
+  - NOTE: Lingering must be enabled by the superuser: 'sudo loginctl enable-linger $USER'
+- Starts the service
+
+For more information about the service file generator script, run './systemd-container-service-file-generate --help'"
+  exit
+fi
+
+# navigate to current directory
+cd "$(dirname "$0")" || exit 1
+
+# run the systemd service file generator script
+echo "Generating the systemd service file..."
+if ! ./systemd-container-service-file-generate "$@"; then
+  echo "\033[91mCould not create the systemd service file.\033[39m"
+  exit 1
+fi
+
+# reload the systemd daemons
+echo "Reloading the user-level systemd daemons..."
+systemctl --user daemon-reload
+
+# enable the service on startup
+echo "Enabling the systemd service on startup (if service doesn't work on startup, enable lingering for this user)..."
+systemctl --user enable $service_name.service
+
+# (re)start the service
+echo "(Re)starting the systemd service..."
+systemctl --user restart $service_name.service
+
+echo "
+If this service uses Traefik, you may need to create a container network for Traefik.
+  - e.g. Docker: 'docker network create traefik-global-proxy'
+  - e.g. Podman: 'podman network create traefik-global-proxy'
+
+done"

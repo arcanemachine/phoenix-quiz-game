@@ -1,0 +1,21 @@
+---
+services:
+  traefik:
+    image: "docker.io/traefik:v2.10"
+    environment:
+      TRAEFIK_HOST: "${TRAEFIK_HOST:?}"
+    volumes:
+      - "${DOCKER_HOST:-/var/run/docker.sock}:/var/run/docker.sock:ro"
+    networks:
+      - "traefik-global-proxy"
+    ports:
+      - "80:80"
+    labels:
+      - "traefik.http.routers.traefik.rule=Host(`${TRAEFIK_HOST}`)"
+
+      # enable the dashboard
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.service=api@internal"
+
+networks:
+  traefik-global-proxy:

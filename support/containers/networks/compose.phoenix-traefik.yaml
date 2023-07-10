@@ -1,0 +1,15 @@
+---
+services:
+  phoenix:
+    environment:
+      DATABASE_URL: "ecto://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/${POSTGRES_DB}"
+    networks:
+      - "traefik-global-proxy"
+      - "phoenix-todo-list"
+    ports:
+      - "${PORT:?}"
+
+networks:
+  traefik-global-proxy:
+    external: true
+  phoenix-todo-list:

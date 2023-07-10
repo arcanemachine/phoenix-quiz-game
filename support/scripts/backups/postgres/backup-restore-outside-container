@@ -1,0 +1,25 @@
+#!/bin/sh
+
+show_help() {
+  echo "This script restores a pg_dump backup. It must be run outside the container.
+
+The first positional argument must be the filename of the backup you want to restore.
+  - DO NOT pass in the full path. Just the filename.
+    - e.g. 'pg-dump-2022-11-01-08-57-30.dump'
+
+To use Docker instead of Podman, pass '--docker' as the last positional argument."
+}
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+  show_help
+  exit
+elif [ "$1" = "" ]; then
+  show_help
+  exit 2
+elif [ "$2" = "--docker" ]; then
+  container_program=docker
+else
+  container_program=podman
+fi
+
+$container_program exec -it postgres /var/lib/postgresql/backups/backup-restore-inside-container "$1"

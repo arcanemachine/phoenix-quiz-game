@@ -1,0 +1,11 @@
+---
+services:
+  grafana:
+    image: "docker.io/grafana/grafana:9.5.2"
+    restart: "always"
+    network_mode: "host"
+    volumes:
+      - "grafana:/var/lib/grafana"
+
+volumes:
+  grafana:

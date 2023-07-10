@@ -1,0 +1,53 @@
+#!/bin/sh
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+  echo "This script bootstraps a copy of .env using any currently-exported environment variables.
+
+Optional flags:
+  --force - Overwrite an existing dotenv file
+  --vagrant - Generate params for deployment in a Vagrant host"
+  exit
+fi
+
+project_root_directory="$(dirname "$0")/../.."
+cd "$project_root_directory" || exit 1
+
+env_path="$(pwd)/.env"
+
+# get last arg
+for last_arg; do true; done
+
+if [ -f "$env_path" ]; then
+
+  if [ "$last_arg" = "--force" ]; then
+    # import existing dotenv
+    echo "Importing existing environment from '$env_path'"
+    set -o allexport
+    # shellcheck source=/dev/null
+    . "$env_path"
+    set +o allexport
+
+    # we will overwrite the dotenv file
+    echo "Overwriting existing dotenv file: '$env_path'..."
+
+  else
+    # exit without writing the dotenv file
+    echo "Dotenv file already exists: '$env_path'. Aborting..."
+    exit 1
+  fi
+else
+  echo "Generating local environment: '$env_path'..."
+fi
+
+env_template_path="$(pwd)/support/scripts/dotenv-generate--template"
+output_string="$($env_template_path "$@")"
+
+if [ "$DRY_RUN" = 1 ]; then
+  echo "$output_string"
+else
+  # create the .env file
+  echo "$output_string" >"$env_path"
+
+  # set permissions on the newly-created .env file
+  chmod 600 "$env_path"
+fi

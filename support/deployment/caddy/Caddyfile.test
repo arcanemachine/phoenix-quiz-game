@@ -1,0 +1,4 @@
+phoenix-todo-list.test.nicholasmoen.com
+
+encode gzip
+reverse_proxy :4000

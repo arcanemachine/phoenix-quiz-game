@@ -1,3 +1,23 @@
+# misc
+*.ignore
+*.tmp
+gitignore.*
+
+# dotenv
+.env
+
+# elixir
+/.elixir_ls/
+
+# python
+__pycache__/
+
+# vim
+*.sw?
+Session*.vim
+
+
+# MIX DEFAULTS #
 # The directory Mix will write compiled artifacts to.
 /_build/
 
@@ -19,11 +39,8 @@ erl_crash.dump
 # Also ignore archive artifacts (built via "mix archive.build").
 *.ez
 
-# Temporary files, for example, from tests.
-/tmp/
-
 # Ignore package tarball (built via "mix hex.build").
-quiz_game-*.tar
+todo_list-*.tar
 
 # Ignore assets that are produced by build tools.
 /priv/static/assets/
@@ -33,5 +50,4 @@ quiz_game-*.tar
 
 # In case you use Node.js/npm, you want to ignore these.
 npm-debug.log
-/assets/node_modules/
-
+node_modules/
