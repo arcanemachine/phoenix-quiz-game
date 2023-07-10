@@ -3,7 +3,7 @@
 	acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
 }
 
-phoenix-todo-list.staging.nicholasmoen.com
+phoenix-quiz-game.staging.nicholasmoen.com
 
 encode gzip
 reverse_proxy :4000

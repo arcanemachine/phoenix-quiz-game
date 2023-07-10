@@ -1,4 +1,4 @@
-phoenix-todo-list.nicholasmoen.com {
+phoenix-quiz-game.nicholasmoen.com {
 	encode gzip
 	reverse_proxy :4000
 

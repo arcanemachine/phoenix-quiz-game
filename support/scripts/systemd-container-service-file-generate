@@ -1,5 +1,5 @@
 #!/bin/sh
-service_name="phoenix-todo-list"
+service_name="phoenix-quiz-game"
 service_file="${HOME}/systemd/user/${service_name}.service"
 
 if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then

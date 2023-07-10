@@ -24,9 +24,9 @@ Additional information on deployment. This document is mostly intended for perso
       - Use a Postgres terminal to create a new database and user:
         - `sudo su - postgres`
         - `psql`
-          - `CREATE USER todo_list_user WITH PASSWORD 'todo_list_password';`
-          - `CREATE DATABASE todo_list;`
-          - `GRANT ALL PRIVILEGES ON DATABASE todo_list TO todo_list_user;`
+          - `CREATE USER quiz_game_user WITH PASSWORD 'quiz_game_password';`
+          - `CREATE DATABASE quiz_game;`
+          - `GRANT ALL PRIVILEGES ON DATABASE quiz_game TO quiz_game_user;`
         - Exit `psql` by pressing `Ctrl+D` or typing `\q` + `Enter`
   - Setup Caddy using the instructions in the _[Deploying With Caddy](#deploying-with-caddy)_ section.
     - Alternatively, you can set up a different server as you like.
@@ -42,14 +42,14 @@ Additional information on deployment. This document is mostly intended for perso
   - Using a script:
     - Run migrations and start the server with `supports/scripts/server-prod-start`
   - Manually:
-    - Navigate to the directory `_build/prod/rel/todo_list/bin/`.
+    - Navigate to the directory `_build/prod/rel/quiz_game/bin/`.
     - Run migrations: `./migrate`
     - Start the prod server: `./server`
 - To stop the server:
   - Using a script: `supports/scripts/server-prod-start`
   - Manually:
-    - Navigate to the directory `_build/prod/rel/todo_list/bin/`.
-    - Stop the prod server: `./todo_list stop`
+    - Navigate to the directory `_build/prod/rel/quiz_game/bin/`.
+    - Stop the prod server: `./quiz_game stop`
 
 ### How To Start The Server Automatically When The System Boots
 
@@ -61,22 +61,22 @@ Additional information on deployment. This document is mostly intended for perso
 
 3. Run the `systemd` service file generator in `support/scripts/native-systemd-service-file-generate`.
 
-- This script will place a `systemd` service file called `phoenix-todo-list.service` in the `$USER/.config/systemd/user/phoenix`
+- This script will place a `systemd` service file called `phoenix-quiz-game.service` in the `$USER/.config/systemd/user/phoenix`
 - To view the `systemd` service file template in the console instead of writing the file, set the `DRY_RUN=1` environment variable before running the script.
 
 4. The `systemd` service file should now be available in the `$USER/.config/systemd/user/phoenix` directory.
 
 5. Reload the `systemd` daemons: `systemctl --user daemon-reload`
 
-6. Start the service: `systemctl --user start phoenix-todo-list.service`
+6. Start the service: `systemctl --user start phoenix-quiz-game.service`
 
-- Stop the service: `systemctl --user stop phoenix-todo-list.service`
+- Stop the service: `systemctl --user stop phoenix-quiz-game.service`
 
-7. To enable the service on startup: `systemctl --user enable phoenix-todo-list.service`
+7. To enable the service on startup: `systemctl --user enable phoenix-quiz-game.service`
 
-- To disable the service from running on startup: `systemctl --user disable phoenix-todo-list.service`
+- To disable the service from running on startup: `systemctl --user disable phoenix-quiz-game.service`
 
-8. To view the logs for the service (useful for troubleshooting): `journalctl --user -xe --unit phoenix-todo-list`
+8. To view the logs for the service (useful for troubleshooting): `journalctl --user -xe --unit phoenix-quiz-game`
 
 ## Deploying With Containers
 
@@ -90,8 +90,8 @@ You may need to pull the latest image when doing an update:
 
 - Log in to your server.
 - Pull the correct image for your CPU architecture:
-  - `x86_64`: `podman image pull docker.io/arcanemachine/phoenix-todo-list:x86_64`
-  - `aarch64`: `podman image pull docker.io/arcanemachine/phoenix-todo-list:aarch64`
+  - `x86_64`: `podman image pull docker.io/arcanemachine/phoenix-quiz-game:x86_64`
+  - `aarch64`: `podman image pull docker.io/arcanemachine/phoenix-quiz-game:aarch64`
 
 ### Adding New Environment Variables
 
@@ -164,7 +164,7 @@ To deploy with Caddy, complete the following steps:
 Caddyfiles are quite simple and mostly self-explanatory. Example:
 
 ```
-phoenix-todo-list.nicholasmoen.com
+phoenix-quiz-game.nicholasmoen.com
 
 reverse_proxy localhost:4000
 ```
@@ -177,7 +177,7 @@ After you change the Caddyfile, follow steps 5-7 to load the new configuration.
 
 You can use the `support/scripts/systemd-native-service-file-generate` to easily create a `systemd` service file for this project using a native Phoenix release (i.e. no containers).
 
-When this script is run, it will generate `systemd` service file called `~/.config/systemd/user/phoenix-todo-list.service`
+When this script is run, it will generate `systemd` service file called `~/.config/systemd/user/phoenix-quiz-game.service`
 
 ### Using Containers
 
@@ -201,7 +201,7 @@ You can use the `support/scripts/systemd-container-service-file-generate` to eas
 
 - This script is configured for Podman by default.
   - To generate a Docker container, pass the `--docker` flag when running this script.
-- When this script is run, it will generate `systemd` service file called `~/.config/systemd/user/phoenix-todo-list.service` (unless the `--dry-run` flag is set)
+- When this script is run, it will generate `systemd` service file called `~/.config/systemd/user/phoenix-quiz-game.service` (unless the `--dry-run` flag is set)
 - Other flags:
   - `--dry-run` - Display the service file in the terminal instead of writing to a file.
     - No permanent changes are made when this flag is used.
@@ -219,17 +219,17 @@ You can use the `support/scripts/systemd-container-service-file-generate` to eas
 After running the `systemd-container-service-file-generate` script:
 
 - The output will be sent here:
-  - '~/.confir/systemd/user/phoenix-todo-list.service'
+  - '~/.confir/systemd/user/phoenix-quiz-game.service'
 - Before you can manage the systemd service, you will need to reload the systemd daemons:
   - systemctl --user daemon-reload
 - To enable this service:
-  - systemctl --user enable phoenix-todo-list.service
+  - systemctl --user enable phoenix-quiz-game.service
 - To start this service:
-  - systemctl --user start phoenix-todo-list.service
+  - systemctl --user start phoenix-quiz-game.service
 - In order to start this service on boot, you must enabling lingering for this user:
   - sudo loginctl enable-linger $USER
 - If you are having issues with the service, you can examine the logs:
-  - journalctl --user -xe --unit phoenix-todo-list
+  - journalctl --user -xe --unit phoenix-quiz-game
 
 ## Configuring the Email Provider
 

@@ -100,7 +100,7 @@ To run this project's built-in Traefik container service:
     - e.g. `http://localhost/`
 - To access the Phoenix web service:
   - Using a web browser, navigate to the location of your `$PHX_HOST`.
-    - e.g. `http://phoenix-todo-list.localhost/`
+    - e.g. `http://phoenix-quiz-game.localhost/`
 
 ### Resetting the Containers
 
@@ -152,7 +152,7 @@ All commands in this section should be run from the directory `support/container
     - If you are using a different URL, modify the `prometheus.yml` file and restart the container after saving your changes.
 - After running this script, the Prometheus server should automatically start scraping your Phoenix server's metrics via PromEx.
   - To ensure that Prometheus is working, you can navigate to `http://localhost:9090/targets` in your browser.
-    - The `State` of both targets (`prometheus` and `phoenix-todo-list`) should be `UP`
+    - The `State` of both targets (`prometheus` and `phoenix-quiz-game`) should be `UP`
     - The `Last Scrape` for each target should be within the past 5 seconds.
       - If this is not the case, then check to make sure the targets have been configured properly in `etc/prometheus.yml`.
 
@@ -183,7 +183,7 @@ All commands in this section should be run from the directory `support/container
   - PromEx has several built-in plugins (e.g. `Application`, `Beam`), each of which comes with a dashboard interface.kkl
     - For this example, we'll generate a dashboard for the Application plugin.
       - NOTE: The `Application` and `Beam` PromEx plugins are enabled by default.
-        - To enable other plugins/dashboards (e.g. `Phoenix`), you will need to uncomment the relevant lines in the `plugins` and `dashboards` sections of the `lib/todo_list/prom_ex.ex` module.
+        - To enable other plugins/dashboards (e.g. `Phoenix`), you will need to uncomment the relevant lines in the `plugins` and `dashboards` sections of the `lib/quiz_game/prom_ex.ex` module.
     - Use Mix to generate the dashboard:
       - Navigate to the project root directory.
       - `mix prom_ex.dashboard.export --dashboard application.json --stdout`

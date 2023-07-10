@@ -1,6 +1,6 @@
 #!/bin/sh
 
-service_name="phoenix-todo-list"
+service_name="phoenix-quiz-game"
 
 if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
   echo "This script stops and removes this project's user-level systemd service file.

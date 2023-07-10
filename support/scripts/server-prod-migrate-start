@@ -5,7 +5,7 @@ if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
   exit
 fi
 
-project_name="todo_list"
+project_name="quiz_game"
 current_script_directory="$(dirname "$0")"
 project_root_directory="$(cd "${current_script_directory}/../.." && pwd)"
 working_directory="${project_root_directory}/_build/prod/rel/${project_name}/bin"

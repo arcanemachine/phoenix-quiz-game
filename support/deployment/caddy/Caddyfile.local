@@ -1,4 +1,4 @@
-phoenix-todo-list.localhost {
+phoenix-quiz-game.localhost {
 	encode gzip
 	reverse_proxy :4000
 
@@ -9,7 +9,7 @@ phoenix-todo-list.localhost {
 	}
 }
 
-dev.phoenix-todo-list.localhost {
+dev.phoenix-quiz-game.localhost {
 	encode gzip
 	reverse_proxy :4001
 

@@ -27,11 +27,11 @@ done
 
 if [ "$is_vagrant" = "1" ]; then
   # configure environment for use with vagrant
-  PHX_HOST=phoenix-todo-list.localhost
+  PHX_HOST=phoenix-quiz-game.localhost
   TRAEFIK_HOST=localhost
 fi
 
-default_phx_host=phoenix-todo-list.localhost
+default_phx_host=phoenix-quiz-game.localhost
 
 echo "# phoenix
 PHX_HOST=\"${PHX_HOST:-$default_phx_host}\"
@@ -39,13 +39,13 @@ PORT=\"${PORT:-4000}\"
 SECRET_KEY_BASE=\"${SECRET_KEY_BASE:-$(openssl rand -base64 48)}\"
 
 # db
-POSTGRES_DB=\"${POSTGRES_DB:-todo_list}\"
+POSTGRES_DB=\"${POSTGRES_DB:-quiz_game}\"
 POSTGRES_USER=\"${POSTGRES_USER:-postgres}\"
 POSTGRES_PASSWORD=\"${POSTGRES_PASSWORD:-postgres}\"
-DATABASE_URL=\"${DATABASE_URL:-ecto://postgres:postgres@localhost/todo_list}\"
+DATABASE_URL=\"${DATABASE_URL:-ecto://postgres:postgres@localhost/quiz_game}\"
 
 # docker
-COMPOSE_PROJECT_NAME=\"${COMPOSE_PROJECT_NAME:-phoenix-todo-list}\"
+COMPOSE_PROJECT_NAME=\"${COMPOSE_PROJECT_NAME:-phoenix-quiz-game}\"
 IMAGE_TAG=\"${IMAGE_TAG:-$(uname -m)}\"
 
 # email

@@ -12,7 +12,7 @@ scrape_configs:
     static_configs:
       - targets: ["localhost:9090"]
 
-  - job_name: "phoenix-todo-list"
+  - job_name: "phoenix-quiz-game"
     static_configs:
       - targets: ["localhost:4001"]
-#     - targets: ["phoenix-todo-list.your-domain.com"]
+#     - targets: ["phoenix-quiz-game.your-domain.com"]

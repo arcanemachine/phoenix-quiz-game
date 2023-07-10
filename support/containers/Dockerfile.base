@@ -86,8 +86,8 @@ RUN chown nobody /app
 ENV MIX_ENV="prod"
 
 # Only copy the final release from the build stage
-COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/todo_list ./
+COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/quiz_game ./
 
 USER nobody
 
-CMD ["sh", "-c", "/app/bin/todo_list eval TodoList.Release.migrate && /app/bin/server"]
+CMD ["sh", "-c", "/app/bin/quiz_game eval QuizGame.Release.migrate && /app/bin/server"]

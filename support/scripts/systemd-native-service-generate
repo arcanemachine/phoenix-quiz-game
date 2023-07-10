@@ -1,6 +1,6 @@
 #!/bin/sh
 
-service_name="phoenix-todo-list"
+service_name="phoenix-quiz-game"
 service_file="${HOME}/systemd/user/${service_name}.service"
 
 if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
@@ -24,7 +24,7 @@ fi
 
 current_script_directory="$(dirname "$0")"
 project_root_directory="$(cd "${current_script_directory}/../.." && pwd)"
-working_directory="${project_root_directory}/_build/prod/rel/todo_list/bin"
+working_directory="${project_root_directory}/_build/prod/rel/quiz_game/bin"
 
 # navigate to current script directory
 cd "$current_script_directory" || exit 1
@@ -48,7 +48,7 @@ if [ "$DRY_RUN" != 1 ]; then
 fi
 
 echo "[Unit]
-Description=Phoenix Todo List
+Description=Phoenix Quiz Game
 ConditionPathExists=${working_directory}
 Wants=network-online.target
 After=network-online.target
@@ -75,13 +75,13 @@ Environment=POSTGRES_PASSWORD=\"$POSTGRES_PASSWORD\"
 
 Environment=\"HOME=${working_directory}\"
 ExecStart=${project_root_directory}/support/scripts/server-prod-migrate-start
-ExecStop=${working_directory}/todo_list stop
+ExecStop=${working_directory}/quiz_game stop
 Restart=always
 RemainAfterExit=yes
 RestartSec=5
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier=phoenix-todo-list
+SyslogIdentifier=phoenix-quiz-game
 
 [Install]
 WantedBy=multi-user.target" >"${output_to}"

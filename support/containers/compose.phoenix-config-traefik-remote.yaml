@@ -3,11 +3,11 @@ services:
   phoenix:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.phoenix-todo-list.rule=Host(`${PHX_HOST:?}`)"
-      - "traefik.http.routers.phoenix-todo-list.middlewares=redirect-www-to-non-www@file"
-      - "traefik.http.routers.phoenix-todo-list.entrypoints=websecure"
-      - "traefik.http.routers.phoenix-todo-list.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.phoenix-quiz-game.rule=Host(`${PHX_HOST:?}`)"
+      - "traefik.http.routers.phoenix-quiz-game.middlewares=redirect-www-to-non-www@file"
+      - "traefik.http.routers.phoenix-quiz-game.entrypoints=websecure"
+      - "traefik.http.routers.phoenix-quiz-game.tls.certresolver=letsencrypt"
 
       # enable gzip compression
-      - "traefik.http.middlewares.phoenix-todo-list--compress.compress=true"
-      - "traefik.http.routers.phoenix-todo-list.middlewares=phoenix-todo-list--compress"
+      - "traefik.http.middlewares.phoenix-quiz-game--compress.compress=true"
+      - "traefik.http.routers.phoenix-quiz-game.middlewares=phoenix-quiz-game--compress"
