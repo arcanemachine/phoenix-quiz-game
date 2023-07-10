@@ -1,0 +1,33 @@
+---
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+      # misc
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      # yaml
+      - id: check-yaml
+
+  - repo: https://github.com/qoomon/git-conventional-commits
+    rev: v2.6.3
+    hooks:
+      - id: conventional-commits
+
+  - repo: "local"
+    hooks:
+      - id: "mix-format"
+        name: "Format Elixir files"
+        description: "Formats Elixir files with 'mix format'"
+        language: "system"
+        entry: "mix format"
+        files: "\\.(?:exs|ex|heex)$"
+        require_serial: true
+      - id: "mix-test"
+        name: "Test Elixir files"
+        description: "Runs Elixir tests with 'mix test'"
+        language: "system"
+        entry: "./support/scripts/test-elixir"
+        files: "\\.(?:exs|ex|heex)$"
+        require_serial: true
