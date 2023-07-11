@@ -2,4 +2,130 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-/* This file is for your main application CSS */
+/* BASE
+ *
+ * Any classes declared in this section will not be purged, even if they are
+ * not detected in any HTML markup. That makes this section useful for
+ * programatically-inserted elements, such as elements related to pagination
+ * and toast messages.
+ *
+ * Also, selectors in this section will override any default Tailwind styling.
+ */
+
+/* tailwind */
+.prose {
+  max-width: unset;
+}
+
+@layer base {
+  /* alpinejs
+  [x-cloak] {
+    display: none !important;
+  }
+
+  [x-tooltip] {
+    user-select: none;
+  }
+   */
+
+  input {
+    /* TODO: improve default styles for input components */
+    color: #222;
+    background-color: white !important;
+  }
+
+  /* daisyui */
+  :root {
+    --animation-btn: 0; /* disable button 'pop' effect during initial render */
+  }
+
+  .dropdown-content {
+    /* prevent other elements (e.g. inputs) from obscuring dropdowns */
+    z-index: 1;
+  }
+
+  /* phoenix */
+  [data-phx-main] {
+    height: 100%;
+  }
+
+  /* misc */
+  a:not(.btn) {
+    color: hsl(var(--a)) !important;
+    font-weight: bold;
+  }
+}
+
+@layer components {
+  /* daisyui */
+  .alert {
+    max-width: 40rem;
+    margin: auto;
+    margin-bottom: 2rem;
+    justify-content: center;
+    filter: hue-rotate(20deg);
+
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+
+    border-radius: 0.5rem;
+  }
+
+  .btn:hover {
+    opacity: 0.8;
+  }
+
+  .dropdown-content {
+    border: 2px solid hsl(var(--nc));
+  }
+
+  /* custom */
+  .action-links {
+    margin-top: 3rem;
+  }
+
+  .action-links > li {
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
+  }
+
+  .form-button {
+    min-width: 8rem;
+  }
+
+  .template-center {
+    display: flex;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@layer utilities {
+  .show-empty-element:after {
+    content: "\00A0"; /* non-breaking space */
+  }
+
+  .flex-center {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .disabled-button-wrapper {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .list-back {
+    list-style-type: "< " !important;
+  }
+
+  .list-dash {
+    list-style-type: "- " !important;
+  }
+}
