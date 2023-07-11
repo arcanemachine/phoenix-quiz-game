@@ -36,7 +36,7 @@ config :quiz_game, QuizGame.Mailer, adapter: Swoosh.Adapters.Local
 
 # tailwind
 config :tailwind,
-  version: "3.2.7",
+  version: "3.3.2",
   default: [
     args: ~w(
       --config=tailwind.config.cjs
