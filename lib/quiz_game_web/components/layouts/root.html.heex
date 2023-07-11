@@ -1,17 +1,92 @@
 <!DOCTYPE html>
 <html lang="en" class="[scrollbar-gutter:stable]">
   <head>
+    <%!-- meta --%>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
-    <.live_title suffix=" · Phoenix Framework">
-      <%= assigns[:page_title] || "QuizGame" %>
+    <meta
+      name="description"
+      content="A fun and educational quiz game. Practice alone, or compete against your peers!"
+    />
+
+    <%!-- title --%>
+    <.live_title suffix=" - Quiz Game">
+      <%= assigns[:page_title] || "Quiz Game" %>
     </.live_title>
+
+    <%!-- css --%>
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
-    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
-    </script>
+
+    <%!-- js --%>
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"} />
   </head>
-  <body class="bg-white antialiased">
-    <%= @inner_content %>
+  <body class="flex flex-col h-full bg-base-100 antialiased">
+    <%!-- utility --%>
+    <div>
+      <div class="hidden">
+        <%!-- search engine description --%>
+        A fun and educational quiz game. Practice alone, or compete against your peers!
+      </div>
+
+      <noscript>
+        <h1 class="py-4 text-3xl bg-gray-700 text-white text-center">
+          Please enable Javascript to enable full functionality for this website.
+        </h1>
+      </noscript>
+    </div>
+
+    <%!-- navbar
+    <.navbar>
+      <:user_action_menu_items>
+        <%= if @current_user do %>
+          <li>
+            <.link href={~p"/users/profile"}>Your profile</.link>
+          </li>
+          <li>
+            <.link href={~p"/users/logout"}>Log out</.link>
+          </li>
+        <% else %>
+          <li>
+            <.link href={~p"/users/register"}>Register</.link>
+          </li>
+          <li>
+            <.link href={~p"/users/login"}>Log in</.link>
+          </li>
+        <% end %>
+      </:user_action_menu_items>
+    </.navbar>
+    -->
+
+    <%!-- toasts
+    <section id="toast-container" x-data="$store.components.toastContainer" />
+     --%>
+
+    <section class="grow flex flex-col">
+      <%!-- page content --%>
+      <main class="grow flex flex-col max-w-4xl mx-auto mb-20 container px-4 sm:px-10 md:px-20">
+        <section>
+          <section class="mb-10">
+            <h1
+              :if={assigns[:page_title]}
+              id="page-title"
+              class="mt-6 text-4xl text-center font-bold"
+            >
+              <%= assigns[:page_title] %>
+            </h1>
+
+            <h2 :if={assigns[:page_subtitle]} id="page-subtitle" class="mt-2 text-2xl text-center">
+              <%= assigns[:page_subtitle] %>
+            </h2>
+          </section>
+        </section>
+
+        <%= @inner_content %>
+      </main>
+    </section>
+
+    <%!-- navbar
+      <.footer />
+    --%>
   </body>
 </html>
