@@ -159,14 +159,14 @@ color_reset := "\\033[39m"
   echo "Checking for info about the '{{ package_name }}' Hex package..."
   @mix hex.info {{ package_name }}
 
-# update a specific Elixir Hex package
-@elixir-package-update package_name:
-  echo "Updating Elixir Hex package '{{ package_name }}'..."
+# upgrade a specific Elixir Hex package
+@elixir-package-upgrade package_name:
+  echo "Upgrading Elixir Hex package '{{ package_name }}'..."
   @mix deps.update {{ package_name }}
 
-# update all Elixir dependencies
-@elixir-package-update-all:
-  echo "Updating all Elixir dependencies..."
+# upgrade all Elixir dependencies
+@elixir-package-upgrade-all:
+  echo "Upgrading all Elixir dependencies..."
   @mix deps.update --all
 
 # check for Elixir Hex package updates
