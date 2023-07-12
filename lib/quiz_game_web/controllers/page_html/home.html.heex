@@ -1,15 +1,18 @@
 <.flash_group flash={@flash} />
 
 <section class="template-center">
-  <div>
-    <a
-      class="w-full btn btn-lg btn-primary"
-      phx-click={JS.remove_class("opacity-0", to: "#goodbye-troubles")}
+  <div x-data="{ show: false }">
+    <div>
+      <a class="w-full btn btn-lg btn-primary" @click="show = !show">
+        Hello world!
+      </a>
+    </div>
+    <div
+      class="hidden mt-12 text-2xl transition-opacity duration-300"
+      x-init="$el.classList.remove('hidden')"
+      x-bind:class="show || 'opacity-0'"
     >
-      Hello world!
-    </a>
-  </div>
-  <div id="goodbye-troubles" class="mt-12 text-2xl opacity-0 transition-opacity duration-300">
-    Goodbye troubles!
+      Goodbye troubles!
+    </div>
   </div>
 </section>

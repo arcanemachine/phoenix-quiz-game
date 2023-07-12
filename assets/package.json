@@ -11,5 +11,8 @@
   "license": "ISC",
   "devDependencies": {
     "daisyui": "^3.2.1"
+  },
+  "dependencies": {
+    "alpinejs": "^3.12.3"
   }
 }
