@@ -36,27 +36,7 @@
       </noscript>
     </div>
 
-    <%!-- navbar
-    <.navbar>
-      <:user_action_menu_items>
-        <%= if @current_user do %>
-          <li>
-            <.link href={~p"/users/profile"}>Your profile</.link>
-          </li>
-          <li>
-            <.link href={~p"/users/logout"}>Log out</.link>
-          </li>
-        <% else %>
-          <li>
-            <.link href={~p"/users/register"}>Register</.link>
-          </li>
-          <li>
-            <.link href={~p"/users/login"}>Log in</.link>
-          </li>
-        <% end %>
-      </:user_action_menu_items>
-    </.navbar>
-    -->
+    <.navbar current_user={assigns[:current_user]} />
 
     <%!-- toasts
     <section id="toast-container" x-data="$store.components.toastContainer" />

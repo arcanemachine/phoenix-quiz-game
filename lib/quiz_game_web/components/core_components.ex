@@ -3,9 +3,10 @@ defmodule QuizGameWeb.CoreComponents do
   Provides core UI components.
   """
   use Phoenix.Component
+  use Phoenix.VerifiedRoutes, endpoint: QuizGameWeb.Endpoint, router: QuizGameWeb.Router
 
-  alias Phoenix.LiveView.JS
   import QuizGameWeb.Gettext
+  alias Phoenix.LiveView.JS
 
   @doc """
   Renders a back navigation link.
@@ -459,6 +460,68 @@ defmodule QuizGameWeb.CoreComponents do
           </div>
         </div>
       </div>
+    </div>
+    """
+  end
+
+  @doc """
+  Renders the primary navbar.
+
+  ## Example
+
+      <.navbar current_user={@current_user} />
+  """
+  attr :current_user, :any, required: true
+
+  def navbar(assigns) do
+    ~H"""
+    <div class="w-full">
+      <%!-- limit max width of navbar by nesting it inside a full-width element --%>
+      <nav
+        data-component="page-navbar"
+        class="navbar max-w-[100rem] mx-auto bg-base-200 py-0 2xl:rounded-b-xl"
+      >
+        <%!-- navbar start items --%>
+        <div class="flex-1">
+          <%!-- navbar title --%>
+          <.link href="/" aria-label="Quiz Game" class="flex-0 btn-ghost btn px-2">
+            <span class="font-title inline-flex text-2xl normal-case text-accent">
+              Quiz Game
+            </span>
+          </.link>
+        </div>
+
+        <%!-- navbar end items --%>
+        <div class="mr-1 flex-none">
+          <%!-- menu - user actions --%>
+          <details class="dropdown dropdown-end" x-data @click.outside="$el.removeAttribute('open')">
+            <summary class="m-1 btn btn-ghost focus:ring-2">
+              <.icon name="hero-user-circle-solid" class="text-black h-7 w-7" />
+            </summary>
+            <ul class="w-52 p-2 shadow menu dropdown-content bg-base-100 n-transition-background
+                       rounded-box border-2 border-secondary">
+              <div class="mt-2 mb-3 text-center text-lg font-bold text-underline">
+                User Actions
+              </div>
+              <%= if @current_user do %>
+                <li>
+                  <.link href={~p"/"}>Your profile</.link>
+                </li>
+                <li>
+                  <.link href={~p"/"}>Log out</.link>
+                </li>
+              <% else %>
+                <li>
+                  <.link href={~p"/"}>Register</.link>
+                </li>
+                <li>
+                  <.link href={~p"/"}>Log in</.link>
+                </li>
+              <% end %>
+            </ul>
+          </details>
+        </div>
+      </nav>
     </div>
     """
   end
