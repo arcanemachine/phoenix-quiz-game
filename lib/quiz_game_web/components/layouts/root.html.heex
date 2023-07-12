@@ -20,6 +20,12 @@
 
     <%!-- js --%>
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"} />
+
+    <script>
+      // if saved theme exists, then set theme before initial render
+      if (localStorage.getItem("theme"))
+        document.documentElement.dataset.theme = localStorage.getItem("theme");
+    </script>
   </head>
   <body class="flex flex-col h-full bg-base-100 antialiased">
     <%!-- utility --%>

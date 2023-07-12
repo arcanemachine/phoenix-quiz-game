@@ -10,9 +10,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/alpinejs": "^3.7.2",
     "daisyui": "^3.2.1"
   },
   "dependencies": {
+    "@alpinejs/focus": "^3.12.3",
+    "@types/alpinejs__focus": "^3.10.0",
     "alpinejs": "^3.12.3"
   }
 }

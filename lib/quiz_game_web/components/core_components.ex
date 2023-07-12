@@ -493,10 +493,10 @@ defmodule QuizGameWeb.CoreComponents do
 
         <%!-- navbar end items --%>
         <div class="mr-1 flex-none">
-          <%!-- menu - user actions --%>
+          <%!-- user actions menu --%>
           <details class="dropdown dropdown-end" x-data @click.outside="$el.removeAttribute('open')">
             <summary class="m-1 btn btn-ghost focus:ring-2">
-              <.icon name="hero-user-circle-solid" class="text-black h-7 w-7" />
+              <.icon name="hero-user-circle-solid" class="h-7 w-7" />
             </summary>
             <ul class="w-52 p-2 shadow menu dropdown-content bg-base-100 n-transition-background
                        rounded-box border-2 border-secondary">
@@ -520,8 +520,60 @@ defmodule QuizGameWeb.CoreComponents do
               <% end %>
             </ul>
           </details>
+
+          <%!-- settings menu --%>
+          <.navbar_settings_menu />
         </div>
       </nav>
+    </div>
+    """
+  end
+
+  @doc """
+  Renders a settings menu in the navbar.
+
+  ## Example
+
+      <.navbar_settings_menu />
+  """
+
+  def navbar_settings_menu(assigns) do
+    ~H"""
+    <div x-data="{ show: false }" x-title="navbar-settings-menu" x-on:keyup.escape="show = false">
+      <button class="btn-ghost btn-square btn m-1" x-on:click="show = true" x-tooltip="Settings">
+        <.icon name="hero-cog-6-tooth-solid" class="h-7 w-7" />
+      </button>
+      <div class="modal" x-bind:class="show && 'modal-open'">
+        <div
+          class="relative max-w-xs modal-box border-2 overflow-hidden"
+          x-show="show"
+          x-transition.duration.500ms
+          x-trap.inert.noscroll="show"
+          x-on:click.outside="show = false"
+        >
+          <h2 class="mb-12 text-3xl font-bold text-center">Settings</h2>
+          <button @click="show = false" class="absolute right-0 top-0 btn btn-circle btn-ghost">
+            ✕
+          </button>
+
+          <div class="flex justify-between align-center h-12 w-full max-w-xs my-4 ml-1">
+            <div class="w-full my-auto pr-6 text-lg font-semibold text-center">
+              Theme
+            </div>
+            <div x-data="themeSelect" x-title="theme-select">
+              <select class="select select-bordered" x-model="theme" x-on:change="handleChange">
+                <option>Auto</option>
+                <option>Light</option>
+                <option>Dark</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-control mt-12 w-full max-w-xs">
+            <button class="btn btn-secondary" x-on:click="show = false">Close</button>
+          </div>
+        </div>
+      </div>
     </div>
     """
   end

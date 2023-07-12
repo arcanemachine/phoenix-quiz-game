@@ -1,10 +1,32 @@
 import "phoenix_html";
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
+
+import Alpine from "alpinejs";
+import focus from "@alpinejs/focus";
 import topbar from "../vendor/topbar";
 
 // initialize alpinejs
-import Alpine from "alpinejs";
+import {
+  data as alpineData,
+  directives as alpineDirectives,
+  stores as alpineStores,
+} from "js/alpine";
+
+for (const data of alpineData) {
+  Alpine.data(data.name, data.data);
+}
+
+for (const directive of alpineDirectives) {
+  Alpine.directive(directive.name, directive.directive);
+}
+
+for (const store of alpineStores) {
+  Alpine.store(store.name, store.store);
+}
+
+Alpine.plugin(focus);
+
 Alpine.start();
 window.Alpine = Alpine;
 
