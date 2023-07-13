@@ -1,18 +1,14 @@
 <.flash_group flash={@flash} />
 
 <div class="template-center">
-  <div x-data="{ show: false }">
+  <div x-data>
     <div>
-      <a class="w-full btn btn-lg btn-primary" @click="show = !show">
+      <a
+        class="w-full btn btn-lg btn-primary"
+        @click="$store.toasts.showSuccess('Goodbye troubles!')"
+      >
         Hello world!
       </a>
-    </div>
-    <div
-      class="hidden mt-12 text-2xl transition-opacity duration-300"
-      x-init="$el.classList.remove('hidden')"
-      x-bind:class="show || 'opacity-0'"
-    >
-      Goodbye troubles!
     </div>
   </div>
 </div>

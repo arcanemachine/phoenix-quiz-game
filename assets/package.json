@@ -11,11 +11,13 @@
   "license": "ISC",
   "devDependencies": {
     "@types/alpinejs": "^3.7.2",
+    "@types/toastify-js": "^1.11.1",
     "daisyui": "^3.2.1"
   },
   "dependencies": {
     "@alpinejs/focus": "^3.12.3",
     "@types/alpinejs__focus": "^3.10.0",
-    "alpinejs": "^3.12.3"
+    "alpinejs": "^3.12.3",
+    "toastify-js": "^1.12.0"
   }
 }
