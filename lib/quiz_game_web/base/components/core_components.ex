@@ -533,10 +533,8 @@ defmodule QuizGameWeb.CoreComponents do
         <%!-- navbar start items --%>
         <div class="flex-1">
           <%!-- navbar title --%>
-          <.link href="/" aria-label="Quiz Game" class="flex-0 btn-ghost btn px-2">
-            <span class="font-title inline-flex text-2xl normal-case text-accent">
-              Quiz Game
-            </span>
+          <.link navigate="/" class="text-2xl text-accent normal-case btn-ghost btn px-2">
+            Quiz Game
           </.link>
         </div>
 
@@ -549,7 +547,7 @@ defmodule QuizGameWeb.CoreComponents do
             </summary>
             <ul class="w-52 p-2 shadow menu dropdown-content bg-base-100 n-transition-background
                        rounded-box border-2 border-secondary">
-              <div class="mt-2 mb-3 text-center text-lg font-bold text-underline">
+              <div class="mt-2 mb-3 text-center text-lg font-bold">
                 User Actions
               </div>
               <%= if assigns[:current_user] do %>
