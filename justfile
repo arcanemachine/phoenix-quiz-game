@@ -193,12 +193,6 @@ color_reset := "\\033[39m"
   echo "Running a basic load test with 'wrk'..."
   @./support/scripts/loadtest-wrk
 
-# generate an OpenAPI schema [format: json|yaml]
-@openapi-schema-generate format="json":
-  echo "Generating '{{ format }}' schema in 'priv/static/static/'..."
-  @mix openapi.spec.{{ format }} --spec QuizGameWeb.ApiSpec
-  @mv openapi.{{ format }} priv/static/static
-
 # run pre-commit hooks (must have 'pre-commit' installed)
 @pre-commit:
   echo "Running pre-commit hooks..."
