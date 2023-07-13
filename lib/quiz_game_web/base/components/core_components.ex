@@ -542,7 +542,10 @@ defmodule QuizGameWeb.CoreComponents do
         <div class="mr-1 flex-none">
           <%!-- user actions menu --%>
           <details class="dropdown dropdown-end" x-data @click.outside="$el.removeAttribute('open')">
-            <summary class="m-1 btn btn-ghost focus:ring-2" x-tooltip="User Actions">
+            <summary
+              class="m-1 btn btn-ghost focus:ring-2"
+              x-tooltip="{ content: 'User Actions', placement: 'left' }"
+            >
               <.icon name="hero-user-circle-solid" class="h-7 w-7" />
             </summary>
             <ul class="w-52 p-2 shadow menu dropdown-content bg-base-100 n-transition-background
@@ -587,7 +590,11 @@ defmodule QuizGameWeb.CoreComponents do
   def navbar_settings_menu(assigns) do
     ~H"""
     <div x-data="{ show: false }" x-title="navbar-settings-menu" x-on:keyup.escape="show = false">
-      <button class="btn-ghost btn-square btn m-1" x-on:click="show = true" x-tooltip="Settings">
+      <button
+        class="btn-ghost btn-square btn m-1"
+        x-on:click="show = true"
+        x-tooltip="{ content: 'Settings', placement: 'left' }"
+      >
         <.icon name="hero-cog-6-tooth-solid" class="h-7 w-7" />
       </button>
       <div class="modal" x-bind:class="show && 'modal-open'">
