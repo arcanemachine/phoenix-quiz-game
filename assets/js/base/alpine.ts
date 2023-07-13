@@ -10,7 +10,7 @@ function themeSelect() {
     themeOptions: ["Auto", "Light", "Dark"],
     theme: helpers.base.stringCapitalize(
       // this value must be capitalized so that x-model works as expected
-      localStorage.getItem("theme") || "auto"
+      localStorage.getItem("theme") || "auto",
     ),
 
     handleChange() {
@@ -76,7 +76,7 @@ export const directives = [
     directive(
       elt: HTMLElement,
       { expression }: any,
-      { evaluate, cleanup }: any
+      { evaluate, cleanup }: any,
     ) {
       /** Create a tooltip popup. */
       if (!expression) return; // abort if expression is empty
@@ -138,7 +138,7 @@ const toasts = {
     });
   },
   coerceInputs(
-    options: string | ProjectToastifyOptions = {}
+    options: string | ProjectToastifyOptions = {},
   ): ProjectToastifyOptions {
     /** Coerce the value of 'options' based on certain factors:
      *  a. If 'options' is a string, convert it to a basic toast options object.
