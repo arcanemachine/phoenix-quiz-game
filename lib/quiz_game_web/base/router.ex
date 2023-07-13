@@ -3,6 +3,8 @@ defmodule QuizGameWeb.Base.Router do
   def base_allow_any_user do
     quote do
       get("/", BaseController, :home)
+      get("/privacy-policy", BaseController, :privacy_policy)
+      get("/terms-of-use", BaseController, :terms_of_use)
     end
   end
 
