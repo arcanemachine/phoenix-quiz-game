@@ -607,10 +607,16 @@ defmodule QuizGameWeb.CoreComponents do
 
           <div class="flex justify-between align-center h-12 w-full max-w-xs my-4 ml-1">
             <div class="w-full my-auto pr-6 text-lg font-semibold text-center">
-              Theme
+              <label for="settings-modal-theme-select">Theme</label>
             </div>
             <div x-data="themeSelect" x-title="theme-select">
-              <select class="select select-bordered" x-model="theme" x-on:change="handleChange">
+              <select
+                id="settings-modal-theme-select"
+                class="select select-bordered"
+                name="theme"
+                x-model="theme"
+                x-on:change="handleChange"
+              >
                 <option>Auto</option>
                 <option>Light</option>
                 <option>Dark</option>
