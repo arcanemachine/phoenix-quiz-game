@@ -12,7 +12,8 @@
   "devDependencies": {
     "@types/alpinejs": "^3.7.2",
     "@types/toastify-js": "^1.11.1",
-    "daisyui": "^3.2.1"
+    "daisyui": "^3.2.1",
+    "prettier": "3.0.0"
   },
   "dependencies": {
     "@alpinejs/focus": "^3.12.3",
