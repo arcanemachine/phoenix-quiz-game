@@ -544,7 +544,7 @@ defmodule QuizGameWeb.CoreComponents do
         <div class="mr-1 flex-none">
           <%!-- user actions menu --%>
           <details class="dropdown dropdown-end" x-data @click.outside="$el.removeAttribute('open')">
-            <summary class="m-1 btn btn-ghost focus:ring-2">
+            <summary class="m-1 btn btn-ghost focus:ring-2" x-tooltip="User Actions">
               <.icon name="hero-user-circle-solid" class="h-7 w-7" />
             </summary>
             <ul class="w-52 p-2 shadow menu dropdown-content bg-base-100 n-transition-background
