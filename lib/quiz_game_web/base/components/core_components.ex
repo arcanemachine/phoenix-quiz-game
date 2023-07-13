@@ -520,10 +520,8 @@ defmodule QuizGameWeb.CoreComponents do
 
   ## Example
 
-      <.navbar current_user={@current_user} />
+      <.navbar />
   """
-  attr :current_user, :any, required: true
-
   def navbar(assigns) do
     ~H"""
     <div class="w-full">
@@ -554,7 +552,7 @@ defmodule QuizGameWeb.CoreComponents do
               <div class="mt-2 mb-3 text-center text-lg font-bold text-underline">
                 User Actions
               </div>
-              <%= if @current_user do %>
+              <%= if assigns[:current_user] do %>
                 <li>
                   <.link href={~p"/"}>Your profile</.link>
                 </li>
