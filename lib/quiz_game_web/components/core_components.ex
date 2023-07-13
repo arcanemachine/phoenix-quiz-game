@@ -185,6 +185,45 @@ defmodule QuizGameWeb.CoreComponents do
   end
 
   @doc """
+  Renders a page footer.
+
+  ## Example
+
+      <.footer />
+  """
+  def footer(assigns) do
+    ~H"""
+    <div class="w-full">
+      <%!-- limit max width of footer by nesting it inside a full-width element --%>
+      <section class="max-w-[100rem] mx-auto bg-base-200 py-6 text-center 2xl:rounded-t-xl">
+        <ul class="list-none">
+          <li>
+            <div class="text-xl font-bold">
+              Quiz Game
+            </div>
+          </li>
+
+          <%!-- project-related links --%>
+          <li class="mt-6">
+            <.link href="/">
+              Home
+            </.link>
+          </li>
+
+          <%!-- legal stuff --%>
+          <li class="mt-6">
+            <small>
+              &copy; Copyright <%= DateTime.utc_now().year %>
+              <br />All rights reserved
+            </small>
+          </li>
+        </ul>
+      </section>
+    </div>
+    """
+  end
+
+  @doc """
   Renders a header with title.
   """
   attr :class, :string, default: nil
