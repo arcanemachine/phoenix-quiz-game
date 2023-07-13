@@ -48,6 +48,7 @@ module.exports = {
   },
   plugins: [
     // require("@tailwindcss/forms"),
+    require("@tailwindcss/typography"),
     plugin(({ addVariant }) =>
       addVariant("phx-no-feedback", [".phx-no-feedback&", ".phx-no-feedback &"])
     ),
