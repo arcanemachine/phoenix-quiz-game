@@ -1,5 +1,6 @@
 import { AlpineComponent } from "alpinejs";
 import Toastify from "toastify-js";
+import tippy from "tippy.js";
 
 import helpers from "js/helpers";
 
@@ -69,7 +70,50 @@ export const data = [
 ];
 
 /* directives */
-export const directives = [];
+export const directives = [
+  {
+    name: "tooltip",
+    directive(
+      elt: HTMLElement,
+      { expression }: any,
+      { evaluate, cleanup }: any
+    ) {
+      /** Create a tooltip popup. */
+      if (!expression) return; // abort if expression is empty
+
+      const defaultOptions = {
+        delay: [750, null],
+        interactiveDebounce: 150,
+        touch: ["hold", 500],
+      };
+
+      // parse expression and convert to object
+      let options: Record<string, any>;
+      if (helpers.base.alpineExpressionIsObject(expression)) {
+        options = evaluate(expression); // expression is an object
+      } else {
+        options = { content: expression }; // convert expression to object
+      }
+
+      // finalized options
+      options = {
+        ...defaultOptions,
+        ...options,
+      };
+
+      // create tooltip
+      const tip = tippy(elt, options);
+
+      // add 'aria-label' attribute to improve accessibility
+      elt.setAttribute("aria-label", options.content);
+
+      // when element is removed from the DOM, destroy the tooltip
+      cleanup(() => {
+        tip.destroy();
+      });
+    },
+  },
+];
 
 /* stores */
 // toasts

@@ -18,6 +18,7 @@
     "@alpinejs/focus": "^3.12.3",
     "@types/alpinejs__focus": "^3.10.0",
     "alpinejs": "^3.12.3",
+    "tippy.js": "^6.3.7",
     "toastify-js": "^1.12.0"
   }
 }

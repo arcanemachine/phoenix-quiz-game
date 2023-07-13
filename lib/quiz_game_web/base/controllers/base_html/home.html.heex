@@ -3,12 +3,9 @@
 <div class="template-center">
   <div x-data>
     <div>
-      <a
-        class="w-full btn btn-lg btn-primary"
-        @click="$store.toasts.showSuccess('Goodbye troubles!')"
-      >
+      <button class="w-full btn btn-lg btn-primary" x-tooltip="Goodbye troubles!">
         Hello world!
-      </a>
+      </button>
     </div>
   </div>
 </div>
