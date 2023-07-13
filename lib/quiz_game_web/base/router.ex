@@ -14,8 +14,12 @@ defmodule QuizGameWeb.Base.Router do
       if Application.compile_env(:quiz_game, :dev_routes) do
         import Phoenix.LiveDashboard.Router
 
+        alias QuizGameWeb.Base.ComponentShowcaseLive
+
         scope "/dev" do
           pipe_through(:browser)
+
+          live("/component-showcase", ComponentShowcaseLive)
 
           live_dashboard("/dashboard", metrics: TodoListWeb.Telemetry)
           forward "/mailbox", Plug.Swoosh.MailboxPreview
