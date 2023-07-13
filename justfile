@@ -11,7 +11,7 @@ set dotenv-load
 # VARIABLES #
 default_cpu_arch := "x86_64"
 newest_supported_otp := "25.3"
-image_name := "arcanemachine/phoenix-todo-list"
+image_name := "arcanemachine/phoenix-quiz-game"
 
 # colors
 color_error := "\\033[91m"
@@ -196,7 +196,7 @@ color_reset := "\\033[39m"
 # generate an OpenAPI schema [format: json|yaml]
 @openapi-schema-generate format="json":
   echo "Generating '{{ format }}' schema in 'priv/static/static/'..."
-  @mix openapi.spec.{{ format }} --spec TodoListWeb.ApiSpec
+  @mix openapi.spec.{{ format }} --spec QuizGameWeb.ApiSpec
   @mv openapi.{{ format }} priv/static/static
 
 # run pre-commit hooks (must have 'pre-commit' installed)
@@ -217,17 +217,17 @@ color_reset := "\\033[39m"
 # run migrations on the prod server
 @server-prod-migrate:
   echo "Running migrations on the prod server..."
-  @./_build/prod/rel/todo_list/bin/migrate
+  @./_build/prod/rel/quiz_game/bin/migrate
 
 # start the prod server
 @server-prod-start:
   echo "Starting prod server..."
-  @./_build/prod/rel/todo_list/bin/server
+  @./_build/prod/rel/quiz_game/bin/server
 
 # stop the prod server
 @server-prod-stop:
   echo "Stopping prod server..."
-  @./_build/prod/rel/todo_list/bin/todo_list stop
+  @./_build/prod/rel/quiz_game/bin/quiz_game stop
 
 # spawn an IEx shell
 @shell:
@@ -270,7 +270,7 @@ test-e2e args="":
 
 # print the project version number
 @version-project:
-  mix eval 'IO.puts(TodoList.MixProject.project[:version])'
+  mix eval 'IO.puts(QuizGame.MixProject.project[:version])'
 
 # PRIVATE HELPERS #
 @_echo_error val:
