@@ -10,9 +10,11 @@ config :quiz_game, QuizGame.Repo,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
-# disable caching; enable debugging and code reloading; configure watchers (e.g. bundlers)
+# configure endpoint (disable caching; enable debugging and code reloading; configure watchers
+port = String.to_integer(System.get_env("PORT") || "4000") + 1
+
 config :quiz_game, QuizGameWeb.Endpoint,
-  http: [ip: {0, 0, 0, 0}, port: 4000],
+  http: [ip: {0, 0, 0, 0}, port: port],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,

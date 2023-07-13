@@ -15,8 +15,10 @@ config :quiz_game, QuizGame.Repo,
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
+port = String.to_integer(System.get_env("PORT") || "4000") + 2
+
 config :quiz_game, QuizGameWeb.Endpoint,
-  http: [ip: {127, 0, 0, 1}, port: 4002],
+  http: [ip: {0, 0, 0, 0}, port: port],
   secret_key_base: "Sc0C7qslnaKDjL6J2AdMaGWo9Uip1P3gvoLul1nyZLl4Sx72E/eJAOnhQiohxw7w",
   server: false
 
