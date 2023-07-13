@@ -1,6 +1,8 @@
 defmodule QuizGameWeb.Router do
   use QuizGameWeb, :router
 
+  alias QuizGameWeb.Base.Router, as: BaseRouter
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -17,17 +19,9 @@ defmodule QuizGameWeb.Router do
   scope "/", QuizGameWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    use BaseRouter, :base_allow_any_user
   end
 
-  if Application.compile_env(:quiz_game, :dev_routes) do
-    import Phoenix.LiveDashboard.Router
-
-    scope "/dev" do
-      pipe_through :browser
-
-      live_dashboard "/dashboard", metrics: QuizGameWeb.Telemetry
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
-    end
-  end
+  # DEV #
+  use BaseRouter, :base_dev
 end

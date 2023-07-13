@@ -203,10 +203,22 @@ defmodule QuizGameWeb.CoreComponents do
             </div>
           </li>
 
-          <%!-- project-related links --%>
+          <%!-- project links --%>
           <li class="mt-6">
-            <.link href="/">
+            <.link href={~p"/"}>
               Home
+            </.link>
+          </li>
+
+          <%!-- extra links --%>
+          <li class="mt-6">
+            <.link href={~p"/terms-of-use"}>
+              Terms of Use
+            </.link>
+          </li>
+          <li class="mt-2">
+            <.link href={~p"/privacy-policy"}>
+              Privacy Policy
             </.link>
           </li>
 
@@ -214,7 +226,7 @@ defmodule QuizGameWeb.CoreComponents do
           <li class="mt-6">
             <small>
               &copy; Copyright <%= DateTime.utc_now().year %>
-              <br />All rights reserved
+              <br />All rights reserved.
             </small>
           </li>
         </ul>
@@ -569,7 +581,7 @@ defmodule QuizGameWeb.CoreComponents do
   end
 
   @doc """
-  Renders a settings menu in the navbar.
+  Renders the navbar settings menu.
 
   ## Example
 
