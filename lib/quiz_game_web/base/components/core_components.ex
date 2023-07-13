@@ -41,8 +41,9 @@ defmodule QuizGameWeb.CoreComponents do
       <.button phx-click="go" class="ml-2">Send!</.button>
   """
   attr :type, :string, default: nil
-  attr :class, :string, default: nil
-  attr :rest, :global, include: ~w(disabled form name value)
+  attr :class, :any, default: nil
+  attr :loader, :boolean, default: false
+  attr :rest, :global, default: %{loader: false}
 
   slot :inner_block, required: true
 
@@ -51,13 +52,19 @@ defmodule QuizGameWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
-        "text-sm font-semibold leading-6 text-white active:text-white/80",
+        "btn",
         @class
       ]}
       {@rest}
     >
-      <%= render_slot(@inner_block) %>
+      <%= if @loader do %>
+        <span class="phx-click-loading:hidden phx-submit-loading:hidden">
+          <%= render_slot(@inner_block) %>
+        </span>
+        <.loader />
+      <% else %>
+        <%= render_slot(@inner_block) %>
+      <% end %>
     </button>
     """
   end
@@ -231,6 +238,107 @@ defmodule QuizGameWeb.CoreComponents do
           </li>
         </ul>
       </section>
+    </div>
+    """
+  end
+
+  @doc """
+  Renders a form button.
+
+  ## Examples
+
+      <.form_button>Button Text</.form_button>
+      <.form_button phx-click="go" class="ml-2">Button Text</.form_button>
+  """
+  attr :type, :string, default: "button"
+  attr :class, :any, default: nil
+  attr :content, :string, default: ""
+  attr :loader, :boolean, default: false
+  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the form button"
+
+  slot :inner_block
+
+  def form_button(assigns) do
+    ~H"""
+    <.button
+      type={@type}
+      class={[
+        "form-button",
+        @class
+      ]}
+      loader={@loader}
+      {@rest}
+    >
+      <%= if @content != "" do %>
+        <%= @content %>
+      <% else %>
+        <%= render_slot(@inner_block) %>
+      <% end %>
+    </.button>
+    """
+  end
+
+  @doc """
+  Renders a form submit button.
+
+  ## Examples
+
+      <.form_submit_button />Send!</.form_submit_button>
+      <.form_submit_button phx-click="go" class="ml-2">Custom submit text</.form_submit_button>
+  """
+  attr :type, :string, default: "submit"
+  attr :class, :any, default: nil
+  attr :content, :string, default: "Submit"
+  attr :loader, :boolean, default: true
+  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the form button"
+
+  def form_button_submit(assigns) do
+    ~H"""
+    <.form_button
+      type={@type}
+      class={["btn-success", @class]}
+      content={@content}
+      loader={@loader}
+      {@rest}
+    />
+    """
+  end
+
+  @doc """
+  Renders a form cancel button.
+
+  ## Examples
+
+      <.form_submit_button />Send!</.form_submit_button>
+      <.form_submit_button phx-click="go" class="ml-2">Custom submit text</.form_submit_button>
+  """
+  attr :type, :string, default: "button"
+  attr :class, :any, default: nil
+  attr :url, :string, default: nil, doc: "the URL to redirect to"
+  attr :content, :string, default: "Cancel"
+  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the form button"
+
+  def form_button_cancel(assigns) do
+    ~H"""
+    <a href={@url} tabindex="-1">
+      <.form_button
+        type={@type}
+        class={["btn-secondary", @class]}
+        onclick={@url || "history.back()"}
+        content={@content}
+        {@rest}
+      />
+    </a>
+    """
+  end
+
+  @doc """
+  Renders an alert indicating that the form has errors.
+  """
+  def form_error_alert(assigns) do
+    ~H"""
+    <div class="alert alert-error shadow-xl" role="alert">
+      To continue, fix the errors in the form.
     </div>
     """
   end
@@ -412,7 +520,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="block text-sm font-semibold leading-6 text-zinc-800">
+    <label for={@for} class="block text-sm font-semibold leading-6 text-base-800">
       <%= render_slot(@inner_block) %>
     </label>
     """
@@ -442,6 +550,27 @@ defmodule QuizGameWeb.CoreComponents do
         </div>
       </dl>
     </div>
+    """
+  end
+
+  @doc """
+  Renders a loading indicator.
+
+  ## Example
+
+      <.loader />
+  """
+  attr :class, :string, default: nil
+
+  def loader(assigns) do
+    ~H"""
+    <icon
+      name="hero-arrow-path"
+      class={[
+        "w-5 h-5 hidden phx-click-loading:inline phx-submit-loading:inline animate-spin",
+        @class
+      ]}
+    />
     """
   end
 
