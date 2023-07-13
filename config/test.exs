@@ -1,10 +1,6 @@
 import Config
 
-# Configure your database
-#
-# The MIX_TEST_PARTITION environment variable can be used
-# to provide built-in test partitioning in CI environment.
-# Run `mix help test` for more information.
+# configure database
 config :quiz_game, QuizGame.Repo,
   username: "postgres",
   password: "postgres",
@@ -13,8 +9,7 @@ config :quiz_game, QuizGame.Repo,
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
 
-# We don't run a server during test. If one is required,
-# you can enable the server option below.
+# enable server for certain tasks, e.g. e2e testing
 port = String.to_integer(System.get_env("PORT") || "4000") + 2
 
 config :quiz_game, QuizGameWeb.Endpoint,
@@ -22,14 +17,14 @@ config :quiz_game, QuizGameWeb.Endpoint,
   secret_key_base: "Sc0C7qslnaKDjL6J2AdMaGWo9Uip1P3gvoLul1nyZLl4Sx72E/eJAOnhQiohxw7w",
   server: false
 
-# In test we don't send emails.
+# email - don't send email
 config :quiz_game, QuizGame.Mailer, adapter: Swoosh.Adapters.Test
 
-# Disable swoosh api client as it is only required for production adapters.
-config :swoosh, :api_client, false
-
-# Print only warnings and errors during test
+# logger - only print warnings and errors
 config :logger, level: :warning
 
-# Initialize plugs at runtime for faster test compilation
+# phoenix - initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# swoosh - disable API client
+config :swoosh, :api_client, false
