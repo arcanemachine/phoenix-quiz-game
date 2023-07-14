@@ -94,11 +94,11 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
     <h2 class="mt-16 mb-4 text-3xl text-center">Flash</h2>
 
-    <section class="text-center" phx->
-      <.button phx-click={show("#showcase-flash-info")}>
+    <section class="text-center">
+      <.button phx-click="flash-info-show">
         Show Info Flash
       </.button>
-      <.button class="ml-4" phx-click={show("#showcase-flash-error")}>
+      <.button class="ml-4" phx-click="flash-error-show">
         Show Error Flash
       </.button>
     </section>
@@ -208,5 +208,13 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       |> Ecto.Changeset.validate_required(Map.keys(@form_data_types))
 
     {:noreply, assign(socket, changeset: Map.put(changeset, :action, :validate))}
+  end
+
+  def handle_event("flash-error-show", _params, socket) do
+    {:noreply, socket |> put_flash(:error, "Error flash message")}
+  end
+
+  def handle_event("flash-info-show", _params, socket) do
+    {:noreply, socket |> put_flash(:info, "Info flash message")}
   end
 end
