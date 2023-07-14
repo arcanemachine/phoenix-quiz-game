@@ -1,5 +1,10 @@
 ---
 repos:
+  - repo: https://github.com/qoomon/git-conventional-commits
+    rev: v2.6.5
+    hooks:
+      - id: conventional-commits
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
@@ -9,11 +14,6 @@ repos:
       - id: trailing-whitespace
       # yaml
       - id: check-yaml
-
-  - repo: https://github.com/qoomon/git-conventional-commits
-    rev: v2.6.5
-    hooks:
-      - id: conventional-commits
 
   - repo: "local"
     hooks:
