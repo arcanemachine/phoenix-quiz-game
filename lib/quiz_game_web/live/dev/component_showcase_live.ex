@@ -45,30 +45,30 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
     <section class="text-center">
       <div>
-        <.button class="w-32 btn-primary">
+        <.button class="w-32 m-1 btn-primary">
           Primary
         </.button>
-        <.button class="w-32 ml-2 btn-secondary">
+        <.button class="w-32 m-1 btn-secondary">
           Secondary
         </.button>
-        <.button class="w-32 ml-2 btn-accent">
+        <.button class="w-32 m-1 btn-accent">
           Accent
         </.button>
-        <.button class="w-32 ml-2 btn-neutral">
+        <.button class="w-32 m-1 btn-neutral">
           Neutral
         </.button>
       </div>
       <div class="mt-4">
-        <.button class="w-32 btn-info">
+        <.button class="w-32 m-1 btn-info">
           Info
         </.button>
-        <.button class="w-32 ml-2 btn-success">
+        <.button class="w-32 m-1 btn-success">
           Success
         </.button>
-        <.button class="w-32 ml-2 btn-warning">
+        <.button class="w-32 m-1 btn-warning">
           Warning
         </.button>
-        <.button class="w-32 ml-2 btn-error">
+        <.button class="w-32 m-1 btn-error">
           Error
         </.button>
       </div>
@@ -95,10 +95,10 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
     <h2 class="mt-16 mb-4 text-3xl text-center">Flash</h2>
 
     <section class="text-center">
-      <.button phx-click="flash-info-show">
+      <.button class="m-1" phx-click="flash-info-show">
         Show Info Flash
       </.button>
-      <.button class="ml-4" phx-click="flash-error-show">
+      <.button class="m-1" phx-click="flash-error-show">
         Show Error Flash
       </.button>
     </section>
@@ -186,14 +186,14 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
     <h2 class="mt-16 mb-4 text-3xl text-center">Show/Hide</h2>
 
-    <.button phx-click={show("#showcase-show-hide")}>Show</.button>
-    <.button phx-click={hide("#showcase-show-hide")}>Hide</.button>
+    <section class="text-center">
+      <.button phx-click={show("#showcase-show-hide")}>Show</.button>
+      <.button phx-click={hide("#showcase-show-hide")}>Hide</.button>
 
-    <p>
-      <%!-- prevent page jumping when element visibility toggled --%>
-      <span id="showcase-show-hide">Now you see me...</span>
-      <span>&nbsp;</span>
-    </p>
+      <p class="mt-2">
+        <span id="showcase-show-hide">Now you see me...</span>
+      </p>
+    </section>
     """
   end
 
