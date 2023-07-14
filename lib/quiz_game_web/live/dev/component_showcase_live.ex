@@ -1,42 +1,78 @@
 defmodule QuizGameWeb.Base.ComponentShowcaseLive do
   use QuizGameWeb, :live_view
 
-  @form_data_types %{
-    text: :string,
-    email: :string,
-    password: :string,
-    checkbox: :boolean,
-    select: :string,
-    textarea: :string
-  }
   defmodule FormData do
+    @types %{
+      text: :string,
+      email: :string,
+      password: :string,
+      checkbox: :boolean,
+      select: :string,
+      textarea: :string
+    }
+
     defstruct text: "",
               email: "",
               password: "",
               checkbox: false,
               select: "",
               textarea: ""
+
+    def changeset(%__MODULE__{} = form_data, attrs) do
+      {form_data, @types} |> Ecto.Changeset.cast(attrs, Map.keys(@types))
+    end
+
+    def types, do: @types
   end
 
   defmodule TableRow do
     defstruct id: 0, col1: "Value 1", col2: "Value 2"
   end
 
-  def form_data_changeset(%FormData{} = form_data, attrs \\ %{}) do
-    {form_data, @form_data_types} |> Ecto.Changeset.cast(attrs, Map.keys(@form_data_types))
-  end
-
   def mount(_params, _session, socket) do
     {:ok,
-     assign(socket,
+     socket
+     |> assign(
+       form: build_empty_form(),
        page_title: "Component Showcase",
-       changeset: form_data_changeset(%FormData{}),
        table_rows: [
          %TableRow{id: 1, col1: "Value 1", col2: "Value 2"},
          %TableRow{id: 2, col1: "Value 3", col2: "Value 4"},
          %TableRow{id: 3, col1: "Value 5", col2: "Value 6"}
        ]
      )}
+  end
+
+  defp build_empty_form() do
+    to_form(FormData.changeset(%FormData{}, %{}))
+  end
+
+  def handle_event("flash-error-show", _params, socket) do
+    {:noreply, socket |> put_flash(:error, "Error flash message")}
+  end
+
+  def handle_event("flash-info-show", _params, socket) do
+    {:noreply, socket |> put_flash(:info, "Info flash message")}
+  end
+
+  def handle_event("form-reset", _params, socket) do
+    {:noreply, assign(socket, form: build_empty_form())}
+  end
+
+  def handle_event("form-validate" = _event, %{"form_data" => form_data_params}, socket) do
+    form =
+      %FormData{}
+      |> FormData.changeset(form_data_params)
+      |> Ecto.Changeset.validate_required(Map.keys(FormData.types()))
+      |> Ecto.Changeset.add_error(:text, "Error message")
+      |> Ecto.Changeset.add_error(:email, "Error message")
+      |> Ecto.Changeset.add_error(:checkbox, "Error message")
+      |> Ecto.Changeset.add_error(:select, "Error message")
+      |> Ecto.Changeset.add_error(:textarea, "Error message")
+      |> Map.put(:action, :validate)
+      |> to_form()
+
+    {:noreply, assign(socket, form: form)}
   end
 
   def render(assigns) do
@@ -105,16 +141,22 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
     <h2 class="mt-16 text-3xl text-center">Simple Form</h2>
 
-    <.simple_form :let={f} class="max-w-lg mx-auto" for={@changeset} phx-change="validate">
+    <.simple_form
+      class="max-w-lg mx-auto"
+      for={@form}
+      autocomplete="off"
+      phx-change="form-validate"
+      phx-submit="form-submit"
+    >
       <%!-- fields --%>
-      <.input field={f[:text]} label="Text Input" />
-      <.input field={f[:email]} label="Email Input" />
-      <.input field={f[:password]} type="password" label="Password Input" />
+      <.input field={@form[:text]} label="Text Input" />
+      <.input field={@form[:email]} label="Email Input" />
+      <.input field={@form[:password]} type="password" label="Password Input" />
 
       <div class="form-control">
         <.input
           type="checkbox"
-          field={f[:checkbox]}
+          field={@form[:checkbox]}
           class="checkbox checkbox-primary"
           label="Checkbox Input"
         />
@@ -122,7 +164,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
       <div class="form-control">
         <.input
-          field={f[:select]}
+          field={@form[:select]}
           type="select"
           options={[
             [key: "Select an option", value: "", disabled: true],
@@ -138,13 +180,20 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
         <.label for="form_data_textarea">
           Textarea Label
         </.label>
-        <.input type="textarea" field={f[:textarea]} checked={true} class="checkbox checkbox-primary" />
+        <.input
+          type="textarea"
+          field={@form[:textarea]}
+          checked={true}
+          class="checkbox checkbox-primary"
+        />
       </div>
 
       <%!-- actions --%>
       <:actions>
         <.form_button_cancel />
-        <.form_button>Form Button</.form_button>
+        <.form_button class="btn-warning" phx-click="form-reset">
+          Reset
+        </.form_button>
         <.form_button_submit />
       </:actions>
     </.simple_form>
@@ -195,26 +244,5 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </p>
     </section>
     """
-  end
-
-  def handle_event("validate", %{"form_data" => form_data}, socket) do
-    changeset =
-      {%FormData{}, @form_data_types}
-      |> Ecto.Changeset.cast(form_data, Map.keys(@form_data_types))
-      |> Ecto.Changeset.add_error(:checkbox, "Error message")
-      |> Ecto.Changeset.add_error(:select, "Error message")
-      |> Ecto.Changeset.add_error(:textarea, "Error message")
-      # |> Ecto.Changeset.validate_change(:text, fn :text, _value -> [text: "Error message"] end)
-      |> Ecto.Changeset.validate_required(Map.keys(@form_data_types))
-
-    {:noreply, assign(socket, changeset: Map.put(changeset, :action, :validate))}
-  end
-
-  def handle_event("flash-error-show", _params, socket) do
-    {:noreply, socket |> put_flash(:error, "Error flash message")}
-  end
-
-  def handle_event("flash-info-show", _params, socket) do
-    {:noreply, socket |> put_flash(:info, "Info flash message")}
   end
 end
