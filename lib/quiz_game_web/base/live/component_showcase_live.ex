@@ -94,13 +94,6 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
     <h2 class="mt-16 mb-4 text-3xl text-center">Flash</h2>
 
-    <.flash id="showcase-flash-info" kind={:info} autoshow={false} title="Info flash title">
-      Info flash message
-    </.flash>
-    <.flash id="showcase-flash-error" kind={:error} autoshow={false} title="Error flash title">
-      Error flash message
-    </.flash>
-
     <section class="text-center" phx->
       <.button phx-click={show("#showcase-flash-info")}>
         Show Info Flash
@@ -113,7 +106,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
     <h2 class="mt-16 text-3xl text-center">Simple Form</h2>
 
     <.simple_form :let={f} class="max-w-lg mx-auto" for={@changeset} phx-change="validate">
-      <% # fields %>
+      <%!-- fields --%>
       <.input field={f[:text]} label="Text Input" />
       <.input field={f[:email]} label="Email Input" />
       <.input field={f[:password]} type="password" label="Password Input" />
@@ -148,7 +141,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
         <.input type="textarea" field={f[:textarea]} checked={true} class="checkbox checkbox-primary" />
       </div>
 
-      <% # actions %>
+      <%!-- actions --%>
       <:actions>
         <.form_button_cancel />
         <.form_button>Form Button</.form_button>
@@ -197,7 +190,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
     <.button phx-click={hide("#showcase-show-hide")}>Hide</.button>
 
     <p>
-      <% # prevent page jumping when element visibility toggled %>
+      <%!-- prevent page jumping when element visibility toggled --%>
       <span id="showcase-show-hide">Now you see me...</span>
       <span>&nbsp;</span>
     </p>
