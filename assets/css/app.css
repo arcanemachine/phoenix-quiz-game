@@ -65,10 +65,9 @@
     user-select: none;
   }
 
-  input {
-    /* TODO: improve default styles for input components */
-    color: #222;
-    background-color: white !important;
+  input,
+  textarea {
+    border: 1px solid black;
   }
 
   /* daisyui */
