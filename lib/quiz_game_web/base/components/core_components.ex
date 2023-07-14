@@ -232,8 +232,7 @@ defmodule QuizGameWeb.CoreComponents do
           <%!-- legal stuff --%>
           <li class="mt-6">
             <small>
-              &copy; Copyright <%= DateTime.utc_now().year %>
-              <br />All rights reserved.
+              &copy; Copyright <%= DateTime.utc_now().year %>. All rights reserved.
             </small>
           </li>
         </ul>
