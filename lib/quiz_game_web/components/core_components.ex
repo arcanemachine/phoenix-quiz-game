@@ -49,14 +49,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   def button(assigns) do
     ~H"""
-    <button
-      type={@type}
-      class={[
-        "btn",
-        @class
-      ]}
-      {@rest}
-    >
+    <button type={@type} class={["btn", @class]} {@rest}>
       <%= if @loader do %>
         <span class="phx-click-loading:hidden phx-submit-loading:hidden">
           <%= render_slot(@inner_block) %>
