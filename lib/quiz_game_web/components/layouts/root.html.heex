@@ -49,22 +49,19 @@
 
     <section id="toast-container" x-data="toastContainer" />
 
-    <div class="grow flex flex-col mt-6">
-      <%!-- page content --%>
-      <main class="grow flex flex-col max-w-4xl mx-auto mb-20 container px-4 sm:px-10 md:px-20">
+    <main class="grow flex flex-col max-w-4xl mt-8 mx-auto mb-20 container px-4 sm:px-10 md:px-20">
+      <section :if={assigns[:page_title] || assigns[:page_subtitle]} class="mb-10">
         <%!-- page title/subtitle --%>
-        <section :if={assigns[:page_title] || assigns[:page_subtitle]} class="mb-10">
-          <h1 class="text-4xl text-center font-bold">
-            <%= assigns[:page_title] %>
-          </h1>
-          <h2 :if={assigns[:page_subtitle]} id="page-subtitle" class="mt-2 text-2xl text-center">
-            <%= assigns[:page_subtitle] %>
-          </h2>
-        </section>
+        <h1 class="text-4xl text-center font-bold">
+          <%= assigns[:page_title] %>
+        </h1>
+        <h2 :if={assigns[:page_subtitle]} id="page-subtitle" class="mt-2 text-2xl text-center">
+          <%= assigns[:page_subtitle] %>
+        </h2>
+      </section>
 
-        <%= @inner_content %>
-      </main>
-    </div>
+      <%= @inner_content %>
+    </main>
 
     <.footer />
   </body>
