@@ -47,12 +47,20 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
     to_form(FormData.changeset(%FormData{}, %{}))
   end
 
-  def handle_event("flash-error-show", _params, socket) do
-    {:noreply, socket |> put_flash(:error, "Error flash message")}
-  end
-
   def handle_event("flash-info-show", _params, socket) do
     {:noreply, socket |> put_flash(:info, "Info flash message")}
+  end
+
+  def handle_event("flash-success-show", _params, socket) do
+    {:noreply, socket |> put_flash(:success, "Success flash message")}
+  end
+
+  def handle_event("flash-warning-show", _params, socket) do
+    {:noreply, socket |> put_flash(:warning, "Warning flash message")}
+  end
+
+  def handle_event("flash-error-show", _params, socket) do
+    {:noreply, socket |> put_flash(:error, "Error flash message")}
   end
 
   def handle_event("form-reset", _params, socket) do
@@ -135,12 +143,22 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
     <h2 class="mt-16 mb-4 text-3xl text-center">Flash</h2>
 
     <section class="text-center">
-      <.button class="w-40 m-1 btn-info" phx-click="flash-info-show">
-        Info Flash
-      </.button>
-      <.button class="w-40 m-1 btn-error" phx-click="flash-error-show">
-        Error Flash
-      </.button>
+      <div>
+        <.button class="w-40 m-1 btn-info" phx-click="flash-info-show">
+          Info Flash
+        </.button>
+        <.button class="w-40 m-1 btn-success" phx-click="flash-success-show">
+          Success Flash
+        </.button>
+      </div>
+      <div>
+        <.button class="w-40 m-1 btn-warning" phx-click="flash-warning-show">
+          Warning Flash
+        </.button>
+        <.button class="w-40 m-1 btn-error" phx-click="flash-error-show">
+          Error Flash
+        </.button>
+      </div>
     </section>
 
     <h2 class="mt-16 text-3xl text-center">Simple Form</h2>

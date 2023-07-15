@@ -99,76 +99,6 @@ defmodule QuizGameWeb.CoreComponents do
   end
 
   @doc """
-  Renders flash notices.
-
-  ## Examples
-
-      <.flash kind={:info} flash={@flash} />
-      <.flash kind={:info} phx-mounted={show("#flash")}>Welcome Back!</.flash>
-  """
-  attr :id, :string, default: "flash", doc: "the optional id of flash container"
-  attr :flash, :map, default: %{}, doc: "the map of flash messages to display"
-  attr :title, :string, default: nil
-  attr :kind, :atom, values: [:info, :error], doc: "used for styling and flash lookup"
-  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the flash container"
-
-  slot :inner_block, doc: "the optional inner block that renders the flash message"
-
-  def flash(assigns) do
-    ~H"""
-    <div
-      :if={msg = render_slot(@inner_block) || Phoenix.Flash.get(@flash, @kind)}
-      id={@id}
-      phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")}
-      role="alert"
-      class={[
-        "fixed top-2 right-2 w-80 sm:w-96 z-50 rounded-lg p-3 ring-1",
-        @kind == :info && "bg-emerald-50 text-emerald-800 ring-emerald-500 fill-cyan-900",
-        @kind == :error && "bg-rose-50 text-rose-900 shadow-md ring-rose-500 fill-rose-900"
-      ]}
-      {@rest}
-    >
-      <p :if={@title} class="flex items-center gap-1.5 text-sm font-semibold leading-6">
-        <.icon :if={@kind == :info} name="hero-information-circle-mini" class="h-4 w-4" />
-        <.icon :if={@kind == :error} name="hero-exclamation-circle-mini" class="h-4 w-4" />
-        <%= @title %>
-      </p>
-      <p class="mt-2 text-sm leading-5"><%= msg %></p>
-      <button type="button" class="group absolute top-1 right-1 p-2" aria-label={gettext("close")}>
-        <.icon name="hero-x-mark-solid" class="h-5 w-5 opacity-40 group-hover:opacity-70" />
-      </button>
-    </div>
-    """
-  end
-
-  @doc """
-  Renders a [Heroicon](https://heroicons.com).
-
-  Heroicons come in three styles – outline, solid, and mini.
-  By default, the outline style is used, but solid and mini may
-  be applied by using the `-solid` and `-mini` suffix.
-
-  You can customize the size and colors of the icons by setting
-  width, height, and background color classes.
-
-  Icons are extracted from your `assets/vendor/heroicons` directory and bundled
-  within your compiled app.css by the plugin in your `assets/tailwind.config.js`.
-
-  ## Examples
-
-      <.icon name="hero-x-mark-solid" />
-      <.icon name="hero-arrow-path" class="ml-1 w-3 h-3 animate-spin" />
-  """
-  attr :name, :string, required: true
-  attr :class, :string, default: nil
-
-  def icon(%{name: "hero-" <> _} = assigns) do
-    ~H"""
-    <span class={[@name, @class]} />
-    """
-  end
-
-  @doc """
   Generates a generic error message.
   """
   slot :inner_block, required: true
@@ -183,6 +113,55 @@ defmodule QuizGameWeb.CoreComponents do
   end
 
   @doc """
+  Renders flash notices.
+
+  ## Examples
+
+      <.flash kind={:info} flash={@flash} />
+      <.flash kind={:info} phx-mounted={show("#flash")}>Welcome Back!</.flash>
+  """
+  attr :id, :string, default: "flash", doc: "the optional id of flash container"
+  attr :flash, :map, default: %{}, doc: "the map of flash messages to display"
+  attr :title, :string, default: nil
+  attr :kind, :atom, values: [:info, :success, :warning, :error], doc: "flash message style"
+  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the flash container"
+
+  slot :inner_block, doc: "the optional inner block that renders the flash message"
+
+  def flash(assigns) do
+    ~H"""
+    <div
+      :if={msg = render_slot(@inner_block) || Phoenix.Flash.get(@flash, @kind)}
+      id={@id}
+      phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")}
+      role="alert"
+      class={[
+        "w-80 sm:w-96 mx-auto p-3 z-50 rounded-lg ring-1",
+        @kind == :info &&
+          "bg-info text-info-content ring-info-content fill-info-content shadow-xl",
+        @kind == :success &&
+          "bg-success text-success-content ring-success-content fill-success-content shadow-xl",
+        @kind == :warning &&
+          "bg-warning text-warning-content ring-warning-content fill-warning-content shadow-xl",
+        @kind == :error &&
+          "bg-error text-error-content ring-error-content fill-error-content shadow-xl"
+      ]}
+      {@rest}
+    >
+      <div class="flex flex-center">
+        <p class="grow px-4 text-sm font-semibold text-center">
+          <span :if={@title}><%= @title %>:</span>
+          <%= msg %>
+        </p>
+        <button class="block group" aria-label={gettext("close")}>
+          <.icon name="hero-x-mark-solid" class="h-5 w-5 group-hover:opacity-50" />
+        </button>
+      </div>
+    </div>
+    """
+  end
+
+  @doc """
   Shows the flash group with standard titles and content.
 
   ## Examples
@@ -193,30 +172,33 @@ defmodule QuizGameWeb.CoreComponents do
 
   def flash_group(assigns) do
     ~H"""
-    <.flash kind={:info} title="Success!" flash={@flash} />
-    <.flash kind={:error} title="Error!" flash={@flash} />
-    <.flash
-      id="client-error"
-      kind={:error}
-      title="We can't find the internet"
-      phx-disconnected={show(".phx-client-error #client-error")}
-      phx-connected={hide("#client-error")}
-      hidden
-    >
-      Attempting to reconnect <.icon name="hero-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
-    </.flash>
+    <div class="fixed w-screen top-0 right-0 left-0 mt-child-2">
+      <.flash kind={:error} title="Error" id="flash-error" flash={@flash} />
+      <.flash kind={:warning} title="Warning" id="flash-warning" flash={@flash} />
+      <.flash kind={:success} title="Success" id="flash-success" flash={@flash} />
+      <.flash kind={:info} title="Info" id="flash-info" flash={@flash} />
+      <.flash
+        id="flash-client-error"
+        kind={:error}
+        title="Unable to connect to the server"
+        phx-disconnected={show(".phx-client-error #flash-client-error")}
+        phx-connected={hide("#flash-client-error")}
+        hidden
+      >
+        Attempting to reconnect... <.icon name="hero-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
+      </.flash>
 
-    <.flash
-      id="server-error"
-      kind={:error}
-      title="Something went wrong!"
-      phx-disconnected={show(".phx-server-error #server-error")}
-      phx-connected={hide("#server-error")}
-      hidden
-    >
-      Hang in there while we get back on track
-      <.icon name="hero-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
-    </.flash>
+      <.flash
+        id="flash-server-error"
+        kind={:error}
+        title="Lost connection to server"
+        phx-disconnected={show(".phx-server-error #flash-server-error")}
+        phx-connected={hide("#flash-server-error")}
+        hidden
+      >
+        Attempting to reconnect... <.icon name="hero-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
+      </.flash>
+    </div>
     """
   end
 
@@ -397,6 +379,33 @@ defmodule QuizGameWeb.CoreComponents do
   end
 
   @doc """
+  Renders a [Heroicon](https://heroicons.com).
+
+  Heroicons come in three styles – outline, solid, and mini.
+  By default, the outline style is used, but solid and mini may
+  be applied by using the `-solid` and `-mini` suffix.
+
+  You can customize the size and colors of the icons by setting
+  width, height, and background color classes.
+
+  Icons are extracted from your `assets/vendor/heroicons` directory and bundled
+  within your compiled app.css by the plugin in your `assets/tailwind.config.js`.
+
+  ## Examples
+
+      <.icon name="hero-x-mark-solid" />
+      <.icon name="hero-arrow-path" class="ml-1 w-3 h-3 animate-spin" />
+  """
+  attr :name, :string, required: true
+  attr :class, :string, default: nil
+
+  def icon(%{name: "hero-" <> _} = assigns) do
+    ~H"""
+    <span class={[@name, @class]} />
+    """
+  end
+
+  @doc """
   Renders an input with label and error messages.
 
   A `Phoenix.HTML.FormField` may be passed as argument,
@@ -480,6 +489,21 @@ defmodule QuizGameWeb.CoreComponents do
     """
   end
 
+  def input(%{type: "hidden"} = assigns) do
+    ~H"""
+    <div phx-feedback-for={@name} data-component="input">
+      <input
+        type="hidden"
+        name={@name}
+        id={@id || @name}
+        class={["hidden", @class]}
+        value={@value}
+        {@rest}
+      />
+    </div>
+    """
+  end
+
   def input(%{type: "select"} = assigns) do
     ~H"""
     <div phx-feedback-for={@name}>
@@ -487,7 +511,10 @@ defmodule QuizGameWeb.CoreComponents do
       <select
         id={@id}
         name={@name}
-        class="mt-2 block w-full rounded-md border border-gray-300 bg-white shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm"
+        class={[
+          "mt-1 block w-full py-2 px-3 border border-gray-300 bg-white sm:text-sm",
+          "rounded-md shadow-sm focus:outline-none focus:ring-zinc-500 focus:border-base-500"
+        ]}
         multiple={@multiple}
         {@rest}
       >
@@ -507,7 +534,7 @@ defmodule QuizGameWeb.CoreComponents do
         id={@id}
         name={@name}
         class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
+          "mt-2 block min-h-[6rem] w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
           "min-h-[6rem] phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"

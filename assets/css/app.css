@@ -72,14 +72,6 @@
     --animation-btn: 0; /* disable button 'pop' effect during initial render */
   }
 
-  input,
-  select,
-  textarea {
-    min-height: 2.5rem;
-    padding-left: 0.5rem;
-    border: 1px solid black;
-  }
-
   .dropdown-content {
     /* prevent other elements (e.g. inputs) from obscuring dropdowns */
     z-index: 1;
@@ -164,6 +156,10 @@
   .disabled-button-wrapper {
     opacity: 0.6;
     pointer-events: none;
+  }
+
+  .mt-child-2 > * {
+    margin-top: 0.5rem;
   }
 
   .list-back {
