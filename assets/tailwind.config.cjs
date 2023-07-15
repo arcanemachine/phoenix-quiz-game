@@ -42,9 +42,6 @@ module.exports = {
         brand: "#FD4F00",
       },
     },
-    // listStyleType: {
-    //   dash: "- ",
-    // },
   },
   plugins: [
     // require("@tailwindcss/forms"),

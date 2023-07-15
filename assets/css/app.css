@@ -164,15 +164,15 @@
     pointer-events: none;
   }
 
-  .mt-child-2 > * {
-    margin-top: 0.5rem;
-  }
-
   .list-back {
     list-style-type: "< " !important;
   }
 
   .list-dash {
     list-style-type: "- " !important;
+  }
+
+  .mt-child-2 > * {
+    margin-top: 0.5rem;
   }
 }
