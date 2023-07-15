@@ -9,6 +9,42 @@ defmodule QuizGameWeb.CoreComponents do
   alias Phoenix.LiveView.JS
 
   @doc """
+  Renders a list of links.
+
+  ## Example
+
+      <.action_links items={[
+        %{content: "Return to your profile", navigate: ~p"/users/profile", class: "list-back"}
+      ]} />
+  """
+  attr :title, :string, default: nil
+  attr :class, :string, default: nil
+  attr :items, :list, required: true
+
+  def action_links(assigns) do
+    ~H"""
+    <section class={["mt-12", @class]}>
+      <h3 class="text-2xl font-bold">
+        <%= @title || "Actions" %>
+      </h3>
+      <ul class="mt-2 ml-6">
+        <li :for={item <- @items} class={[["mt-2 pl-2 list-dash"], [Map.get(item, :class, "")]]}>
+          <.link
+            href={Map.get(item, :href, false)}
+            navigate={Map.get(item, :navigate, false)}
+            patch={Map.get(item, :patch, false)}
+            method={Map.get(item, :method, "get")}
+            data-confirm={Map.get(item, :confirm, false)}
+          >
+            <%= item.content %>
+          </.link>
+        </li>
+      </ul>
+    </section>
+    """
+  end
+
+  @doc """
   Renders a back navigation link.
 
   ## Examples
