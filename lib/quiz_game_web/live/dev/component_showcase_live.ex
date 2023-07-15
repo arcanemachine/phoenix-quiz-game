@@ -144,6 +144,14 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </div>
     </section>
 
+    <h3 class="mt-16 mb-4 text-2xl text-center">Action Links</h3>
+
+    <.action_links items={[
+      %{content: "Item 1", navigate: ~p"/dev/component-showcase"},
+      %{content: "Item 2", navigate: ~p"/dev/component-showcase"},
+      %{content: "Item 3", navigate: ~p"/dev/component-showcase", class: "underline"}
+    ]} />
+
     <hr class="my-12" />
 
     <h2 class="mb-8 text-3xl text-center">Built-In Components</h2>
