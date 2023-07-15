@@ -58,10 +58,12 @@
 @layer base {
   /* alpinejs */
   [x-cloak] {
+    /* do not display element until alpine component has loaded */
     display: none !important;
   }
 
   [x-tooltip] {
+    /* prevent iOS devices from selecting text when long-pressing a tooltip */
     user-select: none;
   }
 
@@ -82,11 +84,13 @@
 
   /* phoenix */
   [data-phx-main] {
+    /* ensure the page always fills 100% of the vertical height of the screen */
     height: 100%;
   }
 
   /* misc */
   a:not(.btn) {
+    /* custom link styling */
     color: hsl(var(--a)) !important;
     font-weight: bold;
   }
