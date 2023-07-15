@@ -140,7 +140,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </.button>
     </section>
 
-    <h2 class="mt-16 mb-4 text-3xl text-center">Flash</h2>
+    <h2 class="mt-16 mb-4 text-3xl text-center">Flash Messages</h2>
 
     <section class="text-center">
       <div>
@@ -159,6 +159,35 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
           Error Flash
         </.button>
       </div>
+    </section>
+
+    <section x-data x-show="$store.toasts">
+      <h2 class="mt-16 mb-4 text-3xl text-center">Toast Messages</h2>
+
+      <section class="text-center">
+        <div>
+          <.button class="w-40 m-1 btn-info" @click="$store.toasts.showInfo('Info toast message')">
+            Info Toast
+          </.button>
+          <.button
+            class="w-40 m-1 btn-success"
+            @click="$store.toasts.showSuccess('Success toast message')"
+          >
+            Success Toast
+          </.button>
+        </div>
+        <div>
+          <.button
+            class="w-40 m-1 btn-warning"
+            @click="$store.toasts.showWarning('Warning toast message')"
+          >
+            Warning Toast
+          </.button>
+          <.button class="w-40 m-1 btn-error" @click="$store.toasts.showError('Error toast message')">
+            Error Toast
+          </.button>
+        </div>
+      </section>
     </section>
 
     <h2 class="mt-16 text-3xl text-center">Simple Form</h2>
