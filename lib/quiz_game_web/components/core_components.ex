@@ -211,9 +211,10 @@ defmodule QuizGameWeb.CoreComponents do
   """
   def footer(assigns) do
     ~H"""
-    <div class="w-full lg:p-2 lg:pb-4">
+    <div class="w-full lg:p-2">
       <%!-- limit max width of footer by nesting it inside a full-width element --%>
-      <section class="max-w-[100rem] mx-auto bg-base-300 py-6 text-center lg:rounded-box lg:shadow-md">
+      <section class="max-w-[100rem] mx-auto py-6 bg-brand text-slate-300 text-center
+                      lg:rounded-box lg:shadow-xl">
         <ul class="list-none">
           <li>
             <div class="text-xl font-bold">
@@ -223,25 +224,25 @@ defmodule QuizGameWeb.CoreComponents do
 
           <%!-- project links --%>
           <li class="mt-6">
-            <.link href={~p"/"}>
+            <.link href={~p"/"} class="!text-slate-300">
               Home
             </.link>
           </li>
 
           <%!-- extra links --%>
           <li class="mt-6">
-            <.link href={~p"/terms-of-use"}>
+            <.link href={~p"/terms-of-use"} class="!text-slate-300">
               Terms of Use
             </.link>
           </li>
           <li class="mt-2">
-            <.link href={~p"/privacy-policy"}>
+            <.link href={~p"/privacy-policy"} class="!text-slate-300">
               Privacy Policy
             </.link>
           </li>
 
           <%!-- legal stuff --%>
-          <li class="mt-6">
+          <li class="mt-6 font-bold">
             <small>
               &copy; Copyright <%= DateTime.utc_now().year %>. All rights reserved.
             </small>
@@ -771,12 +772,12 @@ defmodule QuizGameWeb.CoreComponents do
       <%!-- limit max width of navbar by nesting it inside a full-width element --%>
       <nav
         data-component="page-navbar"
-        class="navbar max-w-[100rem] mx-auto bg-base-300 py-0 lg:rounded-box lg:shadow-lg"
+        class="navbar max-w-[100rem] mx-auto py-0 bg-brand text-slate-300 lg:rounded-box lg:shadow-xl"
       >
         <%!-- navbar start items --%>
         <div class="flex-1">
           <%!-- navbar title --%>
-          <.link navigate="/" class="text-2xl text-accent normal-case btn-ghost btn px-2">
+          <.link navigate="/" class="text-2xl !text-slate-300 normal-case btn-ghost btn pl-4">
             Quiz Game
           </.link>
         </div>
@@ -792,9 +793,9 @@ defmodule QuizGameWeb.CoreComponents do
             >
               <.icon name="hero-user-circle-solid" class="h-7 w-7" />
             </summary>
-            <ul class="w-52 p-2 shadow menu dropdown-content bg-base-100 n-transition-background
-                       rounded-box border-2 border-secondary">
-              <div class="mt-2 mb-3 text-center text-lg font-bold">
+            <ul class="w-52 p-2 shadow menu dropdown-content bg-base-100 text-base-content
+                       n-transition-background rounded-box border-2 border-secondary">
+              <div class="mt-2 mb-3 text-lg text-center font-bold">
                 User Actions
               </div>
               <%= if assigns[:current_user] do %>
@@ -828,7 +829,7 @@ defmodule QuizGameWeb.CoreComponents do
             >
               <.icon name="hero-cog-6-tooth-solid" class="h-7 w-7" />
             </button>
-            <div class="modal" x-bind:class="show && 'modal-open'">
+            <div class="modal text-base-content" x-bind:class="show && 'modal-open'">
               <div
                 class="relative max-w-xs modal-box border-2 overflow-x-hidden"
                 x-show="show"

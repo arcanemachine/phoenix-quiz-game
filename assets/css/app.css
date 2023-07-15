@@ -68,6 +68,11 @@
   }
 
   /* daisyui */
+  a:not(.btn) {
+    color: hsl(var(--a));
+    font-weight: bold;
+  }
+
   code {
     padding: 0.125rem 0.375rem;
     background-color: hsl(var(--b2));
@@ -87,13 +92,6 @@
   [data-phx-main] {
     /* ensure the page always fills 100% of the vertical height of the screen */
     height: 100%;
-  }
-
-  /* misc */
-  a:not(.btn) {
-    /* custom link styling */
-    color: hsl(var(--a)) !important;
-    font-weight: bold;
   }
 }
 
