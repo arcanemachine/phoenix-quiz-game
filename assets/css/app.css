@@ -67,14 +67,17 @@
     user-select: none;
   }
 
-  input,
-  textarea {
-    border: 1px solid black;
-  }
-
   /* daisyui */
   :root {
     --animation-btn: 0; /* disable button 'pop' effect during initial render */
+  }
+
+  input,
+  select,
+  textarea {
+    min-height: 2.5rem;
+    padding-left: 0.5rem;
+    border: 1px solid black;
   }
 
   .dropdown-content {
