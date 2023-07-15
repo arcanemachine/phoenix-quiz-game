@@ -59,6 +59,10 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
     {:noreply, assign(socket, form: build_empty_form())}
   end
 
+  def handle_event("form-submit", params, socket) do
+    handle_event("form-validate", params, socket)
+  end
+
   def handle_event("form-validate" = _event, %{"form_data" => form_data_params}, socket) do
     form =
       %FormData{}
@@ -94,7 +98,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
           Neutral
         </.button>
       </div>
-      <div class="mt-4">
+      <div>
         <.button class="w-32 m-1 btn-info">
           Info
         </.button>
@@ -131,11 +135,11 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
     <h2 class="mt-16 mb-4 text-3xl text-center">Flash</h2>
 
     <section class="text-center">
-      <.button class="m-1" phx-click="flash-info-show">
-        Show Info Flash
+      <.button class="w-40 m-1 btn-info" phx-click="flash-info-show">
+        Info Flash
       </.button>
-      <.button class="m-1" phx-click="flash-error-show">
-        Show Error Flash
+      <.button class="w-40 m-1 btn-error" phx-click="flash-error-show">
+        Error Flash
       </.button>
     </section>
 

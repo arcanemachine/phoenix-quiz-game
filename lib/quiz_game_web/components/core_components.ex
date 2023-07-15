@@ -767,7 +767,7 @@ defmodule QuizGameWeb.CoreComponents do
             </button>
             <div class="modal" x-bind:class="show && 'modal-open'">
               <div
-                class="relative max-w-xs modal-box border-2 overflow-hidden"
+                class="relative max-w-xs modal-box border-2 overflow-x-hidden"
                 x-show="show"
                 x-transition.duration.500ms
                 x-trap.inert.noscroll.noreturn="show"
@@ -840,7 +840,7 @@ defmodule QuizGameWeb.CoreComponents do
     <.form :let={f} for={@for} as={@as} {@rest}>
       <div class="mt-10 space-y-8">
         <%= render_slot(@inner_block, f) %>
-        <div :for={action <- @actions} class="w-full mt-2 mx-auto flex flex-center flex-wrap">
+        <div :for={action <- @actions} class="w-full mx-auto flex flex-center flex-wrap">
           <%= render_slot(action, f) %>
         </div>
       </div>
