@@ -63,6 +63,15 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
     {:noreply, socket |> put_flash(:error, "Error flash message")}
   end
 
+  def handle_event("flash-long-show", _params, socket) do
+    {:noreply,
+     socket
+     |> put_flash(
+       :info,
+       "This is a really long flash message. I mean, really, it's quite long. It's so long that the text shouldn't fit on a single line."
+     )}
+  end
+
   def handle_event("form-reset", _params, socket) do
     {:noreply, assign(socket, form: build_empty_form())}
   end
@@ -89,7 +98,57 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
   def render(assigns) do
     ~H"""
-    <h2 class="text-3xl mb-4 text-center">Button</h2>
+    <h2 class="text-3xl mb-8 text-center">Custom Components</h2>
+
+    <h3 class="mb-4 text-2xl text-center">Toast Messages</h3>
+
+    <section x-data class="text-center">
+      <div class="mb-4 text-lg font-italic" x-show="!$store.toasts">
+        <code>Alpine.store('toasts')</code> does not exist, so this section will not be functional.
+      </div>
+      <div>
+        <.button
+          class="w-40 m-1 btn-info"
+          x-on:click="$store.toasts.showInfo('Info toast message example')"
+        >
+          Info Toast
+        </.button>
+        <.button
+          class="w-40 m-1 btn-success"
+          x-on:click="$store.toasts.showSuccess('Success toast message example')"
+        >
+          Success Toast
+        </.button>
+      </div>
+      <div>
+        <.button
+          class="w-40 m-1 btn-warning"
+          x-on:click="$store.toasts.showWarning('Warning toast message example')"
+        >
+          Warning Toast
+        </.button>
+        <.button
+          class="w-40 m-1 btn-error"
+          x-on:click="$store.toasts.showError('Error toast message example')"
+        >
+          Error Toast
+        </.button>
+      </div>
+      <div>
+        <.button
+          class="w-40 m-1"
+          x-on:click="$store.toasts.show('This is a really long toast message. I mean, really, it\'s quite long. It\'s so long that the text shouldn\'t fit on a single line.')"
+        >
+          Long Toast
+        </.button>
+      </div>
+    </section>
+
+    <hr class="my-12" />
+
+    <h2 class="mb-8 text-3xl text-center">Built-In Components</h2>
+
+    <h3 class="mb-4 text-2xl text-center">Button</h3>
 
     <section class="text-center">
       <div>
@@ -122,7 +181,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </div>
     </section>
 
-    <h2 class="mt-16 mb-4 text-3xl text-center">Modal</h2>
+    <h3 class="mt-16 mb-4 text-2xl text-center">Modal</h3>
 
     <.modal id="showcase-modal" on_confirm={hide_modal("showcase-modal")}>
       <:title>Modal Title</:title>
@@ -140,7 +199,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </.button>
     </section>
 
-    <h2 class="mt-16 mb-4 text-3xl text-center">Flash Messages</h2>
+    <h3 class="mt-16 mb-4 text-2xl text-center">Flash Messages</h3>
 
     <section class="text-center">
       <div>
@@ -159,38 +218,14 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
           Error Flash
         </.button>
       </div>
+      <div>
+        <.button class="w-40 m-1" phx-click="flash-long-show">
+          Long Flash
+        </.button>
+      </div>
     </section>
 
-    <section x-data x-show="$store.toasts">
-      <h2 class="mt-16 mb-4 text-3xl text-center">Toast Messages</h2>
-
-      <section class="text-center">
-        <div>
-          <.button class="w-40 m-1 btn-info" @click="$store.toasts.showInfo('Info toast message')">
-            Info Toast
-          </.button>
-          <.button
-            class="w-40 m-1 btn-success"
-            @click="$store.toasts.showSuccess('Success toast message')"
-          >
-            Success Toast
-          </.button>
-        </div>
-        <div>
-          <.button
-            class="w-40 m-1 btn-warning"
-            @click="$store.toasts.showWarning('Warning toast message')"
-          >
-            Warning Toast
-          </.button>
-          <.button class="w-40 m-1 btn-error" @click="$store.toasts.showError('Error toast message')">
-            Error Toast
-          </.button>
-        </div>
-      </section>
-    </section>
-
-    <h2 class="mt-16 text-3xl text-center">Simple Form</h2>
+    <h3 class="mt-16 text-2xl text-center">Simple Form</h3>
 
     <.simple_form
       class="max-w-lg mx-auto"
@@ -247,7 +282,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </:actions>
     </.simple_form>
 
-    <h2 class="mt-16 mb-4 text-3xl text-center">Header</h2>
+    <h3 class="mt-16 mb-4 text-2xl text-center">Header</h3>
 
     <.header class="bg-info/30 p-4 rounded-lg">
       Header Title
@@ -259,14 +294,14 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </:actions>
     </.header>
 
-    <h2 class="mt-16 mb-4 text-3xl text-center">Table</h2>
+    <h3 class="mt-16 mb-4 text-2xl text-center">Table</h3>
 
     <.table id="showcase-table" rows={@table_rows}>
       <:col :let={row} label="Column 1"><%= row.col1 %></:col>
       <:col :let={row} label="Column 2"><%= row.col2 %></:col>
     </.table>
 
-    <h2 class="mt-16 mb-4 text-3xl text-center">List</h2>
+    <h3 class="mt-16 mb-4 text-2xl text-center">List</h3>
     <h4 class="text-md mb-4 text-center">Renders a data list.</h4>
 
     <.list>
@@ -275,14 +310,14 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       <:item title="Item 3">Value 3</:item>
     </.list>
 
-    <h2 class="mt-16 mb-4 text-3xl text-center">Back</h2>
+    <h3 class="mt-16 mb-4 text-2xl text-center">Back</h3>
     <h4 class="text-md mb-4 text-center">Renders a back navigation link.</h4>
 
     <.back navigate={~p"/"}>
       Back
     </.back>
 
-    <h2 class="mt-16 mb-4 text-3xl text-center">Show/Hide</h2>
+    <h3 class="mt-16 mb-4 text-2xl text-center">Show/Hide</h3>
 
     <section class="text-center">
       <.button phx-click={show("#showcase-show-hide")}>Show</.button>
