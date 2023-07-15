@@ -244,8 +244,8 @@ defmodule QuizGameWeb.CoreComponents do
   """
   attr :type, :string, default: "button"
   attr :class, :any, default: nil
-  attr :content, :string, default: ""
-  attr :loader, :boolean, default: false
+  attr :content, :string, default: "", doc: "the button text (can use default slot instead)"
+  attr :loader, :boolean, default: false, doc: "show a loading spinner"
   attr :rest, :global, doc: "the arbitrary HTML attributes to add to the form button"
 
   slot :inner_block
@@ -840,7 +840,7 @@ defmodule QuizGameWeb.CoreComponents do
     <.form :let={f} for={@for} as={@as} {@rest}>
       <div class="mt-10 space-y-8">
         <%= render_slot(@inner_block, f) %>
-        <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
+        <div :for={action <- @actions} class="w-full mt-2 mx-auto flex flex-center flex-wrap">
           <%= render_slot(action, f) %>
         </div>
       </div>

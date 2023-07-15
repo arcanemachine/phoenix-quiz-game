@@ -190,10 +190,8 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
       <%!-- actions --%>
       <:actions>
-        <.form_button_cancel />
-        <.form_button class="btn-warning" phx-click="form-reset">
-          Reset
-        </.form_button>
+        <.form_button_cancel url={~p"/"} />
+        <.form_button class="btn-warning" phx-click="form-reset">Reset</.form_button>
         <.form_button_submit />
       </:actions>
     </.simple_form>

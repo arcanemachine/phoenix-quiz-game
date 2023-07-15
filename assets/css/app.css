@@ -131,7 +131,9 @@
   }
 
   .form-button {
+    display: block;
     min-width: 8rem;
+    margin: 0.5rem;
   }
 
   .template-center {
