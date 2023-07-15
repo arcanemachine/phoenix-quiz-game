@@ -98,65 +98,15 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
   def render(assigns) do
     ~H"""
-    <h2 class="text-3xl mb-8 text-center">Custom Components</h2>
-
-    <h3 class="mb-4 text-2xl text-center">Toast Messages</h3>
-
-    <section x-data class="text-center">
-      <div class="mb-4 text-lg font-italic" x-show="!$store.toasts">
-        <code>Alpine.store('toasts')</code> does not exist, so this section will not be functional.
-      </div>
-      <div>
-        <.button
-          class="w-40 m-1 btn-info"
-          x-on:click="$store.toasts.showInfo('Info toast message example')"
-        >
-          Info Toast
-        </.button>
-        <.button
-          class="w-40 m-1 btn-success"
-          x-on:click="$store.toasts.showSuccess('Success toast message example')"
-        >
-          Success Toast
-        </.button>
-      </div>
-      <div>
-        <.button
-          class="w-40 m-1 btn-warning"
-          x-on:click="$store.toasts.showWarning('Warning toast message example')"
-        >
-          Warning Toast
-        </.button>
-        <.button
-          class="w-40 m-1 btn-error"
-          x-on:click="$store.toasts.showError('Error toast message example')"
-        >
-          Error Toast
-        </.button>
-      </div>
-      <div>
-        <.button
-          class="w-40 m-1"
-          x-on:click="$store.toasts.show('This is a really long toast message. I mean, really, it\'s quite long. It\'s so long that the text shouldn\'t fit on a single line.')"
-        >
-          Long Toast
-        </.button>
-      </div>
-    </section>
-
-    <h3 class="mt-16 mb-4 text-2xl text-center">Action Links</h3>
-
-    <.action_links items={[
-      %{content: "Item 1", navigate: ~p"/dev/component-showcase"},
-      %{content: "Item 2", navigate: ~p"/dev/component-showcase"},
-      %{content: "Item 3", navigate: ~p"/dev/component-showcase", class: "underline"}
-    ]} />
-
-    <hr class="my-12" />
-
     <h2 class="mb-8 text-3xl text-center">Built-In Components</h2>
 
-    <h3 class="mb-4 text-2xl text-center">Button</h3>
+    <h3 class="mb-4 text-2xl text-center">Back</h3>
+
+    <.back navigate={~p"/"}>
+      Back
+    </.back>
+
+    <h3 class="mt-16 mb-4 text-2xl text-center">Button</h3>
 
     <section class="text-center">
       <div>
@@ -189,24 +139,6 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </div>
     </section>
 
-    <h3 class="mt-16 mb-4 text-2xl text-center">Modal</h3>
-
-    <.modal id="showcase-modal" on_confirm={hide_modal("showcase-modal")}>
-      <:title>Modal Title</:title>
-      <:subtitle>Modal Subtitle</:subtitle>
-      <div class="my-8">
-        Modal content
-      </div>
-      <:confirm>OK</:confirm>
-      <:cancel>Cancel</:cancel>
-    </.modal>
-
-    <section class="text-center">
-      <.button phx-click={show_modal("showcase-modal")}>
-        Show Modal
-      </.button>
-    </section>
-
     <h3 class="mt-16 mb-4 text-2xl text-center">Flash Messages</h3>
 
     <section class="text-center">
@@ -231,6 +163,56 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
           Long Flash
         </.button>
       </div>
+    </section>
+
+    <h3 class="mt-16 mb-4 text-2xl text-center">Header</h3>
+
+    <.header class="bg-info/30 p-4 rounded-lg">
+      Header Title
+      <:subtitle>
+        Header subtitle
+      </:subtitle>
+      <:actions>
+        <.button class="w-28 btn-primary">OK</.button>
+      </:actions>
+    </.header>
+
+    <h3 class="mt-16 mb-4 text-2xl text-center">List</h3>
+    <h4 class="text-md mb-4 text-center">Renders a data list.</h4>
+
+    <.list>
+      <:item title="Item 1">Value 1</:item>
+      <:item title="Item 2">Value 2</:item>
+      <:item title="Item 3">Value 3</:item>
+    </.list>
+
+    <h3 class="mt-16 mb-4 text-2xl text-center">Modal</h3>
+
+    <.modal id="showcase-modal" on_confirm={hide_modal("showcase-modal")}>
+      <:title>Modal Title</:title>
+      <:subtitle>Modal Subtitle</:subtitle>
+      <div class="my-8">
+        Modal content
+      </div>
+      <:confirm>OK</:confirm>
+      <:cancel>Cancel</:cancel>
+    </.modal>
+
+    <section class="text-center">
+      <.button phx-click={show_modal("showcase-modal")}>
+        Show Modal
+      </.button>
+    </section>
+
+    <h3 class="mt-16 mb-4 text-2xl text-center">Show/Hide</h3>
+
+    <section class="text-center">
+      <.button phx-click={show("#showcase-show-hide")}>Show</.button>
+      <.button phx-click={hide("#showcase-show-hide")}>Hide</.button>
+
+      <p class="mt-2">
+        <span id="showcase-show-hide">Now you see me...</span>
+      </p>
     </section>
 
     <h3 class="mt-16 text-2xl text-center">Simple Form</h3>
@@ -290,18 +272,6 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </:actions>
     </.simple_form>
 
-    <h3 class="mt-16 mb-4 text-2xl text-center">Header</h3>
-
-    <.header class="bg-info/30 p-4 rounded-lg">
-      Header Title
-      <:subtitle>
-        Header subtitle
-      </:subtitle>
-      <:actions>
-        <.button class="w-28 btn-primary">OK</.button>
-      </:actions>
-    </.header>
-
     <h3 class="mt-16 mb-4 text-2xl text-center">Table</h3>
 
     <.table id="showcase-table" rows={@table_rows}>
@@ -309,31 +279,60 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       <:col :let={row} label="Column 2"><%= row.col2 %></:col>
     </.table>
 
-    <h3 class="mt-16 mb-4 text-2xl text-center">List</h3>
-    <h4 class="text-md mb-4 text-center">Renders a data list.</h4>
+    <hr class="my-12" />
 
-    <.list>
-      <:item title="Item 1">Value 1</:item>
-      <:item title="Item 2">Value 2</:item>
-      <:item title="Item 3">Value 3</:item>
-    </.list>
+    <h2 class="mb-8 text-3xl text-center">Custom Components</h2>
 
-    <h3 class="mt-16 mb-4 text-2xl text-center">Back</h3>
-    <h4 class="text-md mb-4 text-center">Renders a back navigation link.</h4>
+    <h3 class="mb-4 text-2xl text-center">Action Links</h3>
 
-    <.back navigate={~p"/"}>
-      Back
-    </.back>
+    <.action_links items={[
+      %{content: "Item 1", navigate: ~p"/dev/component-showcase"},
+      %{content: "Item 2", navigate: ~p"/dev/component-showcase"},
+      %{content: "Item 3", navigate: ~p"/dev/component-showcase", class: "underline"}
+    ]} />
 
-    <h3 class="mt-16 mb-4 text-2xl text-center">Show/Hide</h3>
+    <h3 class="mt-16 mb-4 text-2xl text-center">Toast Messages</h3>
 
-    <section class="text-center">
-      <.button phx-click={show("#showcase-show-hide")}>Show</.button>
-      <.button phx-click={hide("#showcase-show-hide")}>Hide</.button>
-
-      <p class="mt-2">
-        <span id="showcase-show-hide">Now you see me...</span>
-      </p>
+    <section x-data class="text-center">
+      <div class="mb-4 text-lg font-italic" x-show="!$store.toasts">
+        <code>Alpine.store('toasts')</code> does not exist, so this section will not be functional.
+      </div>
+      <div>
+        <.button
+          class="w-40 m-1 btn-info"
+          x-on:click="$store.toasts.showInfo('Info toast message example')"
+        >
+          Info Toast
+        </.button>
+        <.button
+          class="w-40 m-1 btn-success"
+          x-on:click="$store.toasts.showSuccess('Success toast message example')"
+        >
+          Success Toast
+        </.button>
+      </div>
+      <div>
+        <.button
+          class="w-40 m-1 btn-warning"
+          x-on:click="$store.toasts.showWarning('Warning toast message example')"
+        >
+          Warning Toast
+        </.button>
+        <.button
+          class="w-40 m-1 btn-error"
+          x-on:click="$store.toasts.showError('Error toast message example')"
+        >
+          Error Toast
+        </.button>
+      </div>
+      <div>
+        <.button
+          class="w-40 m-1"
+          x-on:click="$store.toasts.show('This is a really long toast message. I mean, really, it\'s quite long. It\'s so long that the text shouldn\'t fit on a single line.')"
+        >
+          Long Toast
+        </.button>
+      </div>
     </section>
     """
   end
