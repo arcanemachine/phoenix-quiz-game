@@ -211,9 +211,9 @@ defmodule QuizGameWeb.CoreComponents do
   """
   def footer(assigns) do
     ~H"""
-    <div class="w-full">
+    <div class="w-full lg:p-2 lg:pb-4">
       <%!-- limit max width of footer by nesting it inside a full-width element --%>
-      <section class="max-w-[100rem] mx-auto bg-base-300 py-6 text-center 2xl:rounded-t-xl">
+      <section class="max-w-[100rem] mx-auto bg-base-300 py-6 text-center lg:rounded-box lg:shadow-md">
         <ul class="list-none">
           <li>
             <div class="text-xl font-bold">
@@ -767,11 +767,11 @@ defmodule QuizGameWeb.CoreComponents do
   """
   def navbar(assigns) do
     ~H"""
-    <div class="w-full">
+    <div class="w-full lg:p-2">
       <%!-- limit max width of navbar by nesting it inside a full-width element --%>
       <nav
         data-component="page-navbar"
-        class="navbar max-w-[100rem] mx-auto bg-base-300 py-0 2xl:rounded-b-xl"
+        class="navbar max-w-[100rem] mx-auto bg-base-300 py-0 lg:rounded-box lg:shadow-lg"
       >
         <%!-- navbar start items --%>
         <div class="flex-1">
