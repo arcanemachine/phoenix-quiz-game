@@ -56,11 +56,6 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <.header id="component-showcase-alert-form-errors" class="bg-error text-error-content">
       To continue, fix the errors in the form.
-      <:actions>
-        <.button class="w-28 btn-primary" phx-click={hide("#component-showcase-alert-form-errors")}>
-          OK
-        </.button>
-      </:actions>
     </.header>
     """
   end
@@ -103,12 +98,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   def button(assigns) do
     ~H"""
-    <button
-      type={@type}
-      class={["btn border-base-content/20", @class]}
-      phx-disable-with={@loader}
-      {@rest}
-    >
+    <button type={@type} class={["btn", @class]} {@rest}>
       <%= if @loader do %>
         <span class="phx-click-loading:hidden phx-submit-loading:hidden">
           <%= render_slot(@inner_block) %>
@@ -240,10 +230,10 @@ defmodule QuizGameWeb.CoreComponents do
   """
   def footer(assigns) do
     ~H"""
-    <div class="w-full lg:p-4">
+    <section class="w-full lg:p-4">
       <%!-- limit max width of footer by nesting it inside a full-width element --%>
-      <section class="max-w-[100rem] mx-auto py-6 bg-brand text-slate-300 text-center
-                      lg:rounded-box lg:shadow-lg lg:shadow-base-content/20">
+      <div class="max-w-[100rem] mx-auto py-6 bg-brand text-slate-300 text-center
+                  lg:rounded-box lg:shadow-xl lg:shadow-black/20">
         <ul class="list-none">
           <li>
             <div class="text-xl font-bold">
@@ -277,8 +267,8 @@ defmodule QuizGameWeb.CoreComponents do
             </small>
           </li>
         </ul>
-      </section>
-    </div>
+      </div>
+    </section>
     """
   end
 
@@ -291,8 +281,8 @@ defmodule QuizGameWeb.CoreComponents do
       <.form_button phx-click="go" class="ml-2">Button Text</.form_button>
   """
   attr :type, :string, default: "button"
-  attr :class, :any, default: nil
   attr :content, :string, default: "", doc: "the button text (can use default slot instead)"
+  attr :class, :any, default: nil
   attr :loader, :boolean, default: false, doc: "show a loading spinner"
   attr :rest, :global, doc: "the arbitrary HTML attributes to add to the form button"
 
@@ -300,13 +290,37 @@ defmodule QuizGameWeb.CoreComponents do
 
   def form_button(assigns) do
     ~H"""
-    <.button type={@type} class={["block min-w-[8rem] m-2", @class]} loader={@loader} {@rest}>
-      <%= if @content != "" do %>
-        <%= @content %>
-      <% else %>
-        <%= render_slot(@inner_block) %>
-      <% end %>
+    <.button type={@type} class={["form-button", @class]} loader={@loader} {@rest}>
+      <%= @content %>
     </.button>
+    """
+  end
+
+  @doc """
+  Renders a form cancel button.
+
+  ## Examples
+
+      <.form_button_cancel />
+      <.form_button_cancel url={~p"/"} />
+  """
+  attr :type, :string, default: "button"
+  attr :content, :string, default: "Cancel"
+  attr :class, :any, default: nil
+  attr :url, :string, default: nil, doc: "the URL to redirect to"
+  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the form button"
+
+  def form_button_cancel(assigns) do
+    ~H"""
+    <a href={@url} tabindex="-1">
+      <.form_button
+        type={@type}
+        content={@content}
+        class={["btn-secondary", @class]}
+        onclick={(@url && "location.href = '#{@url}'") || "history.back()"}
+        {@rest}
+      />
+    </a>
     """
   end
 
@@ -319,8 +333,8 @@ defmodule QuizGameWeb.CoreComponents do
       <.form_submit_button phx-click="go" class="ml-2">Custom submit text</.form_submit_button>
   """
   attr :type, :string, default: "submit"
-  attr :class, :any, default: nil
   attr :content, :string, default: "Submit"
+  attr :class, :any, default: nil
   attr :loader, :boolean, default: true
   attr :rest, :global, doc: "the arbitrary HTML attributes to add to the form button"
 
@@ -328,39 +342,11 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <.form_button
       type={@type}
-      class={["btn-success", @class]}
       content={@content}
+      class={["btn-success", @class]}
       loader={@loader}
       {@rest}
     />
-    """
-  end
-
-  @doc """
-  Renders a form cancel button.
-
-  ## Examples
-
-      <.form_submit_button />Send!</.form_submit_button>
-      <.form_submit_button phx-click="go" class="ml-2">Custom submit text</.form_submit_button>
-  """
-  attr :type, :string, default: "button"
-  attr :class, :any, default: nil
-  attr :url, :string, default: nil, doc: "the URL to redirect to"
-  attr :content, :string, default: "Cancel"
-  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the form button"
-
-  def form_button_cancel(assigns) do
-    ~H"""
-    <a href={@url} tabindex="-1">
-      <.form_button
-        type={@type}
-        class={["btn-secondary", @class]}
-        onclick={(@url && "location.href = '#{@url}'") || "history.back()"}
-        content={@content}
-        {@rest}
-      />
-    </a>
     """
   end
 
@@ -375,7 +361,7 @@ defmodule QuizGameWeb.CoreComponents do
         Header subtitle
       </:subtitle>
       <:actions>
-        <.button class="w-28 btn-primary border-info-content">Action</.button>
+        <.button class="w-28 btn-primary border-primary-content">Action</.button>
       </:actions>
     </.header>
 
@@ -392,11 +378,11 @@ defmodule QuizGameWeb.CoreComponents do
     <header
       id={@id}
       class={[
-        @actions != [] && "flex items-center justify-stretch gap-6 p-4 rounded-lg",
+        "flex items-center justify-stretch gap-6 p-4 rounded-lg",
         @class
       ]}
     >
-      <div class="grow w-full">
+      <div class="grow">
         <h1 class="text-lg font-semibold leading-8">
           <%= render_slot(@inner_block) %>
         </h1>
@@ -404,7 +390,9 @@ defmodule QuizGameWeb.CoreComponents do
           <%= render_slot(@subtitle) %>
         </p>
       </div>
-      <div class="flex justify-end flex-wrap gap-2"><%= render_slot(@actions) %></div>
+      <div class="flex justify-end flex-col sm:flex-row flex-wrap gap-2">
+        <%= render_slot(@actions) %>
+      </div>
     </header>
     """
   end
@@ -541,6 +529,7 @@ defmodule QuizGameWeb.CoreComponents do
         class={[
           "w-full bg-white select select-bordered",
           @errors == [] && "border-base-content focus:border-base-content/30",
+          @errors != [] && "border-error/80 focus:border-error/40",
           "phx-no-feedback:border-base-content phx-no-feedback:focus:border-base-content/40"
         ]}
         multiple={@multiple}
@@ -654,7 +643,7 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <.icon
       name="hero-arrow-path"
-      class="hidden w-5 h-5 animate-spin phx-click-loading:inline phx-submit-loading:inline"
+      class="hidden phx-click-loading:inline phx-submit-loading:inline animate-spin"
     />
     """
   end
@@ -796,7 +785,7 @@ defmodule QuizGameWeb.CoreComponents do
       <nav
         data-component="page-navbar"
         class="navbar max-w-[100rem] mx-auto p-0 bg-brand text-slate-300 lg:rounded-box
-               lg:shadow-lg lg:shadow-base-content/20"
+               lg:shadow-xl lg:shadow-black/20"
       >
         <%!-- navbar start items --%>
         <div class="flex-1">
@@ -1019,9 +1008,9 @@ defmodule QuizGameWeb.CoreComponents do
   def hide(js \\ %JS{}, selector) do
     JS.hide(js,
       to: selector,
-      time: 200,
+      time: 300,
       transition:
-        {"transition-all transform ease-in duration-200",
+        {"transition-all transform ease-in-out duration-300",
          "opacity-100 translate-y-0 sm:scale-100",
          "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"}
     )
@@ -1031,7 +1020,7 @@ defmodule QuizGameWeb.CoreComponents do
     JS.show(js,
       to: selector,
       transition:
-        {"transition-all transform ease-out duration-300",
+        {"transition-all transform ease-in-out duration-300",
          "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95",
          "opacity-100 translate-y-0 sm:scale-100"}
     )

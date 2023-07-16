@@ -33,6 +33,8 @@
 }
 
 .toastify.on:nth-child(3) {
+  /* apply a fade effect to the 3rd toast in the stack (the 4th toast will be
+   * removed with javascript) */
   opacity: 0.5;
   pointer-events: initial;
 }
@@ -111,6 +113,10 @@
     border-radius: 0.5rem;
   }
 
+  .btn:not(.btn-ghost) {
+    border: 1px solid hsl(var(--bc) / 0.2);
+  }
+
   .btn:hover {
     opacity: 0.8;
   }
@@ -127,6 +133,12 @@
   .action-links > li {
     margin-top: 0.5rem;
     font-size: 1.2rem;
+  }
+
+  .form-button {
+    display: block;
+    min-width: 8rem;
+    margin: 0.5rem;
   }
 
   .template-center {

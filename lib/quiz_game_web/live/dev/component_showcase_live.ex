@@ -183,15 +183,28 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
     <.header class="m-2 bg-info text-info-content">
       Header Title
+    </.header>
+
+    <.header class="m-2 bg-success text-success-content">
+      Header Title
+      <:subtitle>
+        Header subtitle
+      </:subtitle>
+    </.header>
+
+    <.header id="header-warning" class="m-2 bg-warning text-warning-content">
+      Header Title
       <:subtitle>
         Header subtitle
       </:subtitle>
       <:actions>
-        <.button class="w-28 btn-primary border-primary-content">Action</.button>
+        <.button class="w-28 btn-primary border-primary-content" phx-click={hide("#header-warning")}>
+          Hide me
+        </.button>
       </:actions>
     </.header>
 
-    <.header class="m-2 bg-success text-success-content">
+    <.header class="m-2 bg-error text-error-content">
       Header Title
       <:subtitle>
         Header subtitle
@@ -252,6 +265,9 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       <%= if @form.source.action && !@form.source.valid? do %>
         <.alert_form_errors />
       <% end %>
+      <%= if @form.source.action && @form.source.valid? do %>
+        <div class="text-xl text-success font-bold text-center">Form is valid</div>
+      <% end %>
 
       <%!-- fields --%>
       <.input field={@form[:text]} label="Text input" />
@@ -272,6 +288,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
             [key: "fail", value: "fail"]
           ]}
           label="Select input"
+          phx-debounce="blur"
         />
       </div>
 
@@ -282,7 +299,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       <%!-- actions --%>
       <:actions>
         <.form_button_cancel url={~p"/"} />
-        <.form_button class="btn-warning" phx-click="form-reset">Reset</.form_button>
+        <.form_button content="Reset" class="btn-warning" phx-click="form-reset" />
         <.form_button_submit />
       </:actions>
     </.simple_form>
@@ -302,7 +319,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
     <.action_links items={[
       %{content: "Item 1", navigate: "/dev/component-showcase"},
-      %{content: "Item 2", navigate: "/dev/component-showcase"},
+      %{content: "Item 2", navigate: "/dev/component-showcase", class: "italic"},
       %{content: "Item 3", navigate: "/dev/component-showcase", class: "underline"}
     ]} />
 
