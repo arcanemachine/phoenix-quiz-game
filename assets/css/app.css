@@ -129,12 +129,6 @@
     font-size: 1.2rem;
   }
 
-  .form-button {
-    display: block;
-    min-width: 8rem;
-    margin: 0.5rem;
-  }
-
   .template-center {
     display: flex;
     height: 100%;

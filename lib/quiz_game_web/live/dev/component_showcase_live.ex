@@ -85,11 +85,16 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       %FormData{}
       |> FormData.changeset(form_data_params)
       |> Ecto.Changeset.validate_required(Map.keys(FormData.types()))
-      |> Ecto.Changeset.add_error(:text, "Error message")
-      |> Ecto.Changeset.add_error(:email, "Error message")
-      |> Ecto.Changeset.add_error(:checkbox, "Error message")
-      |> Ecto.Changeset.add_error(:select, "Error message")
-      |> Ecto.Changeset.add_error(:textarea, "Error message")
+      |> Ecto.Changeset.validate_inclusion(:text, ["pass"], message: "Must be 'pass'")
+      |> Ecto.Changeset.validate_inclusion(
+        :email,
+        ["pass@example.com"],
+        message: "Must be 'pass@example.com'"
+      )
+      |> Ecto.Changeset.validate_format(:password, ~r/pass/, message: "Must be 'pass'")
+      |> Ecto.Changeset.validate_acceptance(:checkbox, message: "Must be checked")
+      |> Ecto.Changeset.validate_inclusion(:select, ["pass"], message: "Must be 'pass'")
+      |> Ecto.Changeset.validate_inclusion(:textarea, ["pass"], message: "Must be 'pass'")
       |> Map.put(:action, :validate)
       |> to_form()
 
@@ -139,6 +144,10 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </div>
     </section>
 
+    <h3 class="mt-16 mb-4 text-2xl text-center">Error</h3>
+
+    <.error>Error message</.error>
+
     <h3 class="mt-16 mb-4 text-2xl text-center">Flash Messages</h3>
 
     <section class="text-center">
@@ -167,13 +176,24 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
     <h3 class="mt-16 mb-4 text-2xl text-center">Header</h3>
 
-    <.header class="bg-info/30 p-4 rounded-lg">
+    <.header class="m-2 bg-info text-info-content">
       Header Title
       <:subtitle>
         Header subtitle
       </:subtitle>
       <:actions>
-        <.button class="w-28 btn-primary">OK</.button>
+        <.button class="w-28 btn-primary border-info-content">Action</.button>
+      </:actions>
+    </.header>
+
+    <.header class="m-2 bg-success text-success-content">
+      Header Title
+      <:subtitle>
+        Header subtitle
+      </:subtitle>
+      <:actions>
+        <.button class="w-28 btn-secondary border-success-content">Action 1</.button>
+        <.button class="w-28 btn-primary border-success-content">Action 2</.button>
       </:actions>
     </.header>
 
@@ -215,6 +235,11 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </p>
     </section>
 
+    <div id="deleteme">&nbsp;</div>
+    <script>
+      setTimeout(() => { document.querySelector('#deleteme').scrollIntoView(); }, 100)
+    </script>
+
     <h3 class="mt-16 text-2xl text-center">Simple Form</h3>
 
     <.simple_form
@@ -224,18 +249,30 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       phx-change="form-validate"
       phx-submit="form-submit"
     >
+      <%!-- form validity status --%>
+      <%= if @form.source.action && @form.source.valid? do %>
+        <div class="text-success font-bold text-center">
+          Form is valid
+        </div>
+      <% else %>
+        <%= if !@form.source.action do %>
+          <div class="text-secondary font-bold text-center">
+            Form is incomplete
+          </div>
+        <% else %>
+          <div class="mt-2 text-error font-bold text-center">
+            Form is invalid
+          </div>
+        <% end %>
+      <% end %>
+
       <%!-- fields --%>
-      <.input field={@form[:text]} label="Text Input" />
-      <.input field={@form[:email]} label="Email Input" />
-      <.input field={@form[:password]} type="password" label="Password Input" />
+      <.input field={@form[:text]} label="Text input" />
+      <.input field={@form[:email]} label="Email input" />
+      <.input field={@form[:password]} type="password" label="Password input" />
 
       <div class="form-control">
-        <.input
-          type="checkbox"
-          field={@form[:checkbox]}
-          class="checkbox checkbox-primary"
-          label="Checkbox Input"
-        />
+        <.input type="checkbox" field={@form[:checkbox]} class="checkbox" label="Checkbox input" />
       </div>
 
       <div class="form-control">
@@ -244,24 +281,15 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
           type="select"
           options={[
             [key: "Select an option", value: "", disabled: true],
-            [key: "First", value: "first"],
-            [key: "Second", value: "second"],
-            [key: "Third", value: "third"]
+            [key: "pass", value: "pass"],
+            [key: "fail", value: "fail"]
           ]}
-          label="Select Input"
+          label="Select input"
         />
       </div>
 
       <div class="form-control">
-        <.label for="form_data_textarea">
-          Textarea Label
-        </.label>
-        <.input
-          type="textarea"
-          field={@form[:textarea]}
-          checked={true}
-          class="checkbox checkbox-primary"
-        />
+        <.input type="textarea" field={@form[:textarea]} label="Textarea input" class="textarea" />
       </div>
 
       <%!-- actions --%>

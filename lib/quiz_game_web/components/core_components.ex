@@ -57,10 +57,7 @@ defmodule QuizGameWeb.CoreComponents do
   def back(assigns) do
     ~H"""
     <div class="mt-16">
-      <.link
-        navigate={@navigate}
-        class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
-      >
+      <.link navigate={@navigate}>
         <.icon name="hero-arrow-left-solid" class="h-3 w-3" />
         <%= render_slot(@inner_block) %>
       </.link>
@@ -105,8 +102,8 @@ defmodule QuizGameWeb.CoreComponents do
 
   def error(assigns) do
     ~H"""
-    <p class="mt-3 flex gap-3 text-sm leading-6 text-rose-600 phx-no-feedback:hidden">
-      <.icon name="hero-exclamation-circle-mini" class="mt-0.5 h-5 w-5 flex-none" />
+    <p class="flex items-center gap-3 mt-3 text-sm font-semibold text-error phx-no-feedback:hidden">
+      <.icon name="hero-exclamation-circle-mini" class="h-5 w-5 flex-none" />
       <%= render_slot(@inner_block) %>
     </p>
     """
@@ -136,7 +133,7 @@ defmodule QuizGameWeb.CoreComponents do
       phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")}
       role="alert"
       class={[
-        "w-80 sm:w-96 mx-auto p-3 z-50 rounded-lg ring-1",
+        "w-80 sm:w-96 mx-auto p-3 z-50 cursor-pointer rounded-lg ring-1",
         @kind == :info &&
           "bg-info text-info-content ring-info-content fill-info-content shadow-xl",
         @kind == :success &&
@@ -149,6 +146,12 @@ defmodule QuizGameWeb.CoreComponents do
       {@rest}
     >
       <div class="flex flex-center">
+        <div>
+          <.icon :if={@kind == :info} name="hero-information-circle-mini" class="h-7 w-7" />
+          <.icon :if={@kind == :success} name="hero-check-circle-mini" class="h-7 w-7" />
+          <.icon :if={@kind == :warning} name="hero-exclamation-circle-mini" class="h-7 w-7" />
+          <.icon :if={@kind == :error} name="hero-exclamation-triangle-mini" class="h-7 w-7" />
+        </div>
         <p class="grow px-4 text-sm font-semibold text-center">
           <span :if={@title}><%= @title %>:</span>
           <%= msg %>
@@ -211,7 +214,7 @@ defmodule QuizGameWeb.CoreComponents do
   """
   def footer(assigns) do
     ~H"""
-    <div class="w-full lg:p-2">
+    <div class="w-full lg:p-4">
       <%!-- limit max width of footer by nesting it inside a full-width element --%>
       <section class="max-w-[100rem] mx-auto py-6 bg-brand text-slate-300 text-center
                       lg:rounded-box lg:shadow-xl">
@@ -271,15 +274,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   def form_button(assigns) do
     ~H"""
-    <.button
-      type={@type}
-      class={[
-        "form-button",
-        @class
-      ]}
-      loader={@loader}
-      {@rest}
-    >
+    <.button type={@type} class={["block min-w-[8rem] m-2", @class]} loader={@loader} {@rest}>
       <%= if @content != "" do %>
         <%= @content %>
       <% else %>
@@ -335,7 +330,7 @@ defmodule QuizGameWeb.CoreComponents do
       <.form_button
         type={@type}
         class={["btn-secondary", @class]}
-        onclick={@url || "history.back()"}
+        onclick={"location.href = '#{@url}'" || "history.back()"}
         content={@content}
         {@rest}
       />
@@ -343,16 +338,17 @@ defmodule QuizGameWeb.CoreComponents do
     """
   end
 
-  @doc """
-  Renders an alert indicating that the form has errors.
-  """
-  def form_error_alert(assigns) do
-    ~H"""
-    <div class="alert alert-error shadow-xl" role="alert">
-      To continue, fix the errors in the form.
-    </div>
-    """
-  end
+  # @deprecated "NOTE: This function appears to be missing from new Phoenix projects."
+  # @doc """
+  # Renders an alert indicating that the form has errors.
+  # """
+  # def form_error_alert(assigns) do
+  #   ~H"""
+  #   <div class="alert alert-error shadow-xl" role="alert">
+  #     To continue, fix the errors in the form.
+  #   </div>
+  #   """
+  # end
 
   @doc """
   Renders a header with title.
@@ -365,12 +361,15 @@ defmodule QuizGameWeb.CoreComponents do
 
   def header(assigns) do
     ~H"""
-    <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
+    <header class={[
+      @actions != [] && "flex items-center justify-between gap-6 p-4 rounded-lg",
+      @class
+    ]}>
       <div>
-        <h1 class="text-lg font-semibold leading-8 text-zinc-800">
+        <h1 class="text-lg font-semibold leading-8">
           <%= render_slot(@inner_block) %>
         </h1>
-        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
+        <p :if={@subtitle != []} class="mt-2 text-sm leading-6">
           <%= render_slot(@subtitle) %>
         </p>
       </div>
@@ -418,9 +417,7 @@ defmodule QuizGameWeb.CoreComponents do
   This function accepts all HTML input types, considering that:
 
     * You may also set `type="select"` to render a `<select>` tag
-
     * `type="checkbox"` is used exclusively to render boolean values
-
     * For live file uploads, see `Phoenix.Component.live_file_input/1`
 
   See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input
@@ -466,13 +463,21 @@ defmodule QuizGameWeb.CoreComponents do
     |> input()
   end
 
+  def input(%{type: "hidden"} = assigns) do
+    ~H"""
+    <div phx-feedback-for={@name} data-component="input">
+      <input type="hidden" name={@name} id={@id || @name} class="hidden" value={@value} {@rest} />
+    </div>
+    """
+  end
+
   def input(%{type: "checkbox", value: value} = assigns) do
     assigns =
       assign_new(assigns, :checked, fn -> Phoenix.HTML.Form.normalize_value("checkbox", value) end)
 
     ~H"""
-    <div phx-feedback-for={@name}>
-      <label class="flex items-center gap-4 text-sm leading-6 text-zinc-600">
+    <div class="mt-4" phx-feedback-for={@name}>
+      <label class="flex items-center gap-2 cursor-pointer">
         <input type="hidden" name={@name} value="false" />
         <input
           type="checkbox"
@@ -480,27 +485,17 @@ defmodule QuizGameWeb.CoreComponents do
           name={@name}
           value="true"
           checked={@checked}
-          class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
+          class={[
+            "checkbox bg-white",
+            @errors == [] && "border-base-content focus:border-base-content/30",
+            @errors != [] && "border-error/80 focus:border-error/40",
+            "phx-no-feedback:border-base-content phx-no-feedback:focus:border-base-content/40"
+          ]}
           {@rest}
         />
         <%= @label %>
       </label>
       <.error :for={msg <- @errors}><%= msg %></.error>
-    </div>
-    """
-  end
-
-  def input(%{type: "hidden"} = assigns) do
-    ~H"""
-    <div phx-feedback-for={@name} data-component="input">
-      <input
-        type="hidden"
-        name={@name}
-        id={@id || @name}
-        class={["hidden", @class]}
-        value={@value}
-        {@rest}
-      />
     </div>
     """
   end
@@ -513,8 +508,9 @@ defmodule QuizGameWeb.CoreComponents do
         id={@id}
         name={@name}
         class={[
-          "mt-1 block w-full py-2 px-3 border border-gray-300 bg-white sm:text-sm",
-          "rounded-md shadow-sm focus:outline-none focus:ring-zinc-500 focus:border-base-500"
+          "w-full bg-white select select-bordered",
+          @errors == [] && "border-base-content focus:border-base-content/30",
+          "phx-no-feedback:border-base-content phx-no-feedback:focus:border-base-content/40"
         ]}
         multiple={@multiple}
         {@rest}
@@ -535,10 +531,10 @@ defmodule QuizGameWeb.CoreComponents do
         id={@id}
         name={@name}
         class={[
-          "mt-2 block min-h-[6rem] w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
-          "min-h-[6rem] phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400",
-          @errors == [] && "border-zinc-300 focus:border-zinc-400",
-          @errors != [] && "border-rose-400 focus:border-rose-400"
+          "min-h-[6rem] w-full bg-white textarea textarea-bordered",
+          @errors == [] && "border-base-content focus:border-base-content/30",
+          @errors != [] && "border-error/80 focus:border-error/40",
+          "phx-no-feedback:border-base-content phx-no-feedback:focus:border-base-content/40"
         ]}
         phx-debounce={@debounce}
         {@rest}
@@ -558,10 +554,10 @@ defmodule QuizGameWeb.CoreComponents do
         id={@id}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
-          "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400",
-          @errors == [] && "border-zinc-300 focus:border-zinc-400",
-          @errors != [] && "border-rose-400 focus:border-rose-400"
+          "w-full input bg-white",
+          @errors == [] && "border-base-content focus:border-base-content/30",
+          @errors != [] && "border-error/80 focus:border-error/40",
+          "phx-no-feedback:border-base-content phx-no-feedback:focus:border-base-content/40"
         ]}
         phx-debounce={@debounce}
         {@rest}
@@ -579,8 +575,10 @@ defmodule QuizGameWeb.CoreComponents do
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="block text-sm font-semibold leading-6 text-base-800">
-      <%= render_slot(@inner_block) %>
+    <label for={@for} class="label">
+      <span class="label-text font-semibold">
+        <%= render_slot(@inner_block) %>
+      </span>
     </label>
     """
   end
@@ -768,16 +766,17 @@ defmodule QuizGameWeb.CoreComponents do
   """
   def navbar(assigns) do
     ~H"""
-    <div class="w-full lg:p-2">
+    <div class="w-full lg:p-4">
       <%!-- limit max width of navbar by nesting it inside a full-width element --%>
       <nav
         data-component="page-navbar"
-        class="navbar max-w-[100rem] mx-auto py-0 bg-brand text-slate-300 lg:rounded-box lg:shadow-xl"
+        class="navbar max-w-[100rem] mx-auto py-0 bg-brand text-slate-300 lg:rounded-box
+               lg:shadow-xl"
       >
         <%!-- navbar start items --%>
         <div class="flex-1">
           <%!-- navbar title --%>
-          <.link navigate="/" class="text-2xl !text-slate-300 normal-case btn-ghost btn pl-4">
+          <.link navigate="/" class="pl-2 text-2xl !text-slate-300 normal-case btn btn-ghost">
             Quiz Game
           </.link>
         </div>
