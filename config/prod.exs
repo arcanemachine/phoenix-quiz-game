@@ -8,3 +8,6 @@ config :logger, level: :info
 
 # swoosh
 config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: QuizGame.Finch
+
+# swoosh - disable local memory storage
+config :swoosh, local: false
