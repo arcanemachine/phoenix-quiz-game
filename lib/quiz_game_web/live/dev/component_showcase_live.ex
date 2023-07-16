@@ -80,6 +80,11 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
     handle_event("form-validate", params, socket)
   end
 
+  def handle_event("loader-demo", _params, socket) do
+    Process.sleep(1000)
+    {:noreply, socket}
+  end
+
   def handle_event("form-validate" = _event, %{"form_data" => form_data_params}, socket) do
     form =
       %FormData{}
@@ -182,7 +187,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
         Header subtitle
       </:subtitle>
       <:actions>
-        <.button class="w-28 btn-primary border-info-content">Action</.button>
+        <.button class="w-28 btn-primary border-primary-content">Action</.button>
       </:actions>
     </.header>
 
@@ -193,7 +198,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </:subtitle>
       <:actions>
         <.button class="w-28 btn-secondary border-success-content">Action 1</.button>
-        <.button class="w-28 btn-primary border-success-content">Action 2</.button>
+        <.button class="w-28 btn-primary border-primary-content">Action 2</.button>
       </:actions>
     </.header>
 
@@ -208,7 +213,13 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
     <h3 class="mt-16 mb-4 text-2xl text-center">Modal</h3>
 
-    <.modal id="showcase-modal" on_confirm={hide_modal("showcase-modal")}>
+    <section class="text-center">
+      <.button phx-click={show_modal("component-showcase-modal")}>
+        Show Modal
+      </.button>
+    </section>
+
+    <.modal id="component-showcase-modal" on_confirm={hide_modal("component-showcase-modal")}>
       <:title>Modal Title</:title>
       <:subtitle>Modal Subtitle</:subtitle>
       <div class="my-8">
@@ -217,12 +228,6 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       <:confirm>OK</:confirm>
       <:cancel>Cancel</:cancel>
     </.modal>
-
-    <section class="text-center">
-      <.button phx-click={show_modal("showcase-modal")}>
-        Show Modal
-      </.button>
-    </section>
 
     <h3 class="mt-16 mb-4 text-2xl text-center">Show/Hide</h3>
 
@@ -235,11 +240,6 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </p>
     </section>
 
-    <div id="deleteme">&nbsp;</div>
-    <script>
-      setTimeout(() => { document.querySelector('#deleteme').scrollIntoView(); }, 100)
-    </script>
-
     <h3 class="mt-16 text-2xl text-center">Simple Form</h3>
 
     <.simple_form
@@ -249,21 +249,8 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       phx-change="form-validate"
       phx-submit="form-submit"
     >
-      <%!-- form validity status --%>
-      <%= if @form.source.action && @form.source.valid? do %>
-        <div class="text-success font-bold text-center">
-          Form is valid
-        </div>
-      <% else %>
-        <%= if !@form.source.action do %>
-          <div class="text-secondary font-bold text-center">
-            Form is incomplete
-          </div>
-        <% else %>
-          <div class="mt-2 text-error font-bold text-center">
-            Form is invalid
-          </div>
-        <% end %>
+      <%= if @form.source.action && !@form.source.valid? do %>
+        <.alert_form_errors />
       <% end %>
 
       <%!-- fields --%>
@@ -314,10 +301,20 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
     <h3 class="mb-4 text-2xl text-center">Action Links</h3>
 
     <.action_links items={[
-      %{content: "Item 1", navigate: ~p"/dev/component-showcase"},
-      %{content: "Item 2", navigate: ~p"/dev/component-showcase"},
-      %{content: "Item 3", navigate: ~p"/dev/component-showcase", class: "underline"}
+      %{content: "Item 1", navigate: "/dev/component-showcase"},
+      %{content: "Item 2", navigate: "/dev/component-showcase"},
+      %{content: "Item 3", navigate: "/dev/component-showcase", class: "underline"}
     ]} />
+
+    <h3 class="mt-16 mb-4 text-2xl text-center">Loader</h3>
+
+    <div class="text-center">
+      <form phx-submit="loader-demo">
+        <.button class="w-40" loader={true}>
+          Loader Demo
+        </.button>
+      </form>
+    </div>
 
     <h3 class="mt-16 mb-4 text-2xl text-center">Toast Messages</h3>
 
@@ -327,13 +324,13 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </div>
       <div>
         <button
-          class="w-40 m-1 btn-info"
+          class="w-40 m-1 btn btn-info"
           x-on:click="$store.toasts.showInfo('Info toast message example')"
         >
           Info Toast
         </button>
         <button
-          class="w-40 m-1 btn-success"
+          class="w-40 m-1 btn btn-success"
           x-on:click="$store.toasts.showSuccess('Success toast message example')"
         >
           Success Toast
@@ -341,13 +338,13 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </div>
       <div>
         <button
-          class="w-40 m-1 btn-warning"
+          class="w-40 m-1 btn btn-warning"
           x-on:click="$store.toasts.showWarning('Warning toast message example')"
         >
           Warning Toast
         </button>
         <button
-          class="w-40 m-1 btn-error"
+          class="w-40 m-1 btn btn-error"
           x-on:click="$store.toasts.showError('Error toast message example')"
         >
           Error Toast
@@ -355,7 +352,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </div>
       <div>
         <button
-          class="w-40 m-1"
+          class="w-40 btn m-1"
           x-on:click="$store.toasts.show('This is a really long toast message. I mean, really, it\'s quite long. It\'s so long that the text shouldn\'t fit on a single line.')"
         >
           Long Toast

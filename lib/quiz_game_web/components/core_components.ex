@@ -45,6 +45,27 @@ defmodule QuizGameWeb.CoreComponents do
   end
 
   @doc """
+  Renders an alert indicating that the form has errors.
+
+  ## Examples
+
+      <.alert_form_errors />
+
+  """
+  def alert_form_errors(assigns) do
+    ~H"""
+    <.header id="component-showcase-alert-form-errors" class="bg-error text-error-content">
+      To continue, fix the errors in the form.
+      <:actions>
+        <.button class="w-28 btn-primary" phx-click={hide("#component-showcase-alert-form-errors")}>
+          OK
+        </.button>
+      </:actions>
+    </.header>
+    """
+  end
+
+  @doc """
   Renders a back navigation link.
 
   ## Examples
@@ -82,7 +103,12 @@ defmodule QuizGameWeb.CoreComponents do
 
   def button(assigns) do
     ~H"""
-    <button type={@type} class={["btn", @class]} {@rest}>
+    <button
+      type={@type}
+      class={["btn border-base-content/20", @class]}
+      phx-disable-with={@loader}
+      {@rest}
+    >
       <%= if @loader do %>
         <span class="phx-click-loading:hidden phx-submit-loading:hidden">
           <%= render_slot(@inner_block) %>
@@ -217,7 +243,7 @@ defmodule QuizGameWeb.CoreComponents do
     <div class="w-full lg:p-4">
       <%!-- limit max width of footer by nesting it inside a full-width element --%>
       <section class="max-w-[100rem] mx-auto py-6 bg-brand text-slate-300 text-center
-                      lg:rounded-box lg:shadow-xl">
+                      lg:rounded-box lg:shadow-lg lg:shadow-base-content/20">
         <ul class="list-none">
           <li>
             <div class="text-xl font-bold">
@@ -330,7 +356,7 @@ defmodule QuizGameWeb.CoreComponents do
       <.form_button
         type={@type}
         class={["btn-secondary", @class]}
-        onclick={"location.href = '#{@url}'" || "history.back()"}
+        onclick={(@url && "location.href = '#{@url}'") || "history.back()"}
         content={@content}
         {@rest}
       />
@@ -338,21 +364,23 @@ defmodule QuizGameWeb.CoreComponents do
     """
   end
 
-  # @deprecated "NOTE: This function appears to be missing from new Phoenix projects."
-  # @doc """
-  # Renders an alert indicating that the form has errors.
-  # """
-  # def form_error_alert(assigns) do
-  #   ~H"""
-  #   <div class="alert alert-error shadow-xl" role="alert">
-  #     To continue, fix the errors in the form.
-  #   </div>
-  #   """
-  # end
-
   @doc """
   Renders a header with title.
+
+  ## Examples
+
+    <.header id="your-header" class="bg-info text-info-content">
+      Header Title
+      <:subtitle>
+        Header subtitle
+      </:subtitle>
+      <:actions>
+        <.button class="w-28 btn-primary border-info-content">Action</.button>
+      </:actions>
+    </.header>
+
   """
+  attr :id, :string, default: nil
   attr :class, :string, default: nil
 
   slot :inner_block, required: true
@@ -361,11 +389,14 @@ defmodule QuizGameWeb.CoreComponents do
 
   def header(assigns) do
     ~H"""
-    <header class={[
-      @actions != [] && "flex items-center justify-between gap-6 p-4 rounded-lg",
-      @class
-    ]}>
-      <div>
+    <header
+      id={@id}
+      class={[
+        @actions != [] && "flex items-center justify-stretch gap-6 p-4 rounded-lg",
+        @class
+      ]}
+    >
+      <div class="grow w-full">
         <h1 class="text-lg font-semibold leading-8">
           <%= render_slot(@inner_block) %>
         </h1>
@@ -373,7 +404,7 @@ defmodule QuizGameWeb.CoreComponents do
           <%= render_slot(@subtitle) %>
         </p>
       </div>
-      <div class="flex-none"><%= render_slot(@actions) %></div>
+      <div class="flex justify-end flex-wrap gap-2"><%= render_slot(@actions) %></div>
     </header>
     """
   end
@@ -600,10 +631,10 @@ defmodule QuizGameWeb.CoreComponents do
   def list(assigns) do
     ~H"""
     <div class="mt-14">
-      <dl class="-my-4 divide-y divide-zinc-100">
+      <dl class="-my-4 divide-y divide-base-content">
         <div :for={item <- @item} class="flex gap-4 py-4 text-sm leading-6 sm:gap-8">
-          <dt class="w-1/4 flex-none text-zinc-500"><%= item.title %></dt>
-          <dd class="text-zinc-700"><%= render_slot(item) %></dd>
+          <dt class="w-1/4 flex-none text-base-content font-bold"><%= item.title %></dt>
+          <dd class="text-base-content"><%= render_slot(item) %></dd>
         </div>
       </dl>
     </div>
@@ -621,12 +652,9 @@ defmodule QuizGameWeb.CoreComponents do
 
   def loader(assigns) do
     ~H"""
-    <icon
+    <.icon
       name="hero-arrow-path"
-      class={[
-        "w-5 h-5 hidden phx-click-loading:inline phx-submit-loading:inline animate-spin",
-        @class
-      ]}
+      class="hidden w-5 h-5 animate-spin phx-click-loading:inline phx-submit-loading:inline"
     />
     """
   end
@@ -668,11 +696,11 @@ defmodule QuizGameWeb.CoreComponents do
       id={@id}
       phx-mounted={@show && show_modal(@id)}
       phx-remove={hide_modal(@id)}
-      class="relative z-50 hidden"
+      class="relative z-40 hidden"
     >
       <div
         id={"#{@id}-bg"}
-        class="fixed inset-0 bg-base-100/90 transition-opacity"
+        class="fixed inset-0 bg-base-100/80 transition-opacity"
         aria-hidden="true"
       />
       <div
@@ -693,7 +721,7 @@ defmodule QuizGameWeb.CoreComponents do
               phx-click-away={hide_modal(@on_cancel, @id)}
               class={[
                 "hidden max-w-[30rem] mx-auto relative rounded-2xl bg-base-100 p-8",
-                "shadow-lg shadow-base-700/10 ring-1 ring-zinc-300/10 transition"
+                "shadow-lg shadow-base-content/20 ring-1 ring-base-content/40 transition"
               ]}
             >
               <%!-- close button --%>
@@ -710,17 +738,14 @@ defmodule QuizGameWeb.CoreComponents do
 
               <div id={"#{@id}-content"}>
                 <header :if={@title != []}>
-                  <h1
-                    id={"#{@id}-title"}
-                    class="text-2xl font-semibold leading-8 text-base-800 text-center"
-                  >
+                  <h1 id={"#{@id}-title"} class="text-2xl font-semibold leading-8 text-center">
                     <%!-- title --%>
                     <%= render_slot(@title) %>
                   </h1>
                   <p
                     :if={@subtitle != []}
                     id={"#{@id}-description"}
-                    class="mt-2 text-lg leading-6 text-base-600 text-center"
+                    class="mt-2 text-lg leading-6 text-center"
                   >
                     <%!-- subtitle --%>
                     <%= render_slot(@subtitle) %>
@@ -740,7 +765,7 @@ defmodule QuizGameWeb.CoreComponents do
                   </.link>
                   <.button
                     :for={confirm <- @confirm}
-                    class="w-[7rem] mx-2"
+                    class="w-[7rem] mx-2 btn-primary"
                     id={"#{@id}-confirm"}
                     phx-click={@on_confirm}
                     phx-disable-with
@@ -770,13 +795,13 @@ defmodule QuizGameWeb.CoreComponents do
       <%!-- limit max width of navbar by nesting it inside a full-width element --%>
       <nav
         data-component="page-navbar"
-        class="navbar max-w-[100rem] mx-auto py-0 bg-brand text-slate-300 lg:rounded-box
-               lg:shadow-xl"
+        class="navbar max-w-[100rem] mx-auto p-0 bg-brand text-slate-300 lg:rounded-box
+               lg:shadow-lg lg:shadow-base-content/20"
       >
         <%!-- navbar start items --%>
         <div class="flex-1">
           <%!-- navbar title --%>
-          <.link navigate="/" class="pl-2 text-2xl !text-slate-300 normal-case btn btn-ghost">
+          <.link navigate="/" class="pl-4 text-2xl !text-slate-300 normal-case btn btn-ghost">
             Quiz Game
           </.link>
         </div>
@@ -828,7 +853,8 @@ defmodule QuizGameWeb.CoreComponents do
             >
               <.icon name="hero-cog-6-tooth-solid" class="h-7 w-7" />
             </button>
-            <div class="modal text-base-content" x-bind:class="show && 'modal-open'">
+
+            <div class="modal !bg-base-100/50 text-base-content" x-bind:class="show && 'modal-open'">
               <div
                 class="relative max-w-xs modal-box border-2 overflow-x-hidden"
                 x-show="show"
@@ -945,7 +971,7 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <div class="overflow-y-auto px-4 sm:overflow-visible sm:px-0">
       <table class="w-[40rem] mt-11 sm:w-full">
-        <thead class="text-sm text-left leading-6 text-zinc-500">
+        <thead class="text-sm text-left leading-6 text-base-content">
           <tr>
             <th :for={col <- @col} class="p-0 pr-6 pb-4 font-normal"><%= col[:label] %></th>
             <th class="relative p-0 pb-4"><span class="sr-only"><%= gettext("Actions") %></span></th>
@@ -954,27 +980,29 @@ defmodule QuizGameWeb.CoreComponents do
         <tbody
           id={@id}
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
-          class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700"
+          class="relative divide-y divide-base-content border-t border-base-content text-sm
+                 leading-6 text-base-content"
         >
-          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="group hover:bg-zinc-50">
+          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="group hover:bg-slate-500">
             <td
               :for={{col, i} <- Enum.with_index(@col)}
               phx-click={@row_click && @row_click.(row)}
               class={["relative p-0", @row_click && "hover:cursor-pointer"]}
             >
-              <div class="block py-4 pr-6">
-                <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-50 sm:rounded-l-xl" />
-                <span class={["relative", i == 0 && "font-semibold text-zinc-900"]}>
+              <div class="block py-4 mr-6">
+                <span class="absolute -z-10 -inset-y-px right-0 -left-4 group-hover:bg-slate-500" />
+                <span class={["relative", i == 0 && "font-semibold text-base-content"]}>
                   <%= render_slot(col, @row_item.(row)) %>
                 </span>
               </div>
             </td>
             <td :if={@action != []} class="relative w-14 p-0">
               <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
-                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 sm:rounded-r-xl" />
+                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-slate-500" />
                 <span
                   :for={action <- @action}
-                  class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+                  class="relative ml-4 font-semibold leading-6 text-base-content
+                         hover:text-base-content/60"
                 >
                   <%= render_slot(action, @row_item.(row)) %>
                 </span>

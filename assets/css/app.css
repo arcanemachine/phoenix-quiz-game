@@ -68,6 +68,10 @@
   }
 
   /* daisyui */
+  :root {
+    --animation-btn: 0; /* disable button 'pop' effect during initial render */
+  }
+
   a:not(.btn) {
     color: hsl(var(--a));
     font-weight: bold;
@@ -77,10 +81,6 @@
     padding: 0.125rem 0.375rem;
     background-color: hsl(var(--b2));
     border-radius: 0.25rem;
-  }
-
-  :root {
-    --animation-btn: 0; /* disable button 'pop' effect during initial render */
   }
 
   .dropdown-content {
