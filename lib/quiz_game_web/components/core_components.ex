@@ -44,21 +44,26 @@ defmodule QuizGameWeb.CoreComponents do
     """
   end
 
-  attr :kind, :string, required: true, values: ~w(info success warning error)
-  attr :content, :string, required: true
+  attr :kind, :string,
+    required: true,
+    values: ~w(primary secondary accent neutral info success warning error)
+
+  slot :inner_block, required: true
 
   @doc """
   Renders an alert message.
 
   ## Examples
 
-      <.alert kind="info" content="This is an alert message." />
+      <.alert kind="info">
+        This is an alert message.
+      </.alert>
 
   """
   def alert(assigns) do
     ~H"""
-    <div class={"max-w-lg alert alert-#{@kind}"}>
-      <%= @content %>
+    <div class={"max-w-lg mx-auto alert alert-#{@kind} bg-#{@kind} text-#{@kind}-content"}>
+      <%= render_slot(@inner_block) %>
     </div>
     """
   end
@@ -73,7 +78,9 @@ defmodule QuizGameWeb.CoreComponents do
   """
   def alert_form_errors(assigns) do
     ~H"""
-    <.alert kind="error" content="To continue, fix the errors in the form." />
+    <.alert kind="error">
+      To continue, fix the errors in the form.
+    </.alert>
     """
   end
 

@@ -286,11 +286,14 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       phx-change="form-validate"
       phx-submit="form-submit"
     >
+      <%= if !@form.source.action do %>
+        <.alert kind="secondary">Form is empty</.alert>
+      <% end %>
       <%= if @form.source.action && !@form.source.valid? do %>
         <.alert_form_errors />
       <% end %>
       <%= if @form.source.action && @form.source.valid? do %>
-        <div class="text-xl text-success font-bold text-center">Form is valid</div>
+        <.alert kind="success">Form is valid</.alert>
       <% end %>
 
       <%!-- fields --%>

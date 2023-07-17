@@ -106,13 +106,8 @@
 @layer components {
   /* daisyui */
   .alert {
-    display: block;
-
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: center;
-
     border-radius: 0.5rem;
+    border: 1px solid hsl(var(--bc) / 0.2);
   }
 
   .btn:not(.btn-ghost) {
