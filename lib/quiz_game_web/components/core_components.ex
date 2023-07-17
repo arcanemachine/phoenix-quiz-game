@@ -934,7 +934,11 @@ defmodule QuizGameWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="max-w-lg mt-8 mx-auto space-y-6" data-confirmation-required={@confirmation_required}>
+      <div
+        class="max-w-lg mt-8 mx-auto space-y-6"
+        data-confirmation-required={@confirmation_required}
+        x-data="simpleForm"
+      >
         <%= render_slot(@inner_block, f) %>
 
         <%= if @confirmation_required do %>

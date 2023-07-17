@@ -5,11 +5,90 @@ import tippy from "tippy.js";
 import helpers from "js/helpers";
 
 /* data */
+function simpleForm() {
+  /**
+   * If a form has been modified, show a warning when exiting the page
+   * before the form has been submitted.
+   */
+
+  return {
+    defaultValue: "defaultValue",
+    modifiedInputs: new Set(),
+
+    init() {
+      // add event listeners
+      addEventListener("beforeinput", this.handleBeforeInput.bind(this));
+      addEventListener("input", this.handleInput.bind(this) as any);
+      addEventListener("submit", this.handleSubmit.bind(this));
+      addEventListener("beforeunload", this.handleBeforeUnload.bind(this));
+    },
+
+    destroy() {
+      // clear modified input fields
+      this.modifiedInputs.clear();
+
+      // remove event listeners
+      removeEventListener("beforeinput", this.handleBeforeInput);
+      removeEventListener("input", this.handleInput as any);
+      removeEventListener("submit", this.handleSubmit);
+      removeEventListener("beforeunload", this.handleBeforeUnload);
+    },
+
+    handleBeforeInput(evt: Event) {
+      /** Store default values. */
+      const target = evt.target as any;
+      if (
+        !(this.defaultValue in target || this.defaultValue in target.dataset)
+      ) {
+        target.dataset[this.defaultValue] = (
+          "" + (target.value || target.textContent)
+        ).trim();
+      }
+    },
+
+    handleInput(evt: InputEvent) {
+      /** Keep a record of which form inputs have been modified. */
+      const target = evt.target as any;
+
+      // ignore elements with no 'name' property (e.g. confirmation checkbox)
+      if (!target.name) return;
+
+      let original: string;
+      if (this.defaultValue in target) {
+        original = target[this.defaultValue];
+      } else {
+        original = target.dataset[this.defaultValue];
+      }
+
+      if (original !== ("" + (target.value || target.textContent)).trim()) {
+        if (!this.modifiedInputs.has(target)) {
+          this.modifiedInputs.add(target);
+        }
+      } else if (this.modifiedInputs.has(target)) {
+        this.modifiedInputs.delete(target);
+      }
+    },
+
+    handleSubmit() {
+      /** Clear modified inputs before submitting the form. */
+      this.modifiedInputs.clear();
+    },
+
+    handleBeforeUnload(evt: BeforeUnloadEvent) {
+      /** Warn before exiting if any inputs have been modified. */
+      if (this.modifiedInputs.size) {
+        evt.returnValue = true;
+      }
+    },
+  } as AlpineComponent;
+}
+
 function themeSelect() {
   return {
     themeOptions: ["Auto", "Light", "Dark"],
+
+    // this value must be capitalized so that x-model works as expected
     theme: helpers.base.stringCapitalize(
-      // this value must be capitalized so that x-model works as expected
       localStorage.getItem("theme") || "auto",
     ),
 
@@ -59,6 +138,10 @@ function toastContainer(): AlpineComponent {
 }
 
 export const data = [
+  {
+    name: "simpleForm",
+    data: simpleForm,
+  },
   {
     name: "themeSelect",
     data: themeSelect,
