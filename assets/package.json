@@ -16,6 +16,7 @@
     "prettier": "3.0.0"
   },
   "dependencies": {
+    "@alpinejs/collapse": "^3.12.3",
     "@alpinejs/focus": "^3.12.3",
     "@types/alpinejs__focus": "^3.10.0",
     "alpinejs": "^3.12.3",

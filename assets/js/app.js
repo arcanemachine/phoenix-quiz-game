@@ -3,6 +3,7 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 
 import Alpine from "alpinejs";
+import collapse from "@alpinejs/collapse";
 import focus from "@alpinejs/focus";
 import topbar from "../vendor/topbar";
 
@@ -25,6 +26,7 @@ for (const store of alpineStores) {
   Alpine.store(store.name, store.store);
 }
 
+Alpine.plugin(collapse);
 Alpine.plugin(focus);
 
 Alpine.start();
