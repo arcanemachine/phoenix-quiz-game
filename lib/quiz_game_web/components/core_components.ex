@@ -24,9 +24,9 @@ defmodule QuizGameWeb.CoreComponents do
   def action_links(assigns) do
     ~H"""
     <section class={["mt-12", @class]}>
-      <h3 class="text-2xl font-bold">
+      <div class="text-2xl font-bold">
         <%= @title || "Actions" %>
-      </h3>
+      </div>
       <ul class="mt-2 ml-6">
         <li :for={item <- @items} class={[["mt-2 pl-2 list-dash"], [Map.get(item, :class, "")]]}>
           <.link
@@ -91,8 +91,7 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <div class="mt-12">
       <.link navigate={@navigate}>
-        <.icon name="hero-arrow-left-solid" class="h-3 w-3" />
-        <%= render_slot(@inner_block) %>
+        <.icon name="hero-arrow-left-solid" class="h-4 w-4" /><%= render_slot(@inner_block) %>
       </.link>
     </div>
     """
@@ -400,9 +399,9 @@ defmodule QuizGameWeb.CoreComponents do
       ]}
     >
       <div class="grow">
-        <h1 class="text-lg font-semibold leading-8">
+        <div class="text-lg font-semibold leading-8">
           <%= render_slot(@inner_block) %>
-        </h1>
+        </div>
         <p :if={@subtitle != []} class="mt-2 text-sm leading-6">
           <%= render_slot(@subtitle) %>
         </p>
@@ -744,10 +743,10 @@ defmodule QuizGameWeb.CoreComponents do
 
               <div id={"#{@id}-content"}>
                 <header :if={@title != []}>
-                  <h1 id={"#{@id}-title"} class="text-2xl font-semibold leading-8 text-center">
+                  <div id={"#{@id}-title"} class="text-2xl font-semibold leading-8 text-center">
                     <%!-- title --%>
                     <%= render_slot(@title) %>
-                  </h1>
+                  </div>
                   <p
                     :if={@subtitle != []}
                     id={"#{@id}-description"}
@@ -868,7 +867,7 @@ defmodule QuizGameWeb.CoreComponents do
                 x-trap.inert.noscroll.noreturn="show"
                 x-on:click.outside="show = false"
               >
-                <h2 class="mb-12 text-3xl font-bold text-center">Settings</h2>
+                <div class="mb-12 text-3xl font-bold text-center">Settings</div>
                 <button
                   x-on:click="show = false"
                   class="absolute right-0 top-0 btn btn-circle btn-ghost"
@@ -943,7 +942,7 @@ defmodule QuizGameWeb.CoreComponents do
 
         <%= if @confirmation_required do %>
           <label>
-            <.header class="mt-6 p-4 bg-info/70 text-info-content cursor-pointer rounded-lg">
+            <.header class="mt-6 p-4 bg-info text-info-content cursor-pointer rounded-lg">
               <span class="text-sm font-normal">
                 I have confirmed that the data above is accurate.
               </span>

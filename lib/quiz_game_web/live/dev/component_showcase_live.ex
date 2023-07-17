@@ -123,7 +123,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
     <h3 class="mb-4 text-2xl text-center">Button</h3>
 
-    <section class="flex justify-center flex-wrap">
+    <section class="flex justify-center flex-wrap gap-1">
       <div>
         <.button class="w-32 m-1 btn-primary">
           Primary
@@ -235,7 +235,6 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
     <div class="my-8 divider" />
 
     <h3 class="mb-4 text-2xl text-center">List</h3>
-    <h4 class="text-md mb-4 text-center">Renders a data list.</h4>
 
     <.list>
       <:item title="Item 1">Value 1</:item>
