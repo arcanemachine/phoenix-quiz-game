@@ -68,7 +68,8 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
      socket
      |> put_flash(
        :info,
-       "This is a really long flash message. I mean, really, it's quite long. It's so long that the text shouldn't fit on a single line."
+       "This is a really long flash message. I mean, really, it's quite long. " <>
+         "It's so long that the text shouldn't fit on a single line."
      )}
   end
 
@@ -294,12 +295,18 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       <% end %>
 
       <%!-- fields --%>
-      <.input field={@form[:text]} label="Text input" />
-      <.input field={@form[:email]} label="Email input" />
-      <.input field={@form[:password]} type="password" label="Password input" />
+      <.input field={@form[:text]} label="Text input" value="pass" />
+      <.input field={@form[:email]} label="Email input" value="pass@example.com" />
+      <.input field={@form[:password]} type="password" label="Password input" value="pass" />
 
       <div class="form-control">
-        <.input type="checkbox" field={@form[:checkbox]} class="checkbox" label="Checkbox input" />
+        <.input
+          type="checkbox"
+          field={@form[:checkbox]}
+          class="checkbox"
+          label="Checkbox input"
+          checked
+        />
       </div>
 
       <div class="form-control">
@@ -312,12 +319,19 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
             [key: "fail", value: "fail"]
           ]}
           label="Select input"
+          value="pass"
           phx-debounce="blur"
         />
       </div>
 
       <div class="form-control">
-        <.input type="textarea" field={@form[:textarea]} label="Textarea input" class="textarea" />
+        <.input
+          type="textarea"
+          field={@form[:textarea]}
+          label="Textarea input"
+          class="textarea"
+          value="pass"
+        />
       </div>
 
       <%!-- actions --%>

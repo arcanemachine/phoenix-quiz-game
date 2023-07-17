@@ -1009,14 +1009,14 @@ defmodule QuizGameWeb.CoreComponents do
           class="relative divide-y divide-base-content border-t border-base-content text-sm
                  leading-6 text-base-content"
         >
-          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="group hover:bg-slate-500">
+          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="group hover:bg-slate-400">
             <td
               :for={{col, i} <- Enum.with_index(@col)}
               phx-click={@row_click && @row_click.(row)}
               class={["relative p-0", @row_click && "hover:cursor-pointer"]}
             >
               <div class="block py-4 mr-6">
-                <span class="absolute -z-10 -inset-y-px right-0 -left-4 group-hover:bg-slate-500" />
+                <span class="absolute -z-10 -inset-y-px right-0 -left-4 group-hover:bg-slate-400" />
                 <span class={["relative", i == 0 && "font-semibold text-base-content"]}>
                   <%= render_slot(col, @row_item.(row)) %>
                 </span>
@@ -1024,7 +1024,7 @@ defmodule QuizGameWeb.CoreComponents do
             </td>
             <td :if={@action != []} class="relative w-14 p-0">
               <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
-                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-slate-500" />
+                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-slate-400" />
                 <span
                   :for={action <- @action}
                   class="relative ml-4 font-semibold leading-6 text-base-content
