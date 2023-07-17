@@ -359,7 +359,7 @@ defmodule QuizGameWeb.CoreComponents do
     <.form_button
       type={@type}
       content={@content}
-      class={["btn-success", @class]}
+      class={["flex btn-success", @class]}
       loader={@loader}
       {@rest}
     />
@@ -958,7 +958,7 @@ defmodule QuizGameWeb.CoreComponents do
           </label>
         <% end %>
 
-        <div :for={action <- @actions} class="w-full mx-auto flex flex-center flex-wrap">
+        <div :for={action <- @actions} class="flex flex-center flex-wrap w-full mx-auto">
           <%= render_slot(action, f) %>
         </div>
       </div>
