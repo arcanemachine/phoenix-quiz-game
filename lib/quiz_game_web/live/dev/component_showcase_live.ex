@@ -91,16 +91,14 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       %FormData{}
       |> FormData.changeset(form_data_params)
       |> Ecto.Changeset.validate_required(Map.keys(FormData.types()))
-      |> Ecto.Changeset.validate_inclusion(:text, ["pass"], message: "Must be 'pass'")
-      |> Ecto.Changeset.validate_inclusion(
-        :email,
-        ["pass@example.com"],
+      |> Ecto.Changeset.validate_format(:text, ~r/^pass$/, message: "Must be 'pass'")
+      |> Ecto.Changeset.validate_format(:email, ~r/^pass@example\.com$/,
         message: "Must be 'pass@example.com'"
       )
-      |> Ecto.Changeset.validate_format(:password, ~r/pass/, message: "Must be 'pass'")
+      |> Ecto.Changeset.validate_format(:password, ~r/^pass$/, message: "Must be 'pass'")
       |> Ecto.Changeset.validate_acceptance(:checkbox, message: "Must be checked")
-      |> Ecto.Changeset.validate_inclusion(:select, ["pass"], message: "Must be 'pass'")
-      |> Ecto.Changeset.validate_inclusion(:textarea, ["pass"], message: "Must be 'pass'")
+      |> Ecto.Changeset.validate_format(:select, ~r/^pass$/, message: "Must be 'pass'")
+      |> Ecto.Changeset.validate_format(:textarea, ~r/^pass$/, message: "Must be 'pass'")
       |> Map.put(:action, :validate)
       |> to_form()
 
@@ -302,28 +300,22 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       phx-submit="form-submit"
     >
       <%= if !@form.source.action do %>
-        <.alert kind="secondary">Form is empty</.alert>
+        <.alert kind="secondary">The form has not been completed.</.alert>
       <% end %>
       <%= if @form.source.action && !@form.source.valid? do %>
         <.alert_form_errors />
       <% end %>
       <%= if @form.source.action && @form.source.valid? do %>
-        <.alert kind="success">Form is valid</.alert>
+        <.alert kind="success">The form is valid.</.alert>
       <% end %>
 
       <%!-- fields --%>
-      <.input field={@form[:text]} label="Text input" value="pass" />
-      <.input field={@form[:email]} label="Email input" value="pass@example.com" />
-      <.input field={@form[:password]} type="password" label="Password input" value="pass" />
+      <.input field={@form[:text]} label="Text input" />
+      <.input field={@form[:email]} label="Email input" />
+      <.input field={@form[:password]} type="password" label="Password input" />
 
       <div class="form-control">
-        <.input
-          type="checkbox"
-          field={@form[:checkbox]}
-          class="checkbox"
-          label="Checkbox input"
-          checked
-        />
+        <.input type="checkbox" field={@form[:checkbox]} class="checkbox" label="Checkbox input" />
       </div>
 
       <div class="form-control">
@@ -336,19 +328,12 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
             [key: "fail", value: "fail"]
           ]}
           label="Select input"
-          value="pass"
           phx-debounce="blur"
         />
       </div>
 
       <div class="form-control">
-        <.input
-          type="textarea"
-          field={@form[:textarea]}
-          label="Textarea input"
-          class="textarea"
-          value="pass"
-        />
+        <.input type="textarea" field={@form[:textarea]} label="Textarea input" class="textarea" />
       </div>
 
       <%!-- actions --%>
