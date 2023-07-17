@@ -111,6 +111,21 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
     ~H"""
     <h2 class="mb-8 text-3xl text-center">Built-In Components</h2>
 
+    <h2 class="mb-8 text-3xl text-center">Alert</h2>
+
+    <section class="mt-child-2">
+      <.alert kind="primary">Primary alert</.alert>
+      <.alert kind="secondary">Secondary alert</.alert>
+      <.alert kind="accent">Accent alert</.alert>
+      <.alert kind="neutral">Neutral alert</.alert>
+      <.alert kind="info">Info alert</.alert>
+      <.alert kind="success">Success alert</.alert>
+      <.alert kind="warning">Warning alert</.alert>
+      <.alert kind="error">Error alert</.alert>
+    </section>
+
+    <div class="my-8 divider" />
+
     <h3 class="mb-4 text-2xl text-center">Back</h3>
 
     <div class="text-center">
