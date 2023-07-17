@@ -100,11 +100,7 @@
 @layer components {
   /* daisyui */
   .alert {
-    max-width: 40rem;
-    margin: auto;
-    margin-bottom: 2rem;
-    justify-content: center;
-    filter: hue-rotate(20deg);
+    display: block;
 
     font-size: 1rem;
     font-weight: bold;

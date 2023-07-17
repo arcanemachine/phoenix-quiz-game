@@ -44,6 +44,25 @@ defmodule QuizGameWeb.CoreComponents do
     """
   end
 
+  attr :type, :string, required: true, values: ~w(info success warning error)
+  attr :content, :string, required: true
+
+  @doc """
+  Renders an alert message.
+
+  ## Examples
+
+      <.alert type="info" content="This is an alert message." />
+
+  """
+  def alert(assigns) do
+    ~H"""
+    <div class={"max-w-lg alert alert-#{@type}"}>
+      <%= @content %>
+    </div>
+    """
+  end
+
   @doc """
   Renders an alert indicating that the form has errors.
 
@@ -54,9 +73,7 @@ defmodule QuizGameWeb.CoreComponents do
   """
   def alert_form_errors(assigns) do
     ~H"""
-    <.header id="component-showcase-alert-form-errors" class="bg-error text-error-content">
-      To continue, fix the errors in the form.
-    </.header>
+    <.alert type="error" content="To continue, fix the errors in the form." />
     """
   end
 

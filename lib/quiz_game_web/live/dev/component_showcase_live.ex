@@ -253,6 +253,11 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </p>
     </section>
 
+    <div id="deleteme">&nbsp;</div>
+    <script>
+      setTimeout(() => { document.querySelector('#deleteme').scrollIntoView(); }, 100)
+    </script>
+
     <h3 class="mt-16 text-2xl text-center">Simple Form</h3>
 
     <.simple_form

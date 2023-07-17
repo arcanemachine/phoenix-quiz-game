@@ -43,6 +43,7 @@ module.exports = {
       },
     },
   },
+  safelist: ["alert-info", "alert-success", "alert-warning", "alert-error"],
   plugins: [
     // require("@tailwindcss/forms"),
     require("@tailwindcss/typography"),
