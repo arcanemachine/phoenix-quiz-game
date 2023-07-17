@@ -802,7 +802,7 @@ defmodule QuizGameWeb.CoreComponents do
       <nav
         data-component="page-navbar"
         class="navbar max-w-[100rem] mx-auto p-0 bg-brand text-slate-300 lg:rounded-box
-               lg:shadow-xl lg:shadow-black/20"
+               lg:shadow-lg lg:shadow-black/20"
       >
         <%!-- navbar start items --%>
         <div class="flex-1">
