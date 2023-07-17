@@ -922,6 +922,7 @@ defmodule QuizGameWeb.CoreComponents do
   """
   attr :for, :any, required: true, doc: "the datastructure for the form"
   attr :as, :any, default: nil, doc: "the server side parameter to collect all input under"
+  attr :confirmation_required, :boolean, default: false
 
   attr :rest, :global,
     include: ~w(autocomplete name rel action enctype method novalidate target multipart),
@@ -933,8 +934,27 @@ defmodule QuizGameWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="mt-10 space-y-8">
+      <div class="max-w-lg mt-8 mx-auto space-y-6" data-confirmation-required={@confirmation_required}>
         <%= render_slot(@inner_block, f) %>
+
+        <%= if @confirmation_required do %>
+          <label>
+            <.header class="mt-6 p-4 bg-info/60 text-info-content cursor-pointer rounded-lg">
+              <span class="text-sm font-normal">
+                I have confirmed that the data above is accurate.
+              </span>
+              <:actions>
+                <input
+                  type="checkbox"
+                  class="bg-white align-middle checkbox checkbox-lg"
+                  required
+                  phx-debounce="999999"
+                />
+              </:actions>
+            </.header>
+          </label>
+        <% end %>
+
         <div :for={action <- @actions} class="w-full mx-auto flex flex-center flex-wrap">
           <%= render_slot(action, f) %>
         </div>

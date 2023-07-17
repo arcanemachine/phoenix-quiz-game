@@ -280,8 +280,8 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
     <h3 class="text-2xl text-center">Simple Form</h3>
 
     <.simple_form
-      class="max-w-lg mx-auto"
       for={@form}
+      confirmation_required={true}
       autocomplete="off"
       phx-change="form-validate"
       phx-submit="form-submit"

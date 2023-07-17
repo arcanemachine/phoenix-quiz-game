@@ -159,11 +159,6 @@
     align-items: center;
   }
 
-  .disabled-button-wrapper {
-    opacity: 0.6;
-    pointer-events: none;
-  }
-
   .list-back {
     list-style-type: "< " !important;
   }
