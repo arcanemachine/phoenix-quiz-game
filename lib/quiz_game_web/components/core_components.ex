@@ -184,7 +184,7 @@ defmodule QuizGameWeb.CoreComponents do
           <.icon :if={@kind == :warning} name="hero-exclamation-circle-mini" class="h-7 w-7" />
           <.icon :if={@kind == :error} name="hero-exclamation-triangle-mini" class="h-7 w-7" />
         </div>
-        <p class="grow px-4 text-sm font-semibold text-center">
+        <p class="grow px-4 text-sm font-semibold text-center cursor-default select-none">
           <span :if={@title}><%= @title %>:</span>
           <%= msg %>
         </p>
@@ -207,7 +207,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   def flash_group(assigns) do
     ~H"""
-    <div class="fixed w-screen top-8 right-0 left-0 mt-child-2">
+    <div class="fixed w-screen top-6 right-0 left-0 mt-child-2">
       <.flash kind={:error} title="Error" id="flash-error" flash={@flash} />
       <.flash kind={:warning} title="Warning" id="flash-warning" flash={@flash} />
       <.flash kind={:success} title="Success" id="flash-success" flash={@flash} />
