@@ -964,7 +964,7 @@ defmodule QuizGameWeb.CoreComponents do
 
         <%= if @confirmation_required do %>
           <label>
-            <.header class="mt-6 p-4 bg-info text-info-content cursor-pointer rounded-lg">
+            <.header class="mt-6 p-4 bg-primary text-primary-content cursor-pointer rounded-lg">
               <span class="text-sm font-normal">
                 I have confirmed that the data above is accurate.
               </span>
