@@ -85,6 +85,12 @@
     border-radius: 0.25rem;
   }
 
+  input,
+  select,
+  textarea {
+    @apply !bg-white text-black;
+  }
+
   .dropdown-content {
     /* prevent other elements (e.g. inputs) from obscuring dropdowns */
     z-index: 1;

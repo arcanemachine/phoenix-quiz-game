@@ -166,7 +166,7 @@ defmodule QuizGameWeb.CoreComponents do
       phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")}
       role="alert"
       class={[
-        "w-80 sm:w-96 mx-auto p-3 z-50 cursor-pointer rounded-lg ring-1",
+        "w-80 sm:w-96 mx-auto p-3 z-50 rounded-lg ring-1",
         @kind == :info &&
           "bg-info text-info-content ring-info-content fill-info-content shadow-xl",
         @kind == :success &&
@@ -208,7 +208,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   def flash_group(assigns) do
     ~H"""
-    <div class="fixed w-screen top-0 right-0 left-0 mt-child-2">
+    <div class="fixed w-screen top-8 right-0 left-0 mt-child-2">
       <.flash kind={:error} title="Error" id="flash-error" flash={@flash} />
       <.flash kind={:warning} title="Warning" id="flash-warning" flash={@flash} />
       <.flash kind={:success} title="Success" id="flash-success" flash={@flash} />
@@ -522,7 +522,7 @@ defmodule QuizGameWeb.CoreComponents do
           value="true"
           checked={@checked}
           class={[
-            "checkbox bg-white",
+            "checkbox",
             @errors == [] && "border-base-content focus:border-base-content/30",
             @errors != [] && "border-error/80 focus:border-error/40",
             "phx-no-feedback:border-base-content phx-no-feedback:focus:border-base-content/40"
@@ -544,7 +544,7 @@ defmodule QuizGameWeb.CoreComponents do
         id={@id}
         name={@name}
         class={[
-          "w-full bg-white select select-bordered",
+          "w-full select select-bordered",
           @errors == [] && "border-base-content focus:border-base-content/30",
           @errors != [] && "border-error/80 focus:border-error/40",
           "phx-no-feedback:border-base-content phx-no-feedback:focus:border-base-content/40"
@@ -568,7 +568,7 @@ defmodule QuizGameWeb.CoreComponents do
         id={@id}
         name={@name}
         class={[
-          "min-h-[6rem] w-full bg-white textarea textarea-bordered",
+          "min-h-[6rem] w-full textarea textarea-bordered",
           @errors == [] && "border-base-content focus:border-base-content/30",
           @errors != [] && "border-error/80 focus:border-error/40",
           "phx-no-feedback:border-base-content phx-no-feedback:focus:border-base-content/40"
@@ -591,7 +591,7 @@ defmodule QuizGameWeb.CoreComponents do
         id={@id}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
-          "w-full input bg-white",
+          "w-full input",
           @errors == [] && "border-base-content focus:border-base-content/30",
           @errors != [] && "border-error/80 focus:border-error/40",
           "phx-no-feedback:border-base-content phx-no-feedback:focus:border-base-content/40"
@@ -943,14 +943,14 @@ defmodule QuizGameWeb.CoreComponents do
 
         <%= if @confirmation_required do %>
           <label>
-            <.header class="mt-6 p-4 bg-info/60 text-info-content cursor-pointer rounded-lg">
+            <.header class="mt-6 p-4 bg-info/70 text-info-content cursor-pointer rounded-lg">
               <span class="text-sm font-normal">
                 I have confirmed that the data above is accurate.
               </span>
               <:actions>
                 <input
                   type="checkbox"
-                  class="bg-white align-middle checkbox checkbox-lg"
+                  class="align-middle checkbox checkbox-lg"
                   required
                   phx-debounce="999999"
                 />
