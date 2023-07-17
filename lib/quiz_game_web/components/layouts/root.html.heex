@@ -47,8 +47,6 @@
 
     <.navbar />
 
-    <section id="toast-container" x-data="toastContainer" />
-
     <main class="grow flex flex-col max-w-4xl mt-8 mx-auto mb-20 container px-4 sm:px-10 md:px-20">
       <section :if={assigns[:page_title] || assigns[:page_subtitle]} class="mb-10">
         <%!-- page title/subtitle --%>
@@ -64,5 +62,7 @@
     </main>
 
     <.footer />
+
+    <section id="toast-container" x-data="toastContainer" />
   </body>
 </html>
