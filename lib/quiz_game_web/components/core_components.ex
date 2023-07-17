@@ -542,7 +542,11 @@ defmodule QuizGameWeb.CoreComponents do
         />
         <%= @label %>
       </label>
-      <.error :for={msg <- @errors}><%= msg %></.error>
+      <div class="flex min-h-[2.5rem] show-empty-element">
+        <.error :for={msg <- @errors}>
+          <%= msg %>
+        </.error>
+      </div>
     </div>
     """
   end
@@ -566,7 +570,9 @@ defmodule QuizGameWeb.CoreComponents do
         <option :if={@prompt} value=""><%= @prompt %></option>
         <%= Phoenix.HTML.Form.options_for_select(@options, @value) %>
       </select>
-      <.error :for={msg <- @errors}><%= msg %></.error>
+      <div class="flex min-h-[2.5rem] show-empty-element">
+        <.error :for={msg <- @errors}><%= msg %></.error>
+      </div>
     </div>
     """
   end
@@ -587,7 +593,9 @@ defmodule QuizGameWeb.CoreComponents do
         phx-debounce={@debounce}
         {@rest}
       ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
-      <.error :for={msg <- @errors}><%= msg %></.error>
+      <div class="flex min-h-[2.5rem] show-empty-element">
+        <.error :for={msg <- @errors}><%= msg %></.error>
+      </div>
     </div>
     """
   end
@@ -610,7 +618,9 @@ defmodule QuizGameWeb.CoreComponents do
         phx-debounce={@debounce}
         {@rest}
       />
-      <.error :for={msg <- @errors}><%= msg %></.error>
+      <div class="flex min-h-[2.5rem] show-empty-element">
+        <.error :for={msg <- @errors}><%= msg %></.error>
+      </div>
     </div>
     """
   end
@@ -946,7 +956,7 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
       <div
-        class="max-w-lg mt-8 mx-auto space-y-6"
+        class="max-w-lg mt-8 mx-auto"
         data-confirmation-required={@confirmation_required}
         x-data="simpleForm"
       >
