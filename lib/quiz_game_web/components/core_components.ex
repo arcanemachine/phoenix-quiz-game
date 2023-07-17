@@ -44,7 +44,7 @@ defmodule QuizGameWeb.CoreComponents do
     """
   end
 
-  attr :type, :string, required: true, values: ~w(info success warning error)
+  attr :kind, :string, required: true, values: ~w(info success warning error)
   attr :content, :string, required: true
 
   @doc """
@@ -52,12 +52,12 @@ defmodule QuizGameWeb.CoreComponents do
 
   ## Examples
 
-      <.alert type="info" content="This is an alert message." />
+      <.alert kind="info" content="This is an alert message." />
 
   """
   def alert(assigns) do
     ~H"""
-    <div class={"max-w-lg alert alert-#{@type}"}>
+    <div class={"max-w-lg alert alert-#{@kind}"}>
       <%= @content %>
     </div>
     """
@@ -73,7 +73,7 @@ defmodule QuizGameWeb.CoreComponents do
   """
   def alert_form_errors(assigns) do
     ~H"""
-    <.alert type="error" content="To continue, fix the errors in the form." />
+    <.alert kind="error" content="To continue, fix the errors in the form." />
     """
   end
 
