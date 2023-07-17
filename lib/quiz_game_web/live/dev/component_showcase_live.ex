@@ -112,13 +112,17 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
     <h3 class="mb-4 text-2xl text-center">Back</h3>
 
-    <.back navigate={~p"/"}>
-      Back
-    </.back>
+    <div class="text-center">
+      <.back navigate={~p"/"}>
+        Back
+      </.back>
+    </div>
 
-    <h3 class="mt-16 mb-4 text-2xl text-center">Button</h3>
+    <div class="my-8 divider" />
 
-    <section class="text-center">
+    <h3 class="mb-4 text-2xl text-center">Button</h3>
+
+    <section class="flex justify-center flex-wrap">
       <div>
         <.button class="w-32 m-1 btn-primary">
           Primary
@@ -126,6 +130,8 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
         <.button class="w-32 m-1 btn-secondary">
           Secondary
         </.button>
+      </div>
+      <div>
         <.button class="w-32 m-1 btn-accent">
           Accent
         </.button>
@@ -140,6 +146,8 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
         <.button class="w-32 m-1 btn-success">
           Success
         </.button>
+      </div>
+      <div>
         <.button class="w-32 m-1 btn-warning">
           Warning
         </.button>
@@ -149,11 +157,17 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </div>
     </section>
 
-    <h3 class="mt-16 mb-4 text-2xl text-center">Error</h3>
+    <div class="my-8 divider" />
 
-    <.error>Error message</.error>
+    <h3 class="mb-4 text-2xl text-center">Error</h3>
 
-    <h3 class="mt-16 mb-4 text-2xl text-center">Flash Messages</h3>
+    <div class="flex flex-center">
+      <.error>Error message</.error>
+    </div>
+
+    <div class="my-8 divider" />
+
+    <h3 class="mb-4 text-2xl text-center">Flash Messages</h3>
 
     <section class="text-center">
       <div>
@@ -179,7 +193,9 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </div>
     </section>
 
-    <h3 class="mt-16 mb-4 text-2xl text-center">Header</h3>
+    <div class="my-8 divider" />
+
+    <h3 class="mb-4 text-2xl text-center">Header</h3>
 
     <.header class="m-2 bg-info text-info-content">
       Header Title
@@ -215,7 +231,9 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </:actions>
     </.header>
 
-    <h3 class="mt-16 mb-4 text-2xl text-center">List</h3>
+    <div class="my-8 divider" />
+
+    <h3 class="mb-4 text-2xl text-center">List</h3>
     <h4 class="text-md mb-4 text-center">Renders a data list.</h4>
 
     <.list>
@@ -224,7 +242,9 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       <:item title="Item 3">Value 3</:item>
     </.list>
 
-    <h3 class="mt-16 mb-4 text-2xl text-center">Modal</h3>
+    <div class="my-8 divider" />
+
+    <h3 class="mb-4 text-2xl text-center">Modal</h3>
 
     <section class="text-center">
       <.button phx-click={show_modal("component-showcase-modal")}>
@@ -242,7 +262,9 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       <:cancel>Cancel</:cancel>
     </.modal>
 
-    <h3 class="mt-16 mb-4 text-2xl text-center">Show/Hide</h3>
+    <div class="my-8 divider" />
+
+    <h3 class="mb-4 text-2xl text-center">Show/Hide</h3>
 
     <section class="text-center">
       <.button phx-click={show("#showcase-show-hide")}>Show</.button>
@@ -253,12 +275,9 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </p>
     </section>
 
-    <div id="deleteme">&nbsp;</div>
-    <script>
-      setTimeout(() => { document.querySelector('#deleteme').scrollIntoView(); }, 100)
-    </script>
+    <div class="my-8 divider" />
 
-    <h3 class="mt-16 text-2xl text-center">Simple Form</h3>
+    <h3 class="text-2xl text-center">Simple Form</h3>
 
     <.simple_form
       class="max-w-lg mx-auto"
@@ -309,14 +328,16 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </:actions>
     </.simple_form>
 
-    <h3 class="mt-16 mb-4 text-2xl text-center">Table</h3>
+    <div class="my-8 divider" />
+
+    <h3 class="mb-4 text-2xl text-center">Table</h3>
 
     <.table id="showcase-table" rows={@table_rows}>
       <:col :let={row} label="Column 1"><%= row.col1 %></:col>
       <:col :let={row} label="Column 2"><%= row.col2 %></:col>
     </.table>
 
-    <hr class="my-12" />
+    <div class="my-8 divider" />
 
     <h2 class="mb-8 text-3xl text-center">Custom Components</h2>
 
@@ -328,7 +349,9 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       %{content: "Item 3", navigate: "/dev/component-showcase", class: "underline"}
     ]} />
 
-    <h3 class="mt-16 mb-4 text-2xl text-center">Loader</h3>
+    <div class="my-8 divider" />
+
+    <h3 class="mb-4 text-2xl text-center">Loader</h3>
 
     <div class="text-center">
       <form phx-submit="loader-demo">
@@ -338,7 +361,9 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </form>
     </div>
 
-    <h3 class="mt-16 mb-4 text-2xl text-center">Toast Messages</h3>
+    <div class="my-8 divider" />
+
+    <h3 class="mb-4 text-2xl text-center">Toast Messages</h3>
 
     <section x-data class="text-center">
       <div class="mb-4 text-lg font-italic" x-show="!$store.toasts">
