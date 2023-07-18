@@ -13,7 +13,7 @@ config :quiz_game, QuizGame.Repo,
   pool_size: 10
 
 # configure endpoint (disable caching; enable debugging and code reloading; configure watchers
-port = String.to_integer(System.get_env("PORT") || "4000") + 1
+port = String.to_integer(System.get_env("PORT", "4000")) + 1
 
 config :quiz_game, QuizGameWeb.Endpoint,
   http: [ip: {0, 0, 0, 0}, port: port],
