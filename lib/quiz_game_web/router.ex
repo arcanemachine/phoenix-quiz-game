@@ -1,7 +1,7 @@
 defmodule QuizGameWeb.Router do
   use QuizGameWeb, :router
 
-  alias QuizGameWeb.Base.Router, as: BaseRouter
+  alias QuizGameWeb.Router.Base, as: BaseRouter
 
   pipeline :browser do
     plug :accepts, ["html"]

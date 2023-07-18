@@ -1,4 +1,6 @@
-defmodule QuizGameWeb.Base.Router do
+defmodule QuizGameWeb.Router.Base do
+  @moduledoc false
+
   # BROWSER #
   def base_allow_any_user do
     quote do
