@@ -1,4 +1,5 @@
 defmodule QuizGameWeb.ErrorHTMLTest do
+  @moduledoc false
   use QuizGameWeb.ConnCase, async: true
 
   # Bring render_to_string/4 for testing custom views

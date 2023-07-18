@@ -1,4 +1,5 @@
 defmodule QuizGameWeb.PageControllerTest do
+  @moduledoc false
   use QuizGameWeb.ConnCase
 
   test "GET /", %{conn: conn} do

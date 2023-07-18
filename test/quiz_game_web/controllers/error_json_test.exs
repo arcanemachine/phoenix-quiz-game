@@ -1,4 +1,5 @@
 defmodule QuizGameWeb.ErrorJSONTest do
+  @moduledoc false
   use QuizGameWeb.ConnCase, async: true
 
   test "renders 404" do
