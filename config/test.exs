@@ -1,11 +1,13 @@
 import Config
 
 # configure database
+database_name = System.get_env("POSTGRES_DB", "quiz_game") <> "_test"
+
 config :quiz_game, QuizGame.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
-  database: "quiz_game_test#{System.get_env("MIX_TEST_PARTITION")}",
+  database: database_name <> System.get_env("MIX_TEST_PARTITION", ""),
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
 

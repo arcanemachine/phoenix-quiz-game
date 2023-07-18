@@ -1,11 +1,13 @@
 import Config
 
 # database
+database_name = System.get_env("POSTGRES_DB", "quiz_game") <> "_dev"
+
 config :quiz_game, QuizGame.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
-  database: "quiz_game_dev",
+  database: database_name,
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
