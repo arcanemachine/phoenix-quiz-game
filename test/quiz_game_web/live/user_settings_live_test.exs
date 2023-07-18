@@ -1,4 +1,6 @@
 defmodule QuizGameWeb.UserSettingsLiveTest do
+  @moduledoc false
+
   use QuizGameWeb.ConnCase
 
   alias QuizGame.Users

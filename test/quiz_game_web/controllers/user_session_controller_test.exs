@@ -1,4 +1,6 @@
 defmodule QuizGameWeb.UserSessionControllerTest do
+  @moduledoc false
+
   use QuizGameWeb.ConnCase, async: true
 
   import QuizGame.UsersFixtures

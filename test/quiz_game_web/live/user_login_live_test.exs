@@ -1,4 +1,6 @@
 defmodule QuizGameWeb.UserLoginLiveTest do
+  @moduledoc false
+
   use QuizGameWeb.ConnCase
 
   import Phoenix.LiveViewTest

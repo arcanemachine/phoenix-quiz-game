@@ -1,4 +1,6 @@
 defmodule QuizGameWeb.UserForgotPasswordLiveTest do
+  @moduledoc false
+
   use QuizGameWeb.ConnCase
 
   import Phoenix.LiveViewTest

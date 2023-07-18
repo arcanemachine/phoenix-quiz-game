@@ -1,4 +1,6 @@
 defmodule QuizGame.UsersTest do
+  @moduledoc false
+
   use QuizGame.DataCase
 
   alias QuizGame.Users

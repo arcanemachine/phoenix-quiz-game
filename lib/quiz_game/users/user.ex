@@ -1,4 +1,8 @@
 defmodule QuizGame.Users.User do
+  @moduledoc """
+  The User context.
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 

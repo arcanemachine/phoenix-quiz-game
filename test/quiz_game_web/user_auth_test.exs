@@ -1,4 +1,6 @@
 defmodule QuizGameWeb.UserAuthTest do
+  @moduledoc false
+
   use QuizGameWeb.ConnCase, async: true
 
   alias Phoenix.LiveView
