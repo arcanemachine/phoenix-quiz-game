@@ -7,8 +7,10 @@ import helpers from "js/helpers";
 /* data */
 function simpleForm() {
   /**
-   * If a form has been modified, show a warning when exiting the page
-   * before the form has been submitted.
+   * If a form has been modified and the user is attempting to exit the page,
+   * then show a warning before exiting the page. This is intended to prevent
+   * the form data from being lost during accidental navigation before the form
+   * has been submitted
    */
 
   return {
@@ -195,16 +197,20 @@ const toasts = {
       toastElt.dispatchEvent(new MouseEvent("click"));
     });
   },
+
   coerceInputs(
     options: string | ProjectToastifyOptions = {},
   ): ProjectToastifyOptions {
-    /** Coerce the value of 'options' based on certain factors:
+    /**
+     * Coerce the value of 'options' based on certain factors:
+     *
      *  a. If 'options' is a string, convert it to a basic toast options object.
-     *      - e.g. "hello" -> { text: "hello" }
+     *    - e.g. "hello" -> { text: "hello" }
+     *
      *  b. If 'options' object contains 'content' key, convert it to a 'text'
-     *    key. This maintains consistency with the use of the 'content' key
-     *    in other areas of this project (tooltips, etc.).
-     *      - e.g. { content: "hello"} -> { text: "hello" }
+     *  key. This maintains consistency with the use of the 'content' key
+     *  in other areas of this project (tooltips, etc.).
+     *    - e.g. { content: "hello"} -> { text: "hello" }
      */
     if (typeof options === "string") {
       // a. Convert string to basic toast object
@@ -212,7 +218,7 @@ const toasts = {
     }
 
     if (options.content) {
-      // b. Remap options.content to options.text
+      // b. Remap options.content to options.text for project-level consistency
       options.text = options.text ?? options.content;
       delete options.content;
     }
