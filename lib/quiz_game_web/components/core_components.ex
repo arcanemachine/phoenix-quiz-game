@@ -182,7 +182,7 @@ defmodule QuizGameWeb.CoreComponents do
       phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")}
       role="alert"
       class={[
-        "w-80 sm:w-96 mx-auto p-3 z-50 rounded-lg ring-1",
+        "w-80 sm:w-[25rem] mt-2 mx-auto p-3 z-50 rounded-lg ring-1",
         @kind == :info &&
           "bg-info text-info-content ring-info-content fill-info-content shadow-xl",
         @kind == :success &&
@@ -201,7 +201,7 @@ defmodule QuizGameWeb.CoreComponents do
           <.icon :if={@kind == :warning} name="hero-exclamation-circle-mini" class="h-7 w-7" />
           <.icon :if={@kind == :error} name="hero-exclamation-triangle-mini" class="h-7 w-7" />
         </div>
-        <p class="grow px-4 text-sm font-semibold text-center cursor-default select-none">
+        <p class="grow px-4 text-sm font-semibold cursor-default select-none">
           <span :if={@title}><%= @title %>:</span>
           <%= msg %>
         </p>
