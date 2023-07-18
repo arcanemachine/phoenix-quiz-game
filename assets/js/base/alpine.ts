@@ -178,17 +178,18 @@ export const directives = [
 /* stores */
 // toasts
 type ProjectToastifyOptions = Toastify.Options & {
-  content?: string; // use 'content' instead of 'text' for consistency
-  theme?:
-    | "primary"
-    | "secondary"
-    | "accent"
-    | "neutral"
-    | "info"
-    | "success"
-    | "warning"
-    | "error";
+  // use 'content' instead of 'text' to maintain project-level consistency
+  content?: string;
 };
+type ProjectToastifyTheme =
+  | "primary"
+  | "secondary"
+  | "accent"
+  | "neutral"
+  | "info"
+  | "success"
+  | "warning"
+  | "error";
 
 const toasts = {
   clear() {
@@ -227,18 +228,22 @@ const toasts = {
 
     return options;
   },
+
   hide(toast: any) {
     /** Hide a toast message. */
     toast.hideToast();
   },
-  show(options: string | ProjectToastifyOptions = {}) {
+
+  show(
+    theme: ProjectToastifyTheme,
+    options: string | ProjectToastifyOptions = {},
+  ) {
     /** Create a new toast message. */
     let toast: any; // create instance placeholder for use in 'hide' callback
 
-    options = this.coerceInputs(options) as ProjectToastifyOptions;
+    options = this.coerceInputs(options);
 
     // themes
-    const theme = options.theme || "primary";
     switch (theme) {
       case "primary":
         options.style = {
@@ -289,10 +294,7 @@ const toasts = {
         };
         break;
       default:
-        options.style = {
-          background: "hsl(var(--p))",
-          color: "hsl(var(--pc))",
-        };
+        throw `Theme must be one of: primary, secondary, accent, neutral, info, success, warning, error`;
     }
 
     // create text element
@@ -328,46 +330,6 @@ const toasts = {
     } as ProjectToastifyOptions).showToast();
 
     return toast;
-  },
-  showPrimary(options: string | ProjectToastifyOptions = {}) {
-    /** Create toast message with "primary" theme. */
-    options = this.coerceInputs(options) as ProjectToastifyOptions;
-    return this.show({ ...options, theme: "primary" });
-  },
-  showSecondary(options: string | ProjectToastifyOptions = {}) {
-    /** Create toast message with "secondary" theme. */
-    options = this.coerceInputs(options) as ProjectToastifyOptions;
-    return this.show({ ...options, theme: "secondary" });
-  },
-  showAccent(options: string | ProjectToastifyOptions = {}) {
-    /** Create toast message with "accent" theme. */
-    options = this.coerceInputs(options) as ProjectToastifyOptions;
-    return this.show({ ...options, theme: "accent" });
-  },
-  showNeutral(options: string | ProjectToastifyOptions = {}) {
-    /** Create toast message with "neutral" theme. */
-    options = this.coerceInputs(options) as ProjectToastifyOptions;
-    return this.show({ ...options, theme: "neutral" });
-  },
-  showInfo(options: string | ProjectToastifyOptions = {}) {
-    /** Create toast message with "info" theme. */
-    options = this.coerceInputs(options) as ProjectToastifyOptions;
-    return this.show({ ...options, theme: "info" });
-  },
-  showSuccess(options: string | ProjectToastifyOptions = {}) {
-    /** Create toast message with "success" theme. */
-    options = this.coerceInputs(options) as ProjectToastifyOptions;
-    return this.show({ ...options, theme: "success" });
-  },
-  showWarning(options: string | ProjectToastifyOptions = {}) {
-    /** Create toast message with "warning" theme. */
-    options = this.coerceInputs(options) as ProjectToastifyOptions;
-    return this.show({ ...options, theme: "warning" });
-  },
-  showError(options: string | ProjectToastifyOptions = {}) {
-    /** Create toast message with "error" theme. */
-    options = this.coerceInputs(options) as ProjectToastifyOptions;
-    return this.show({ ...options, theme: "error" });
   },
 };
 

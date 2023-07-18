@@ -387,16 +387,48 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </div>
       <div>
         <.button
+          kind="primary"
+          class="w-48 m-1"
+          x-on:click="$store.toasts.show('primary', 'Primary toast message example')"
+        >
+          Primary Toast
+        </.button>
+        <.button
+          kind="secondary"
+          class="w-48 m-1"
+          x-on:click="$store.toasts.show('secondary', 'Secondary toast message example')"
+        >
+          Secondary Toast
+        </.button>
+      </div>
+      <div>
+        <.button
+          kind="accent"
+          class="w-48 m-1"
+          x-on:click="$store.toasts.show('accent', 'Accent toast message example')"
+        >
+          Accent Toast
+        </.button>
+        <.button
+          kind="neutral"
+          class="w-48 m-1"
+          x-on:click="$store.toasts.show('neutral', 'Neutral toast message example')"
+        >
+          Neutral Toast
+        </.button>
+      </div>
+      <div>
+        <.button
           kind="info"
-          class="w-40 m-1"
-          x-on:click="$store.toasts.showInfo('Info toast message example')"
+          class="w-48 m-1"
+          x-on:click="$store.toasts.show('info', 'Info toast message example')"
         >
           Info Toast
         </.button>
         <.button
           kind="success"
-          class="w-40 m-1"
-          x-on:click="$store.toasts.showSuccess('Success toast message example')"
+          class="w-48 m-1"
+          x-on:click="$store.toasts.show('success', 'Success toast message example')"
         >
           Success Toast
         </.button>
@@ -404,23 +436,23 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       <div>
         <.button
           kind="warning"
-          class="w-40 m-1"
-          x-on:click="$store.toasts.showWarning('Warning toast message example')"
+          class="w-48 m-1"
+          x-on:click="$store.toasts.show('warning', 'Warning toast message example')"
         >
           Warning Toast
         </.button>
         <.button
           kind="error"
-          class="w-40 m-1"
-          x-on:click="$store.toasts.showError('Error toast message example')"
+          class="w-48 m-1"
+          x-on:click="$store.toasts.show('error', 'Error toast message example')"
         >
           Error Toast
         </.button>
       </div>
       <div>
         <.button
-          class="w-40 btn m-1"
-          x-on:click="$store.toasts.show('This is a really long toast message. I mean, really, it\'s quite long. It\'s so long that the text shouldn\'t fit on a single line.')"
+          class="w-48 btn m-1"
+          x-on:click="$store.toasts.show('primary', 'This is a really long toast message. I mean, really, it\'s quite long. It\'s so long that the text shouldn\'t fit on a single line.')"
         >
           Long Toast
         </.button>
