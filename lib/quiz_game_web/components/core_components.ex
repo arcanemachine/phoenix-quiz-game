@@ -170,7 +170,7 @@ defmodule QuizGameWeb.CoreComponents do
   attr :flash, :map, default: %{}, doc: "the map of flash messages to display"
   attr :title, :string, default: nil
   attr :kind, :atom, values: [:info, :success, :warning, :error], doc: "flash message style"
-  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the flash container"
+  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the component"
 
   slot :inner_block, doc: "the optional inner block that renders the flash message"
 
@@ -266,7 +266,7 @@ defmodule QuizGameWeb.CoreComponents do
   attr :content, :string, default: "", doc: "the button text (can use default slot instead)"
   attr :class, :any, default: nil
   attr :loader, :boolean, default: false, doc: "show a loading spinner"
-  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the form button"
+  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the component"
 
   slot :inner_block
 
@@ -290,7 +290,7 @@ defmodule QuizGameWeb.CoreComponents do
   attr :content, :string, default: "Cancel"
   attr :class, :any, default: nil
   attr :url, :string, default: nil, doc: "the URL to redirect to"
-  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the form button"
+  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the component"
 
   def form_button_cancel(assigns) do
     ~H"""
@@ -318,7 +318,7 @@ defmodule QuizGameWeb.CoreComponents do
   attr :content, :string, default: "Submit"
   attr :class, :any, default: nil
   attr :loader, :boolean, default: true
-  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the form button"
+  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the component"
 
   def form_button_submit(assigns) do
     ~H"""
