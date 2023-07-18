@@ -52,7 +52,8 @@ defmodule QuizGameWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {QuizGameWeb.Layouts, :app}
+        layout: {QuizGameWeb.Layouts, :app},
+        global_prefixes: ~w(x-)
 
       unquote(html_helpers())
     end

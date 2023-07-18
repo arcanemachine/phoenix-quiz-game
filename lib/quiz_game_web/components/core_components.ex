@@ -125,7 +125,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   attr :class, :any, default: nil
   attr :loader, :boolean, default: false
-  attr :rest, :global, default: %{loader: false}
+  attr :rest, :global, include: ~w(disabled form name value)
 
   slot :inner_block, required: true
 

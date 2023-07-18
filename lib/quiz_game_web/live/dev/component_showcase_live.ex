@@ -386,40 +386,44 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
         <code>Alpine.store('toasts')</code> does not exist, so this section will not be functional.
       </div>
       <div>
-        <button
-          class="w-40 m-1 btn btn-info"
+        <.button
+          kind="info"
+          class="w-40 m-1"
           x-on:click="$store.toasts.showInfo('Info toast message example')"
         >
           Info Toast
-        </button>
-        <button
-          class="w-40 m-1 btn btn-success"
+        </.button>
+        <.button
+          kind="success"
+          class="w-40 m-1"
           x-on:click="$store.toasts.showSuccess('Success toast message example')"
         >
           Success Toast
-        </button>
+        </.button>
       </div>
       <div>
-        <button
-          class="w-40 m-1 btn btn-warning"
+        <.button
+          kind="warning"
+          class="w-40 m-1"
           x-on:click="$store.toasts.showWarning('Warning toast message example')"
         >
           Warning Toast
-        </button>
-        <button
-          class="w-40 m-1 btn btn-error"
+        </.button>
+        <.button
+          kind="error"
+          class="w-40 m-1"
           x-on:click="$store.toasts.showError('Error toast message example')"
         >
           Error Toast
-        </button>
+        </.button>
       </div>
       <div>
-        <button
+        <.button
           class="w-40 btn m-1"
           x-on:click="$store.toasts.show('This is a really long toast message. I mean, really, it\'s quite long. It\'s so long that the text shouldn\'t fit on a single line.')"
         >
           Long Toast
-        </button>
+        </.button>
       </div>
     </section>
     """
