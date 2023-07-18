@@ -30,11 +30,13 @@ color_reset := "\\033[39m"
   # to work properly without aborting entirely when Ctrl+C is pressed
   @$SHELL -c "just docker-postgres up; just docker-postgres down"
 
-# setup the project (elixir-fetch-dependencies + db-setup)
-@setup: elixir-dependencies-fetch db-setup
+# run basic setup steps via 'mix setup'
+@setup:
+  echo "Running basic setup procedure via 'mix setup'...";
+  mix setup
 
-# start a dev server (elixir-dependencies-fetch + db-migrate + server-dev-start-interactive)
-@dev: elixir-dependencies-fetch db-migrate server-dev-start-interactive
+# start a dev server (setup + server-dev-start-interactive)
+@dev: setup server-dev-start-interactive
 
 # run all tests (test-elixir + test-js-unit + test-js-e2e)
 @test:
