@@ -83,11 +83,14 @@ defmodule QuizGameWeb do
     quote do
       # HTML escaping functionality
       import Phoenix.HTML
-      # Core UI components and translation
+
+      # components
       import QuizGameWeb.CoreComponents
+      import QuizGameWeb.BaseComponents
+
+      # i18n
       import QuizGameWeb.Gettext
 
-      # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
 
       # Routes generation with the ~p sigil
