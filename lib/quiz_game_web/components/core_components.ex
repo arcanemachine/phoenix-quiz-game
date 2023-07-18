@@ -120,7 +120,7 @@ defmodule QuizGameWeb.CoreComponents do
   attr :type, :string, default: nil
 
   attr :kind, :string,
-    default: "accent",
+    default: "primary",
     values: ~w(primary secondary accent neutral info success warning error)
 
   attr :class, :any, default: nil

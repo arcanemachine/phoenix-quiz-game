@@ -75,7 +75,7 @@
   }
 
   a:not(.btn) {
-    color: hsl(var(--a));
+    color: hsl(var(--p));
     font-weight: bold;
   }
 
