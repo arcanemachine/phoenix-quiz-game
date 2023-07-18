@@ -146,7 +146,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   def error(assigns) do
     ~H"""
-    <p class="flex items-center gap-3 mt-3 text-sm font-semibold text-error phx-no-feedback:hidden">
+    <p class="flex items-center gap-3 text-sm font-semibold text-error phx-no-feedback:hidden">
       <.icon name="hero-exclamation-circle-mini" class="h-5 w-5 flex-none" />
       <%= render_slot(@inner_block) %>
     </p>
@@ -964,7 +964,7 @@ defmodule QuizGameWeb.CoreComponents do
 
         <%= if @confirmation_required do %>
           <label>
-            <.header class="mb-4 p-4 bg-primary text-primary-content cursor-pointer rounded-lg">
+            <.header class="mt-4 mb-4 p-4 bg-primary text-primary-content cursor-pointer rounded-lg">
               <span class="text-sm font-normal">
                 I have confirmed that the data above is accurate.
               </span>
