@@ -176,4 +176,28 @@ defmodule QuizGameWeb.BaseComponents do
     </div>
     """
   end
+
+  @doc """
+  Renders a container element for toast messages.
+
+  ## Example
+
+      <.toast_container />
+  """
+  def toast_container(assigns) do
+    ~H"""
+    <section
+      id="toast-container"
+      x-on:phx:toast-show.window="(evt) => $store.toasts.show(evt.detail)"
+      x-on:phx:toast-show-primary.window="(evt) => $store.toasts.showPrimary(evt.detail)"
+      x-on:phx:toast-show-secondary.window="(evt) => $store.toasts.showSecondary(evt.detail)"
+      x-on:phx:toast-show-accent.window="(evt) => $store.toasts.showAccent(evt.detail)"
+      x-on:phx:toast-show-neutral.window="(evt) => $store.toasts.showNeutral(evt.detail)"
+      x-on:phx:toast-show-info.window="(evt) => $store.toasts.showInfo(evt.detail)"
+      x-on:phx:toast-show-success.window="(evt) => $store.toasts.showSuccess(evt.detail)"
+      x-on:phx:toast-show-warning.window="(evt) => $store.toasts.showWarning(evt.detail)"
+      x-on:phx:toast-show-error.window="(evt) => $store.toasts.showError(evt.detail)"
+    />
+    """
+  end
 end

@@ -108,35 +108,6 @@ function themeSelect() {
   };
 }
 
-function toastContainer(): AlpineComponent {
-  return {
-    bindings: {
-      "@clear": "$store.toasts.clear",
-      "@phx:toast-show.window": "(evt) => $store.toasts.show(evt.detail)",
-      "@phx:toast-show-primary.window":
-        "(evt) => $store.toasts.showPrimary(evt.detail)",
-      "@phx:toast-show-secondary.window":
-        "(evt) => $store.toasts.showSecondary(evt.detail)",
-      "@phx:toast-show-accent.window":
-        "(evt) => $store.toasts.showAccent(evt.detail)",
-      "@phx:toast-show-neutral.window":
-        "(evt) => $store.toasts.showNeutral(evt.detail)",
-      "@phx:toast-show-info.window":
-        "(evt) => $store.toasts.showInfo(evt.detail)",
-      "@phx:toast-show-success.window":
-        "(evt) => $store.toasts.showSuccess(evt.detail)",
-      "@phx:toast-show-warning.window":
-        "(evt) => $store.toasts.showWarning(evt.detail)",
-      "@phx:toast-show-error.window":
-        "(evt) => $store.toasts.showError(evt.detail)",
-    },
-
-    init() {
-      this.$el.setAttribute("x-bind", "bindings");
-    },
-  };
-}
-
 export const data = [
   {
     name: "simpleForm",
@@ -145,10 +116,6 @@ export const data = [
   {
     name: "themeSelect",
     data: themeSelect,
-  },
-  {
-    name: "toastContainer",
-    data: toastContainer,
   },
 ];
 
