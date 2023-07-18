@@ -115,9 +115,14 @@ defmodule QuizGameWeb.CoreComponents do
   ## Examples
 
       <.button>Send!</.button>
-      <.button phx-click="go" class="ml-2">Send!</.button>
+      <.button kind="success" class="ml-2" phx-click="go">Send!</.button>
   """
   attr :type, :string, default: nil
+
+  attr :kind, :string,
+    default: "accent",
+    values: ~w(primary secondary accent neutral info success warning error)
+
   attr :class, :any, default: nil
   attr :loader, :boolean, default: false
   attr :rest, :global, default: %{loader: false}
@@ -126,7 +131,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   def button(assigns) do
     ~H"""
-    <button type={@type} class={["btn", @class]} {@rest}>
+    <button type={@type} class={["btn btn-#{@kind}", @class]} {@rest}>
       <%= if @loader do %>
         <span class="phx-click-loading:hidden phx-submit-loading:hidden">
           <%= render_slot(@inner_block) %>

@@ -138,34 +138,34 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
     <section class="flex justify-center flex-wrap gap-1">
       <div>
-        <.button class="w-32 m-1 btn-primary">
+        <.button kind="primary" class="w-32 m-1">
           Primary
         </.button>
-        <.button class="w-32 m-1 btn-secondary">
+        <.button kind="secondary" class="w-32 m-1">
           Secondary
         </.button>
       </div>
       <div>
-        <.button class="w-32 m-1 btn-accent">
+        <.button kind="accent" class="w-32 m-1">
           Accent
         </.button>
-        <.button class="w-32 m-1 btn-neutral">
+        <.button kind="neutral" class="w-32 m-1">
           Neutral
         </.button>
       </div>
       <div>
-        <.button class="w-32 m-1 btn-info">
+        <.button kind="info" class="w-32 m-1">
           Info
         </.button>
-        <.button class="w-32 m-1 btn-success">
+        <.button kind="success" class="w-32 m-1">
           Success
         </.button>
       </div>
       <div>
-        <.button class="w-32 m-1 btn-warning">
+        <.button kind="warning" class="w-32 m-1">
           Warning
         </.button>
-        <.button class="w-32 m-1 btn-error">
+        <.button kind="error" class="w-32 m-1">
           Error
         </.button>
       </div>
@@ -185,18 +185,18 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
     <section class="text-center">
       <div>
-        <.button class="w-40 m-1 btn-info" phx-click="flash-info-show">
+        <.button kind="info" class="w-40 m-1" phx-click="flash-info-show">
           Info Flash
         </.button>
-        <.button class="w-40 m-1 btn-success" phx-click="flash-success-show">
+        <.button kind="success" class="w-40 m-1" phx-click="flash-success-show">
           Success Flash
         </.button>
       </div>
       <div>
-        <.button class="w-40 m-1 btn-warning" phx-click="flash-warning-show">
+        <.button kind="warning" class="w-40 m-1" phx-click="flash-warning-show">
           Warning Flash
         </.button>
-        <.button class="w-40 m-1 btn-error" phx-click="flash-error-show">
+        <.button kind="error" class="w-40 m-1" phx-click="flash-error-show">
           Error Flash
         </.button>
       </div>
@@ -228,7 +228,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
         Header subtitle
       </:subtitle>
       <:actions>
-        <.button class="w-28 btn-primary border-primary-content" phx-click={hide("#header-warning")}>
+        <.button class="w-28" phx-click={hide("#header-warning")}>
           Hide me
         </.button>
       </:actions>
@@ -240,8 +240,8 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
         Header subtitle
       </:subtitle>
       <:actions>
-        <.button class="w-28 btn-secondary border-success-content">Action 1</.button>
-        <.button class="w-28 btn-primary border-primary-content">Action 2</.button>
+        <.button kind="secondary" class="w-28">Action 1</.button>
+        <.button kind="primary" class="w-28">Action 2</.button>
       </:actions>
     </.header>
 
