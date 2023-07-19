@@ -65,6 +65,9 @@ defmodule QuizGameWeb.BaseComponents do
 
       <.navbar />
   """
+
+  attr :current_user, :any, required: true
+
   def navbar(assigns) do
     ~H"""
     <div class="w-full lg:p-2">
@@ -98,7 +101,7 @@ defmodule QuizGameWeb.BaseComponents do
               <div class="mt-2 mb-3 text-lg text-center font-bold">
                 User Actions
               </div>
-              <%= if assigns[:current_user] do %>
+              <%= if @current_user do %>
                 <li>
                   <.link href={~p"/users/settings"}>Your profile</.link>
                 </li>
