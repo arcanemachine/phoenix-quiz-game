@@ -182,7 +182,7 @@ defmodule QuizGameWeb.CoreComponents do
       phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")}
       role="alert"
       class={[
-        "w-80 sm:w-[25rem] mt-2 mx-auto p-3 z-50 rounded-lg ring-1",
+        "w-80 sm:w-[25rem] mx-auto p-3 z-50 rounded-lg ring-1",
         @kind == :info &&
           "bg-info text-info-content ring-info-content fill-info-content shadow-xl",
         @kind == :success &&
@@ -224,7 +224,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   def flash_group(assigns) do
     ~H"""
-    <div class="fixed w-screen top-0 right-0 left-0 mt-child-2">
+    <div class="fixed w-screen top-1.5 lg:mt-2 right-0 left-0 mt-child-2">
       <.flash kind={:error} title="Error" id="flash-error" flash={@flash} />
       <.flash kind={:warning} title="Warning" id="flash-warning" flash={@flash} />
       <.flash kind={:success} title="Success" id="flash-success" flash={@flash} />
