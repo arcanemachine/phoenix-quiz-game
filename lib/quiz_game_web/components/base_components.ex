@@ -100,17 +100,17 @@ defmodule QuizGameWeb.BaseComponents do
               </div>
               <%= if assigns[:current_user] do %>
                 <li>
-                  <.link href={~p"/"}>Your profile</.link>
+                  <.link href={~p"/users/settings"}>Your profile</.link>
                 </li>
                 <li>
-                  <.link href={~p"/"}>Log out</.link>
+                  <.link href={~p"/users/log_out"}>Log out</.link>
                 </li>
               <% else %>
                 <li>
-                  <.link href={~p"/"}>Register</.link>
+                  <.link href={~p"/users/register"}>Register</.link>
                 </li>
                 <li>
-                  <.link href={~p"/"}>Log in</.link>
+                  <.link href={~p"/users/log_in"}>Log in</.link>
                 </li>
               <% end %>
             </ul>
