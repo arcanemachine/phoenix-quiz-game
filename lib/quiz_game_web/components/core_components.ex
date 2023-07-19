@@ -224,7 +224,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   def flash_group(assigns) do
     ~H"""
-    <div class="fixed w-screen top-6 right-0 left-0 mt-child-2">
+    <div class="fixed w-screen top-0 right-0 left-0 mt-child-2">
       <.flash kind={:error} title="Error" id="flash-error" flash={@flash} />
       <.flash kind={:warning} title="Warning" id="flash-warning" flash={@flash} />
       <.flash kind={:success} title="Success" id="flash-success" flash={@flash} />
