@@ -41,11 +41,9 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
       result =
         lv
         |> element("#reset_password_form")
-        |> render_change(
-          user: %{"password" => "secret12", "confirmation_password" => "secret123456"}
-        )
+        |> render_change(user: %{"password" => "2short", "confirmation_password" => "short"})
 
-      assert result =~ "should be at least 12 character"
+      assert result =~ "should be at least 8 character"
       assert result =~ "does not match password"
     end
   end
@@ -77,14 +75,14 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
         lv
         |> form("#reset_password_form",
           user: %{
-            "password" => "too short",
+            "password" => "2short",
             "password_confirmation" => "does not match"
           }
         )
         |> render_submit()
 
       assert result =~ "Reset Password"
-      assert result =~ "should be at least 12 character(s)"
+      assert result =~ "should be at least 8 character(s)"
       assert result =~ "does not match password"
     end
   end
