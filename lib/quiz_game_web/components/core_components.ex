@@ -789,7 +789,7 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
       <div
-        class="max-w-lg mt-8 mx-auto"
+        class="max-w-sm mt-8 mx-auto"
         data-confirmation-required={@confirmation_required}
         x-data="simpleForm"
       >
@@ -813,7 +813,7 @@ defmodule QuizGameWeb.CoreComponents do
           </label>
         <% end %>
 
-        <div :for={action <- @actions} class="flex flex-center flex-wrap w-full mx-auto">
+        <div :for={action <- @actions} class="flex flex-center flex-wrap w-full mt-4 mx-auto">
           <%= render_slot(action, f) %>
         </div>
       </div>
