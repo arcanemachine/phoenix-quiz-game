@@ -51,6 +51,7 @@ defmodule QuizGameWeb.Router do
       on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+      live "/users/log_out", UserLogoutLive, :new
     end
   end
 
