@@ -65,7 +65,7 @@ defmodule QuizGameWeb.UserLoginLiveTest do
 
       {:ok, _login_live, login_html} =
         lv
-        |> element(~s|a:fl-contains("Sign up")|)
+        |> element(~s|a:fl-contains("Register new account")|)
         |> render_click()
         |> follow_redirect(conn, ~p"/users/register")
 
