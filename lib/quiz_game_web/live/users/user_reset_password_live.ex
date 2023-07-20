@@ -32,7 +32,7 @@ defmodule QuizGameWeb.UserResetPasswordLive do
 
       <p class="text-center text-sm mt-4">
         <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
+        | <.link href={~p"/users/login"}>Login</.link>
       </p>
     </div>
     """
@@ -53,15 +53,15 @@ defmodule QuizGameWeb.UserResetPasswordLive do
     {:ok, assign_form(socket, form_source), temporary_assigns: [form: nil]}
   end
 
-  # Do not log in the user after reset password to avoid a
-  # leaked token giving the user access to the account.
+  # to avoid a leaked token giving the user access to the account, do not log the user in after
+  # resetting their password
   def handle_event("reset_password", %{"user" => user_params}, socket) do
     case Users.reset_user_password(socket.assigns.user, user_params) do
       {:ok, _} ->
         {:noreply,
          socket
          |> put_flash(:info, "Password reset successfully.")
-         |> redirect(to: ~p"/users/log_in")}
+         |> redirect(to: ~p"/users/login")}
 
       {:error, changeset} ->
         {:noreply, assign_form(socket, Map.put(changeset, :action, :insert))}

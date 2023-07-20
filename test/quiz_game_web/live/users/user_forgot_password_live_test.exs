@@ -15,13 +15,13 @@ defmodule QuizGameWeb.UserForgotPasswordLiveTest do
 
       assert html =~ "Forgot your password?"
       assert has_element?(lv, ~s|a[href="#{~p"/users/register"}"]|, "Register")
-      assert has_element?(lv, ~s|a[href="#{~p"/users/log_in"}"]|, "Log in")
+      assert has_element?(lv, ~s|a[href="#{~p"/users/login"}"]|, "Login")
     end
 
     test "redirects if already logged in", %{conn: conn} do
       result =
         conn
-        |> log_in_user(user_fixture())
+        |> login_user(user_fixture())
         |> live(~p"/users/reset_password")
         |> follow_redirect(conn, ~p"/")
 

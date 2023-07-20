@@ -113,7 +113,7 @@ defmodule QuizGameWeb.BaseComponents do
                   <.link href={~p"/users/register"}>Register</.link>
                 </li>
                 <li>
-                  <.link href={~p"/users/log_in"}>Log in</.link>
+                  <.link href={~p"/users/login"}>Login</.link>
                 </li>
               <% end %>
             </ul>

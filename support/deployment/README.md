@@ -88,7 +88,7 @@ Any non-Traefik deployment strategy can be used with Caddy. To set up Caddy, see
 
 You may need to pull the latest image when doing an update:
 
-- Log in to your server.
+- Login to your server.
 - Pull the correct image for your CPU architecture:
   - `x86_64`: `podman image pull docker.io/arcanemachine/phoenix-quiz-game:x86_64`
   - `aarch64`: `podman image pull docker.io/arcanemachine/phoenix-quiz-game:aarch64`

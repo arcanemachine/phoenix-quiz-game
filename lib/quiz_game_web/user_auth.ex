@@ -29,7 +29,7 @@ defmodule QuizGameWeb.UserAuth do
   disconnected on log out. The line can be safely removed
   if you are not using LiveView.
   """
-  def log_in_user(conn, user, params \\ %{}) do
+  def login_user(conn, user, params \\ %{}) do
     token = Users.generate_user_session_token(user)
     user_return_to = get_session(conn, :user_return_to)
 
@@ -160,7 +160,7 @@ defmodule QuizGameWeb.UserAuth do
       socket =
         socket
         |> Phoenix.LiveView.put_flash(:error, "You must log in to access this page.")
-        |> Phoenix.LiveView.redirect(to: ~p"/users/log_in")
+        |> Phoenix.LiveView.redirect(to: ~p"/users/login")
 
       {:halt, socket}
     end
@@ -210,7 +210,7 @@ defmodule QuizGameWeb.UserAuth do
       conn
       |> put_flash(:error, "You must log in to access this page.")
       |> maybe_store_return_to()
-      |> redirect(to: ~p"/users/log_in")
+      |> redirect(to: ~p"/users/login")
       |> halt()
     end
   end

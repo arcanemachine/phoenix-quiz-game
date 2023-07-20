@@ -11,13 +11,13 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
       {:ok, _lv, html} = live(conn, ~p"/users/register")
 
       assert html =~ "Register"
-      assert html =~ "Log in"
+      assert html =~ "Login"
     end
 
     test "redirects if already logged in", %{conn: conn} do
       result =
         conn
-        |> log_in_user(user_fixture())
+        |> login_user(user_fixture())
         |> live(~p"/users/register")
         |> follow_redirect(conn, "/")
 
@@ -73,16 +73,16 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
   end
 
   describe "registration navigation" do
-    test "redirects to login page when the Log in button is clicked", %{conn: conn} do
+    test "redirects to login page when the login button is clicked", %{conn: conn} do
       {:ok, lv, _html} = live(conn, ~p"/users/register")
 
       {:ok, _login_live, login_html} =
         lv
         |> element(~s|a:fl-contains("Login to an existing account")|)
         |> render_click()
-        |> follow_redirect(conn, ~p"/users/log_in")
+        |> follow_redirect(conn, ~p"/users/login")
 
-      assert login_html =~ "Log in"
+      assert login_html =~ "Login"
     end
   end
 end

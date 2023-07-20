@@ -59,7 +59,7 @@ defmodule QuizGameWeb.UserRegistrationLive do
         for={@form}
         has_errors={@check_errors}
         id="registration_form"
-        action={~p"/users/log_in?_action=registered"}
+        action={~p"/users/login?_action=registered"}
         method="post"
         phx-change="validate"
         phx-submit="save"
@@ -75,7 +75,7 @@ defmodule QuizGameWeb.UserRegistrationLive do
       </.simple_form>
 
       <.action_links items={[
-        %{content: "Login to an existing account", navigate: ~p"/users/log_in"}
+        %{content: "Login to an existing account", navigate: ~p"/users/login"}
       ]} />
     </section>
     """

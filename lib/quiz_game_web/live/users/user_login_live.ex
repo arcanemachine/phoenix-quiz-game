@@ -14,7 +14,7 @@ defmodule QuizGameWeb.UserLoginLive do
     <div class="mx-auto">
       <p class="text-center">To login to your account, enter your account details below.</p>
 
-      <.simple_form for={@form} id="login_form" action={~p"/users/log_in"} phx-update="ignore">
+      <.simple_form for={@form} id="login_form" action={~p"/users/login"} phx-update="ignore">
         <.input field={@form[:email]} type="email" label="Email" required />
         <.input field={@form[:password]} type="password" label="Password" required />
 
