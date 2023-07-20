@@ -777,7 +777,11 @@ defmodule QuizGameWeb.CoreComponents do
   """
   attr :for, :any, required: true, doc: "the datastructure for the form"
   attr :as, :any, default: nil, doc: "the server side parameter to collect all input under"
-  attr :confirmation_required, :boolean, default: false
+  attr :has_errors, :boolean, default: false
+
+  attr :confirmation_required, :boolean,
+    default: false,
+    doc: "require a confirmation checkbox to be checked before submitting the form"
 
   attr :rest, :global,
     include: ~w(autocomplete name rel action enctype method novalidate target multipart),
@@ -790,7 +794,10 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
       <div
-        class="max-w-sm mt-8 mx-auto"
+        class={[
+          "max-w-sm xl:max-w-md mt-8 p-2 mx-auto transition-colors duration-300 rounded-lg",
+          @has_errors && "bg-red-200"
+        ]}
         data-confirmation-required={@confirmation_required}
         x-data="simpleForm"
       >
@@ -816,6 +823,13 @@ defmodule QuizGameWeb.CoreComponents do
 
         <div :for={action <- @actions} class="flex flex-center flex-wrap w-full mt-4 mx-auto">
           <%= render_slot(action, f) %>
+        </div>
+
+        <div class={[
+          "text-sm text-error font-bold text-center transition-opacity duration-300",
+          @has_errors || "opacity-0"
+        ]}>
+          To continue, fix the errors in the form.
         </div>
       </div>
     </.form>
