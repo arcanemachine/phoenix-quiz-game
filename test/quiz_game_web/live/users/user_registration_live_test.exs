@@ -52,8 +52,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
       # Now do a logged in request and assert on the menu
       conn = get(conn, "/")
       response = html_response(conn, 200)
-      assert response =~ email
-      assert response =~ "Settings"
+      assert response =~ "Your profile"
       assert response =~ "Log out"
     end
 
@@ -79,7 +78,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
 
       {:ok, _login_live, login_html} =
         lv
-        |> element(~s|a:fl-contains("Sign in")|)
+        |> element(~s|a:fl-contains("Login to an existing account")|)
         |> render_click()
         |> follow_redirect(conn, ~p"/users/log_in")
 
