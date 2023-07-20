@@ -47,6 +47,8 @@ defmodule QuizGameWeb.Router do
   scope "/", QuizGameWeb do
     pipe_through [:browser, :require_authenticated_user]
 
+    get "/users/me", UserSessionController, :show
+
     live_session :require_authenticated_user,
       on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit

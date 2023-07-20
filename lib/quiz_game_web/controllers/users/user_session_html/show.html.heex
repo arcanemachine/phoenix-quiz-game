@@ -1,0 +1,29 @@
+<section class="container mx-auto max-w-xs">
+  <div>
+    <ul class="flex flex-center w-full">
+      <li class="flex justify-between align-center w-full">
+        <div class="font-semibold">
+          Email:
+        </div>
+        <div class="truncate">
+          <%= @current_user.email %>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="divider my-12" />
+
+  <ul class="flex flex-col justify-center w-full [&>*:not(:first-child)]:mt-8 text-2xl">
+    <li>
+      <.link class="w-full btn btn-lg btn-primary" href={~p"/users/me/settings"}>
+        Manage your profile
+      </.link>
+    </li>
+    <li>
+      <.link class="w-full btn btn-lg btn-error" href={~p"/users/logout"}>
+        Logout
+      </.link>
+    </li>
+  </ul>
+</section>
