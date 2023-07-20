@@ -805,9 +805,9 @@ defmodule QuizGameWeb.CoreComponents do
 
         <%= if @confirmation_required do %>
           <label>
-            <.header class="mt-4 mb-4 p-4 bg-primary text-primary-content cursor-pointer rounded-lg">
+            <.header class="mb-2 bg-primary text-primary-content cursor-pointer rounded-lg">
               <span class="text-sm font-normal">
-                I have confirmed that the data above is accurate.
+                I confirm that the data above is accurate.
               </span>
               <:actions>
                 <input
@@ -821,7 +821,7 @@ defmodule QuizGameWeb.CoreComponents do
           </label>
         <% end %>
 
-        <div :for={action <- @actions} class="flex flex-center flex-wrap w-full mt-4 mx-auto">
+        <div :for={action <- @actions} class="flex flex-center flex-wrap w-full mx-auto">
           <%= render_slot(action, f) %>
         </div>
 
