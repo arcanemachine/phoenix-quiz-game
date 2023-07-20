@@ -23,7 +23,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   def action_links(assigns) do
     ~H"""
-    <section class={["mt-12", @class]}>
+    <section class={["mt-8", @class]}>
       <div class="text-2xl font-bold">
         <%= @title || "Actions" %>
       </div>
