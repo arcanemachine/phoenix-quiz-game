@@ -191,14 +191,7 @@ defmodule QuizGameWeb.BaseComponents do
     ~H"""
     <section
       id="toast-container"
-      x-on:phx:toast-show-primary.window="(evt) => $store.toasts.show('primary', evt.detail)"
-      x-on:phx:toast-show-secondary.window="(evt) => $store.toasts.show('secondary', evt.detail)"
-      x-on:phx:toast-show-accent.window="(evt) => $store.toasts.show('accent', evt.detail)"
-      x-on:phx:toast-show-neutral.window="(evt) => $store.toasts.show('neutral', evt.detail)"
-      x-on:phx:toast-show-info.window="(evt) => $store.toasts.show('info', evt.detail)"
-      x-on:phx:toast-show-success.window="(evt) => $store.toasts.show('success', evt.detail)"
-      x-on:phx:toast-show-warning.window="(evt) => $store.toasts.show('warning', evt.detail)"
-      x-on:phx:toast-show-error.window="(evt) => $store.toasts.show('error', evt.detail)"
+      x-on:phx:toast-show.window="(evt) => $store.toasts.show(evt.theme, evt.detail)"
     />
     """
   end
