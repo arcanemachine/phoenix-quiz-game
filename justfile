@@ -231,14 +231,14 @@ color_reset := "\\033[39m"
   iex -S mix
 
 # run Elixir tests
-@test-elixir:
+@test-elixir args='':
   echo "Running Elixir tests..."
-  @./support/scripts/test-elixir
+  @./support/scripts/test-elixir {{ args }}
 
 # run Elixir tests (in watch mode)
-@test-elixir-watch:
+@test-elixir-watch args='':
   echo "Running Elixir tests in watch mode..."
-  @./support/scripts/test-elixir-watch
+  @./support/scripts/test-elixir-watch {{ args }}
 
 # run Javascript unit tests with Vitest
 @test-js:
