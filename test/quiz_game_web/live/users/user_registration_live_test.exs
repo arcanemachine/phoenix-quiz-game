@@ -53,7 +53,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
       conn = get(conn, "/")
       response = html_response(conn, 200)
       assert response =~ "Your profile"
-      assert response =~ "Log out"
+      assert response =~ "Logout"
     end
 
     test "renders errors for duplicated email", %{conn: conn} do

@@ -41,6 +41,6 @@ defmodule QuizGameWeb.UserSessionController do
   def delete(conn, _params) do
     conn
     |> put_flash(:success, "Logged out successfully.")
-    |> UserAuth.log_out_user()
+    |> UserAuth.logout_user()
   end
 end

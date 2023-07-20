@@ -26,7 +26,7 @@ defmodule QuizGameWeb.UserAuth do
 
   It also sets a `:live_socket_id` key in the session,
   so LiveView sessions are identified and automatically
-  disconnected on log out. The line can be safely removed
+  disconnected on logout. The line can be safely removed
   if you are not using LiveView.
   """
   def login_user(conn, user, params \\ %{}) do
@@ -50,7 +50,7 @@ defmodule QuizGameWeb.UserAuth do
 
   # This function renews the session ID and erases the whole
   # session to avoid fixation attacks. If there is any data
-  # in the session you may want to preserve after log in/log out,
+  # in the session you may want to preserve after log in/logout,
   # you must explicitly fetch the session data before clearing
   # and then immediately set it after clearing, for example:
   #
@@ -74,7 +74,7 @@ defmodule QuizGameWeb.UserAuth do
 
   It clears all session data for safety. See renew_session.
   """
-  def log_out_user(conn) do
+  def logout_user(conn) do
     user_token = get_session(conn, :user_token)
     user_token && Users.delete_user_session_token(user_token)
 

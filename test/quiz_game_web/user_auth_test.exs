@@ -57,7 +57,7 @@ defmodule QuizGameWeb.UserAuthTest do
         |> put_session(:user_token, user_token)
         |> put_req_cookie(@remember_me_cookie, user_token)
         |> fetch_cookies()
-        |> UserAuth.log_out_user()
+        |> UserAuth.logout_user()
 
       refute get_session(conn, :user_token)
       refute conn.cookies[@remember_me_cookie]
@@ -72,13 +72,13 @@ defmodule QuizGameWeb.UserAuthTest do
 
       conn
       |> put_session(:live_socket_id, live_socket_id)
-      |> UserAuth.log_out_user()
+      |> UserAuth.logout_user()
 
       assert_receive %Phoenix.Socket.Broadcast{event: "disconnect", topic: ^live_socket_id}
     end
 
     test "works even if user is already logged out", %{conn: conn} do
-      conn = conn |> fetch_cookies() |> UserAuth.log_out_user()
+      conn = conn |> fetch_cookies() |> UserAuth.logout_user()
       refute get_session(conn, :user_token)
       assert %{max_age: 0} = conn.resp_cookies[@remember_me_cookie]
       assert redirected_to(conn) == ~p"/"

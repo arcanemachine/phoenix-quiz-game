@@ -57,8 +57,8 @@ defmodule QuizGameWeb.Router do
   scope "/", QuizGameWeb do
     pipe_through [:browser]
 
-    get "/users/log_out", UserSessionController, :logout_confirm
-    delete "/users/log_out", UserSessionController, :delete
+    get "/users/logout", UserSessionController, :logout_confirm
+    delete "/users/logout", UserSessionController, :delete
 
     live_session :current_user,
       on_mount: [{QuizGameWeb.UserAuth, :mount_current_user}] do

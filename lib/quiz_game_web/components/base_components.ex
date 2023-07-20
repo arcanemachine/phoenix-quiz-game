@@ -106,7 +106,7 @@ defmodule QuizGameWeb.BaseComponents do
                   <.link href={~p"/users/settings"}>Your profile</.link>
                 </li>
                 <li>
-                  <.link href={~p"/users/log_out"}>Log out</.link>
+                  <.link href={~p"/users/logout"}>Logout</.link>
                 </li>
               <% else %>
                 <li>
