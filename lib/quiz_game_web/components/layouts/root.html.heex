@@ -45,7 +45,7 @@
       </noscript>
     </div>
 
-    <.navbar current_user={assigns[:current_user]} />
+    <.base_navbar current_user={assigns[:current_user]} />
 
     <main class="grow flex flex-col max-w-4xl mt-8 mx-auto mb-20 container px-4 sm:px-10 md:px-20">
       <section :if={assigns[:page_title] || assigns[:page_subtitle]} class="mb-10">
@@ -61,7 +61,7 @@
       <%= @inner_content %>
     </main>
 
-    <.footer />
-    <.toast_container />
+    <.base_footer />
+    <.base_toast_container />
   </body>
 </html>

@@ -8,13 +8,13 @@ defmodule QuizGameWeb.BaseComponents do
   import QuizGameWeb.CoreComponents
 
   @doc """
-  Renders the page footer.
+  Renders the base footer.
 
   ## Example
 
-      <.footer />
+      <.base_footer />
   """
-  def footer(assigns) do
+  def base_footer(assigns) do
     ~H"""
     <section class="w-full lg:p-2">
       <%!-- limit max width of footer by nesting it inside a full-width element --%>
@@ -59,16 +59,16 @@ defmodule QuizGameWeb.BaseComponents do
   end
 
   @doc """
-  Renders the primary navbar.
+  Renders the base navbar.
 
   ## Example
 
-      <.navbar />
+      <.base_navbar />
   """
 
   attr :current_user, :any, required: true
 
-  def navbar(assigns) do
+  def base_navbar(assigns) do
     ~H"""
     <div class="w-full lg:p-2">
       <%!-- limit max width of navbar by nesting it inside a full-width element --%>
@@ -185,9 +185,9 @@ defmodule QuizGameWeb.BaseComponents do
 
   ## Example
 
-      <.toast_container />
+      <.base_toast_container />
   """
-  def toast_container(assigns) do
+  def base_toast_container(assigns) do
     ~H"""
     <section
       id="toast-container"
