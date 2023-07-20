@@ -12,16 +12,16 @@ You can run specific tests by line number or tag.
 
 ### Running Tests from a Specific Module
 
-To run tests from a specific module, specify the path to the module that contains the desired test. For example:
+To run tests from a specific module, specify the path to the module that contains the desired test.
 
-  - './scripts/test-elixir test/your_test.ex'
+  - e.g. './scripts/test-elixir test/your_test.ex'
 
 
 ### Running Tests By Line Number
 
-To run a test by its line number, specify the path to the module that contains the desired test, and append a colon and the desired line number to the file path. For example:
+To run a test by its line number, specify the path to the module that contains the desired test, and append a colon and the desired line number to the file path.
 
-  - './scripts/test-elixir test/your_test.ex:123'
+  - e.g. './scripts/test-elixir test/your_test.ex:123'
 
 
 ### Running Tests By Tag
@@ -33,9 +33,9 @@ To test by tag, the test must first be given a tag. For example:
     ...
   end
 
-Then, to run the tagged tests, pass the '--include' flag with the matching key-value pair when starting the test runner. For example:
+Then, to run the tagged tests, pass the '--include' flag with the matching key-value pair when starting the test runner.
 
-  - './scripts/test-elixir --only your_tag:true'  # no space between key and value
+  - e.g. './scripts/test-elixir --only your_tag:true'  # no space between key and value
 
 
 ## Excluding Specific Tests
@@ -47,14 +47,20 @@ You can exclude specific tests by tag. Follow the instructions above to add a ta
 
 To exclude the tagged test(s), pass the '--exclude' flag with the matching key-value pair when starting the test runner:
 
-  - './scripts/test-elixir --exclude your_tag:true'  # no space between key and value
+  - e.g. './scripts/test-elixir --exclude your_tag:true'  # no space between key and value
 
 
 ## Running Tests Sequentially
 
-Tests can be run in a non-random order by setting the seed to 0. For example:
+Tests can be run in a non-random order by setting the seed to 0.
 
-  - 'mix test --seed 0'
+  - e.g. 'mix test --seed 0'
+
+## Increasing test timeout when debugging
+
+Use the '--trace' flag to increase the timeout when debugging.
+
+  - e.g. 'mix test --trace'
 "
   exit 0
 fi
