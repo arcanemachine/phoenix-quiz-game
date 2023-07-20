@@ -47,7 +47,8 @@
 
     <.base_navbar current_user={assigns[:current_user]} />
 
-    <main class="grow flex flex-col max-w-4xl mt-6 mx-auto mb-20 container px-4 sm:px-10 md:px-20">
+    <main class="grow flex flex-col min-h-[60vh] max-w-4xl mt-6 mx-auto mb-20 container px-4
+                 sm:px-10 md:px-20">
       <%= @inner_content %>
     </main>
 
