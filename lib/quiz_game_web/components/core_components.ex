@@ -498,7 +498,7 @@ defmodule QuizGameWeb.CoreComponents do
         <%= @label %>
       </label>
       <div class="flex min-h-[2.5rem] show-empty-element">
-        <.error :for={msg <- @errors}>Value <%= msg %></.error>
+        <.error :for={msg <- @errors}><%= @label %> <%= msg %>.</.error>
       </div>
     </div>
     """
@@ -524,7 +524,7 @@ defmodule QuizGameWeb.CoreComponents do
         <%= Phoenix.HTML.Form.options_for_select(@options, @value) %>
       </select>
       <div class="flex min-h-[2.5rem] show-empty-element">
-        <.error :for={msg <- @errors}>Value <%= msg %></.error>
+        <.error :for={msg <- @errors}><%= @label %> <%= msg %></.error>
       </div>
     </div>
     """
@@ -547,7 +547,7 @@ defmodule QuizGameWeb.CoreComponents do
         {@rest}
       ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
       <div class="flex min-h-[2.5rem] show-empty-element">
-        <.error :for={msg <- @errors}>Value <%= msg %></.error>
+        <.error :for={msg <- @errors}><%= @label %> <%= msg %></.error>
       </div>
     </div>
     """
@@ -572,7 +572,7 @@ defmodule QuizGameWeb.CoreComponents do
         {@rest}
       />
       <div class="flex min-h-[2.5rem] show-empty-element">
-        <.error :for={msg <- @errors}>Value <%= msg %></.error>
+        <.error :for={msg <- @errors}><%= @label %> <%= msg %></.error>
       </div>
     </div>
     """
