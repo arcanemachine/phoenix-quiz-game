@@ -1,6 +1,8 @@
 defmodule QuizGameWeb.Base.ComponentShowcaseLive do
   use QuizGameWeb, :live_view
 
+  @page_title "Component Showcase"
+
   defmodule FormData do
     @types %{
       text: :string,
@@ -34,7 +36,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
      socket
      |> assign(
        form: build_empty_form(),
-       page_title: "Component Showcase",
+       page_title: @page_title,
        table_rows: [
          %TableRow{id: 1, col1: "Value 1", col2: "Value 2"},
          %TableRow{id: 2, col1: "Value 3", col2: "Value 4"},
