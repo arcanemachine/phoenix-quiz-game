@@ -497,7 +497,7 @@ defmodule QuizGameWeb.CoreComponents do
         />
         <%= @label %>
       </label>
-      <div class="flex min-h-[2.5rem] show-empty-element">
+      <div class="flex min-h-4 p-1 show-empty-element">
         <.error :for={msg <- @errors}><%= @label %> <%= msg %>.</.error>
       </div>
     </div>
@@ -523,7 +523,7 @@ defmodule QuizGameWeb.CoreComponents do
         <option :if={@prompt} value=""><%= @prompt %></option>
         <%= Phoenix.HTML.Form.options_for_select(@options, @value) %>
       </select>
-      <div class="flex min-h-[2.5rem] show-empty-element">
+      <div class="flex min-h-4 p-1 show-empty-element">
         <.error :for={msg <- @errors}><%= @label %> <%= msg %></.error>
       </div>
     </div>
@@ -546,7 +546,7 @@ defmodule QuizGameWeb.CoreComponents do
         phx-debounce={@debounce}
         {@rest}
       ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
-      <div class="flex min-h-[2.5rem] show-empty-element">
+      <div class="flex min-h-4 p-1 show-empty-element">
         <.error :for={msg <- @errors}><%= @label %> <%= msg %></.error>
       </div>
     </div>
@@ -571,7 +571,7 @@ defmodule QuizGameWeb.CoreComponents do
         phx-debounce={@debounce}
         {@rest}
       />
-      <div class="flex min-h-[2.5rem] show-empty-element">
+      <div class="flex min-h-4 p-1 show-empty-element">
         <.error :for={msg <- @errors}><%= @label %> <%= msg %></.error>
       </div>
     </div>
@@ -805,7 +805,7 @@ defmodule QuizGameWeb.CoreComponents do
 
         <%= if @confirmation_required do %>
           <label>
-            <.header class="mb-2 bg-primary text-primary-content cursor-pointer rounded-lg">
+            <.header class="mt-2 mb-4 bg-primary text-primary-content cursor-pointer rounded-lg">
               <span class="text-sm font-normal">
                 I confirm that the data above is accurate.
               </span>
