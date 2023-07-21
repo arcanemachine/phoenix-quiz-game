@@ -103,7 +103,7 @@ defmodule QuizGameWeb.BaseComponents do
               </div>
               <%= if @current_user do %>
                 <li>
-                  <.link href={~p"/users/settings"}>Your profile</.link>
+                  <.link href={~p"/users/me"}>Your profile</.link>
                 </li>
                 <li>
                   <.link href={~p"/users/logout"}>Logout</.link>
