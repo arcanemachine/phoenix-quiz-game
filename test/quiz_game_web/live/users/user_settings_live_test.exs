@@ -64,7 +64,7 @@ defmodule QuizGameWeb.UserSettingsLiveTest do
         })
 
       assert result =~ "Change Email"
-      assert result =~ "must have the @ sign and no spaces"
+      assert result =~ "is not a valid email address"
     end
 
     test "renders errors with invalid data (phx-submit)", %{conn: conn, user: user} do
@@ -136,7 +136,7 @@ defmodule QuizGameWeb.UserSettingsLiveTest do
 
       assert result =~ "Change Password"
       assert result =~ "should be at least 8 character(s)"
-      assert result =~ "does not match password"
+      assert result =~ "does not match"
     end
 
     test "renders errors with invalid data (phx-submit)", %{conn: conn} do
@@ -155,7 +155,7 @@ defmodule QuizGameWeb.UserSettingsLiveTest do
 
       assert result =~ "Change Password"
       assert result =~ "should be at least 8 character(s)"
-      assert result =~ "does not match password"
+      assert result =~ "does not match"
       assert result =~ "is not valid"
     end
   end

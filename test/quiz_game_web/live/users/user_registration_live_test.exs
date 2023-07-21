@@ -33,7 +33,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
         |> render_change(user: %{"email" => "with spaces", "password" => "2short"})
 
       assert result =~ "Register"
-      assert result =~ "must have the @ sign and no spaces"
+      assert result =~ "is not a valid email address"
       assert result =~ "should be at least 8 character"
     end
   end

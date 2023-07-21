@@ -44,7 +44,7 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
         |> render_change(user: %{"password" => "2short", "confirmation_password" => "short"})
 
       assert result =~ "should be at least 8 character"
-      assert result =~ "does not match password"
+      assert result =~ "does not match"
     end
   end
 
@@ -83,7 +83,7 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
 
       assert result =~ "Reset Password"
       assert result =~ "should be at least 8 character(s)"
-      assert result =~ "does not match password"
+      assert result =~ "does not match"
     end
   end
 

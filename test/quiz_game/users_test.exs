@@ -64,7 +64,7 @@ defmodule QuizGame.UsersTest do
       {:error, changeset} = Users.register_user(%{email: "not valid", password: "invalid"})
 
       assert %{
-               email: ["must have the @ sign and no spaces"],
+               email: ["is not a valid email address"],
                password: ["should be at least 8 character(s)"]
              } = errors_on(changeset)
     end
@@ -140,7 +140,7 @@ defmodule QuizGame.UsersTest do
       {:error, changeset} =
         Users.apply_user_email(user, valid_user_password(), %{email: "not valid"})
 
-      assert %{email: ["must have the @ sign and no spaces"]} = errors_on(changeset)
+      assert %{email: ["is not a valid email address"]} = errors_on(changeset)
     end
 
     test "validates maximum value for email for security", %{user: user} do
@@ -270,7 +270,7 @@ defmodule QuizGame.UsersTest do
 
       assert %{
                password: ["should be at least 8 character(s)"],
-               password_confirmation: ["does not match password"]
+               password_confirmation: ["does not match"]
              } = errors_on(changeset)
     end
 
@@ -479,7 +479,7 @@ defmodule QuizGame.UsersTest do
 
       assert %{
                password: ["should be at least 8 character(s)"],
-               password_confirmation: ["does not match password"]
+               password_confirmation: ["does not match"]
              } = errors_on(changeset)
     end
 
