@@ -57,6 +57,15 @@
   text-align: center;
 }
 
+/* utility */
+.list-back {
+  list-style-type: "< ";
+}
+
+.list-dash {
+  list-style-type: "- ";
+}
+
 @layer base {
   /* alpinejs */
   [x-cloak] {
@@ -149,13 +158,5 @@
   .flex-center {
     justify-content: center;
     align-items: center;
-  }
-
-  .list-back {
-    list-style-type: "< ";
-  }
-
-  .list-dash {
-    list-style-type: "- ";
   }
 }
