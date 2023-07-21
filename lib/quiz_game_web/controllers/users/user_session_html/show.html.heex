@@ -1,29 +1,29 @@
-<section class="container mx-auto max-w-xs">
-  <div>
-    <ul class="flex flex-center w-full">
-      <li class="flex justify-between align-center w-full">
-        <div class="font-semibold">
+<section class="mt-8">
+  <div class="max-w-xs">
+    <ul>
+      <li>
+        <span class="font-bold">
           Email:
-        </div>
-        <div class="truncate">
+        </span>
+        <span class="ps-2 truncate">
           <%= @current_user.email %>
-        </div>
+        </span>
       </li>
     </ul>
   </div>
 
   <div class="divider my-12" />
 
-  <ul class="flex flex-col justify-center w-full [&>*:not(:first-child)]:mt-8 text-2xl">
-    <li>
-      <.link class="w-full btn btn-lg btn-primary" href={~p"/users/me/settings"}>
+  <.action_links>
+    <.action_links_item>
+      <.link navigate={~p"/users/me/settings"}>
         Manage your profile
       </.link>
-    </li>
-    <li>
-      <.link class="w-full btn btn-lg btn-error" href={~p"/users/logout"}>
+    </.action_links_item>
+    <.action_links_item>
+      <.link href={~p"/users/logout"}>
         Logout
       </.link>
-    </li>
-  </ul>
+    </.action_links_item>
+  </.action_links>
 </section>
