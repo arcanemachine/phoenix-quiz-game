@@ -20,7 +20,7 @@ defmodule QuizGameWeb.UserLoginLiveTest do
         conn
         |> login_user(user_fixture())
         |> live(~p"/users/login")
-        |> follow_redirect(conn, "/")
+        |> follow_redirect(conn, "/users/me")
 
       assert {:ok, _conn} = result
     end
@@ -38,7 +38,7 @@ defmodule QuizGameWeb.UserLoginLiveTest do
 
       conn = submit_form(form, conn)
 
-      assert redirected_to(conn) == ~p"/"
+      assert redirected_to(conn) == ~p"/users/me"
     end
 
     test "redirects to login page with a flash error if there are no valid credentials", %{

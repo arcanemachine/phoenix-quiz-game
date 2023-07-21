@@ -24,7 +24,7 @@ defmodule QuizGameWeb.UserAuthTest do
       conn = UserAuth.login_user(conn, user)
       assert token = get_session(conn, :user_token)
       assert get_session(conn, :live_socket_id) == "users_sessions:#{Base.url_encode64(token)}"
-      assert redirected_to(conn) == ~p"/"
+      assert redirected_to(conn) == ~p"/users/me"
       assert Users.get_user_by_session_token(token)
     end
 
@@ -218,7 +218,7 @@ defmodule QuizGameWeb.UserAuthTest do
     test "redirects if user is authenticated", %{conn: conn, user: user} do
       conn = conn |> assign(:current_user, user) |> UserAuth.redirect_if_user_is_authenticated([])
       assert conn.halted
-      assert redirected_to(conn) == ~p"/"
+      assert redirected_to(conn) == ~p"/users/me"
     end
 
     test "does not redirect if user is not authenticated", %{conn: conn} do

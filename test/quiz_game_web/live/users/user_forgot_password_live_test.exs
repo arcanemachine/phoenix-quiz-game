@@ -23,7 +23,7 @@ defmodule QuizGameWeb.UserForgotPasswordLiveTest do
         conn
         |> login_user(user_fixture())
         |> live(~p"/users/reset_password")
-        |> follow_redirect(conn, ~p"/")
+        |> follow_redirect(conn, ~p"/users/me")
 
       assert {:ok, _conn} = result
     end

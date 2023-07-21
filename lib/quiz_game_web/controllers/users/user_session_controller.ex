@@ -5,13 +5,13 @@ defmodule QuizGameWeb.UserSessionController do
   alias QuizGameWeb.UserAuth
 
   def create(conn, %{"_action" => "registered"} = params) do
-    create(conn, params, "Account created successfully!")
+    create(conn, params, "Account created successfully")
   end
 
   def create(conn, %{"_action" => "password_updated"} = params) do
     conn
     |> put_session(:user_return_to, ~p"/users/settings")
-    |> create(params, "Password updated successfully!")
+    |> create(params, "Password updated successfully")
   end
 
   def create(conn, params) do
@@ -26,7 +26,7 @@ defmodule QuizGameWeb.UserSessionController do
       |> put_flash(:success, success_message)
       |> UserAuth.login_user(user, user_params)
     else
-      # In order to prevent user enumeration attacks, don't disclose whether the email is registered.
+      # to prevent user enumeration attacks, don't disclose whether the email is registered
       conn
       |> put_flash(:error, "Invalid email or password")
       |> put_flash(:email, String.slice(email, 0, 160))
@@ -44,7 +44,7 @@ defmodule QuizGameWeb.UserSessionController do
 
   def delete(conn, _params) do
     conn
-    |> put_flash(:success, "Logged out successfully.")
+    |> put_flash(:success, "Logged out successfully")
     |> UserAuth.logout_user()
   end
 end
