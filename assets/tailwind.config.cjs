@@ -42,6 +42,10 @@ module.exports = {
         brand: "#003B4A",
       },
     },
+    listStyleType: {
+      back: "disc",
+      dash: "- ",
+    },
   },
   safelist: [
     "alert-info",

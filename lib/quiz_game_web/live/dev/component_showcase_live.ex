@@ -361,11 +361,23 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
     <h3 class="mb-4 text-2xl text-center">Action Links</h3>
 
-    <.action_links items={[
-      %{content: "Item 1", navigate: "/dev/component-showcase"},
-      %{content: "Item 2", navigate: "/dev/component-showcase", class: "italic"},
-      %{content: "Item 3", navigate: "/dev/component-showcase", class: "underline"}
-    ]} />
+    <.action_links>
+      <.action_links_item>
+        <.link navigate="/dev/component-showcase">
+          Item 1
+        </.link>
+      </.action_links_item>
+      <.action_links_item kind="back" class="ml-4">
+        <.link navigate="/dev/component-showcase">
+          Item 2
+        </.link>
+      </.action_links_item>
+      <.action_links_item>
+        <.link navigate="/dev/component-showcase" class="italic">
+          Item 3
+        </.link>
+      </.action_links_item>
+    </.action_links>
 
     <div class="my-8 divider" />
 

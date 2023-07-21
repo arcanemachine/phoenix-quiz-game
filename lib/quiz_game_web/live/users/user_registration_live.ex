@@ -74,9 +74,13 @@ defmodule QuizGameWeb.UserRegistrationLive do
         </:actions>
       </.simple_form>
 
-      <.action_links items={[
-        %{content: "Login to an existing account", navigate: ~p"/users/login"}
-      ]} />
+      <.action_links>
+        <.action_links_item>
+          <.link navigate={~p"/users/login"}>
+            Login to an existing account
+          </.link>
+        </.action_links_item>
+      </.action_links>
     </section>
     """
   end

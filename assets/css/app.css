@@ -152,10 +152,10 @@
   }
 
   .list-back {
-    list-style-type: "< " !important;
+    list-style-type: "< ";
   }
 
   .list-dash {
-    list-style-type: "- " !important;
+    list-style-type: "- ";
   }
 }

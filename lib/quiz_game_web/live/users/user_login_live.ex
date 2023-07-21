@@ -29,10 +29,18 @@ defmodule QuizGameWeb.UserLoginLive do
       </.simple_form>
     </div>
 
-    <.action_links items={[
-      %{content: "Register new account", navigate: ~p"/users/register"},
-      %{content: "Forgot your password?", href: ~p"/users/reset_password"}
-    ]} />
+    <.action_links>
+      <.action_links_item>
+        <.link navigate={~p"/users/register"}>
+          Register new account
+        </.link>
+      </.action_links_item>
+      <.action_links_item>
+        <.link href={~p"/users/reset_password"}>
+          Forgot your password?
+        </.link>
+      </.action_links_item>
+    </.action_links>
     """
   end
 end

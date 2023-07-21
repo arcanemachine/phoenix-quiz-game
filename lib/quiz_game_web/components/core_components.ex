@@ -9,38 +9,60 @@ defmodule QuizGameWeb.CoreComponents do
   alias Phoenix.LiveView.JS
 
   @doc """
-  Renders a list of links.
+  Renders a list of links. Used at the bottom of a page to display relevant actions.
 
   ## Example
 
-      <.action_links items={[
-        %{content: "Return to your profile", navigate: ~p"/users/profile", class: "list-back"}
-      ]} />
+      <.action_links>
+        <.action_links_item class="list-back">
+          <.link navigate={~p"/"}>
+            Return to homepage
+          </.link>
+        </.action_links_item>
+      </.action_links>
   """
-  attr :title, :string, default: nil
-  attr :class, :string, default: nil
-  attr :items, :list, required: true
+  attr :title, :string, default: "Actions"
+  attr :class, :string, default: ""
+
+  slot :inner_block, required: true
 
   def action_links(assigns) do
     ~H"""
     <section class={["mt-8", @class]}>
       <div class="text-2xl font-bold">
-        <%= @title || "Actions" %>
+        <%= @title %>
       </div>
-      <ul class="mt-2 ml-6">
-        <li :for={item <- @items} class={[["mt-2 pl-2 list-dash"], [Map.get(item, :class, "")]]}>
-          <.link
-            href={Map.get(item, :href, false)}
-            navigate={Map.get(item, :navigate, false)}
-            patch={Map.get(item, :patch, false)}
-            method={Map.get(item, :method, "get")}
-            data-confirm={Map.get(item, :confirm, false)}
-          >
-            <%= item.content %>
-          </.link>
-        </li>
+      <ul class="mt-2 ml-6 [&>*:first-child]:mt-4">
+        <%= render_slot(@inner_block) %>
       </ul>
     </section>
+    """
+  end
+
+  @doc """
+  An action link item (e.g. a '<.link>').
+
+  Used as a child element of the component `<.action_links>`.
+
+  ## Example
+
+      <.action_links_item kind="back" class="text-xl">
+        <.link navigate={~p"/"}>
+          Return to homepage
+        </.link>
+      </.action_links_item>
+  """
+
+  attr :kind, :string, default: "dash"
+  attr :class, :string, default: ""
+
+  slot :inner_block, required: true
+
+  def action_links_item(assigns) do
+    ~H"""
+    <li class={["mt-2 pl-2 text-lg list-#{@kind}", @class]}>
+      <%= render_slot(@inner_block) %>
+    </li>
     """
   end
 
