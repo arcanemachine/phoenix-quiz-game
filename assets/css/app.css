@@ -170,8 +170,4 @@
   .list-dash {
     list-style-type: "- " !important;
   }
-
-  .mt-child-2 > *:not(:first-child) {
-    margin-top: 0.5rem;
-  }
 }

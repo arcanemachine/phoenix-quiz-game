@@ -225,7 +225,7 @@ defmodule QuizGameWeb.CoreComponents do
   def flash_group(assigns) do
     ~H"""
     <div class="fixed flex flex-col justify-center w-80 sm:w-[25rem] top-1.5 lg:mt-2 right-0
-                left-0 mt-child-2 mx-auto">
+                left-0 [&>*:not(:first-child)]:mt-2 mx-auto">
       <.flash kind={:error} title="Error" id="flash-error" flash={@flash} />
       <.flash kind={:warning} title="Warning" id="flash-warning" flash={@flash} />
       <.flash kind={:success} title="Success" id="flash-success" flash={@flash} />

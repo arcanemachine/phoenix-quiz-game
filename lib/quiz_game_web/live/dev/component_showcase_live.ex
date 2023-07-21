@@ -113,7 +113,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
     <h2 class="mb-8 text-3xl text-center">Alert</h2>
 
-    <section class="mt-child-2">
+    <section class="[&>*:not(:first-child)]:mt-2">
       <.alert kind="primary">Primary alert</.alert>
       <.alert kind="secondary">Secondary alert</.alert>
       <.alert kind="accent">Accent alert</.alert>
