@@ -93,14 +93,14 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       %FormData{}
       |> FormData.changeset(form_data_params)
       |> Ecto.Changeset.validate_required(Map.keys(FormData.types()))
-      |> Ecto.Changeset.validate_format(:text, ~r/^pass$/, message: "Must be 'pass'")
+      |> Ecto.Changeset.validate_format(:text, ~r/^pass$/, message: "must be 'pass'")
       |> Ecto.Changeset.validate_format(:email, ~r/^pass@example\.com$/,
         message: "Must be 'pass@example.com'"
       )
-      |> Ecto.Changeset.validate_format(:password, ~r/^pass$/, message: "Must be 'pass'")
-      |> Ecto.Changeset.validate_acceptance(:checkbox, message: "Must be checked")
-      |> Ecto.Changeset.validate_format(:select, ~r/^pass$/, message: "Must be 'pass'")
-      |> Ecto.Changeset.validate_format(:textarea, ~r/^pass$/, message: "Must be 'pass'")
+      |> Ecto.Changeset.validate_format(:password, ~r/^pass$/, message: "must be 'pass'")
+      |> Ecto.Changeset.validate_acceptance(:checkbox, message: "must be checked")
+      |> Ecto.Changeset.validate_format(:select, ~r/^pass$/, message: "must be 'pass'")
+      |> Ecto.Changeset.validate_format(:textarea, ~r/^pass$/, message: "must be 'pass'")
       |> Map.put(:action, :validate)
       |> to_form()
 
