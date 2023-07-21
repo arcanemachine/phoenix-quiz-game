@@ -88,7 +88,8 @@
   input,
   select,
   textarea {
-    @apply !bg-white text-black;
+    background-color: white !important;
+    color: black;
   }
 
   .dropdown-content {
@@ -98,7 +99,9 @@
 
   /* phoenix */
   [data-phx-main] {
-    /* ensure the page always fills 100% of the vertical height of the screen */
+    /* ensure that the live view element always fills 100% of the vertical
+     * height of the screen
+     */
     height: 100%;
   }
 }
@@ -126,21 +129,6 @@
   }
 
   /* custom */
-  .action-links {
-    margin-top: 3rem;
-  }
-
-  .action-links > li {
-    margin-top: 0.5rem;
-    font-size: 1.2rem;
-  }
-
-  .form-button {
-    display: block;
-    min-width: 8rem;
-    margin: 0.5rem;
-  }
-
   .template-center {
     display: flex;
     height: 100%;

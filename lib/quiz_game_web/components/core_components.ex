@@ -273,7 +273,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   def form_button(assigns) do
     ~H"""
-    <.button type={@type} class={["form-button", @class]} loader={@loader} {@rest}>
+    <.button type={@type} class={["block min-w-[8rem] m-2", @class]} loader={@loader} {@rest}>
       <%= @content %>
     </.button>
     """
