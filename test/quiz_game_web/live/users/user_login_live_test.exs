@@ -11,7 +11,7 @@ defmodule QuizGameWeb.UserLoginLiveTest do
       {:ok, _lv, html} = live(conn, ~p"/users/login")
 
       assert html =~ "Login"
-      assert html =~ "Register"
+      assert html =~ "Register new account"
       assert html =~ "Forgot your password?"
     end
 
@@ -81,9 +81,9 @@ defmodule QuizGameWeb.UserLoginLiveTest do
         lv
         |> element(~s|a:fl-contains("Forgot your password?")|)
         |> render_click()
-        |> follow_redirect(conn, ~p"/users/reset_password")
+        |> follow_redirect(conn, ~p"/users/reset-password")
 
-      assert conn.resp_body =~ "Forgot your password?"
+      assert conn.resp_body =~ "Reset Your Password"
     end
   end
 end

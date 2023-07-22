@@ -88,7 +88,11 @@ defmodule QuizGameWeb.BaseComponents do
         <%!-- navbar end items --%>
         <div class="mr-1 flex-none">
           <%!-- user actions menu --%>
-          <details class="dropdown dropdown-end" x-data @click.outside="$el.removeAttribute('open')">
+          <details
+            class="dropdown dropdown-end"
+            x-data
+            x-on:click.outside="$el.removeAttribute('open')"
+          >
             <summary
               class="m-1 btn btn-ghost focus:ring-2"
               x-tooltip="{ content: 'User Actions', placement: 'left' }"
@@ -97,7 +101,8 @@ defmodule QuizGameWeb.BaseComponents do
               <.icon name="hero-user-circle-solid" class="h-7 w-7" />
             </summary>
             <ul class="w-52 p-2 shadow menu dropdown-content bg-base-100 text-base-content
-                       n-transition-background rounded-box border-2 border-secondary">
+                       n-transition-background rounded-box rounded-tr-md border-1
+                       border-secondary">
               <div class="mt-2 mb-3 text-lg text-center font-bold">
                 User Actions
               </div>
@@ -120,15 +125,10 @@ defmodule QuizGameWeb.BaseComponents do
           </details>
 
           <%!-- settings menu --%>
-          <div
-            x-data="{ show: false }"
-            x-title="navbar-settings-menu"
-            x-on:keyup.escape="show = false"
-          >
+          <div x-data="{ show: false }" x-title="navbar-settings-menu" @keyup.escape="show = false">
             <button
               class="btn-ghost btn-square btn m-1"
               x-tooltip="{ content: 'Settings', placement: 'left' }"
-              x-on:click="show = true"
             >
               <.icon name="hero-cog-6-tooth-solid" class="h-7 w-7" />
             </button>
@@ -144,7 +144,7 @@ defmodule QuizGameWeb.BaseComponents do
                 <div class="mb-12 text-3xl font-bold text-center">Settings</div>
                 <button
                   x-on:click="show = false"
-                  class="absolute right-0 top-0 btn btn-circle btn-ghost"
+                  class="absolute -right-2 -top-2 btn btn-lg btn-circle btn-ghost"
                 >
                   ✕
                 </button>
@@ -159,7 +159,7 @@ defmodule QuizGameWeb.BaseComponents do
                       class="select select-bordered"
                       name="theme"
                       x-model="theme"
-                      x-on:change="handleChange"
+                      @change="handleChange"
                     >
                       <option>Auto</option>
                       <option>Light</option>
@@ -191,7 +191,7 @@ defmodule QuizGameWeb.BaseComponents do
     ~H"""
     <section
       id="toast-container"
-      x-on:phx:toast-show.window="(evt) => $store.toasts.show(evt.theme, evt.detail)"
+      @phx:toast-show.window="(evt) => $store.toasts.show(evt.theme, evt.detail)"
     />
     """
   end

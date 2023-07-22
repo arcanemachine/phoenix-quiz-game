@@ -23,7 +23,7 @@ defmodule QuizGameWeb.Router.Base do
 
           live("/component-showcase", ComponentShowcaseLive)
 
-          live_dashboard("/dashboard", metrics: TodoListWeb.Telemetry)
+          live_dashboard("/dashboard", metrics: QuizGameWeb.Telemetry)
           forward "/mailbox", Plug.Swoosh.MailboxPreview
         end
       end

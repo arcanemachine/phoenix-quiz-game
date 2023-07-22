@@ -52,7 +52,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
         })
 
       assert redirected_to(conn) == "/foo/bar"
-      assert Phoenix.Flash.get(conn.assigns.flash, :success) =~ "Welcome back!"
+      assert Phoenix.Flash.get(conn.assigns.flash, :success) =~ "Logged in successfully"
     end
 
     test "login following registration", %{conn: conn, user: user} do
@@ -81,7 +81,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
           }
         })
 
-      assert redirected_to(conn) == ~p"/users/settings"
+      assert redirected_to(conn) == ~p"/users/me/update"
       assert Phoenix.Flash.get(conn.assigns.flash, :success) =~ "Password updated successfully"
     end
 

@@ -1,29 +1,27 @@
-<section class="mt-8">
-  <div class="max-w-xs">
-    <ul>
-      <li>
-        <span class="font-bold">
-          Email:
-        </span>
-        <span class="ps-2 truncate">
-          <%= @current_user.email %>
-        </span>
-      </li>
-    </ul>
-  </div>
+<div class="max-w-xs">
+  <ul>
+    <li>
+      <span class="font-bold">
+        Email:
+      </span>
+      <span class="ps-2 truncate">
+        <%= @current_user.email %>
+      </span>
+    </li>
+  </ul>
+</div>
 
-  <div class="divider my-12" />
+<div class="divider my-12" />
 
-  <.action_links>
-    <.action_links_item>
-      <.link navigate={~p"/users/me/settings"}>
-        Manage your profile
-      </.link>
-    </.action_links_item>
-    <.action_links_item>
-      <.link href={~p"/users/logout"}>
-        Logout
-      </.link>
-    </.action_links_item>
-  </.action_links>
-</section>
+<.action_links>
+  <.action_links_item>
+    <.link navigate={~p"/users/me/update"}>
+      Manage your profile
+    </.link>
+  </.action_links_item>
+  <.action_links_item>
+    <.link href={~p"/users/logout"}>
+      Logout
+    </.link>
+  </.action_links_item>
+</.action_links>

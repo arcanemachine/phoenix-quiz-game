@@ -3,44 +3,35 @@ defmodule QuizGameWeb.UserForgotPasswordLive do
 
   alias QuizGame.Users
 
-  def render(assigns) do
-    ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">
-        Forgot your password?
-        <:subtitle>We'll send a password reset link to your inbox</:subtitle>
-      </.header>
-
-      <.simple_form for={@form} id="reset_password_form" phx-submit="send_email">
-        <.input field={@form[:email]} type="email" placeholder="Email" required />
-        <:actions>
-          <.button phx-disable-with="Sending..." class="w-full">
-            Send password reset instructions
-          </.button>
-        </:actions>
-      </.simple_form>
-      <p class="text-center text-sm mt-4">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/login"}>Login</.link>
-      </p>
-    </div>
-    """
+  def mount(_params, _session, socket) do
+    {:ok, assign(socket, page_title: "Reset Your Password", form: to_form(%{}, as: "user"))}
   end
 
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, form: to_form(%{}, as: "user"))}
+  def render(assigns) do
+    ~H"""
+    <.form_text_intro>
+      Fill out the form, and we will send you an email with a link to reset your password.
+    </.form_text_intro>
+
+    <.simple_form for={@form} id="reset_password_form" phx-submit="send_email">
+      <.input field={@form[:email]} type="email" placeholder="Email" required />
+      <:actions>
+        <.simple_form_actions_default />
+      </:actions>
+    </.simple_form>
+    """
   end
 
   def handle_event("send_email", %{"user" => %{"email" => email}}, socket) do
     if user = Users.get_user_by_email(email) do
       Users.deliver_user_reset_password_instructions(
         user,
-        &url(~p"/users/reset_password/#{&1}")
+        &url(~p"/users/reset-password/#{&1}")
       )
     end
 
     info =
-      "If your email is in our system, you will receive instructions to reset your password shortly."
+      "If your email is in our system, then check your email inbox for password reset instructions."
 
     {:noreply,
      socket

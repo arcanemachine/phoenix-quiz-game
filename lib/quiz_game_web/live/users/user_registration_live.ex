@@ -28,13 +28,47 @@ defmodule QuizGameWeb.UserRegistrationLive do
     end
   end
 
+  def render(assigns) do
+    ~H"""
+    <.form_text_intro>
+      To register a new account, enter your account details below.
+    </.form_text_intro>
+
+    <.simple_form
+      for={@form}
+      has_errors={@check_errors}
+      id="registration_form"
+      action={~p"/users/login?_action=registered"}
+      method="post"
+      phx-change="validate"
+      phx-submit="save"
+      phx-trigger-action={@trigger_submit}
+    >
+      <.input field={@form[:email]} type="email" label="Email" required />
+      <.input field={@form[:password]} type="password" label="Password" required />
+
+      <:actions>
+        <.simple_form_actions_default />
+      </:actions>
+    </.simple_form>
+
+    <.action_links>
+      <.action_links_item>
+        <.link navigate={~p"/users/login"}>
+          Login to an existing account
+        </.link>
+      </.action_links_item>
+    </.action_links>
+    """
+  end
+
   def handle_event("save", %{"user" => user_params}, socket) do
     case Users.register_user(user_params) do
       {:ok, user} ->
         {:ok, _} =
           Users.deliver_user_confirmation_instructions(
             user,
-            &url(~p"/users/confirm/#{&1}")
+            &url(~p"/users/confirm/email/#{&1}")
           )
 
         changeset = Users.change_user_registration(user)
@@ -48,40 +82,5 @@ defmodule QuizGameWeb.UserRegistrationLive do
   def handle_event("validate", %{"user" => user_params}, socket) do
     changeset = Users.change_user_registration(%User{}, user_params)
     {:noreply, assign_form(socket, Map.put(changeset, :action, :validate))}
-  end
-
-  def render(assigns) do
-    ~H"""
-    <section class="mx-auto">
-      <p class="text-center">To register a new account, enter your account details below.</p>
-
-      <.simple_form
-        for={@form}
-        has_errors={@check_errors}
-        id="registration_form"
-        action={~p"/users/login?_action=registered"}
-        method="post"
-        phx-change="validate"
-        phx-submit="save"
-        phx-trigger-action={@trigger_submit}
-      >
-        <.input field={@form[:email]} type="email" label="Email" required />
-        <.input field={@form[:password]} type="password" label="Password" required />
-
-        <:actions>
-          <.form_button_cancel />
-          <.form_button_submit />
-        </:actions>
-      </.simple_form>
-
-      <.action_links>
-        <.action_links_item>
-          <.link navigate={~p"/users/login"}>
-            Login to an existing account
-          </.link>
-        </.action_links_item>
-      </.action_links>
-    </section>
-    """
   end
 end

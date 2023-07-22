@@ -11,23 +11,22 @@ defmodule QuizGameWeb.UserLoginLive do
 
   def render(assigns) do
     ~H"""
-    <div class="mx-auto">
-      <p class="text-center">To login to your account, enter your account details below.</p>
+    <.form_text_intro>
+      To login to your account, enter your account details below.
+    </.form_text_intro>
 
-      <.simple_form for={@form} id="login_form" action={~p"/users/login"} phx-update="ignore">
-        <.input field={@form[:email]} type="email" label="Email" required />
-        <.input field={@form[:password]} type="password" label="Password" required />
+    <.simple_form for={@form} id="login_form" action={~p"/users/login"} phx-update="ignore">
+      <.input field={@form[:email]} type="email" label="Email" required />
+      <.input field={@form[:password]} type="password" label="Password" required />
 
-        <div class="-my-4 flex flex-center">
-          <.input field={@form[:remember_me]} type="checkbox" label="Keep me logged in" />
-        </div>
+      <div class="-my-4 flex flex-center">
+        <.input field={@form[:remember_me]} type="checkbox" label="Keep me logged in" />
+      </div>
 
-        <:actions>
-          <.form_button_cancel />
-          <.form_button_submit />
-        </:actions>
-      </.simple_form>
-    </div>
+      <:actions>
+        <.simple_form_actions_default />
+      </:actions>
+    </.simple_form>
 
     <.action_links>
       <.action_links_item>
@@ -35,9 +34,15 @@ defmodule QuizGameWeb.UserLoginLive do
           Register new account
         </.link>
       </.action_links_item>
+      <.action_links_spacer />
       <.action_links_item>
-        <.link href={~p"/users/reset_password"}>
+        <.link href={~p"/users/reset-password"}>
           Forgot your password?
+        </.link>
+      </.action_links_item>
+      <.action_links_item>
+        <.link href={~p"/users/confirm/email"}>
+          Didn't receive a confirmation email?
         </.link>
       </.action_links_item>
     </.action_links>

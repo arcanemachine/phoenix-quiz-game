@@ -3,43 +3,8 @@ defmodule QuizGameWeb.UserResetPasswordLive do
 
   alias QuizGame.Users
 
-  def render(assigns) do
-    ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">Reset Password</.header>
-
-      <.simple_form
-        for={@form}
-        id="reset_password_form"
-        phx-submit="reset_password"
-        phx-change="validate"
-      >
-        <.error :if={@form.errors != []}>
-          Oops, something went wrong! Please check the errors below.
-        </.error>
-
-        <.input field={@form[:password]} type="password" label="New password" required />
-        <.input
-          field={@form[:password_confirmation]}
-          type="password"
-          label="Confirm new password"
-          required
-        />
-        <:actions>
-          <.button phx-disable-with="Resetting..." class="w-full">Reset Password</.button>
-        </:actions>
-      </.simple_form>
-
-      <p class="text-center text-sm mt-4">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/login"}>Login</.link>
-      </p>
-    </div>
-    """
-  end
-
   def mount(params, _session, socket) do
-    socket = assign_user_and_token(socket, params)
+    socket = assign_user_and_token(socket, params) |> assign(page_title: "Set New Password")
 
     form_source =
       case socket.assigns do
@@ -53,6 +18,32 @@ defmodule QuizGameWeb.UserResetPasswordLive do
     {:ok, assign_form(socket, form_source), temporary_assigns: [form: nil]}
   end
 
+  def render(assigns) do
+    ~H"""
+    <.form_text_intro>
+      Fill out the form to finish resetting your password.
+    </.form_text_intro>
+
+    <.simple_form
+      for={@form}
+      id="reset_password_form"
+      phx-submit="reset_password"
+      phx-change="validate"
+    >
+      <.input field={@form[:password]} type="password" label="New password" required />
+      <.input
+        field={@form[:password_confirmation]}
+        type="password"
+        label="Confirm new password"
+        required
+      />
+      <:actions>
+        <.simple_form_actions_default />
+      </:actions>
+    </.simple_form>
+    """
+  end
+
   # to avoid a leaked token giving the user access to the account, do not log the user in after
   # resetting their password
   def handle_event("reset_password", %{"user" => user_params}, socket) do
@@ -60,7 +51,7 @@ defmodule QuizGameWeb.UserResetPasswordLive do
       {:ok, _} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Password reset successfully.")
+         |> put_flash(:success, "Password reset successfully.")
          |> redirect(to: ~p"/users/login")}
 
       {:error, changeset} ->

@@ -15,12 +15,12 @@ defmodule QuizGameWeb.UserConfirmationInstructionsLiveTest do
 
   describe "Resend confirmation" do
     test "renders the resend confirmation page", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, ~p"/users/confirm")
-      assert html =~ "Resend confirmation instructions"
+      {:ok, _lv, html} = live(conn, ~p"/users/confirm/email")
+      assert html =~ "Resend Confirmation Email"
     end
 
     test "sends a new confirmation token", %{conn: conn, user: user} do
-      {:ok, lv, _html} = live(conn, ~p"/users/confirm")
+      {:ok, lv, _html} = live(conn, ~p"/users/confirm/email")
 
       {:ok, conn} =
         lv
@@ -37,7 +37,7 @@ defmodule QuizGameWeb.UserConfirmationInstructionsLiveTest do
     test "does not send confirmation token if user is confirmed", %{conn: conn, user: user} do
       Repo.update!(Users.User.confirm_changeset(user))
 
-      {:ok, lv, _html} = live(conn, ~p"/users/confirm")
+      {:ok, lv, _html} = live(conn, ~p"/users/confirm/email")
 
       {:ok, conn} =
         lv
@@ -52,7 +52,7 @@ defmodule QuizGameWeb.UserConfirmationInstructionsLiveTest do
     end
 
     test "does not send confirmation token if email is invalid", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, ~p"/users/confirm")
+      {:ok, lv, _html} = live(conn, ~p"/users/confirm/email")
 
       {:ok, conn} =
         lv

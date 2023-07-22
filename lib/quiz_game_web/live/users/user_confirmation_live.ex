@@ -3,29 +3,28 @@ defmodule QuizGameWeb.UserConfirmationLive do
 
   alias QuizGame.Users
 
+  def mount(%{"token" => token}, _session, socket) do
+    form = to_form(%{"token" => token}, as: "user")
+
+    {:ok, assign(socket, form: form, page_title: "Confirm Your Account"),
+     temporary_assigns: [form: nil]}
+  end
+
   def render(%{live_action: :edit} = assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
-      <.header class="text-center">Confirm Account</.header>
+      <.form_text_intro>
+        Click the button below to confirm your account.
+      </.form_text_intro>
 
       <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
         <.input field={@form[:token]} type="hidden" />
         <:actions>
-          <.button phx-disable-with="Confirming..." class="w-full">Confirm my account</.button>
+          <.form_button kind="success" content="Confirm my account" class="btn-lg w-full" />
         </:actions>
       </.simple_form>
-
-      <p class="text-center mt-4">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/login"}>Login</.link>
-      </p>
     </div>
     """
-  end
-
-  def mount(%{"token" => token}, _session, socket) do
-    form = to_form(%{"token" => token}, as: "user")
-    {:ok, assign(socket, form: form), temporary_assigns: [form: nil]}
   end
 
   # to avoid a leaked token giving the user access to the account, do not log the user in after
@@ -35,7 +34,7 @@ defmodule QuizGameWeb.UserConfirmationLive do
       {:ok, _} ->
         {:noreply,
          socket
-         |> put_flash(:info, "User confirmed successfully.")
+         |> put_flash(:success, "User confirmed successfully.")
          |> redirect(to: ~p"/")}
 
       :error ->

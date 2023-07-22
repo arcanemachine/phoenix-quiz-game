@@ -6,6 +6,8 @@ defmodule QuizGame.Users.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  def password_length_min, do: 8
+
   schema "users" do
     field :email, :string
     field :password, :string, virtual: true, redact: true
@@ -101,8 +103,11 @@ defmodule QuizGame.Users.User do
     |> cast(attrs, [:email])
     |> validate_email(opts)
     |> case do
-      %{changes: %{email: _}} = changeset -> changeset
-      %{} = changeset -> add_error(changeset, :email, "did not change")
+      %{changes: %{email: _}} = changeset ->
+        changeset
+
+      %{} = changeset ->
+        add_error(changeset, :email, "should be different than your current email")
     end
   end
 
@@ -156,7 +161,7 @@ defmodule QuizGame.Users.User do
     if valid_password?(changeset.data, password) do
       changeset
     else
-      add_error(changeset, :current_password, "is not valid")
+      add_error(changeset, :current_password, "should be your current password")
     end
   end
 end

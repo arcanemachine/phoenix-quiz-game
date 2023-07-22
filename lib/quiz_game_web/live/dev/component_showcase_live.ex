@@ -36,6 +36,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
      socket
      |> assign(
        form: build_empty_form(),
+       form_has_errors: false,
        page_title: @page_title,
        table_rows: [
          %TableRow{id: 1, col1: "Value 1", col2: "Value 2"},
@@ -93,18 +94,18 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       %FormData{}
       |> FormData.changeset(form_data_params)
       |> Ecto.Changeset.validate_required(Map.keys(FormData.types()))
-      |> Ecto.Changeset.validate_format(:text, ~r/^pass$/, message: "must be 'pass'")
+      |> Ecto.Changeset.validate_format(:text, ~r/^pass$/, message: "should be 'pass'")
       |> Ecto.Changeset.validate_format(:email, ~r/^pass@example\.com$/,
         message: "Must be 'pass@example.com'"
       )
-      |> Ecto.Changeset.validate_format(:password, ~r/^pass$/, message: "must be 'pass'")
-      |> Ecto.Changeset.validate_acceptance(:checkbox, message: "must be checked")
-      |> Ecto.Changeset.validate_format(:select, ~r/^pass$/, message: "must be 'pass'")
-      |> Ecto.Changeset.validate_format(:textarea, ~r/^pass$/, message: "must be 'pass'")
+      |> Ecto.Changeset.validate_format(:password, ~r/^pass$/, message: "should be 'pass'")
+      |> Ecto.Changeset.validate_acceptance(:checkbox, message: "should be checked")
+      |> Ecto.Changeset.validate_format(:select, ~r/^pass$/, message: "should be 'pass'")
+      |> Ecto.Changeset.validate_format(:textarea, ~r/^pass$/, message: "should be 'pass'")
       |> Map.put(:action, :validate)
       |> to_form()
 
-    {:noreply, assign(socket, form: form)}
+    {:noreply, assign(socket, form: form, form_has_errors: !Enum.empty?(form.errors))}
   end
 
   def render(assigns) do
@@ -113,7 +114,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
     <h2 class="mb-8 text-3xl text-center">Alert</h2>
 
-    <section class="[&>*:not(:first-child)]:mt-2">
+    <section class="[&>*]:mb-4">
       <.alert kind="primary">Primary alert</.alert>
       <.alert kind="secondary">Secondary alert</.alert>
       <.alert kind="accent">Accent alert</.alert>
@@ -296,6 +297,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
     <.simple_form
       for={@form}
+      has_errors={@form_has_errors}
       confirmation_required={true}
       autocomplete="off"
       phx-change="form-validate"
@@ -377,6 +379,12 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
           Item 3
         </.link>
       </.action_links_item>
+      <.action_links_spacer />
+      <.action_links_item>
+        <.link navigate="/dev/component-showcase">
+          Item below <code>&lt;.action_links_spacer&gt;</code>
+        </.link>
+      </.action_links_item>
     </.action_links>
 
     <div class="my-8 divider" />
@@ -393,11 +401,24 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
     <div class="my-8 divider" />
 
+    <h3 class="mb-4 text-2xl text-center">Simple Form Actions Default</h3>
+
+    <div class="text-center">
+      <.simple_form for={%{}}>
+        <:actions>
+          <.simple_form_actions_default />
+        </:actions>
+      </.simple_form>
+    </div>
+
+    <div class="my-8 divider" />
+
     <h3 class="mb-4 text-2xl text-center">Toast Messages</h3>
 
     <section x-data class="text-center">
       <div class="mb-4 text-lg font-italic" x-show="!$store.toasts">
-        <code>Alpine.store('toasts')</code> does not exist, so this section will not be functional.
+        Alpine.js is not installed, or <code>Alpine.store('toasts')</code>
+        does not exist, so this section will not be functional.
       </div>
       <div>
         <.button

@@ -21,7 +21,7 @@ function csrfTokenGet(response) {
 
 export default function () {
   const url = `${__ENV.BASE_URL}/users/login`;
-  const urlSuccess = `${__ENV.BASE_URL}/users/profile`;
+  const urlSuccess = `${__ENV.BASE_URL}/users/me`;
 
   console.log(`Using login URL '${url}'...`);
 

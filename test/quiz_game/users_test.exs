@@ -26,7 +26,7 @@ defmodule QuizGame.UsersTest do
 
     test "does not return the user if the password is not valid" do
       user = user_fixture()
-      refute Users.get_user_by_email_and_password(user.email, "invalid")
+      refute Users.get_user_by_email_and_password(user.email, "badpass")
     end
 
     test "returns the user if the email and password are valid" do
@@ -133,7 +133,7 @@ defmodule QuizGame.UsersTest do
 
     test "requires email to change", %{user: user} do
       {:error, changeset} = Users.apply_user_email(user, valid_user_password(), %{})
-      assert %{email: ["did not change"]} = errors_on(changeset)
+      assert %{email: ["should be different than your current email"]} = errors_on(changeset)
     end
 
     test "validates email", %{user: user} do
@@ -165,7 +165,7 @@ defmodule QuizGame.UsersTest do
       {:error, changeset} =
         Users.apply_user_email(user, "invalid", %{email: unique_user_email()})
 
-      assert %{current_password: ["is not valid"]} = errors_on(changeset)
+      assert %{current_password: ["should be your current password"]} = errors_on(changeset)
     end
 
     test "applies the email without persisting it", %{user: user} do
@@ -287,7 +287,7 @@ defmodule QuizGame.UsersTest do
       {:error, changeset} =
         Users.update_user_password(user, "invalid", %{password: valid_user_password()})
 
-      assert %{current_password: ["is not valid"]} = errors_on(changeset)
+      assert %{current_password: ["should be your current password"]} = errors_on(changeset)
     end
 
     test "updates the password", %{user: user} do

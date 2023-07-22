@@ -15,8 +15,8 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
 
   describe "Confirm user" do
     test "renders confirmation page", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, ~p"/users/confirm/some-token")
-      assert html =~ "Confirm Account"
+      {:ok, _lv, html} = live(conn, ~p"/users/confirm/email/some-token")
+      assert html =~ "Confirm Your Account"
     end
 
     test "confirms the given token once", %{conn: conn, user: user} do
@@ -25,7 +25,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
           Users.deliver_user_confirmation_instructions(user, url)
         end)
 
-      {:ok, lv, _html} = live(conn, ~p"/users/confirm/#{token}")
+      {:ok, lv, _html} = live(conn, ~p"/users/confirm/email/#{token}")
 
       result =
         lv
@@ -35,7 +35,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
 
       assert {:ok, conn} = result
 
-      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~
+      assert Phoenix.Flash.get(conn.assigns.flash, :success) =~
                "User confirmed successfully"
 
       assert Users.get_user!(user.id).confirmed_at
@@ -43,7 +43,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
       assert Repo.all(Users.UserToken) == []
 
       # when not logged in
-      {:ok, lv, _html} = live(conn, ~p"/users/confirm/#{token}")
+      {:ok, lv, _html} = live(conn, ~p"/users/confirm/email/#{token}")
 
       result =
         lv
@@ -60,7 +60,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
       {:ok, lv, _html} =
         build_conn()
         |> login_user(user)
-        |> live(~p"/users/confirm/#{token}")
+        |> live(~p"/users/confirm/email/#{token}")
 
       result =
         lv
@@ -73,7 +73,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
     end
 
     test "does not confirm email with invalid token", %{conn: conn, user: user} do
-      {:ok, lv, _html} = live(conn, ~p"/users/confirm/invalid-token")
+      {:ok, lv, _html} = live(conn, ~p"/users/confirm/email/invalid-token")
 
       {:ok, conn} =
         lv

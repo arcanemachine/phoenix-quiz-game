@@ -10,12 +10,12 @@ defmodule QuizGameWeb.UserSessionController do
 
   def create(conn, %{"_action" => "password_updated"} = params) do
     conn
-    |> put_session(:user_return_to, ~p"/users/settings")
+    |> put_session(:user_return_to, ~p"/users/me/update")
     |> create(params, "Password updated successfully")
   end
 
   def create(conn, params) do
-    create(conn, params, "Welcome back!")
+    create(conn, params, "Logged in successfully")
   end
 
   defp create(conn, %{"user" => user_params}, success_message) do
@@ -36,6 +36,10 @@ defmodule QuizGameWeb.UserSessionController do
 
   def show(conn, _params) do
     render(conn, :show, page_title: "Your Profile")
+  end
+
+  def settings(conn, _params) do
+    conn |> render(:settings, page_title: "Manage Your Profile")
   end
 
   def logout_confirm(conn, _params) do

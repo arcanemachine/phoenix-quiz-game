@@ -40,9 +40,24 @@ defmodule QuizGameWeb.CoreComponents do
   end
 
   @doc """
+  A spacer that separates action links categories.
+
+  This component is meant to be used as a child of the component `<.action_links>`.
+
+  ## Example
+
+      <.action_links_spacer />
+  """
+  def action_links_spacer(assigns) do
+    ~H"""
+    <div class="h-0 w-0 mt-4 show-empty-element" />
+    """
+  end
+
+  @doc """
   An action link item (e.g. a '<.link>').
 
-  Used as a child element of the component `<.action_links>`.
+  This component is meant to be used as a child of the component `<.action_links>`.
 
   ## Example
 
@@ -106,7 +121,7 @@ defmodule QuizGameWeb.CoreComponents do
   def alert_form_errors(assigns) do
     ~H"""
     <.alert kind="error">
-      To continue, fix the errors in the form.
+      Fix the errors in the form to continue.
     </.alert>
     """
   end
@@ -204,7 +219,7 @@ defmodule QuizGameWeb.CoreComponents do
       phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")}
       role="alert"
       class={[
-        "w-80 sm:w-[25rem] p-3 z-50 rounded-lg ring-1",
+        "w-full p-3 z-50 rounded-lg ring-1",
         @kind == :info &&
           "bg-info text-info-content ring-info-content fill-info-content shadow-xl",
         @kind == :success &&
@@ -223,8 +238,7 @@ defmodule QuizGameWeb.CoreComponents do
           <.icon :if={@kind == :warning} name="hero-exclamation-circle-mini" class="h-7 w-7" />
           <.icon :if={@kind == :error} name="hero-exclamation-triangle-mini" class="h-7 w-7" />
         </div>
-        <p class="grow px-4 text-sm font-semibold cursor-default select-none">
-          <span :if={@title}><%= @title %>:</span>
+        <p class="grow flex justify-center px-4 font-semibold cursor-default select-none">
           <%= msg %>
         </p>
         <button class="block group" aria-label={gettext("close")}>
@@ -246,8 +260,8 @@ defmodule QuizGameWeb.CoreComponents do
 
   def flash_group(assigns) do
     ~H"""
-    <div class="fixed flex flex-col justify-center w-80 sm:w-[25rem] top-1.5 lg:mt-2 right-0
-                left-0 [&>*:not(:first-child)]:mt-2 mx-auto">
+    <div class="fixed flex flex-col justify-center w-full sm:w-[35rem] top-1.5 lg:mt-2 right-0
+                left-0 [&>*:not(:first-child)]:mt-2 mx-auto px-2">
       <.flash kind={:error} title="Error" id="flash-error" flash={@flash} />
       <.flash kind={:warning} title="Warning" id="flash-warning" flash={@flash} />
       <.flash kind={:success} title="Success" id="flash-success" flash={@flash} />
@@ -278,13 +292,14 @@ defmodule QuizGameWeb.CoreComponents do
   end
 
   @doc """
-  Renders a form button.
+  Renders a generic form button.
 
   ## Examples
 
       <.form_button>Button Text</.form_button>
       <.form_button phx-click="go" class="ml-2">Button Text</.form_button>
   """
+  attr :kind, :string, default: "primary"
   attr :type, :string, default: "button"
   attr :content, :string, default: "", doc: "the button text (can use default slot instead)"
   attr :class, :any, default: nil
@@ -295,7 +310,13 @@ defmodule QuizGameWeb.CoreComponents do
 
   def form_button(assigns) do
     ~H"""
-    <.button type={@type} class={["block min-w-[8rem] m-2", @class]} loader={@loader} {@rest}>
+    <.button
+      kind={@kind}
+      type={@type}
+      class={["block min-w-[8rem] m-2", @class]}
+      loader={@loader}
+      {@rest}
+    >
       <%= @content %>
     </.button>
     """
@@ -307,7 +328,7 @@ defmodule QuizGameWeb.CoreComponents do
   ## Examples
 
       <.form_button_cancel />
-      <.form_button_cancel url={~p"/"} />
+      <.form_button_cancel content="Go back" url={~p"/"} />
   """
   attr :type, :string, default: "button"
   attr :content, :string, default: "Cancel"
@@ -334,8 +355,8 @@ defmodule QuizGameWeb.CoreComponents do
 
   ## Examples
 
-      <.form_submit_button />Send!</.form_submit_button>
-      <.form_submit_button phx-click="go" class="ml-2">Custom submit text</.form_submit_button>
+      <.form_button_submit />
+      <.form_button_submit content="Send" />
   """
   attr :type, :string, default: "submit"
   attr :content, :string, default: "Submit"
@@ -352,6 +373,26 @@ defmodule QuizGameWeb.CoreComponents do
       loader={@loader}
       {@rest}
     />
+    """
+  end
+
+  @doc """
+  Renders a component with the introductory text for a form.
+
+  ## Examples
+
+      <.form_text_intro>
+        Fill out the form to continue.
+      </.form_text_intro>
+  """
+
+  slot :inner_block
+
+  def form_text_intro(assigns) do
+    ~H"""
+    <div class="text-center [&>*:not(:first-child)]:mt-4">
+      <%= render_slot(@inner_block) %>
+    </div>
     """
   end
 
@@ -519,9 +560,7 @@ defmodule QuizGameWeb.CoreComponents do
         />
         <%= @label %>
       </label>
-      <div class="flex p-2 show-empty-element">
-        <.error :for={msg <- @errors}><%= @label %> <%= msg %>.</.error>
-      </div>
+      <.input_errors errors={@errors} />
     </div>
     """
   end
@@ -545,9 +584,7 @@ defmodule QuizGameWeb.CoreComponents do
         <option :if={@prompt} value=""><%= @prompt %></option>
         <%= Phoenix.HTML.Form.options_for_select(@options, @value) %>
       </select>
-      <div class="flex p-2 show-empty-element">
-        <.error :for={msg <- @errors}><%= @label %> <%= msg %></.error>
-      </div>
+      <.input_errors errors={@errors} />
     </div>
     """
   end
@@ -568,9 +605,7 @@ defmodule QuizGameWeb.CoreComponents do
         phx-debounce={@debounce}
         {@rest}
       ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
-      <div class="flex p-2 show-empty-element">
-        <.error :for={msg <- @errors}><%= @label %> <%= msg %></.error>
-      </div>
+      <.input_errors errors={@errors} />
     </div>
     """
   end
@@ -593,8 +628,19 @@ defmodule QuizGameWeb.CoreComponents do
         phx-debounce={@debounce}
         {@rest}
       />
-      <div class="flex p-2 show-empty-element">
-        <.error :for={msg <- @errors}><%= @label %> <%= msg %></.error>
+      <.input_errors errors={@errors} />
+    </div>
+    """
+  end
+
+  @doc """
+  Renders the errors for an input.
+  """
+  def input_errors(assigns) do
+    ~H"""
+    <div class="flex min-h-5 p-2 show-empty-element">
+      <div>
+        <.error :for={msg <- @errors}>Value <%= msg %></.error>
       </div>
     </div>
     """
@@ -829,13 +875,15 @@ defmodule QuizGameWeb.CoreComponents do
           <label>
             <.header class="mt-2 mb-4 bg-primary text-primary-content cursor-pointer rounded-lg">
               <span class="text-sm font-normal">
-                I confirm that the data above is accurate.
+                I confirm that the form data is correct.
               </span>
               <:actions>
                 <input
                   type="checkbox"
-                  class="align-middle checkbox checkbox-lg border-none"
+                  id="confirmation-checkbox"
+                  class="align-middle checkbox border-none"
                   required
+                  phx-update="ignore"
                   phx-debounce="999999"
                 />
               </:actions>
@@ -851,10 +899,25 @@ defmodule QuizGameWeb.CoreComponents do
           "text-sm text-error font-bold text-center transition-opacity duration-300",
           @has_errors || "opacity-0"
         ]}>
-          To continue, fix the errors in the form.
+          Fix the errors in the form to continue.
         </div>
       </div>
     </.form>
+    """
+  end
+
+  @doc """
+  Renders the default actions for the `<.simple_form>` component.
+
+  ## Examples
+
+      <.simple_form_actions_default />
+  """
+
+  def simple_form_actions_default(assigns) do
+    ~H"""
+    <.form_button_cancel />
+    <.form_button_submit />
     """
   end
 
