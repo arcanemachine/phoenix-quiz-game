@@ -11,7 +11,7 @@ defmodule QuizGameWeb.UserForgotPasswordLiveTest do
 
   describe "Forgot password page" do
     test "renders email page", %{conn: conn} do
-      {:ok, lv, html} = live(conn, ~p"/users/reset-password")
+      {:ok, _lv, html} = live(conn, ~p"/users/reset-password")
 
       assert html =~ "Reset Your Password"
     end
