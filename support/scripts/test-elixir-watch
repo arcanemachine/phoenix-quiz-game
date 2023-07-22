@@ -33,7 +33,7 @@ To test by tag, the test must first be given a tag. For example:
     ...
   end
 
-Then, to run the tagged tests, pass the '--include' flag with the matching key-value pair when starting the test runner.
+Then, to run the tagged tests, pass the '--only' flag with the matching key-value pair when starting the test runner.
 
   - e.g. './scripts/test-elixir --only your_tag:true'  # no space between key and value
 
