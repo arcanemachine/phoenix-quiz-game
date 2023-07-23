@@ -1,11 +1,26 @@
-<div class="max-w-xs">
-  <ul>
+<div>
+  <ul class="[&>*:not(:first-child)]:mt-2">
     <li>
       <span class="font-bold">
         Email:
       </span>
-      <span class="ps-2 truncate">
+      <span class="ps-1 truncate">
         <%= @current_user.email %>
+      </span>
+    </li>
+    <li>
+      <span class="font-bold">
+        Account status:
+      </span>
+      <span class="ps-1">
+        <%= if @current_user.confirmed_at do %>
+          Confirmed
+        <% else %>
+          Unconfirmed
+          <.link href={~p"/users/confirm/email"}>
+            (Confirm your account)
+          </.link>
+        <% end %>
       </span>
     </li>
   </ul>
