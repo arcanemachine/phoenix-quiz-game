@@ -11,25 +11,9 @@ defmodule QuizGameWeb.Router.Users do
     end
   end
 
-  def users_allow_any_user_live_session do
-    quote do
-      live "/users/confirm/email", UserConfirmationInstructionsLive, :new
-      live "/users/confirm/email/:token", UserConfirmationLive, :edit
-    end
-  end
-
   def users_logout_required do
     quote do
       post "/users/login", UserSessionController, :create
-    end
-  end
-
-  def users_logout_required_live_session do
-    quote do
-      live "/users/register", UserRegistrationLive, :new
-      live "/users/login", UserLoginLive, :new
-      live "/users/reset-password", UserForgotPasswordLive, :new
-      live "/users/reset-password/:token", UserResetPasswordLive, :edit
     end
   end
 
@@ -42,7 +26,23 @@ defmodule QuizGameWeb.Router.Users do
     end
   end
 
-  def users_login_required_live_session do
+  def users_live_session_allow_any_user do
+    quote do
+      live "/users/confirm/email", UserConfirmationInstructionsLive, :new
+      live "/users/confirm/email/:token", UserConfirmationLive, :edit
+    end
+  end
+
+  def users_live_session_logout_required do
+    quote do
+      live "/users/register", UserRegistrationLive, :new
+      live "/users/login", UserLoginLive, :new
+      live "/users/reset-password", UserForgotPasswordLive, :new
+      live "/users/reset-password/:token", UserResetPasswordLive, :edit
+    end
+  end
+
+  def users_live_session_login_required do
     quote do
       live "/users/me/update/email", UserUpdateEmailLive, :edit
       live "/users/me/update/email/confirm/:token", UserUpdateEmailLive, :confirm_email

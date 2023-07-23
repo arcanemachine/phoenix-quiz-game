@@ -30,7 +30,7 @@ defmodule QuizGameWeb.Router do
 
     live_session :current_user,
       on_mount: [{QuizGameWeb.UserAuth, :mount_current_user}] do
-      use UsersRouter, :users_allow_any_user_live_session
+      use UsersRouter, :users_live_session_allow_any_user
     end
   end
 
@@ -42,7 +42,7 @@ defmodule QuizGameWeb.Router do
 
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{QuizGameWeb.UserAuth, :redirect_if_user_is_authenticated}] do
-      use UsersRouter, :users_logout_required_live_session
+      use UsersRouter, :users_live_session_logout_required
     end
   end
 
@@ -54,7 +54,7 @@ defmodule QuizGameWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
-      use UsersRouter, :users_login_required_live_session
+      use UsersRouter, :users_live_session_login_required
     end
   end
 
