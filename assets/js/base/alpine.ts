@@ -10,15 +10,19 @@ function simpleForm() {
    * If a form has been modified and the user is attempting to exit the page,
    * then show a warning before exiting the page. This is intended to prevent
    * the form data from being lost during accidental navigation before the form
-   * has been submitted
+   * has been submitted.
    */
 
   return {
-    defaultValue: "defaultValue",
+    // optional confirmation checkbox
+    confirmed: false,
+
+    // form modification checker
+    defaultValue: "arbitraryDefaultValue",
     modifiedInputs: new Set(),
 
     init() {
-      // add event listeners
+      // add event listeners for form modification checked
       addEventListener("beforeinput", this.handleBeforeInput.bind(this));
       addEventListener("input", this.handleInput.bind(this) as any);
       addEventListener("submit", this.handleSubmit.bind(this));

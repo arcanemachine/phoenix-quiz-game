@@ -851,6 +851,14 @@ defmodule QuizGameWeb.CoreComponents do
     default: false,
     doc: "require a confirmation checkbox to be checked before submitting the form"
 
+  attr :confirmation_kind, :string,
+    default: "primary",
+    doc: "the theme of the confirmation checkbox"
+
+  attr :confirmation_content, :string,
+    default: "I confirm that the form data is correct.",
+    doc: "the content of the confirmation checkbox message"
+
   attr :rest, :global,
     include: ~w(autocomplete name rel action enctype method novalidate target multipart),
     doc: "the arbitrary HTML attributes to apply to the form tag"
@@ -866,16 +874,16 @@ defmodule QuizGameWeb.CoreComponents do
           "max-w-sm xl:max-w-md mt-8 p-2 mx-auto transition-colors duration-300 rounded-lg",
           @has_errors && "bg-red-200"
         ]}
-        data-confirmation-required={@confirmation_required}
         x-data="simpleForm"
       >
         <%= render_slot(@inner_block, f) %>
 
         <%= if @confirmation_required do %>
           <label>
-            <.header class="mt-2 mb-4 bg-primary text-primary-content cursor-pointer rounded-lg">
+            <.header class={"mt-2 mb-4 bg-#{@confirmation_kind} text-#{@confirmation_kind}-content
+                            font-bold cursor-pointer select-none rounded-lg"}>
               <span class="text-sm font-normal">
-                I confirm that the form data is correct.
+                <%= @confirmation_content %>
               </span>
               <:actions>
                 <input
@@ -883,6 +891,7 @@ defmodule QuizGameWeb.CoreComponents do
                   id="confirmation-checkbox"
                   class="align-middle checkbox border-none"
                   required
+                  x-model="confirmed"
                   phx-update="ignore"
                   phx-debounce="999999"
                 />
