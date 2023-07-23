@@ -58,7 +58,7 @@ defmodule QuizGameWeb.UserUpdateEmailLive do
         name="current_password"
         id="current_password_for_email"
         type="password"
-        label="Current password"
+        label="Confirm your password"
         value={@email_form_current_password}
         required
       />
