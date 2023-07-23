@@ -7,7 +7,7 @@ defmodule QuizGameWeb.Router.Users do
   def users_allow_any_user do
     quote do
       get "/users/logout", UserSessionController, :logout_confirm
-      delete "/users/logout", UserSessionController, :delete
+      post "/users/logout", UserSessionController, :logout
     end
   end
 
@@ -37,8 +37,8 @@ defmodule QuizGameWeb.Router.Users do
     quote do
       get "/users/me", UserSessionController, :show
       get "/users/me/update", UserSessionController, :settings
-      # get("/users/me/delete", UsersController, :delete_confirm)
-      # delete("/users/me/delete", UsersController, :delete)
+      get "/users/me/delete", UserController, :delete_confirm
+      post "/users/me/delete", UserController, :delete
     end
   end
 

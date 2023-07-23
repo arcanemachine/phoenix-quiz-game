@@ -98,14 +98,14 @@ defmodule QuizGameWeb.UserSessionControllerTest do
 
   describe "DELETE /users/logout" do
     test "logs the user out", %{conn: conn, user: user} do
-      conn = conn |> login_user(user) |> delete(~p"/users/logout")
+      conn = conn |> login_user(user) |> post(~p"/users/logout")
       assert redirected_to(conn) == ~p"/"
       refute get_session(conn, :user_token)
       assert Phoenix.Flash.get(conn.assigns.flash, :success) =~ "Logged out successfully"
     end
 
     test "succeeds even if the user is not logged in", %{conn: conn} do
-      conn = delete(conn, ~p"/users/logout")
+      conn = post(conn, ~p"/users/logout")
       assert redirected_to(conn) == ~p"/"
       refute get_session(conn, :user_token)
       assert Phoenix.Flash.get(conn.assigns.flash, :success) =~ "Logged out successfully"

@@ -359,6 +359,7 @@ defmodule QuizGameWeb.CoreComponents do
       <.form_button_submit content="Send" />
   """
   attr :type, :string, default: "submit"
+  attr :kind, :any, default: "success"
   attr :content, :string, default: "Submit"
   attr :class, :any, default: nil
   attr :loader, :boolean, default: true
@@ -368,8 +369,8 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <.form_button
       type={@type}
+      class={["flex btn-#{@kind}", @class]}
       content={@content}
-      class={["flex btn-success", @class]}
       loader={@loader}
       {@rest}
     />
@@ -500,8 +501,8 @@ defmodule QuizGameWeb.CoreComponents do
 
   attr :type, :string,
     default: "text",
-    values: ~w(checkbox color date datetime-local email file hidden month number password
-               range radio search select tel text textarea time url week)
+    values: ~w(checkbox color csrf-token date datetime-local email file hidden month number
+               password range radio search select tel text textarea time url week)
 
   attr :field, Phoenix.HTML.FormField,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
@@ -526,6 +527,17 @@ defmodule QuizGameWeb.CoreComponents do
     |> assign_new(:name, fn -> if assigns.multiple, do: field.name <> "[]", else: field.name end)
     |> assign_new(:value, fn -> field.value end)
     |> input()
+  end
+
+  def input(%{type: "csrf-token"} = assigns) do
+    ~H"""
+    <input
+      type="hidden"
+      name="_csrf_token"
+      x-bind:value="document.querySelector(`meta[name='csrf-token']`).content"
+      class="hidden"
+    />
+    """
   end
 
   def input(%{type: "hidden"} = assigns) do

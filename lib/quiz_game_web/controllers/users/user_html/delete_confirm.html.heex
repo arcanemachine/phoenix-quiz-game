@@ -1,0 +1,24 @@
+<div class="my-8 text-lg text-center">
+  <p>Are you sure you want to PERMANENTLY DELETE YOUR ACCOUNT?</p>
+  <p class="mt-4 font-bold">
+    This action is PERMANENT! Once you delete your account, THERE IS NO GOING BACK!
+  </p>
+</div>
+
+<.simple_form
+  for={%{}}
+  method="post"
+  confirmation_required={true}
+  confirmation_kind="error"
+  confirmation_content="Yes, I want to PERMANENTLY delete my account."
+>
+  <.input type="csrf-token" />
+  <:actions>
+    <.form_button_cancel />
+    <.form_button_submit
+      class="btn-error"
+      x-bind:disabled="!confirmed"
+      data-confirm="Your account will be PERMANENTLY deleted! Are you SURE you want to continue?"
+    />
+  </:actions>
+</.simple_form>

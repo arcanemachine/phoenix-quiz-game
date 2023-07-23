@@ -46,7 +46,7 @@ defmodule QuizGameWeb.UserSessionController do
     render(conn, :logout_confirm, page_title: "Confirm Logout")
   end
 
-  def delete(conn, _params) do
+  def logout(conn, _params) do
     conn
     |> put_flash(:success, "Logged out successfully")
     |> UserAuth.logout_user()

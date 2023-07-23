@@ -1,28 +1,27 @@
 <%= if assigns[:current_user] do %>
-  <div class="my-8 text-lg text-center">
+  <.form_text_intro>
     Are you sure you want to log out?
-  </div>
+  </.form_text_intro>
 
-  <.simple_form for={%{}}>
+  <.simple_form for={%{}} method="post">
+    <.input type="csrf-token" />
     <:actions>
       <.form_button_cancel />
-      <.link href={~p"/users/logout"} method="delete">
-        <.form_button tabindex="-1" class="btn-primary" content="Yes" />
-      </.link>
+      <.form_button_submit kind="primary" content="Logout" />
     </:actions>
   </.simple_form>
 <% else %>
-  <.header class="my-8 text-center">
-    You are not currently logged in.
-  </.header>
+  <.form_text_intro>
+    You are already logged out.
+  </.form_text_intro>
 
   <.simple_form for={%{}} id="logout-form">
     <:actions>
       <.link href={~p"/"}>
-        <.form_button tabindex="-1" class="btn-secondary" content="Home" />
+        <.form_button kind="secondary" content="Home" tabindex="-1" />
       </.link>
       <.link href={~p"/users/login"}>
-        <.form_button tabindex="-1" class="btn-primary" content="Login" />
+        <.form_button class="primary" content="Login" tabindex="-1" />
       </.link>
     </:actions>
   </.simple_form>
