@@ -14,8 +14,9 @@
     />
 
     <%!-- title --%>
-    <.live_title suffix=" - Quiz Game">
-      <%= assigns[:tag_title] || assigns[:page_title] || "Quiz Game" %>
+    <.live_title suffix={" - #{Application.get_env(:quiz_game, :project_name)}"}>
+      <%= assigns[:tag_title] || assigns[:page_title] ||
+        Application.get_env(:quiz_game, :project_name) %>
     </.live_title>
 
     <%!-- css --%>

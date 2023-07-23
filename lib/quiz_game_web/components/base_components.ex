@@ -23,7 +23,7 @@ defmodule QuizGameWeb.BaseComponents do
         <ul class="list-none">
           <li>
             <div class="text-xl font-bold">
-              Quiz Game
+              <%= Application.get_env(:quiz_game, :project_name) %>
             </div>
           </li>
 
