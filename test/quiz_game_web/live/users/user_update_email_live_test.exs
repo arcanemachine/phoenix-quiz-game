@@ -22,7 +22,7 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
 
       assert {:redirect, %{to: path, flash: flash}} = redirect
       assert path == ~p"/users/login"
-      assert %{"error" => "You must login to access this page."} = flash
+      assert %{"warning" => "You must login to access this page."} = flash
     end
   end
 
@@ -130,7 +130,7 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
       {:error, redirect} = live(conn, ~p"/users/me/update/email/confirm/#{token}")
       assert {:redirect, %{to: path, flash: flash}} = redirect
       assert path == ~p"/users/login"
-      assert %{"error" => message} = flash
+      assert %{"warning" => message} = flash
       assert message == "You must login to access this page."
     end
   end

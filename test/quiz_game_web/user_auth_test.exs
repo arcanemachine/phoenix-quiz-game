@@ -1,6 +1,4 @@
 defmodule QuizGameWeb.UserAuthTest do
-  @moduledoc false
-
   use QuizGameWeb.ConnCase, async: true
 
   alias Phoenix.LiveView
@@ -188,7 +186,7 @@ defmodule QuizGameWeb.UserAuthTest do
   end
 
   describe "on_mount: :redirect_if_user_is_authenticated" do
-    test "redirects if there is an authenticated  user ", %{conn: conn, user: user} do
+    test "redirects if there is an authenticated user", %{conn: conn, user: user} do
       user_token = Users.generate_user_session_token(user)
       session = conn |> put_session(:user_token, user_token) |> get_session()
 
@@ -235,7 +233,7 @@ defmodule QuizGameWeb.UserAuthTest do
 
       assert redirected_to(conn) == ~p"/users/login"
 
-      assert Phoenix.Flash.get(conn.assigns.flash, :error) ==
+      assert Phoenix.Flash.get(conn.assigns.flash, :warning) ==
                "You must login to access this page."
     end
 

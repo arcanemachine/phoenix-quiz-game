@@ -8,7 +8,7 @@ defmodule QuizGameWeb.UserUpdatePasswordLiveTest do
   import QuizGame.UsersFixtures
 
   describe "page" do
-    test "renders settings page", %{conn: conn} do
+    test "renders page without error", %{conn: conn} do
       {:ok, _lv, html} =
         conn
         |> login_user(user_fixture())
@@ -22,7 +22,7 @@ defmodule QuizGameWeb.UserUpdatePasswordLiveTest do
 
       assert {:redirect, %{to: path, flash: flash}} = redirect
       assert path == ~p"/users/login"
-      assert %{"error" => "You must login to access this page."} = flash
+      assert %{"warning" => "You must login to access this page."} = flash
     end
   end
 
@@ -114,7 +114,7 @@ defmodule QuizGameWeb.UserUpdatePasswordLiveTest do
     {:error, redirect} = live(conn, ~p"/users/me/update/password")
     assert {:redirect, %{to: path, flash: flash}} = redirect
     assert path == ~p"/users/login"
-    assert %{"error" => message} = flash
+    assert %{"warning" => message} = flash
     assert message == "You must login to access this page."
   end
 end

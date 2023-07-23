@@ -89,6 +89,20 @@ defmodule QuizGameWeb.UserAuth do
   end
 
   @doc """
+  Logs out and deletes the user.
+  """
+  def delete_user(conn) do
+    user = conn.assigns.current_user
+
+    conn = logout_user(conn)
+    Users.delete_user(user)
+
+    conn
+    |> put_flash(:info, "Account deleted successfully")
+    |> redirect(to: ~p"/")
+  end
+
+  @doc """
   Authenticates the user by looking into the session
   and remember me token.
   """
@@ -208,7 +222,7 @@ defmodule QuizGameWeb.UserAuth do
       conn
     else
       conn
-      |> put_flash(:error, "You must login to access this page.")
+      |> put_flash(:warning, "You must login to access this page.")
       |> maybe_store_return_to()
       |> redirect(to: ~p"/users/login")
       |> halt()

@@ -1,5 +1,7 @@
 defmodule QuizGameWeb.Router.Base do
-  @moduledoc false
+  @moduledoc """
+  The base router.
+  """
 
   # BROWSER #
   def base_allow_any_user do
@@ -21,10 +23,12 @@ defmodule QuizGameWeb.Router.Base do
         scope "/dev" do
           pipe_through(:browser)
 
-          live("/component-showcase", ComponentShowcaseLive)
-
+          # built-in
           live_dashboard("/dashboard", metrics: QuizGameWeb.Telemetry)
           forward "/mailbox", Plug.Swoosh.MailboxPreview
+
+          # custom
+          live("/component-showcase", ComponentShowcaseLive)
         end
       end
     end

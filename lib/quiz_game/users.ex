@@ -242,6 +242,13 @@ defmodule QuizGame.Users do
     :ok
   end
 
+  @doc """
+  Deletes a user.
+  """
+  def delete_user(%User{} = user) do
+    Repo.delete(user)
+  end
+
   ## Confirmation
 
   @doc ~S"""
