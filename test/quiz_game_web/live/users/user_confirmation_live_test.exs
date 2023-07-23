@@ -36,7 +36,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
       assert {:ok, conn} = result
 
       assert Phoenix.Flash.get(conn.assigns.flash, :success) =~
-               "User confirmed successfully"
+               "Your account has been confirmed."
 
       assert Users.get_user!(user.id).confirmed_at
       refute get_session(conn, :user_token)

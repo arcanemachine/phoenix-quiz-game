@@ -20,7 +20,7 @@ defmodule QuizGameWeb.UserConfirmationLive do
       <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
         <.input field={@form[:token]} type="hidden" />
         <:actions>
-          <.form_button kind="success" content="Confirm my account" class="btn-lg w-full" />
+          <.form_button_submit content="Confirm my account" class="btn-lg" />
         </:actions>
       </.simple_form>
     </div>
@@ -34,7 +34,7 @@ defmodule QuizGameWeb.UserConfirmationLive do
       {:ok, _} ->
         {:noreply,
          socket
-         |> put_flash(:success, "User confirmed successfully.")
+         |> put_flash(:success, "Your account has been confirmed.")
          |> redirect(to: ~p"/")}
 
       :error ->
