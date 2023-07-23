@@ -1,5 +1,10 @@
 import Config
 
+# custom
+config :quiz_game,
+  project_name: "Quiz Game"
+
+# ecto
 config :quiz_game,
   ecto_repos: [QuizGame.Repo]
 
