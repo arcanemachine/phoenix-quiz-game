@@ -238,7 +238,7 @@ defmodule QuizGameWeb.CoreComponents do
           <.icon :if={@kind == :warning} name="hero-exclamation-circle-mini" class="h-7 w-7" />
           <.icon :if={@kind == :error} name="hero-exclamation-triangle-mini" class="h-7 w-7" />
         </div>
-        <p class="grow flex justify-center px-4 font-semibold cursor-default select-none">
+        <p class="grow flex justify-center px-4 font-semibold text-center cursor-pointer select-none">
           <%= msg %>
         </p>
         <button class="block group" aria-label={gettext("close")}>
