@@ -173,7 +173,7 @@ defmodule QuizGameWeb.UserAuth do
     else
       socket =
         socket
-        |> Phoenix.LiveView.put_flash(:error, "You must login to access this page.")
+        |> Phoenix.LiveView.put_flash(:warning, "You must login to continue.")
         |> Phoenix.LiveView.redirect(to: ~p"/users/login")
 
       {:halt, socket}
@@ -223,7 +223,7 @@ defmodule QuizGameWeb.UserAuth do
       conn
     else
       conn
-      |> put_flash(:warning, "You must login to access this page.")
+      |> put_flash(:warning, "You must login to continue.")
       |> maybe_store_return_to()
       |> redirect(to: ~p"/users/login")
       |> halt()

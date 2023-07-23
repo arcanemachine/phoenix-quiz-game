@@ -239,7 +239,7 @@ defmodule QuizGameWeb.UserAuthTest do
       assert redirected_to(conn) == ~p"/users/login"
 
       assert Phoenix.Flash.get(conn.assigns.flash, :warning) ==
-               "You must login to access this page."
+               "You must login to continue."
     end
 
     test "stores the path to redirect to on GET", %{conn: conn} do
