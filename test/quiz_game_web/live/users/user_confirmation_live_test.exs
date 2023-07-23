@@ -31,7 +31,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
         lv
         |> form("#confirmation_form")
         |> render_submit()
-        |> follow_redirect(conn, "/")
+        |> follow_redirect(conn, "/users/me")
 
       assert {:ok, conn} = result
 
@@ -66,10 +66,12 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
         lv
         |> form("#confirmation_form")
         |> render_submit()
-        |> follow_redirect(conn, "/")
+        |> follow_redirect(conn, "/users/me")
 
       assert {:ok, conn} = result
-      refute Phoenix.Flash.get(conn.assigns.flash, :error)
+
+      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~
+               "Your account has already been confirmed."
     end
 
     test "does not confirm email with invalid token", %{conn: conn, user: user} do

@@ -12,7 +12,7 @@ defmodule QuizGameWeb.Router.Users do
         get "/logout", UserSessionController, :logout_confirm
         post "/logout", UserSessionController, :logout
 
-        live_session :current_user,
+        live_session :confirm_email,
           on_mount: [{QuizGameWeb.UserAuth, :mount_current_user}] do
           live "/confirm/email", UserConfirmationInstructionsLive, :new
           live "/confirm/email/:token", UserConfirmationLive, :edit

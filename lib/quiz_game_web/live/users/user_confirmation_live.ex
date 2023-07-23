@@ -20,7 +20,7 @@ defmodule QuizGameWeb.UserConfirmationLive do
       <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
         <.input field={@form[:token]} type="hidden" />
         <:actions>
-          <.form_button_submit content="Confirm my account" class="btn-lg" />
+          <.form_button_submit content="Confirm my account" class="btn-lg w-full" />
         </:actions>
       </.simple_form>
     </div>
@@ -35,12 +35,15 @@ defmodule QuizGameWeb.UserConfirmationLive do
         {:noreply,
          socket
          |> put_flash(:success, "Your account has been confirmed.")
-         |> redirect(to: ~p"/")}
+         |> redirect(to: ~p"/users/me")}
 
       :error ->
         case socket.assigns do
           %{current_user: %{confirmed_at: confirmed_at}} when not is_nil(confirmed_at) ->
-            {:noreply, redirect(socket, to: ~p"/")}
+            {:noreply,
+             socket
+             |> put_flash(:info, "Your account has already been confirmed.")
+             |> redirect(to: ~p"/users/me")}
 
           %{} ->
             {:noreply,
