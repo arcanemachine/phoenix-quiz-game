@@ -3,33 +3,14 @@ defmodule QuizGameWeb.Router.Base do
   The base router.
   """
 
-  # BROWSER #
-  def base_allow_any_user do
+  def base_browser do
     quote do
-      get("/", BaseController, :home)
-      get("/privacy-policy", BaseController, :privacy_policy)
-      get("/terms-of-use", BaseController, :terms_of_use)
-    end
-  end
+      scope "/", QuizGameWeb do
+        pipe_through(:browser)
 
-  # DEV #
-  def base_dev do
-    quote do
-      if Application.compile_env(:quiz_game, :dev_routes) do
-        import Phoenix.LiveDashboard.Router
-
-        alias QuizGameWeb.Base.ComponentShowcaseLive
-
-        scope "/dev" do
-          pipe_through(:browser)
-
-          # built-in
-          live_dashboard("/dashboard", metrics: QuizGameWeb.Telemetry)
-          forward "/mailbox", Plug.Swoosh.MailboxPreview
-
-          # custom
-          live("/component-showcase", ComponentShowcaseLive)
-        end
+        get("/", BaseController, :home)
+        get("/privacy-policy", BaseController, :privacy_policy)
+        get("/terms-of-use", BaseController, :terms_of_use)
       end
     end
   end
