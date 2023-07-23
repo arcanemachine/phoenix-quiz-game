@@ -125,7 +125,12 @@ defmodule QuizGameWeb.BaseComponents do
           </details>
 
           <%!-- settings menu --%>
-          <div x-data="{ show: false }" x-title="navbar-settings-menu" @keyup.escape="show = false">
+          <div
+            x-data="{ show: false }"
+            x-title="navbar-settings-menu"
+            x-on:click="show = true"
+            @keyup.escape="show = false"
+          >
             <button
               class="btn-ghost btn-square btn m-1"
               x-tooltip="{ content: 'Settings', placement: 'left' }"
