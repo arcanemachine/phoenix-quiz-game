@@ -42,15 +42,28 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
     test "creates account and logs the user in", %{conn: conn} do
       {:ok, lv, _html} = live(conn, ~p"/users/register")
 
-      email = unique_user_email()
-      form = form(lv, "#registration_form", user: valid_user_attributes(email: email))
+      # build valid set of attributes
+      attrs = valid_user_attributes()
+
+      # add password_confirmation field
+      attrs = %{"user" => Map.merge(attrs, %{password_confirmation: attrs.password})}
+
+      # build the form
+      form = form(lv, "#registration_form", attrs)
+
+      # submit the form
       render_submit(form)
+
+      # get a response
       conn = follow_trigger_action(form, conn)
 
+      # response redirects to expected route
       assert redirected_to(conn) == ~p"/users/me"
 
-      # Now do a logged in request and assert on the menu
+      # make a request as the logged-in user
       conn = get(conn, "/")
+
+      # response contains expected status code and body content
       response = html_response(conn, 200)
       assert response =~ "Your profile"
       assert response =~ "Logout"

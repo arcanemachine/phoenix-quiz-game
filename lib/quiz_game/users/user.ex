@@ -44,6 +44,7 @@ defmodule QuizGame.Users.User do
     user
     |> cast(attrs, [:email, :password])
     |> validate_email(opts)
+    |> validate_confirmation(:password, message: "does not match password")
     |> validate_password(opts)
   end
 
