@@ -1,6 +1,7 @@
 defmodule QuizGameWeb.Router do
   use QuizGameWeb, :router
 
+  import QuizGameWeb.Plug
   import QuizGameWeb.UserAuth
 
   alias QuizGameWeb.Router.Base, as: BaseRouter
@@ -9,6 +10,7 @@ defmodule QuizGameWeb.Router do
 
   pipeline :browser do
     plug :accepts, ["html"]
+    plug :remove_trailing_slash
     plug :fetch_session
     plug :fetch_live_flash
     plug :put_root_layout, html: {QuizGameWeb.Layouts, :root}
