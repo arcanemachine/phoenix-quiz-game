@@ -103,7 +103,7 @@ defmodule QuizGameWeb.BaseComponents do
             <ul class="w-52 p-2 shadow menu dropdown-content bg-base-100 text-base-content
                        n-transition-background rounded-box rounded-tr-md border-1
                        border-secondary">
-              <div class="mt-2 mb-3 text-lg text-center font-bold cursor-default select-none">
+              <div class="mt-2 mb-3 text-lg text-center font-bold select-none">
                 User Actions
               </div>
               <%= if @current_user do %>
