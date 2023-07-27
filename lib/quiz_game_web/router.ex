@@ -4,11 +4,6 @@ defmodule QuizGameWeb.Router do
   import QuizGameWeb.Plug
   import QuizGameWeb.UserAuth
 
-  @routes %{
-    base: QuizGameWeb.Router.Base.routes(),
-    users: QuizGameWeb.Router.Users.routes()
-  }
-
   pipeline :browser do
     plug :accepts, ["html"]
     plug :remove_trailing_slash

@@ -3,22 +3,14 @@ defmodule QuizGameWeb.Router.Base do
   The base router. Used for routes that do not belong to a particular context.
   """
 
-  def routes do
-    %{
-      root: "/",
-      privacy_policy: "/privacy-policy",
-      terms_of_use: "/terms-of-use"
-    }
-  end
-
   def browser do
     quote do
-      scope @routes.base.root, QuizGameWeb do
+      scope "/", QuizGameWeb do
         pipe_through(:browser)
 
-        get(@routes.base.root, BaseController, :home)
-        get(@routes.base.privacy_policy, BaseController, :privacy_policy)
-        get(@routes.base.terms_of_use, BaseController, :terms_of_use)
+        get("/", BaseController, :home)
+        get("/privacy-policy", BaseController, :privacy_policy)
+        get("/terms-of-use", BaseController, :terms_of_use)
       end
     end
   end
