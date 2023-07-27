@@ -27,12 +27,24 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
     test "renders errors for invalid data", %{conn: conn} do
       {:ok, lv, _html} = live(conn, ~p"/users/register")
 
+      other_user = user_fixture()
+
       result =
         lv
         |> element("#registration_form")
-        |> render_change(user: %{"email" => "with spaces", "password" => "2short"})
+        |> render_change(
+          user: %{
+            "username" => other_user.username,
+            "email" => "with spaces",
+            "password" => "2short"
+          }
+        )
 
+      # correct page is loaded
       assert result =~ "Register"
+
+      # markup contains expected error messages
+      assert result =~ "has already been taken"
       assert result =~ "is not a valid email address"
       assert result =~ "should be at least 8 character"
     end
@@ -69,10 +81,28 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
       assert response =~ "Logout"
     end
 
+    test "renders errors for duplicated username", %{conn: conn} do
+      {:ok, lv, _html} = live(conn, ~p"/users/register")
+
+      user = user_fixture()
+
+      result =
+        lv
+        |> form("#registration_form",
+          user: %{
+            "username" => user.username,
+            "password" => "valid_password"
+          }
+        )
+        |> render_submit()
+
+      assert result =~ "has already been taken"
+    end
+
     test "renders errors for duplicated email", %{conn: conn} do
       {:ok, lv, _html} = live(conn, ~p"/users/register")
 
-      user = user_fixture(%{email: "test@email.com"})
+      user = user_fixture()
 
       result =
         lv

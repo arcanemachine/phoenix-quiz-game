@@ -44,6 +44,7 @@ defmodule QuizGameWeb.UserRegistrationLive do
       phx-submit="save"
       phx-trigger-action={@trigger_submit}
     >
+      <.input field={@form[:username]} type="text" label="Username" required />
       <.input field={@form[:email]} type="email" label="Email" required />
       <.input
         field={@form[:password]}
