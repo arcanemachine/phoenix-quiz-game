@@ -6,6 +6,13 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
   import Phoenix.LiveViewTest
   import QuizGame.UsersFixtures
 
+  # defp valid_form_data() do
+  #   valid_attrs = valid_user_attributes()
+
+  #   # add password confirmation
+  #   Map.put(valid_user_attributes(), :password_confirmation, valid_attrs.password)
+  # end
+
   describe "Registration page" do
     test "renders registration page", %{conn: conn} do
       {:ok, _lv, html} = live(conn, ~p"/users/register")
@@ -24,17 +31,14 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
       assert {:ok, _conn} = result
     end
 
-    test "renders errors for invalid data", %{conn: conn} do
+    test "renders errors for invalid 'change' event", %{conn: conn} do
       {:ok, lv, _html} = live(conn, ~p"/users/register")
-
-      other_user = user_fixture()
 
       result =
         lv
         |> element("#registration_form")
         |> render_change(
           user: %{
-            "username" => other_user.username,
             "email" => "with spaces",
             "password" => "2short"
           }
@@ -44,9 +48,46 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
       assert result =~ "Register"
 
       # markup contains expected error messages
-      assert result =~ "has already been taken"
       assert result =~ "is not a valid email address"
       assert result =~ "should be at least 8 character"
+    end
+
+    test "renders errors for invalid 'submit' event", %{conn: conn} do
+      {:ok, lv, _html} = live(conn, ~p"/users/register")
+
+      other_user = user_fixture()
+
+      # username
+      result =
+        lv
+        |> element("#registration_form")
+        |> render_submit(
+          user: %{
+            "username" => other_user.username
+          }
+        )
+
+      # stil on same page
+      assert result =~ "Register"
+
+      # markup contains expected error messages
+      assert result =~ "has already been taken"
+
+      # email
+      result =
+        lv
+        |> element("#registration_form")
+        |> render_submit(
+          user: %{
+            "email" => other_user.email
+          }
+        )
+
+      # still on same page
+      assert result =~ "Register"
+
+      # markup contains expected error messages
+      assert result =~ "has already been taken"
     end
   end
 
