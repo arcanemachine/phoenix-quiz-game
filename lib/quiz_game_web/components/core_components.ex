@@ -274,7 +274,7 @@ defmodule QuizGameWeb.CoreComponents do
         phx-connected={hide("#flash-client-error")}
         hidden
       >
-        Attempting to reconnect... <.icon name="hero-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
+        Attempting to reconnect... <.icon name="hero-arrow-path" class="h-5 w-5 ml-2 animate-spin" />
       </.flash>
 
       <.flash
@@ -285,7 +285,7 @@ defmodule QuizGameWeb.CoreComponents do
         phx-connected={hide("#flash-server-error")}
         hidden
       >
-        Attempting to reconnect... <.icon name="hero-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
+        Attempting to reconnect... <.icon name="hero-arrow-path" class="h-5 w-5 ml-2 animate-spin" />
       </.flash>
     </div>
     """
