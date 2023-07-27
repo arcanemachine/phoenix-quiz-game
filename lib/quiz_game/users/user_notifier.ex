@@ -12,7 +12,9 @@ defmodule QuizGame.Users.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"QuizGame", "contact@example.com"})
+      |> from(
+        {Application.get_env(:quiz_game, :project_name), "no-reply@#{System.get_env("PHX_HOST")}"}
+      )
       |> subject(subject)
       |> text_body(body)
 
