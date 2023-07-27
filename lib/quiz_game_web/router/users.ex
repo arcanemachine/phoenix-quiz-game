@@ -3,7 +3,7 @@ defmodule QuizGameWeb.Router.Users do
   The Users router.
   """
 
-  def users_browser do
+  def browser do
     quote do
       # allow any user
       scope "/users", QuizGameWeb do

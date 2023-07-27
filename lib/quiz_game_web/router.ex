@@ -4,10 +4,6 @@ defmodule QuizGameWeb.Router do
   import QuizGameWeb.Plug
   import QuizGameWeb.UserAuth
 
-  alias QuizGameWeb.Router.Base, as: BaseRouter
-  alias QuizGameWeb.Router.Dev, as: DevRouter
-  alias QuizGameWeb.Router.Users, as: UsersRouter
-
   pipeline :browser do
     plug :accepts, ["html"]
     plug :remove_trailing_slash
@@ -19,14 +15,12 @@ defmodule QuizGameWeb.Router do
     plug :fetch_current_user
   end
 
+  use QuizGameWeb.Router.Base, :browser
+  use QuizGameWeb.Router.Users, :browser
+
+  use QuizGameWeb.Router.Dev
+
   pipeline :api do
     plug :accepts, ["json"]
   end
-
-  # BROWSER #
-  use BaseRouter, :base_browser
-  use UsersRouter, :users_browser
-
-  # DEV #
-  use DevRouter
 end

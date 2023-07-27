@@ -3,7 +3,7 @@ defmodule QuizGameWeb.Router.Base do
   The base router.
   """
 
-  def base_browser do
+  def browser do
     quote do
       scope "/", QuizGameWeb do
         pipe_through(:browser)
