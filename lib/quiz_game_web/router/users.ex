@@ -3,52 +3,77 @@ defmodule QuizGameWeb.Router.Users do
   The router for the 'users' context.
   """
 
+  def routes do
+    %{
+      root: "/users",
+
+      # auth
+      registration: "/register",
+      confirmation_instructions: "/confirm/email",
+      confirmation: "/confirm/email/:token",
+      login: "/login",
+      logout: "/logout",
+      forgot_password: "/reset-password",
+      reset_password: "/reset-password/:token",
+
+      # crud
+      show: "/me",
+      settings: "/me/update",
+      update_email: "/me/update/email",
+      update_email_confirm: "/me/update/email/confirm/:token",
+      update_password: "/me/update/password",
+      delete_confirm: "/me/delete",
+      delete: "/me/delete"
+    }
+  end
+
   def browser do
     quote do
       # allow any user
-      scope "/users", QuizGameWeb do
+      scope @routes.users.root, QuizGameWeb do
         pipe_through(:browser)
 
-        get "/logout", UserSessionController, :logout_confirm
-        post "/logout", UserSessionController, :logout
+        get @routes.users.logout, UserSessionController, :logout_confirm
+        post @routes.users.logout, UserSessionController, :logout
 
         live_session :confirm_email,
           on_mount: [{QuizGameWeb.UserAuth, :mount_current_user}] do
-          live "/confirm/email", UserConfirmationInstructionsLive, :new
-          live "/confirm/email/:token", UserConfirmationLive, :edit
+          live @routes.users.confirmation_instructions, UserConfirmationInstructionsLive, :new
+          live @routes.users.confirmation, UserConfirmationLive, :edit
         end
       end
 
       # logout required
-      scope "/users", QuizGameWeb do
+      scope @routes.users.root, QuizGameWeb do
         pipe_through([:browser, :redirect_if_user_is_authenticated])
 
-        post "/login", UserSessionController, :create
+        post @routes.users.login, UserSessionController, :create
 
         live_session :redirect_if_user_is_authenticated,
           on_mount: [{QuizGameWeb.UserAuth, :redirect_if_user_is_authenticated}] do
-          live "/register", UserRegistrationLive, :new
-          live "/login", UserLoginLive, :new
-          live "/reset-password", UserForgotPasswordLive, :new
-          live "/reset-password/:token", UserResetPasswordLive, :edit
+          live @routes.users.registration, UserRegistrationLive, :new
+          live @routes.users.login, UserLoginLive, :new
+          live @routes.users.forgot_password, UserForgotPasswordLive, :new
+          live @routes.users.reset_password, UserResetPasswordLive, :edit
         end
       end
 
       # login required
-      scope "/users", QuizGameWeb do
+      scope @routes.users.root, QuizGameWeb do
         pipe_through([:browser, :require_authenticated_user])
 
-        get "/me", UserSessionController, :show
-        get "/me/update", UserSessionController, :settings
-        get "/me/delete", UserController, :delete_confirm
-        post "/me/delete", UserController, :delete
+        get @routes.users.show, UserSessionController, :show
+        get @routes.users.settings, UserSessionController, :settings
 
         live_session :require_authenticated_user,
           on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
-          live "/me/update/email", UserUpdateEmailLive, :edit
-          live "/me/update/email/confirm/:token", UserUpdateEmailLive, :confirm_email
-          live "/me/update/password", UserUpdatePasswordLive, :edit
+          live @routes.users.update_email, UserUpdateEmailLive, :edit
+          live @routes.users.update_email_confirm, UserUpdateEmailLive, :confirm_email
+          live @routes.users.update_password, UserUpdatePasswordLive, :edit
         end
+
+        get @routes.users.delete_confirm, UserController, :delete_confirm
+        post @routes.users.delete, UserController, :delete
       end
     end
   end
