@@ -912,7 +912,7 @@ defmodule QuizGameWeb.CoreComponents do
           </label>
         <% end %>
 
-        <div :for={action <- @actions} class="flex flex-center flex-wrap w-full mx-auto">
+        <div :for={action <- @actions} class="flex flex-center flex-wrap w-full -mt-2 mx-auto">
           <%= render_slot(action, f) %>
         </div>
 
