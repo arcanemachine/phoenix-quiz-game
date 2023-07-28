@@ -148,7 +148,7 @@ defmodule QuizGameWeb.BaseComponents do
               >
                 <div class="mb-12 text-3xl font-bold text-center">Settings</div>
                 <button
-                  x-on:click="show = false"
+                  x-on:click.stop="show = false"
                   class="absolute -right-2 -top-2 btn btn-lg btn-circle btn-ghost"
                 >
                   ✕
@@ -174,7 +174,7 @@ defmodule QuizGameWeb.BaseComponents do
                 </div>
 
                 <div class="form-control mt-12 w-full max-w-xs">
-                  <button class="btn btn-secondary" x-on:click="show = false">Close</button>
+                  <button class="btn btn-secondary" x-on:click.stop="show = false">Close</button>
                 </div>
               </div>
             </div>
