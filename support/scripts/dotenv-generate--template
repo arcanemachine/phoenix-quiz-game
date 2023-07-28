@@ -38,6 +38,10 @@ PHX_HOST=\"${PHX_HOST:-$default_phx_host}\"
 PORT=\"${PORT:-4000}\"
 SECRET_KEY_BASE=\"${SECRET_KEY_BASE:-$(openssl rand -base64 48)}\"
 
+# captcha
+HCAPTCHA_PRIVATE_KEY=\"${HCAPTCHA_PRIVATE_KEY:-your_hcaptcha_private_key}\"
+HCAPTCHA_PUBLIC_KEY=\"${HCAPTCHA_PUBLIC_KEY:-your_hcaptcha_public_key}\"
+
 # db
 POSTGRES_DB=\"${POSTGRES_DB:-quiz_game}\"
 POSTGRES_USER=\"${POSTGRES_USER:-postgres}\"

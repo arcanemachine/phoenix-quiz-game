@@ -55,7 +55,7 @@ defmodule QuizGame.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.3", only: [:dev], runtime: false},
-      {:hcaptcha, git: "https://github.com/arcanemachine/hcaptcha", tag: "v0.0.2"}
+      {:hcaptcha, "~> 0.0.1"}
     ]
   end
 
