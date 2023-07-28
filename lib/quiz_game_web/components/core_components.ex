@@ -883,7 +883,7 @@ defmodule QuizGameWeb.CoreComponents do
     <.form :let={f} for={@for} as={@as} {@rest}>
       <div
         class={[
-          "max-w-sm xl:max-w-md mt-8 p-2 mx-auto transition-colors duration-300 rounded-lg",
+          "w-full max-w-lg mt-8 p-2 mx-auto transition-colors duration-300 rounded-lg",
           @has_errors && "bg-red-200"
         ]}
         x-data="simpleForm"
