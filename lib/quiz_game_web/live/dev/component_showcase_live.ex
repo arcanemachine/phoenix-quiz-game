@@ -3,6 +3,7 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
 
   @page_title "Component Showcase"
 
+  # data
   defmodule FormData do
     @types %{
       text: :string,
@@ -32,11 +33,12 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
     defstruct id: 0, col1: "Value 1", col2: "Value 2"
   end
 
+  # lifecycle
   def mount(_params, _session, socket) do
     {:ok,
      socket
      |> assign(
-       form: build_empty_form(),
+       form: form_build_empty(),
        form_has_errors: false,
        page_title: @page_title,
        table_rows: [
@@ -45,88 +47,6 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
          %TableRow{id: 3, col1: "Value 5", col2: "Value 6"}
        ]
      )}
-  end
-
-  defp build_empty_form() do
-    to_form(FormData.changeset(%FormData{}, %{}))
-  end
-
-  def handle_event("flash-info-show", _params, socket) do
-    {:noreply, socket |> put_flash(:info, "Info flash message")}
-  end
-
-  def handle_event("flash-success-show", _params, socket) do
-    {:noreply, socket |> put_flash(:success, "Success flash message")}
-  end
-
-  def handle_event("flash-warning-show", _params, socket) do
-    {:noreply, socket |> put_flash(:warning, "Warning flash message")}
-  end
-
-  def handle_event("flash-error-show", _params, socket) do
-    {:noreply, socket |> put_flash(:error, "Error flash message")}
-  end
-
-  def handle_event("flash-long-show", _params, socket) do
-    {:noreply,
-     socket
-     |> put_flash(
-       :info,
-       "This is a really long flash message. I mean, really, it's quite long. " <>
-         "It's so long that the text shouldn't fit on a single line."
-     )}
-  end
-
-  def handle_event("form-reset", _params, socket) do
-    {:noreply, assign(socket, form: build_empty_form())}
-  end
-
-  def handle_event("form-submit", %{"form_data" => form_data} = params, socket) do
-    form = validate_form(form_data)
-
-    if Enum.empty?(form.errors) do
-      if QuizGameWeb.Support.form_captcha_valid?(params) do
-        {:noreply,
-         socket
-         |> push_event("toast-show-success", %{content: "Form submitted successfully"})
-         |> assign(form: form, form_has_errors: form_has_errors?(form))}
-      else
-        {:noreply,
-         socket
-         |> push_event("toast-show-error", %{
-           content: "Please check the box that says 'I am human'."
-         })
-         |> assign(form: form, form_has_errors: form_has_errors?(form))}
-      end
-    else
-      {:noreply, assign(socket, form: form, form_has_errors: form_has_errors?(form))}
-    end
-  end
-
-  def handle_event("loader-demo", _params, socket) do
-    Process.sleep(1000)
-    {:noreply, socket}
-  end
-
-  def handle_event("form-validate" = _event, %{"form_data" => form_data}, socket) do
-    form = validate_form(form_data)
-
-    {:noreply, assign(socket, form: form, form_has_errors: form_has_errors?(form))}
-  end
-
-  defp validate_form(params) do
-    %FormData{}
-    |> FormData.changeset(params)
-    # |> Ecto.Changeset.validate_required(Map.keys(FormData.types()))
-    |> Ecto.Changeset.validate_required([:textarea])
-    |> Ecto.Changeset.validate_format(:textarea, ~r/^pass$/, message: "should be 'pass'")
-    # |> Ecto.Changeset.validate_acceptance(:checkbox, message: "should be checked")
-    |> Map.put(:action, :validate)
-    |> to_form()
-  end
-
-  defp form_has_errors?(form) do
-    !Enum.empty?(form.errors)
   end
 
   def render(assigns) do
@@ -525,5 +445,88 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       </div>
     </section>
     """
+  end
+
+  def handle_event("flash-info-show", _params, socket) do
+    {:noreply, socket |> put_flash(:info, "Info flash message")}
+  end
+
+  def handle_event("flash-success-show", _params, socket) do
+    {:noreply, socket |> put_flash(:success, "Success flash message")}
+  end
+
+  def handle_event("flash-warning-show", _params, socket) do
+    {:noreply, socket |> put_flash(:warning, "Warning flash message")}
+  end
+
+  def handle_event("flash-error-show", _params, socket) do
+    {:noreply, socket |> put_flash(:error, "Error flash message")}
+  end
+
+  def handle_event("flash-long-show", _params, socket) do
+    {:noreply,
+     socket
+     |> put_flash(
+       :info,
+       "This is a really long flash message. I mean, really, it's quite long. " <>
+         "It's so long that the text shouldn't fit on a single line."
+     )}
+  end
+
+  def handle_event("form-reset", _params, socket) do
+    {:noreply, assign(socket, form: form_build_empty())}
+  end
+
+  def handle_event("form-submit", %{"form_data" => form_data} = params, socket) do
+    form = form_validate(form_data)
+
+    if Enum.empty?(form.errors) do
+      if QuizGameWeb.Support.form_captcha_valid?(params) do
+        {:noreply,
+         socket
+         |> push_event("toast-show-success", %{content: "Form submitted successfully"})
+         |> assign(form: form, form_has_errors: form_has_errors?(form))}
+      else
+        {:noreply,
+         socket
+         |> push_event("toast-show-error", %{
+           content: "Please check the box that says 'I am human'."
+         })
+         |> assign(form: form, form_has_errors: form_has_errors?(form))}
+      end
+    else
+      {:noreply, assign(socket, form: form, form_has_errors: form_has_errors?(form))}
+    end
+  end
+
+  def handle_event("form-validate" = _event, %{"form_data" => form_data}, socket) do
+    form = form_validate(form_data)
+
+    {:noreply, assign(socket, form: form, form_has_errors: form_has_errors?(form))}
+  end
+
+  def handle_event("loader-demo", _params, socket) do
+    Process.sleep(1000)
+    {:noreply, socket}
+  end
+
+  # support
+  defp form_build_empty() do
+    to_form(FormData.changeset(%FormData{}, %{}))
+  end
+
+  defp form_has_errors?(form) do
+    !Enum.empty?(form.errors)
+  end
+
+  defp form_validate(params) do
+    %FormData{}
+    |> FormData.changeset(params)
+    # |> Ecto.Changeset.validate_required(Map.keys(FormData.types()))
+    |> Ecto.Changeset.validate_required([:textarea])
+    |> Ecto.Changeset.validate_format(:textarea, ~r/^pass$/, message: "should be 'pass'")
+    # |> Ecto.Changeset.validate_acceptance(:checkbox, message: "should be checked")
+    |> Map.put(:action, :validate)
+    |> to_form()
   end
 end
