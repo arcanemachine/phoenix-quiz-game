@@ -25,9 +25,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-width: 20rem;
+  width: 25rem;
+  max-width: 95vw;
   min-height: 3rem;
-  padding: 0.5rem 0;
+  padding: 0.5rem;
   padding-left: 0.75rem;
   border-radius: 0.25rem;
 }
