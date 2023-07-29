@@ -25,6 +25,12 @@ config :quiz_game, QuizGameWeb.Endpoint,
 # email - don't send email
 config :quiz_game, QuizGame.Mailer, adapter: Swoosh.Adapters.Test
 
+# hcaptcha
+config :hcaptcha,
+  http_client: Hcaptcha.Http.MockClient,
+  public_key: "10000000-ffff-ffff-ffff-000000000001",
+  secret: "0x0000000000000000000000000000000000000000"
+
 # logger - only print warnings and errors
 config :logger, level: :warning
 

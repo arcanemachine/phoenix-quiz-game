@@ -501,8 +501,8 @@ defmodule QuizGameWeb.CoreComponents do
 
   attr :type, :string,
     default: "text",
-    values: ~w(checkbox color csrf-token date datetime-local email file hidden month number
-               password range radio search select tel text textarea time url week)
+    values: ~w(captcha checkbox color csrf-token date datetime-local email file hidden month
+               number password range radio search select tel text textarea time url week)
 
   attr :field, Phoenix.HTML.FormField,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
@@ -529,6 +529,18 @@ defmodule QuizGameWeb.CoreComponents do
     |> input()
   end
 
+  def input(%{type: "captcha"} = assigns) do
+    ~H"""
+    <script src="https://js.hcaptcha.com/1/api.js" async defer />
+    <div
+      id="hcaptcha-container"
+      class="h-captcha mb-4 flex justify-center"
+      data-sitekey={Application.get_env(:hcaptcha, :public_key)}
+      phx-update="ignore"
+    />
+    """
+  end
+
   def input(%{type: "csrf-token"} = assigns) do
     ~H"""
     <input
@@ -537,14 +549,6 @@ defmodule QuizGameWeb.CoreComponents do
       x-bind:value="document.querySelector(`meta[name='csrf-token']`).content"
       class="hidden"
     />
-    """
-  end
-
-  def input(%{type: "hidden"} = assigns) do
-    ~H"""
-    <div phx-feedback-for={@name} data-component="input">
-      <input type="hidden" name={@name} id={@id || @name} class="hidden" value={@value} {@rest} />
-    </div>
     """
   end
 
@@ -573,6 +577,14 @@ defmodule QuizGameWeb.CoreComponents do
         <%= @label %>
       </label>
       <.input_errors errors={@errors} />
+    </div>
+    """
+  end
+
+  def input(%{type: "hidden"} = assigns) do
+    ~H"""
+    <div phx-feedback-for={@name} data-component="input">
+      <input type="hidden" name={@name} id={@id || @name} class="hidden" value={@value} {@rest} />
     </div>
     """
   end

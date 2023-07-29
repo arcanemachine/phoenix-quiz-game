@@ -10,7 +10,8 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
       password: :string,
       checkbox: :boolean,
       select: :string,
-      textarea: :string
+      textarea: :string,
+      captcha: :string
     }
 
     defstruct text: "",
@@ -80,8 +81,26 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
     {:noreply, assign(socket, form: build_empty_form())}
   end
 
-  def handle_event("form-submit", params, socket) do
-    handle_event("form-validate", params, socket)
+  def handle_event("form-submit", %{"form_data" => form_data} = params, socket) do
+    form = validate_form(form_data)
+
+    if Enum.empty?(form.errors) do
+      if QuizGameWeb.Support.form_captcha_valid?(params) do
+        {:noreply,
+         socket
+         |> push_event("toast-show-success", %{content: "Form submitted successfully"})
+         |> assign(form: form, form_has_errors: form_has_errors?(form))}
+      else
+        {:noreply,
+         socket
+         |> push_event("toast-show-error", %{
+           content: "Please check the box that says 'I am human'."
+         })
+         |> assign(form: form, form_has_errors: form_has_errors?(form))}
+      end
+    else
+      {:noreply, assign(socket, form: form, form_has_errors: form_has_errors?(form))}
+    end
   end
 
   def handle_event("loader-demo", _params, socket) do
@@ -89,23 +108,25 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
     {:noreply, socket}
   end
 
-  def handle_event("form-validate" = _event, %{"form_data" => form_data_params}, socket) do
-    form =
-      %FormData{}
-      |> FormData.changeset(form_data_params)
-      |> Ecto.Changeset.validate_required(Map.keys(FormData.types()))
-      |> Ecto.Changeset.validate_format(:text, ~r/^pass$/, message: "should be 'pass'")
-      |> Ecto.Changeset.validate_format(:email, ~r/^pass@example\.com$/,
-        message: "Must be 'pass@example.com'"
-      )
-      |> Ecto.Changeset.validate_format(:password, ~r/^pass$/, message: "should be 'pass'")
-      |> Ecto.Changeset.validate_acceptance(:checkbox, message: "should be checked")
-      |> Ecto.Changeset.validate_format(:select, ~r/^pass$/, message: "should be 'pass'")
-      |> Ecto.Changeset.validate_format(:textarea, ~r/^pass$/, message: "should be 'pass'")
-      |> Map.put(:action, :validate)
-      |> to_form()
+  def handle_event("form-validate" = _event, %{"form_data" => form_data}, socket) do
+    form = validate_form(form_data)
 
-    {:noreply, assign(socket, form: form, form_has_errors: !Enum.empty?(form.errors))}
+    {:noreply, assign(socket, form: form, form_has_errors: form_has_errors?(form))}
+  end
+
+  defp validate_form(params) do
+    %FormData{}
+    |> FormData.changeset(params)
+    # |> Ecto.Changeset.validate_required(Map.keys(FormData.types()))
+    |> Ecto.Changeset.validate_required([:textarea])
+    |> Ecto.Changeset.validate_format(:textarea, ~r/^pass$/, message: "should be 'pass'")
+    # |> Ecto.Changeset.validate_acceptance(:checkbox, message: "should be checked")
+    |> Map.put(:action, :validate)
+    |> to_form()
+  end
+
+  defp form_has_errors?(form) do
+    !Enum.empty?(form.errors)
   end
 
   def render(assigns) do
@@ -336,9 +357,16 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
         />
       </div>
 
+      <div id="deleteme">&nbsp;</div>
+      <script>
+        setTimeout(() => { document.querySelector('#deleteme').scrollIntoView(); }, 100)
+      </script>
+
       <div class="form-control">
         <.input type="textarea" field={@form[:textarea]} label="Textarea input" class="textarea" />
       </div>
+
+      <.input type="captcha" />
 
       <%!-- actions --%>
       <:actions>
@@ -490,6 +518,9 @@ defmodule QuizGameWeb.Base.ComponentShowcaseLive do
           x-on:click="$store.toasts.show('primary', 'This is a really long toast message. I mean, really, it\'s quite long. It\'s so long that the text shouldn\'t fit on a single line.')"
         >
           Long Toast
+        </.button>
+        <.button class="w-48 btn m-1" x-on:click="$store.toasts.clear">
+          Clear Toasts
         </.button>
       </div>
     </section>

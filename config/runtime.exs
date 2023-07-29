@@ -38,3 +38,8 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 end
+
+# hcaptcha
+config :hcaptcha,
+  public_key: System.get_env("HCAPTCHA_PUBLIC_KEY"),
+  secret: System.get_env("HCAPTCHA_PRIVATE_KEY")

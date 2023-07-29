@@ -23,6 +23,8 @@ defmodule QuizGameWeb.UserLoginLive do
         <.input field={@form[:remember_me]} type="checkbox" label="Keep me logged in" />
       </div>
 
+      <.input type="captcha" />
+
       <:actions>
         <.simple_form_actions_default />
       </:actions>
