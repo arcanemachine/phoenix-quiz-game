@@ -531,13 +531,28 @@ defmodule QuizGameWeb.CoreComponents do
 
   def input(%{type: "captcha"} = assigns) do
     ~H"""
-    <script src="https://js.hcaptcha.com/1/api.js" async defer />
-    <div
-      id="hcaptcha-container"
-      class="h-captcha mb-4 flex justify-center"
-      data-sitekey={Application.get_env(:hcaptcha, :public_key)}
-      phx-update="ignore"
-    />
+    <div class="flex flex-row-reverse justify-center gap-4 mb-8">
+      <div class="flex items-center">
+        <button
+          type="button"
+          class="h-[72px] w-[72px] btn btn-square btn-secondary"
+          x-data
+          x-title="captcha-reset-button"
+          @click="confirm('Are you sure you want to reset the human test?') && hcaptcha.reset()"
+        >
+          <.icon name="hero-arrow-path" />
+        </button>
+      </div>
+      <script src="https://js.hcaptcha.com/1/api.js" async defer />
+      <div class="min-h-[78px] min-w-[302px] show-when-empty">
+        <div
+          id="captcha-container"
+          class="h-captcha flex justify-center"
+          data-sitekey={Application.get_env(:hcaptcha, :public_key)}
+          phx-update="ignore"
+        />
+      </div>
+    </div>
     """
   end
 

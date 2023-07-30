@@ -152,6 +152,10 @@
 }
 
 @layer utilities {
+  .show-when-empty {
+    content: "\00A0"; /* non-breaking space */
+  }
+
   .show-empty-element:after {
     content: "\00A0"; /* non-breaking space */
   }
