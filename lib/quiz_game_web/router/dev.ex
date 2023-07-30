@@ -8,6 +8,8 @@ defmodule QuizGameWeb.DevRouter do
       if Application.compile_env(:quiz_game, :dev_routes) do
         import Phoenix.LiveDashboard.Router
 
+        alias QuizGameWeb.DevLive
+
         scope "/dev" do
           pipe_through(:browser)
 
