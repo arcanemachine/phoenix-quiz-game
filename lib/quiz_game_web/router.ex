@@ -15,10 +15,10 @@ defmodule QuizGameWeb.Router do
     plug :fetch_current_user
   end
 
-  use QuizGameWeb.Router.Base, :browser
-  use QuizGameWeb.Router.Users, :browser
+  use QuizGameWeb.BaseRouter, :browser
+  use QuizGameWeb.UsersRouter, :browser
 
-  use QuizGameWeb.Router.Dev
+  use QuizGameWeb.DevRouter
 
   pipeline :api do
     plug :accepts, ["json"]

@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Router.Users do
+defmodule QuizGameWeb.UsersRouter do
   @moduledoc """
   The router for the 'users' context.
   """

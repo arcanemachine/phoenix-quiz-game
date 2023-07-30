@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Router.Base do
+defmodule QuizGameWeb.BaseRouter do
   @moduledoc """
   The base router. Used for routes that do not belong to a particular context.
   """

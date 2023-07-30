@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Router.Dev do
+defmodule QuizGameWeb.DevRouter do
   @moduledoc """
   A router for routes that are only available in development.
   """
