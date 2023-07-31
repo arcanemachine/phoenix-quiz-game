@@ -74,6 +74,17 @@ defmodule QuizGameWeb.UserRegistrationLive do
           Login to an existing account
         </.link>
       </.action_links_item>
+      <.action_links_spacer />
+      <.action_links_item>
+        <.link href={~p"/users/reset-password"}>
+          Forgot your password?
+        </.link>
+      </.action_links_item>
+      <.action_links_item>
+        <.link href={~p"/users/confirm/email"}>
+          Didn't receive a confirmation email?
+        </.link>
+      </.action_links_item>
     </.action_links>
     """
   end
