@@ -949,7 +949,7 @@ defmodule QuizGameWeb.CoreComponents do
         @has_errors && "bg-red-200"
       ]}
     >
-      <div x-data="simpleForm">
+      <div class="p-2" x-data="simpleForm">
         <%= render_slot(@inner_block, f) %>
 
         <%= if @confirmation_required do %>
