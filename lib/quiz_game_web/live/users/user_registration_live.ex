@@ -78,20 +78,36 @@ defmodule QuizGameWeb.UserRegistrationLive do
     """
   end
 
-  def handle_event("save", %{"user" => user_params}, socket) do
-    case Users.register_user(user_params) do
-      {:ok, user} ->
-        {:ok, _} =
-          Users.deliver_user_confirmation_instructions(
-            user,
-            &url(~p"/users/confirm/email/#{&1}")
-          )
+  def handle_event("save", %{"user" => user_params} = form_params, socket) do
+    if QuizGameWeb.Support.form_captcha_valid?(form_params) do
+      case Users.register_user(user_params) do
+        {:ok, user} ->
+          {:ok, _} =
+            Users.deliver_user_confirmation_instructions(
+              user,
+              &url(~p"/users/confirm/email/#{&1}")
+            )
 
-        changeset = Users.change_user_registration(user)
-        {:noreply, socket |> assign(trigger_submit: true) |> assign_form(changeset)}
+          changeset = Users.change_user_registration(user)
+          {:noreply, socket |> assign(trigger_submit: true) |> assign_form(changeset)}
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}
+        {:error, %Ecto.Changeset{} = changeset} ->
+          {:noreply,
+           socket
+           |> assign(check_errors: true)
+           |> push_event("captcha-reset", %{})
+           |> assign_form(changeset)}
+      end
+    else
+      changeset = Users.change_user_registration(%User{}, user_params)
+
+      {:noreply,
+       socket
+       |> push_event("toast-show-error", %{
+         content: "Please complete the human test at the bottom of the form."
+       })
+       |> push_event("captcha-reset", %{})
+       |> assign_form(changeset)}
     end
   end
 
