@@ -939,14 +939,17 @@ defmodule QuizGameWeb.CoreComponents do
 
   def simple_form(assigns) do
     ~H"""
-    <.form :let={f} for={@for} as={@as} {@rest}>
-      <div
-        class={[
-          "w-full max-w-md mt-8 p-2 mx-auto transition-colors duration-300 rounded-lg",
-          @has_errors && "bg-red-200"
-        ]}
-        x-data="simpleForm"
-      >
+    <.form
+      :let={f}
+      for={@for}
+      as={@as}
+      {@rest}
+      class={[
+        "w-full max-w-md mt-8 mx-auto transition-colors duration-300 rounded-lg",
+        @has_errors && "bg-red-200"
+      ]}
+    >
+      <div x-data="simpleForm">
         <%= render_slot(@inner_block, f) %>
 
         <%= if @confirmation_required do %>
