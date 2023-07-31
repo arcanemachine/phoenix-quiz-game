@@ -532,7 +532,7 @@ defmodule QuizGameWeb.CoreComponents do
   def input(%{type: "captcha"} = assigns) do
     ~H"""
     <div
-      class="flex justify-center gap-2 mb-8"
+      class="flex justify-center mb-8"
       x-title="captcha"
       x-data="{
         captchaCompleted: false,
@@ -553,9 +553,9 @@ defmodule QuizGameWeb.CoreComponents do
 
       <%!-- HACK: use hidden checkbox to prevent form submission if the captcha is incomplete --%>
       <input
-        class="absolute h-0 w-0 mt-10 mr-[19rem] -z-10 pointer-events-none"
         type="checkbox"
         required
+        class="absolute h-0 w-0 mt-10 mr-[15rem] -z-10 pointer-events-none"
         tabindex="-1"
         aria-hidden="true"
         x-model="captchaCompleted"
@@ -575,16 +575,15 @@ defmodule QuizGameWeb.CoreComponents do
       </div>
 
       <%!-- captcha reset button --%>
-      <div class="flex items-center">
-        <button
-          type="button"
-          class="h-[78px] btn btn-square btn-secondary opacity-70"
-          @click="confirm('Are you sure you want to reset the human test?') && captchaReset()"
-          x-tooltip="Reset the human test"
-        >
-          <.icon name="hero-arrow-path" />
-        </button>
-      </div>
+      <button
+        type="button"
+        class="block absolute h-[68px] w-[54px] mt-1 ml-16 bg-[#fafafa] hover:bg-[#d8d8d8]
+               text-slate-900 btn btn-ghost rounded-sm opacity-75 !border-none"
+        @click="confirm('Are you sure you want to reset the human test?') && captchaReset()"
+        x-tooltip="Reset the human test"
+      >
+        <.icon name="hero-arrow-path" />
+      </button>
     </div>
     """
   end
