@@ -555,7 +555,7 @@ defmodule QuizGameWeb.CoreComponents do
       <input
         type="checkbox"
         required
-        class="absolute h-0 w-0 mt-10 mr-[15rem] -z-10 pointer-events-none"
+        class="absolute h-1 w-1 mt-10 mr-[15rem] -z-10 pointer-events-none"
         tabindex="-1"
         aria-hidden="true"
         x-model="captchaCompleted"
