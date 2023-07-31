@@ -4,6 +4,17 @@ if System.get_env("PHX_SERVER") do
   config :quiz_game, QuizGameWeb.Endpoint, server: true
 end
 
+# hcaptcha
+config :hcaptcha,
+  public_key: System.get_env("HCAPTCHA_PUBLIC_KEY"),
+  secret: System.get_env("HCAPTCHA_PRIVATE_KEY")
+
+if config_env() == :test do
+  config :hcaptcha,
+    public_key: nil,
+    secret: nil
+end
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||
@@ -38,8 +49,3 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 end
-
-# hcaptcha
-config :hcaptcha,
-  public_key: System.get_env("HCAPTCHA_PUBLIC_KEY"),
-  secret: System.get_env("HCAPTCHA_PRIVATE_KEY")

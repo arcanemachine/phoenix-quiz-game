@@ -531,7 +531,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   def input(%{type: "captcha"} = assigns) do
     ~H"""
-    <%= if !Enum.member?([:error, {:ok, nil}], Application.fetch_env(:hcaptcha, :public_key)) do %>
+    <%= if !Enum.member?([:error, {:ok, nil}, nil], Application.fetch_env(:hcaptcha, :public_key)) do %>
       <div
         class="flex justify-center mb-8"
         x-title="captcha"
