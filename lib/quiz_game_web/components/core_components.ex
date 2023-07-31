@@ -559,6 +559,7 @@ defmodule QuizGameWeb.CoreComponents do
         tabindex="-1"
         aria-hidden="true"
         x-model="captchaCompleted"
+        x-on:focus="hcaptcha.execute()"
         phx-update="ignore"
         id="captcha-completed-hidden-checkbox"
       />
