@@ -70,7 +70,7 @@ defmodule QuizGameWeb.UserRegistrationLive do
 
     <.action_links>
       <.action_links_item>
-        <.link navigate={~p"/users/login"}>
+        <.link href={~p"/users/login"}>
           Login to an existing account
         </.link>
       </.action_links_item>

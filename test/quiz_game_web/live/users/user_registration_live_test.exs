@@ -155,18 +155,4 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
       assert result =~ "has already been taken"
     end
   end
-
-  describe "registration navigation" do
-    test "redirects to login page when the login button is clicked", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, ~p"/users/register")
-
-      {:ok, _login_live, login_html} =
-        lv
-        |> element(~s|a:fl-contains("Login to an existing account")|)
-        |> render_click()
-        |> follow_redirect(conn, ~p"/users/login")
-
-      assert login_html =~ "Login"
-    end
-  end
 end

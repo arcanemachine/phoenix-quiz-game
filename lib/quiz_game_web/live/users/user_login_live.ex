@@ -32,7 +32,7 @@ defmodule QuizGameWeb.UserLoginLive do
 
     <.action_links>
       <.action_links_item>
-        <.link navigate={~p"/users/register"}>
+        <.link href={~p"/users/register"}>
           Register new account
         </.link>
       </.action_links_item>
