@@ -531,61 +531,63 @@ defmodule QuizGameWeb.CoreComponents do
 
   def input(%{type: "captcha"} = assigns) do
     ~H"""
-    <div
-      class="flex justify-center mb-8"
-      x-title="captcha"
-      x-data="{
-        captchaCompleted: false,
-        captchaReset() {
-          this.captchaCompleted = false;
-          hcaptcha.reset();
-        }
-      }"
-      x-on:captcha-completed.window="captchaCompleted = true"
-      x-on:phx:captcha-reset.window="captchaReset"
-    >
-      <script src="https://js.hcaptcha.com/1/api.js" async defer />
-      <script>
-        function captchaHandleCompleted() {
-          window.dispatchEvent(new CustomEvent('captcha-completed'))
-        };
-      </script>
-
-      <%!-- HACK: use hidden checkbox to prevent form submission if the captcha is incomplete --%>
-      <input
-        type="checkbox"
-        required
-        class="absolute h-1 w-1 mt-10 mr-[15rem] -z-10 pointer-events-none"
-        tabindex="-1"
-        aria-hidden="true"
-        x-model="captchaCompleted"
-        x-on:focus="hcaptcha.execute()"
-        phx-update="ignore"
-        id="captcha-completed-hidden-checkbox"
-      />
-
-      <%!-- captcha --%>
-      <div class="min-h-[78px] min-w-[302px] show-when-empty">
-        <div
-          id="captcha-container"
-          class="h-captcha"
-          data-sitekey={Application.get_env(:hcaptcha, :public_key)}
-          data-callback="captchaHandleCompleted"
-          phx-update="ignore"
-        />
-      </div>
-
-      <%!-- captcha reset button --%>
-      <button
-        type="button"
-        class="block absolute h-[68px] w-[54px] mt-1 ml-12 bg-[#fafafa] hover:bg-[#d8d8d8]
-               text-slate-900 btn btn-ghost rounded-sm opacity-75 !border-none"
-        x-on:click="confirm('Are you sure you want to reset the human test?') && captchaReset()"
-        x-tooltip="Reset the human test"
+    <%= if !Enum.member?([:error, {:ok, nil}], Application.fetch_env(:hcaptcha, :public_key)) do %>
+      <div
+        class="flex justify-center mb-8"
+        x-title="captcha"
+        x-data="{
+          captchaCompleted: false,
+          captchaReset() {
+            this.captchaCompleted = false;
+            hcaptcha.reset();
+          }
+        }"
+        x-on:captcha-completed.window="captchaCompleted = true"
+        x-on:phx:captcha-reset.window="captchaReset"
       >
-        <.icon name="hero-arrow-path" />
-      </button>
-    </div>
+        <script src="https://js.hcaptcha.com/1/api.js" async defer />
+        <script>
+          function captchaHandleCompleted() {
+            window.dispatchEvent(new CustomEvent('captcha-completed'))
+          };
+        </script>
+
+        <%!-- HACK: use hidden checkbox to prevent form submission if the captcha is incomplete --%>
+        <input
+          type="checkbox"
+          required
+          class="absolute h-1 w-1 mt-10 mr-[15rem] -z-10 pointer-events-none"
+          tabindex="-1"
+          aria-hidden="true"
+          x-model="captchaCompleted"
+          x-on:focus="hcaptcha.execute()"
+          phx-update="ignore"
+          id="captcha-completed-hidden-checkbox"
+        />
+
+        <%!-- captcha --%>
+        <div class="min-h-[78px] min-w-[302px] show-when-empty">
+          <div
+            id="captcha-container"
+            class="h-captcha"
+            data-sitekey={Application.get_env(:hcaptcha, :public_key)}
+            data-callback="captchaHandleCompleted"
+            phx-update="ignore"
+          />
+        </div>
+
+        <%!-- captcha reset button --%>
+        <button
+          type="button"
+          class="block absolute h-[68px] w-[54px] mt-1 ml-12 bg-[#fafafa] hover:bg-[#d8d8d8]
+                 text-slate-900 btn btn-ghost rounded-sm opacity-75 !border-none"
+          x-on:click="confirm('Are you sure you want to reset the human test?') && captchaReset()"
+          x-tooltip="Reset the human test"
+        >
+          <.icon name="hero-arrow-path" />
+        </button>
+      </div>
+    <% end %>
     """
   end
 
