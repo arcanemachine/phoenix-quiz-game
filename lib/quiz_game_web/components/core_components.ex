@@ -580,7 +580,7 @@ defmodule QuizGameWeb.CoreComponents do
         <button
           type="button"
           class="block absolute h-[68px] w-[54px] mt-1 ml-12 bg-[#fafafa] hover:bg-[#d8d8d8]
-                 text-slate-900 btn btn-ghost rounded-sm opacity-75 !border-none"
+                 text-slate-900 btn btn-ghost opacity-75 !border-none"
           x-on:click="confirm('Are you sure you want to reset the human test?') && captchaReset()"
           x-tooltip="Reset the human test"
         >
