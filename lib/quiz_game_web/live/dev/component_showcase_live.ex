@@ -104,16 +104,18 @@ defmodule QuizGameWeb.DevLive.ComponentShowcaseLive do
 
     if Enum.empty?(form.errors) do
       if QuizGameWeb.Support.form_captcha_valid?(params) do
+        # captcha is valid
         {:noreply,
          socket
          |> push_event("toast-show-success", %{content: "Form submitted successfully"})
          |> push_event("captcha-reset", %{})
          |> assign(form: form, form_has_errors: form_has_errors?(form))}
       else
+        # captcha is not valid
         {:noreply,
          socket
          |> push_event("toast-show-error", %{
-           content: "Please check the box that says 'I am human'."
+           content: "Please complete the human test at the bottom of the form."
          })
          |> assign(form: form, form_has_errors: form_has_errors?(form))}
       end

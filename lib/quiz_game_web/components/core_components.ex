@@ -578,7 +578,7 @@ defmodule QuizGameWeb.CoreComponents do
       <div class="flex items-center">
         <button
           type="button"
-          class="h-[78px] btn btn-square btn-secondary opacity-90"
+          class="h-[78px] btn btn-square btn-secondary opacity-70"
           @click="confirm('Are you sure you want to reset the human test?') && captchaReset()"
           x-tooltip="Reset the human test"
         >
