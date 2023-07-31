@@ -100,7 +100,12 @@ defmodule QuizGameWeb.UserRegistrationLive do
             )
 
           changeset = Users.change_user_registration(user)
-          {:noreply, socket |> assign(trigger_submit: true) |> assign_form(changeset)}
+
+          {:noreply,
+           socket
+           |> push_event("captcha-reset", %{})
+           |> assign(trigger_submit: true)
+           |> assign_form(changeset)}
 
         {:error, %Ecto.Changeset{} = changeset} ->
           {:noreply,
