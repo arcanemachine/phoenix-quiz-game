@@ -215,7 +215,13 @@
   </div>
 
   <div class="form-control">
-    <.input type="textarea" field={@form[:textarea]} label="Textarea input" class="textarea" />
+    <.input
+      type="textarea"
+      field={@form[:textarea]}
+      label="Textarea input"
+      class="textarea"
+      required
+    />
   </div>
 
   <.input type="captcha" />
