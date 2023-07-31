@@ -124,7 +124,7 @@ defmodule QuizGameWeb.DevLive.ComponentShowcaseLive do
   def handle_event("form-validate" = _event, %{"form_data" => form_data}, socket) do
     form = form_validate(form_data)
 
-    {:noreply, assign(socket, form: form, form_has_errors: form_has_errors?(form))}
+    {:noreply, assign(socket, form: form)}
   end
 
   def handle_event("loader-demo", _params, socket) do

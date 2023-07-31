@@ -191,16 +191,6 @@
   phx-change="form-validate"
   phx-submit="form-submit"
 >
-  <%= if !@form.source.action do %>
-    <.alert kind="secondary">The form has not been completed.</.alert>
-  <% end %>
-  <%= if @form.source.action && !@form.source.valid? do %>
-    <.alert_form_errors />
-  <% end %>
-  <%= if @form.source.action && @form.source.valid? do %>
-    <.alert kind="success">The form is valid.</.alert>
-  <% end %>
-
   <%!-- fields --%>
   <.input field={@form[:text]} label="Text input" />
   <.input field={@form[:email]} label="Email input" />
@@ -223,11 +213,6 @@
       phx-debounce="blur"
     />
   </div>
-
-  <div id="deleteme">&nbsp;</div>
-  <script>
-    setTimeout(() => { document.querySelector('#deleteme').scrollIntoView(); }, 100)
-  </script>
 
   <div class="form-control">
     <.input type="textarea" field={@form[:textarea]} label="Textarea input" class="textarea" />
@@ -310,7 +295,7 @@
 
 <h3 class="mb-4 text-2xl text-center">Toast Messages</h3>
 
-<section x-data class="text-center">
+<section x-data x-title="component-showcase-toast-container" class="text-center">
   <div class="mb-4 text-lg font-italic" x-show="!$store.toasts">
     Alpine.js is not installed, or <code>Alpine.store('toasts')</code>
     does not exist, so this section will not be functional.
