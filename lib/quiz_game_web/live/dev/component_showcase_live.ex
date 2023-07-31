@@ -107,6 +107,7 @@ defmodule QuizGameWeb.DevLive.ComponentShowcaseLive do
         {:noreply,
          socket
          |> push_event("toast-show-success", %{content: "Form submitted successfully"})
+         |> push_event("captcha-reset", %{})
          |> assign(form: form, form_has_errors: form_has_errors?(form))}
       else
         {:noreply,
