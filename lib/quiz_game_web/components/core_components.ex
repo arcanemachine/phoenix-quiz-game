@@ -531,26 +531,59 @@ defmodule QuizGameWeb.CoreComponents do
 
   def input(%{type: "captcha"} = assigns) do
     ~H"""
-    <div class="flex flex-row-reverse justify-center gap-4 mb-8">
-      <div class="flex items-center">
-        <button
-          type="button"
-          class="h-[72px] w-[72px] btn btn-square btn-secondary"
-          x-data
-          x-title="captcha-reset-button"
-          @click="confirm('Are you sure you want to reset the human test?') && hcaptcha.reset()"
-        >
-          <.icon name="hero-arrow-path" />
-        </button>
-      </div>
+    <div
+      class="flex justify-center gap-2 mb-8"
+      x-title="captcha"
+      x-data="{
+        captchaCompleted: false,
+        captchaReset() {
+          this.captchaCompleted = false;
+          hcaptcha.reset();
+        }
+      }"
+      x-on:captcha-completed.window="captchaCompleted = true"
+      x-on:phx:captcha-reset.window="captchaReset"
+    >
       <script src="https://js.hcaptcha.com/1/api.js" async defer />
+      <script>
+        function captchaHandleCompleted() {
+          window.dispatchEvent(new CustomEvent('captcha-completed'))
+        };
+      </script>
+
+      <%!-- HACK: use hidden checkbox to prevent form submission if the captcha is incomplete --%>
+      <input
+        class="absolute h-0 w-0 mt-10 mr-[19rem] -z-10 pointer-events-none"
+        type="checkbox"
+        required
+        tabindex="-1"
+        aria-hidden="true"
+        x-model="captchaCompleted"
+        phx-update="ignore"
+        id="captcha-completed-hidden-checkbox"
+      />
+
+      <%!-- captcha --%>
       <div class="min-h-[78px] min-w-[302px] show-when-empty">
         <div
           id="captcha-container"
-          class="h-captcha flex justify-center"
+          class="h-captcha"
           data-sitekey={Application.get_env(:hcaptcha, :public_key)}
+          data-callback="captchaHandleCompleted"
           phx-update="ignore"
         />
+      </div>
+
+      <%!-- captcha reset button --%>
+      <div class="flex items-center">
+        <button
+          type="button"
+          class="h-[78px] btn btn-square btn-secondary opacity-90"
+          @click="confirm('Are you sure you want to reset the human test?') && captchaReset()"
+          x-tooltip="Reset the human test"
+        >
+          <.icon name="hero-arrow-path" />
+        </button>
       </div>
     </div>
     """
