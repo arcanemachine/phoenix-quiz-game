@@ -15,6 +15,8 @@ defmodule QuizGameWeb.UserConfirmationInstructionsLive do
 
     <.simple_form for={@form} id="resend_confirmation_form" phx-submit="send_instructions">
       <.input field={@form[:email]} type="email" placeholder="Email" required />
+      <.input type="captcha" />
+
       <:actions>
         <.simple_form_actions_default />
       </:actions>
@@ -22,20 +24,30 @@ defmodule QuizGameWeb.UserConfirmationInstructionsLive do
     """
   end
 
-  def handle_event("send_instructions", %{"user" => %{"email" => email}}, socket) do
-    if user = Users.get_user_by_email(email) do
-      Users.deliver_user_confirmation_instructions(
-        user,
-        &url(~p"/users/confirm/email/#{&1}")
-      )
+  def handle_event("send_instructions", %{"user" => %{"email" => email}} = form_params, socket) do
+    if QuizGameWeb.Support.form_captcha_valid?(form_params) do
+      if user = Users.get_user_by_email(email) do
+        Users.deliver_user_confirmation_instructions(
+          user,
+          &url(~p"/users/confirm/email/#{&1}")
+        )
+      end
+
+      info =
+        "If your email is in our system, and your email has not yet been confirmed, " <>
+          "then check your email inbox for password reset instructions."
+
+      {:noreply,
+       socket
+       |> put_flash(:info, info)
+       |> redirect(to: ~p"/")}
+    else
+      {:noreply,
+       socket
+       |> push_event("toast-show-error", %{
+         content: "You must complete the human test at the bottom of the form."
+       })
+       |> push_event("captcha-reset", %{})}
     end
-
-    info =
-      "If your email is in our system and it has not been confirmed yet, then check your email inbox for password reset instructions."
-
-    {:noreply,
-     socket
-     |> put_flash(:info, info)
-     |> redirect(to: ~p"/")}
   end
 end
