@@ -63,7 +63,6 @@ defmodule QuizGameWeb.UserUpdatePasswordLiveTest do
       assert Users.get_user_by_email_and_password(user.email, new_password)
     end
 
-    @tag fixme: true
     test "renders errors with invalid data (phx-change)", %{conn: conn} do
       {:ok, lv, _html} = live(conn, ~p"/users/me/update/password")
 
