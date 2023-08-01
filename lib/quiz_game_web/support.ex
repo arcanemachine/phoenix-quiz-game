@@ -6,6 +6,8 @@ defmodule QuizGameWeb.Support do
   @doc """
   A wrapper script that checks if a form's CAPTCHA has been completed, and is valid.
   """
+
+  @spec form_captcha_valid?(map()) :: boolean()
   def form_captcha_valid?(params) do
     # only check for captcha if captcha enabled
     if Enum.member?([:error, {:ok, nil}, nil], Application.fetch_env(:hcaptcha, :public_key)) do
