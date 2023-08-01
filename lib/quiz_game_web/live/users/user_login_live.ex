@@ -11,9 +11,9 @@ defmodule QuizGameWeb.UserLoginLive do
 
   def render(assigns) do
     ~H"""
-    <.form_text_intro>
+    <.form_intro_text>
       To login to your account, enter your account details below.
-    </.form_text_intro>
+    </.form_intro_text>
 
     <.simple_form for={@form} id="login_form" action={~p"/users/login"} phx-update="ignore">
       <.input field={@form[:email]} type="email" label="Email" required />

@@ -35,10 +35,10 @@ defmodule QuizGameWeb.UserUpdateEmailLive do
 
   def render(assigns) do
     ~H"""
-    <.form_text_intro>
+    <.form_intro_text>
       <p>Complete this form, and we will send a confirmation email to your new email address.</p>
       <p>To confirm your new email address, open that email and click on the activation link.</p>
-    </.form_text_intro>
+    </.form_intro_text>
 
     <.simple_form
       for={@email_form}

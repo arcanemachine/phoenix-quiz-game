@@ -20,9 +20,9 @@ defmodule QuizGameWeb.UserResetPasswordLive do
 
   def render(assigns) do
     ~H"""
-    <.form_text_intro>
+    <.form_intro_text>
       Fill out the form to finish resetting your password.
-    </.form_text_intro>
+    </.form_intro_text>
 
     <.simple_form
       for={@form}

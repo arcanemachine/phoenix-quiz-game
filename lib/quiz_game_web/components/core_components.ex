@@ -382,14 +382,14 @@ defmodule QuizGameWeb.CoreComponents do
 
   ## Examples
 
-      <.form_text_intro>
+      <.form_intro_text>
         Fill out the form to continue.
-      </.form_text_intro>
+      </.form_intro_text>
   """
 
   slot :inner_block
 
-  def form_text_intro(assigns) do
+  def form_intro_text(assigns) do
     ~H"""
     <div class="text-center [&>*:not(:first-child)]:mt-4">
       <%= render_slot(@inner_block) %>

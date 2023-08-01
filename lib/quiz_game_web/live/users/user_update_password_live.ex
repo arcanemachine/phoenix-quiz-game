@@ -21,9 +21,9 @@ defmodule QuizGameWeb.UserUpdatePasswordLive do
 
   def render(assigns) do
     ~H"""
-    <.form_text_intro>
+    <.form_intro_text>
       Fill out the form below to change your password.
-    </.form_text_intro>
+    </.form_intro_text>
 
     <.simple_form
       for={@password_form}

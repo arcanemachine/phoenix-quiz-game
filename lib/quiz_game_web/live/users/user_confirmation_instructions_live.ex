@@ -9,9 +9,9 @@ defmodule QuizGameWeb.UserConfirmationInstructionsLive do
 
   def render(assigns) do
     ~H"""
-    <.form_text_intro>
+    <.form_intro_text>
       Fill out the form, and we will send you an email with a link to confirm your account.
-    </.form_text_intro>
+    </.form_intro_text>
 
     <.simple_form for={@form} id="resend_confirmation_form" phx-submit="send_instructions">
       <.input field={@form[:email]} type="email" placeholder="Email" required />

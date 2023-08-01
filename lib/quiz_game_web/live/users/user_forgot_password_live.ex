@@ -9,9 +9,9 @@ defmodule QuizGameWeb.UserForgotPasswordLive do
 
   def render(assigns) do
     ~H"""
-    <.form_text_intro>
+    <.form_intro_text>
       Fill out the form, and we will send you an email with a link to reset your password.
-    </.form_text_intro>
+    </.form_intro_text>
 
     <.simple_form for={@form} id="reset_password_form" phx-submit="send_email">
       <.input field={@form[:email]} type="email" placeholder="Email" required />

@@ -13,9 +13,9 @@ defmodule QuizGameWeb.UserConfirmationLive do
   def render(%{live_action: :edit} = assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
-      <.form_text_intro>
+      <.form_intro_text>
         Click the button below to confirm your account.
-      </.form_text_intro>
+      </.form_intro_text>
 
       <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
         <.input field={@form[:token]} type="hidden" />

@@ -30,9 +30,9 @@ defmodule QuizGameWeb.UserRegistrationLive do
 
   def render(assigns) do
     ~H"""
-    <.form_text_intro>
+    <.form_intro_text>
       To register a new account, enter your account details below.
-    </.form_text_intro>
+    </.form_intro_text>
 
     <.simple_form
       for={@form}
