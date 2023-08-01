@@ -533,7 +533,7 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <%= if !Enum.member?([:error, {:ok, nil}, nil], Application.fetch_env(:hcaptcha, :public_key)) do %>
       <div
-        class="flex justify-center mb-8"
+        class="flex justify-center mb-4"
         x-title="captcha"
         x-data="{
           captchaCompleted: false,
@@ -948,7 +948,7 @@ defmodule QuizGameWeb.CoreComponents do
       as={@as}
       {@rest}
       class={[
-        "w-full max-w-md mt-8 mx-auto transition-colors duration-300 rounded-lg",
+        "w-full max-w-md mt-4 mx-auto transition-colors duration-300 rounded-lg",
         @has_errors && "bg-red-200"
       ]}
     >
