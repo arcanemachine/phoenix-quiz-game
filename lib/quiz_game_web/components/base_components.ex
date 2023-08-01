@@ -74,7 +74,7 @@ defmodule QuizGameWeb.BaseComponents do
       <%!-- limit max width of navbar by nesting it inside a full-width element --%>
       <nav
         data-component="page-navbar"
-        class="navbar max-w-[100rem] mx-auto p-0 bg-brand text-slate-300 lg:rounded-box
+        class="navbar max-w-[100rem] mx-auto py-0 pe-3 bg-brand text-slate-300 lg:rounded-box
                lg:shadow-lg lg:shadow-black/20"
       >
         <%!-- navbar start items --%>
