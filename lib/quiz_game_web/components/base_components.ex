@@ -45,6 +45,11 @@ defmodule QuizGameWeb.BaseComponents do
               Privacy Policy
             </.link>
           </li>
+          <li class="mt-2">
+            <.link href={~p"/contact-us"} class="!text-slate-300">
+              Contact Us
+            </.link>
+          </li>
 
           <%!-- legal stuff --%>
           <li class="mt-6 font-bold">
@@ -224,10 +229,10 @@ defmodule QuizGameWeb.BaseComponents do
   def base_page_title(assigns) do
     ~H"""
     <section :if={@title || @subtitle} class="mb-8">
-      <h1 class="text-4xl text-center font-bold">
+      <h1 class="text-4xl text-center font-bold" data-test-id="page-title">
         <%= @title %>
       </h1>
-      <h2 :if={@subtitle} id="page-subtitle" class="mt-2 text-2xl text-center">
+      <h2 :if={@subtitle} class="mt-2 text-2xl text-center" data-test-id="page-subtitle">
         <%= @subtitle %>
       </h2>
     </section>

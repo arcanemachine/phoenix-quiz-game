@@ -1,6 +1,6 @@
 import Config
 
-# custom
+# project
 config :quiz_game,
   project_name: "Quiz Game"
 

@@ -1,13 +1,17 @@
 import Config
 
-if System.get_env("PHX_SERVER") do
-  config :quiz_game, QuizGameWeb.Endpoint, server: true
-end
+# project
+config :quiz_game,
+  email_recipient_contact_form: System.fetch_env!("EMAIL_RECIPIENT_CONTACT_FORM")
 
 # hcaptcha
 config :hcaptcha,
   public_key: System.get_env("HCAPTCHA_PUBLIC_KEY"),
   secret: System.get_env("HCAPTCHA_PRIVATE_KEY")
+
+if System.get_env("PHX_SERVER") do
+  config :quiz_game, QuizGameWeb.Endpoint, server: true
+end
 
 if config_env() == :test do
   config :hcaptcha,

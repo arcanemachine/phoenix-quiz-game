@@ -9,6 +9,7 @@ defmodule QuizGameWeb.BaseRouter do
         pipe_through(:browser)
 
         get("/", BaseController, :home)
+        live("/contact-us", BaseLive.ContactUsLive, :contact_us)
         get("/privacy-policy", BaseController, :privacy_policy)
         get("/terms-of-use", BaseController, :terms_of_use)
       end
