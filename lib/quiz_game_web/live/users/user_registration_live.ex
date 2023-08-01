@@ -120,7 +120,7 @@ defmodule QuizGameWeb.UserRegistrationLive do
       {:noreply,
        socket
        |> push_event("toast-show-error", %{
-         content: "Please complete the human test at the bottom of the form."
+         content: "You must complete the human test at the bottom of the form."
        })
        |> push_event("captcha-reset", %{})
        |> assign_form(changeset)}

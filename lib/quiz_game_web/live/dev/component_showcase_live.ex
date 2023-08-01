@@ -115,7 +115,7 @@ defmodule QuizGameWeb.DevLive.ComponentShowcaseLive do
         {:noreply,
          socket
          |> push_event("toast-show-error", %{
-           content: "Please complete the human test at the bottom of the form."
+           content: "You must complete the human test at the bottom of the form."
          })
          |> assign(form: form, form_has_errors: form_has_errors?(form))}
       end
