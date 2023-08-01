@@ -935,7 +935,7 @@ defmodule QuizGameWeb.CoreComponents do
     default: "primary",
     doc: "the theme of the confirmation checkbox"
 
-  attr :confirmation_content, :string,
+  attr :confirmation_message, :string,
     default: "I confirm that the form data is correct.",
     doc: "the content of the confirmation checkbox message"
 
@@ -966,7 +966,7 @@ defmodule QuizGameWeb.CoreComponents do
             <.header class={"mt-2 mb-4 bg-#{@confirmation_kind} text-#{@confirmation_kind}-content
                             font-bold cursor-pointer select-none rounded-lg"}>
               <span class="text-sm font-normal">
-                <%= @confirmation_content %>
+                <%= @confirmation_message %>
               </span>
               <:actions>
                 <input
