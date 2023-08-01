@@ -10,7 +10,7 @@ defmodule QuizGameWeb.Support do
   @spec form_captcha_valid?(map()) :: boolean()
   def form_captcha_valid?(params) do
     # only check for captcha if captcha enabled
-    if Enum.member?([:error, {:ok, nil}, nil], Application.fetch_env(:hcaptcha, :public_key)) do
+    if Enum.member?([:error, {:ok, nil}, nil], Application.get_env(:hcaptcha, :public_key)) do
       # always return true if hcaptcha disabled
       true
     else

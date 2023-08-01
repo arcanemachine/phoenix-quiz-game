@@ -24,7 +24,7 @@ defmodule QuizGame.Base.BaseNotifier do
   @doc "Deliver contact form email."
   def deliver_contact_us_form(sender_name, sender_email, sender_message) do
     deliver(
-      Application.fetch_env!(:quiz_game, :email_recipient_contact_form),
+      Application.get_env(:quiz_game, :email_recipient_contact_form),
       "#{Application.get_env(:quiz_game, :project_name)} - Contact Form Submitted",
       """
       Name: #{sender_name}
