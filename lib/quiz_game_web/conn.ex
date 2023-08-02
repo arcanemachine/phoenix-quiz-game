@@ -6,10 +6,10 @@ defmodule QuizGameWeb.Conn do
 
   @type conn :: %Plug.Conn{}
 
-  @typedoc "The HTTP status of the response, e.g. :ok | 200"
+  @typedoc "The HTTP status of a response, e.g. :ok | 200"
   @type status :: atom() | integer()
 
-  @typedoc "The HTTP response body"
+  @typedoc "A HTTP response body"
   @type resp_body :: String.t() | nil
 
   @doc """
