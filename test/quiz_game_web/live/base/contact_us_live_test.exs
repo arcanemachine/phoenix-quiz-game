@@ -11,8 +11,7 @@ defmodule QuizGameWeb.ContactUsLiveTest do
       {:ok, lv, _html} = live(conn, ~p"/contact-us")
 
       # template contains expected title
-      page_title = element(lv, ~s|[data-test-id="page-title"]|) |> render()
-      assert page_title =~ "Contact Us"
+      assert element(lv, "h1") |> render() =~ "Contact Us"
     end
 
     test "submits the form successfully", %{conn: conn} do
