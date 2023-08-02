@@ -6,8 +6,8 @@ config :quiz_game,
 
 # hcaptcha
 config :hcaptcha,
-  public_key: System.fetch_env!("HCAPTCHA_PUBLIC_KEY"),
-  secret: System.fetch_env!("HCAPTCHA_PRIVATE_KEY")
+  public_key: System.get_env("HCAPTCHA_PUBLIC_KEY") || false,
+  secret: System.get_env("HCAPTCHA_PRIVATE_KEY") || false
 
 if System.get_env("PHX_SERVER") do
   config :quiz_game, QuizGameWeb.Endpoint, server: true
