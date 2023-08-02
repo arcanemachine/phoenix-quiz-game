@@ -9,11 +9,7 @@ defmodule QuizGameWeb.UserController do
   end
 
   def delete(conn, _params) do
-    # get user
-    user = conn.assigns[:current_user]
-
-    # delete the user
-    Users.delete_user(user)
+    Users.delete_user(conn.assigns[:current_user])
 
     # queue success message and log the user out
     conn
