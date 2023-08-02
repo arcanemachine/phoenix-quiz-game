@@ -1,6 +1,6 @@
 defmodule QuizGameWeb.BaseRouter do
   @moduledoc """
-  The base router. Used for routes that do not belong to a particular context.
+  Routes that do not belong to a particular context.
   """
 
   def browser do
@@ -21,8 +21,8 @@ defmodule QuizGameWeb.BaseRouter do
 
   ## Examples
 
-      use BaseRouter, :base_browser
-      use BaseRouter, :base_api
+      use BaseRouter, :api
+      use BaseRouter, :browser
   """
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])

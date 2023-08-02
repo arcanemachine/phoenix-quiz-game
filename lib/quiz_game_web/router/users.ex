@@ -1,6 +1,6 @@
 defmodule QuizGameWeb.UsersRouter do
   @moduledoc """
-  The router for the 'users' context.
+  Routes for the 'users' context.
   """
 
   def browser do
@@ -58,8 +58,8 @@ defmodule QuizGameWeb.UsersRouter do
 
   ## Examples
 
-      use UsersRouter, :users_browser
-      use UsersRouter, :users_api
+      use UsersRouter, :api
+      use UsersRouter, :browser
   """
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])
