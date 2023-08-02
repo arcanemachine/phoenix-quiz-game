@@ -4,6 +4,12 @@ defmodule QuizGameWeb.Router do
   import QuizGameWeb.Plug
   import QuizGameWeb.UserAuth
 
+  # # API
+  # pipeline :api do
+  #   plug :accepts, ["json"]
+  # end
+
+  # BROWSER
   pipeline :browser do
     plug :accepts, ["html"]
     plug :remove_trailing_slash
@@ -18,9 +24,6 @@ defmodule QuizGameWeb.Router do
   use QuizGameWeb.BaseRouter, :browser
   use QuizGameWeb.UsersRouter, :browser
 
+  # DEV
   use QuizGameWeb.DevRouter
-
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
 end

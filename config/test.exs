@@ -1,9 +1,9 @@
 import Config
 
-# Only in tests, remove the complexity from the password hashing algorithm
+# bcrypt - remove the complexity from the password hashing algorithm to make tests run faster
 config :bcrypt_elixir, :log_rounds, 1
 
-# configure database
+# database
 database_name = System.get_env("POSTGRES_DB", "quiz_game") <> "_test"
 
 config :quiz_game, QuizGame.Repo,

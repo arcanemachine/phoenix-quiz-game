@@ -1,7 +1,5 @@
 # quiz-game
 
-[View Live Demo](https://arcanemachine-quiz-game.fly.dev/)
-
 ---
 
 **All commands in this document should be performed from the project root directory.**
