@@ -1,23 +1,23 @@
 defmodule QuizGameWeb.TestMacros do
   @moduledoc "Test-related macros, e.g. reusable tests"
 
-  defmacro test_redirects_unauthenticated_user_to_login_route(url, method \\ "get") do
+  defmacro test_redirects_unauthenticated_user_to_login_route(url, http_method) do
     quote do
-      test "redirects unauthenticated user to login route: #{unquote(method)}", %{conn: conn} do
+      test "redirects unauthenticated user to login route: #{unquote(http_method)}", %{conn: conn} do
         url = unquote(url)
-        method = unquote(method)
+        http_method = unquote(http_method)
 
         # ensure user is unauthenticated
         conn = logout_user(conn)
 
         # make request
         response_conn =
-          case method do
-            "get" -> get(conn, url)
-            "post" -> post(conn, url)
-            "put" -> put(conn, url)
-            "patch" -> patch(conn, url)
-            "delete" -> delete(conn, url)
+          case http_method do
+            "GET" -> get(conn, url)
+            "POST" -> post(conn, url)
+            "PUT" -> put(conn, url)
+            "PATCH" -> patch(conn, url)
+            "DELETE" -> delete(conn, url)
           end
 
         # response returns temporary redirect to login route
@@ -31,11 +31,11 @@ defmodule QuizGameWeb.TestMacros do
     end
   end
 
-  # defmacro forbids_unpermissioned_user(conn, url, method \\ "get") do
+  # defmacro forbids_unpermissioned_user(conn, url, http_method) do
   #   quote do
   #     conn = unquote(conn)
   #     url = unquote(url)
-  #     method = unquote(method)
+  #     http_method = unquote(http_method)
 
   #     # logout and login as a new user
   #     conn = logout_user(conn)
@@ -43,12 +43,12 @@ defmodule QuizGameWeb.TestMacros do
 
   #     # make request
   #     conn =
-  #       case method do
-  #         "get" -> get(conn, url)
-  #         "post" -> post(conn, url)
-  #         "put" -> put(conn, url)
-  #         "patch" -> patch(conn, url)
-  #         "delete" -> delete(conn, url)
+  #       case http_method do
+  #         "GET" -> get(conn, url)
+  #         "POST" -> post(conn, url)
+  #         "PUT" -> put(conn, url)
+  #         "PATCH" -> patch(conn, url)
+  #         "DELETE" -> delete(conn, url)
   #       end
 
   #     # response has expected status code and body
