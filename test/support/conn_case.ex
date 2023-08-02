@@ -61,4 +61,16 @@ defmodule QuizGameWeb.ConnCase do
     |> Phoenix.ConnTest.init_test_session(%{})
     |> Plug.Conn.put_session(:user_token, token)
   end
+
+  @doc """
+  Logs the user out.
+
+  It returns an updated conn.
+  """
+  def logout_user(conn) do
+    conn
+    |> Phoenix.ConnTest.init_test_session(%{})
+    |> QuizGameWeb.UserAuth.logout_user()
+    |> Phoenix.ConnTest.recycle()
+  end
 end
