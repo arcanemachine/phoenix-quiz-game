@@ -22,6 +22,7 @@ defmodule QuizGameWeb.Router do
   end
 
   use QuizGameWeb.BaseRouter, :browser
+  use QuizGameWeb.QuizzesRouter, :browser
   use QuizGameWeb.UsersRouter, :browser
 
   # DEV
