@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.UserResetPasswordLive do
+defmodule QuizGameWeb.UsersLive.UserResetPasswordLive do
   use QuizGameWeb, :live_view
 
   alias QuizGame.Users

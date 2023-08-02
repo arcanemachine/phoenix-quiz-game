@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.UserLoginLive do
+defmodule QuizGameWeb.UsersLive.UserLoginLive do
   use QuizGameWeb, :live_view
 
   @page_title "Account Login"

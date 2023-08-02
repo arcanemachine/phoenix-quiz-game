@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.UserUpdateEmailLive do
+defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
   use QuizGameWeb, :live_view
 
   alias QuizGame.Users

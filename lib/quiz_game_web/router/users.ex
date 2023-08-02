@@ -14,8 +14,8 @@ defmodule QuizGameWeb.UsersRouter do
 
         live_session :confirm_email,
           on_mount: [{QuizGameWeb.UserAuth, :mount_current_user}] do
-          live "/confirm/email", UserConfirmationInstructionsLive, :new
-          live "/confirm/email/:token", UserConfirmationLive, :edit
+          live "/confirm/email", UsersLive.UserConfirmationInstructionsLive, :new
+          live "/confirm/email/:token", UsersLive.UserConfirmationLive, :edit
         end
       end
 
@@ -27,10 +27,10 @@ defmodule QuizGameWeb.UsersRouter do
 
         live_session :redirect_if_user_is_authenticated,
           on_mount: [{QuizGameWeb.UserAuth, :redirect_if_user_is_authenticated}] do
-          live "/register", UserRegistrationLive, :new
-          live "/login", UserLoginLive, :new
-          live "/reset-password", UserForgotPasswordLive, :new
-          live "/reset-password/:token", UserResetPasswordLive, :edit
+          live "/register", UsersLive.UserRegistrationLive, :new
+          live "/login", UsersLive.UserLoginLive, :new
+          live "/reset-password", UsersLive.UserForgotPasswordLive, :new
+          live "/reset-password/:token", UsersLive.UserResetPasswordLive, :edit
         end
       end
 
@@ -45,9 +45,9 @@ defmodule QuizGameWeb.UsersRouter do
 
         live_session :require_authenticated_user,
           on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
-          live "/me/update/email", UserUpdateEmailLive, :edit
-          live "/me/update/email/confirm/:token", UserUpdateEmailLive, :confirm_email
-          live "/me/update/password", UserUpdatePasswordLive, :edit
+          live "/me/update/email", UsersLive.UserUpdateEmailLive, :edit
+          live "/me/update/email/confirm/:token", UsersLive.UserUpdateEmailLive, :confirm_email
+          live "/me/update/password", UsersLive.UserUpdatePasswordLive, :edit
         end
       end
     end
