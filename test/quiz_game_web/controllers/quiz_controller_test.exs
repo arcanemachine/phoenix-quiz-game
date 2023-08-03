@@ -62,6 +62,9 @@ defmodule QuizGameWeb.QuizControllerTest do
       # redirect renders expected template
       response_conn_2 = get(response_conn, url_quiz_show(%{id: id}))
       assert html_response(response_conn_2, 200) =~ "Quiz #{id}"
+
+      # template contains new object content
+      assert html_response(response_conn_2, 200) =~ "#{@create_attrs[:name]}"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -105,6 +108,9 @@ defmodule QuizGameWeb.QuizControllerTest do
       # redirect renders expected template
       response_conn_2 = response_conn |> get(url_quiz_show(%{id: quiz.id}))
       assert html_response(response_conn_2, 200) =~ "some updated name"
+
+      # template contains new object content
+      assert html_response(response_conn_2, 200) =~ "#{@update_attrs[:name]}"
     end
 
     test "renders errors when data is invalid", %{conn: conn, quiz: quiz} do
