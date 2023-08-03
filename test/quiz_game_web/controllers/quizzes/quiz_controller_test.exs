@@ -3,6 +3,7 @@ defmodule QuizGameWeb.QuizControllerTest do
   use QuizGameWeb.ConnCase
 
   import QuizGame.QuizzesFixtures
+  import QuizGameWeb.Assertions
   import QuizGameWeb.GenericTests
 
   # data
@@ -34,8 +35,7 @@ defmodule QuizGameWeb.QuizControllerTest do
     test "lists all quizzes", %{conn: conn} do
       response_conn = get(conn, url_quiz_index())
 
-      assert html_response(response_conn, 200) |> Floki.find("h1") |> Floki.raw_html() =~
-               "Quiz List"
+      assert template_has_title(response_conn, "Quiz List")
     end
   end
 
@@ -47,8 +47,8 @@ defmodule QuizGameWeb.QuizControllerTest do
     test "renders form", %{conn: conn} do
       response_conn = get(conn, url_quiz_new())
 
-      assert html_response(response_conn, 200) |> Floki.find("h1") |> Floki.raw_html() =~
-               "Create Quiz"
+      assert template_has_title(response_conn, "Create Quiz")
+      assert template_contains_element(response_conn, "form")
     end
   end
 
@@ -75,10 +75,8 @@ defmodule QuizGameWeb.QuizControllerTest do
     test "renders errors when data is invalid", %{conn: conn} do
       response_conn = post(conn, url_quiz_create(), quiz: @invalid_attrs)
 
-      assert html_response(response_conn, 200) |> Floki.find("h1") |> Floki.raw_html() =~
-               "Create Quiz"
-
-      assert html_response(response_conn, 200) =~ "Fix the errors in the form"
+      assert template_has_title(response_conn, "Create Quiz")
+      assert form_has_errors(response_conn)
     end
   end
 
@@ -96,8 +94,7 @@ defmodule QuizGameWeb.QuizControllerTest do
     test "renders form for editing chosen quiz", %{conn: conn, quiz: quiz} do
       response_conn = get(conn, url_quiz_edit(%{quiz_id: quiz.id}))
 
-      assert html_response(response_conn, 200) |> Floki.find("h1") |> Floki.raw_html() =~
-               "Update Quiz"
+      assert template_has_title(response_conn, "Update Quiz")
     end
   end
 
@@ -112,14 +109,15 @@ defmodule QuizGameWeb.QuizControllerTest do
       )
     end
 
-    test "redirects to expected route when data is valid", %{conn: conn, quiz: quiz} do
+    test "redirects to object detail page when data is valid", %{conn: conn, quiz: quiz} do
       response_conn = put(conn, url_quiz_update(%{quiz_id: quiz.id}), quiz: @update_attrs)
 
-      # redirects to expected route
+      # redirects to object detail page
       assert redirected_to(response_conn) == url_quiz_show(%{quiz_id: quiz.id})
 
-      # redirect renders expected template
+      # redirect renders expected template and contains updated data
       response_conn_2 = response_conn |> get(url_quiz_show(%{quiz_id: quiz.id}))
+      assert template_has_title(response_conn_2, "Quiz Info")
       assert html_response(response_conn_2, 200) =~ "some updated name"
 
       # template contains new object content
@@ -129,10 +127,8 @@ defmodule QuizGameWeb.QuizControllerTest do
     test "renders errors when data is invalid", %{conn: conn, quiz: quiz} do
       response_conn = put(conn, url_quiz_update(%{quiz_id: quiz.id}), quiz: @invalid_attrs)
 
-      assert html_response(response_conn, 200) |> Floki.find("h1") |> Floki.raw_html() =~
-               "Update Quiz"
-
-      assert html_response(response_conn, 200) =~ "Fix the errors"
+      assert template_has_title(response_conn, "Update Quiz")
+      assert form_has_errors(response_conn)
     end
   end
 
