@@ -5,7 +5,7 @@ defmodule QuizGameWeb.UserControllerTest do
 
   import Ecto.Query
   import QuizGame.UsersFixtures
-  import QuizGameWeb.TestMacros
+  import QuizGameWeb.GenericTests
 
   alias QuizGame.Repo
   alias QuizGame.Users.User

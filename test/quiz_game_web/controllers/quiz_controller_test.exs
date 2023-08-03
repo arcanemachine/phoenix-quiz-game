@@ -3,7 +3,7 @@ defmodule QuizGameWeb.QuizControllerTest do
   use QuizGameWeb.ConnCase
 
   import QuizGame.QuizzesFixtures
-  import QuizGameWeb.TestMacros
+  import QuizGameWeb.GenericTests
 
   # data
   @create_attrs %{name: "some name"}
