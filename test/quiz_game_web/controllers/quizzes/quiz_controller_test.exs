@@ -30,9 +30,12 @@ defmodule QuizGameWeb.QuizControllerTest do
 
     test_redirects_unauthenticated_user_to_login_route(url_quiz_index(), "GET")
 
+    @tag fixme: true
     test "lists all quizzes", %{conn: conn} do
       response_conn = get(conn, url_quiz_index())
-      assert html_response(response_conn, 200) =~ "Listing Quizzes"
+
+      assert html_response(response_conn, 200) |> Floki.find("h1") |> Floki.raw_html() =~
+               "Quiz List"
     end
   end
 
@@ -43,7 +46,9 @@ defmodule QuizGameWeb.QuizControllerTest do
 
     test "renders form", %{conn: conn} do
       response_conn = get(conn, url_quiz_new())
-      assert html_response(response_conn, 200) =~ "New Quiz"
+
+      assert html_response(response_conn, 200) |> Floki.find("h1") |> Floki.raw_html() =~
+               "Create Quiz"
     end
   end
 
@@ -69,7 +74,11 @@ defmodule QuizGameWeb.QuizControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn} do
       response_conn = post(conn, url_quiz_create(), quiz: @invalid_attrs)
-      assert html_response(response_conn, 200) =~ "New Quiz"
+
+      assert html_response(response_conn, 200) |> Floki.find("h1") |> Floki.raw_html() =~
+               "Create Quiz"
+
+      assert html_response(response_conn, 200) =~ "Fix the errors in the form"
     end
   end
 
@@ -86,7 +95,9 @@ defmodule QuizGameWeb.QuizControllerTest do
 
     test "renders form for editing chosen quiz", %{conn: conn, quiz: quiz} do
       response_conn = get(conn, url_quiz_edit(%{quiz_id: quiz.id}))
-      assert html_response(response_conn, 200) =~ "Edit Quiz"
+
+      assert html_response(response_conn, 200) |> Floki.find("h1") |> Floki.raw_html() =~
+               "Update Quiz"
     end
   end
 
@@ -118,7 +129,10 @@ defmodule QuizGameWeb.QuizControllerTest do
     test "renders errors when data is invalid", %{conn: conn, quiz: quiz} do
       response_conn = put(conn, url_quiz_update(%{quiz_id: quiz.id}), quiz: @invalid_attrs)
 
-      assert html_response(response_conn, 200) =~ "Edit Quiz"
+      assert html_response(response_conn, 200) |> Floki.find("h1") |> Floki.raw_html() =~
+               "Update Quiz"
+
+      assert html_response(response_conn, 200) =~ "Fix the errors"
     end
   end
 
