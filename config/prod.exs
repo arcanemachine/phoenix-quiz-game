@@ -1,5 +1,9 @@
 import Config
 
+# project
+config :quiz_game,
+  server_environment: "prod"
+
 # cache - include the path to a cache manifest containing the digested version of static files
 config :quiz_game, QuizGameWeb.Endpoint, cache_static_manifest: "priv/static/cache_manifest.json"
 
