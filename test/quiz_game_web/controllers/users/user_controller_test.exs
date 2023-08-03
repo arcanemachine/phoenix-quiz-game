@@ -10,26 +10,30 @@ defmodule QuizGameWeb.UserControllerTest do
   alias QuizGame.Repo
   alias QuizGame.Users.User
 
+  # data
+  @url_delete_confirm "/users/me/delete"
+  @url_delete "/users/me/delete"
+
+  # setup
   setup do
     %{user: user_fixture()}
   end
 
-  def delete_confirm_url(), do: ~p"/users/me/delete"
-  def delete_url(), do: ~p"/users/me/delete"
+  describe "users :delete_confirm" do
+    @test_url @url_delete_confirm
 
-  describe "delete_confirm" do
-    test_redirects_unauthenticated_user_to_login_route(delete_confirm_url(), "GET")
+    test_redirects_unauthenticated_user_to_login_route(@test_url, "GET")
 
     test "renders expected template", %{conn: conn, user: user} do
-      response_conn = conn |> login_user(user) |> get(delete_confirm_url())
+      conn = conn |> login_user(user) |> get(@test_url)
 
-      assert response_conn |> html_response(200) |> Floki.find("h1") |> Floki.raw_html() =~
+      assert conn |> html_response(200) |> Floki.find("h1") |> Floki.raw_html() =~
                "Delete Your Account"
     end
   end
 
-  describe "delete" do
-    test_redirects_unauthenticated_user_to_login_route(delete_url(), "POST")
+  describe "users :delete" do
+    test_redirects_unauthenticated_user_to_login_route(@url_delete, "POST")
 
     test "deletes expected user", %{conn: conn, user: user} do
       get_user_count = fn -> Repo.one(from u in "users", select: count(u.id)) end
@@ -38,10 +42,10 @@ defmodule QuizGameWeb.UserControllerTest do
       initial_object_count = get_user_count.()
 
       # make request
-      response_conn = conn |> login_user(user) |> post(delete_confirm_url())
+      conn = conn |> login_user(user) |> post(@url_delete_confirm)
 
       # response contains expected flash message
-      assert Phoenix.Flash.get(response_conn.assigns.flash, :success) =~
+      assert Phoenix.Flash.get(conn.assigns.flash, :success) =~
                "Account deleted successfully"
 
       # expected object has been deleted
