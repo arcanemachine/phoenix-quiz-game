@@ -1,5 +1,29 @@
 defmodule QuizGameWeb.TestMacros do
   @moduledoc "Test-related macros, e.g. reusable tests"
+  use QuizGameWeb.ConnCase
+
+  def redirects_unauthenticated_user_to_login_route(conn, url, http_method) do
+    # ensure user is unauthenticated
+    conn = logout_user(conn)
+
+    # make request
+    response_conn =
+      case http_method do
+        "GET" -> get(conn, url)
+        "POST" -> post(conn, url)
+        "PUT" -> put(conn, url)
+        "PATCH" -> patch(conn, url)
+        "DELETE" -> delete(conn, url)
+      end
+
+    # response contains temporary redirect to login route
+    assert response_conn.status == 302
+    assert get_resp_header(response_conn, "location") == [~p"/users/login"]
+
+    # response contains expected flash message
+    assert Phoenix.Flash.get(response_conn.assigns.flash, :warning) =~
+             "You must login to continue."
+  end
 
   defmacro test_redirects_unauthenticated_user_to_login_route(url, http_method) do
     quote do
@@ -20,7 +44,7 @@ defmodule QuizGameWeb.TestMacros do
             "DELETE" -> delete(conn, url)
           end
 
-        # response returns temporary redirect to login route
+        # response contains temporary redirect to login route
         assert response_conn.status == 302
         assert get_resp_header(response_conn, "location") == [~p"/users/login"]
 

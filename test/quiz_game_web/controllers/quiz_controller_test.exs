@@ -77,10 +77,7 @@ defmodule QuizGameWeb.QuizControllerTest do
     setup [:register_and_login_user, :create_quiz]
 
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
-      response_conn = conn |> logout_user() |> get(url_quiz_edit(%{id: quiz.id}))
-
-      assert response_conn.status == 302
-      assert get_resp_header(response_conn, "location") == [url_users_login()]
+      redirects_unauthenticated_user_to_login_route(conn, url_quiz_edit(%{id: quiz.id}), "GET")
     end
 
     test "renders form for editing chosen quiz", %{conn: conn, quiz: quiz} do
@@ -93,10 +90,7 @@ defmodule QuizGameWeb.QuizControllerTest do
     setup [:register_and_login_user, :create_quiz]
 
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
-      response_conn = conn |> logout_user() |> put(url_quiz_update(%{id: quiz.id}))
-
-      assert response_conn.status == 302
-      assert get_resp_header(response_conn, "location") == [url_users_login()]
+      redirects_unauthenticated_user_to_login_route(conn, url_quiz_update(%{id: quiz.id}), "PUT")
     end
 
     test "redirects to expected route when data is valid", %{conn: conn, quiz: quiz} do
@@ -124,10 +118,11 @@ defmodule QuizGameWeb.QuizControllerTest do
     setup [:register_and_login_user, :create_quiz]
 
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
-      response_conn = conn |> logout_user() |> delete(url_quiz_delete(%{id: quiz.id}))
-
-      assert response_conn.status == 302
-      assert get_resp_header(response_conn, "location") == [url_users_login()]
+      redirects_unauthenticated_user_to_login_route(
+        conn,
+        url_quiz_delete(%{id: quiz.id}),
+        "DELETE"
+      )
     end
 
     test "deletes chosen quiz", %{conn: conn, quiz: quiz} do
