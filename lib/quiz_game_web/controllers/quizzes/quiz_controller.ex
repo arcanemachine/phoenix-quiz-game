@@ -18,7 +18,7 @@ defmodule QuizGameWeb.QuizController do
     case Quizzes.create_quiz(quiz_params) do
       {:ok, quiz} ->
         conn
-        |> put_flash(:info, "Quiz created successfully.")
+        |> put_flash(:info, "Quiz created successfully")
         |> redirect(to: ~p"/quizzes/#{quiz}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -43,7 +43,7 @@ defmodule QuizGameWeb.QuizController do
     case Quizzes.update_quiz(quiz, quiz_params) do
       {:ok, quiz} ->
         conn
-        |> put_flash(:info, "Quiz updated successfully.")
+        |> put_flash(:info, "Quiz updated successfully")
         |> redirect(to: ~p"/quizzes/#{quiz}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -56,7 +56,7 @@ defmodule QuizGameWeb.QuizController do
     {:ok, _quiz} = Quizzes.delete_quiz(quiz)
 
     conn
-    |> put_flash(:info, "Quiz deleted successfully.")
+    |> put_flash(:info, "Quiz deleted successfully")
     |> redirect(to: ~p"/quizzes")
   end
 end
