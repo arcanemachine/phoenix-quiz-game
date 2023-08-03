@@ -13,10 +13,10 @@ defmodule QuizGameWeb.QuizControllerTest do
   def url_quiz_index, do: ~p"/quizzes"
   def url_quiz_new, do: ~p"/quizzes/new"
   def url_quiz_create, do: ~p"/quizzes"
-  def url_quiz_show(%{id: id}), do: ~p"/quizzes/#{id}"
-  def url_quiz_edit(%{id: id}), do: ~p"/quizzes/#{id}/edit"
-  def url_quiz_update(%{id: id}), do: ~p"/quizzes/#{id}"
-  def url_quiz_delete(%{id: id}), do: ~p"/quizzes/#{id}"
+  def url_quiz_show(%{quiz_id: quiz_id}), do: ~p"/quizzes/#{quiz_id}"
+  def url_quiz_edit(%{quiz_id: quiz_id}), do: ~p"/quizzes/#{quiz_id}/edit"
+  def url_quiz_update(%{quiz_id: quiz_id}), do: ~p"/quizzes/#{quiz_id}"
+  def url_quiz_delete(%{quiz_id: quiz_id}), do: ~p"/quizzes/#{quiz_id}"
   def url_users_login, do: ~p"/users/login"
 
   # setup
@@ -56,12 +56,12 @@ defmodule QuizGameWeb.QuizControllerTest do
       response_conn = post(conn, url_quiz_create(), quiz: @create_attrs)
 
       # redirects to expected route
-      assert %{id: id} = redirected_params(response_conn)
-      assert redirected_to(response_conn) == url_quiz_show(%{id: id})
+      assert %{quiz_id: quiz_id} = redirected_params(response_conn)
+      assert redirected_to(response_conn) == url_quiz_show(%{quiz_id: quiz_id})
 
       # redirect renders expected template
-      response_conn_2 = get(response_conn, url_quiz_show(%{id: id}))
-      assert html_response(response_conn_2, 200) =~ "Quiz #{id}"
+      response_conn_2 = get(response_conn, url_quiz_show(%{quiz_id: quiz_id}))
+      assert html_response(response_conn_2, 200) =~ "Quiz #{quiz_id}"
 
       # template contains new object content
       assert html_response(response_conn_2, 200) =~ "#{@create_attrs[:name]}"
@@ -77,11 +77,15 @@ defmodule QuizGameWeb.QuizControllerTest do
     setup [:register_and_login_user, :create_quiz]
 
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
-      redirects_unauthenticated_user_to_login_route(conn, url_quiz_edit(%{id: quiz.id}), "GET")
+      redirects_unauthenticated_user_to_login_route(
+        conn,
+        url_quiz_edit(%{quiz_id: quiz.id}),
+        "GET"
+      )
     end
 
     test "renders form for editing chosen quiz", %{conn: conn, quiz: quiz} do
-      response_conn = get(conn, url_quiz_edit(%{id: quiz.id}))
+      response_conn = get(conn, url_quiz_edit(%{quiz_id: quiz.id}))
       assert html_response(response_conn, 200) =~ "Edit Quiz"
     end
   end
@@ -90,17 +94,21 @@ defmodule QuizGameWeb.QuizControllerTest do
     setup [:register_and_login_user, :create_quiz]
 
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
-      redirects_unauthenticated_user_to_login_route(conn, url_quiz_update(%{id: quiz.id}), "PUT")
+      redirects_unauthenticated_user_to_login_route(
+        conn,
+        url_quiz_update(%{quiz_id: quiz.id}),
+        "PUT"
+      )
     end
 
     test "redirects to expected route when data is valid", %{conn: conn, quiz: quiz} do
-      response_conn = put(conn, url_quiz_update(%{id: quiz.id}), quiz: @update_attrs)
+      response_conn = put(conn, url_quiz_update(%{quiz_id: quiz.id}), quiz: @update_attrs)
 
       # redirects to expected route
-      assert redirected_to(response_conn) == url_quiz_show(%{id: quiz.id})
+      assert redirected_to(response_conn) == url_quiz_show(%{quiz_id: quiz.id})
 
       # redirect renders expected template
-      response_conn_2 = response_conn |> get(url_quiz_show(%{id: quiz.id}))
+      response_conn_2 = response_conn |> get(url_quiz_show(%{quiz_id: quiz.id}))
       assert html_response(response_conn_2, 200) =~ "some updated name"
 
       # template contains new object content
@@ -108,7 +116,7 @@ defmodule QuizGameWeb.QuizControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, quiz: quiz} do
-      response_conn = put(conn, url_quiz_update(%{id: quiz.id}), quiz: @invalid_attrs)
+      response_conn = put(conn, url_quiz_update(%{quiz_id: quiz.id}), quiz: @invalid_attrs)
 
       assert html_response(response_conn, 200) =~ "Edit Quiz"
     end
@@ -120,20 +128,20 @@ defmodule QuizGameWeb.QuizControllerTest do
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
       redirects_unauthenticated_user_to_login_route(
         conn,
-        url_quiz_delete(%{id: quiz.id}),
+        url_quiz_delete(%{quiz_id: quiz.id}),
         "DELETE"
       )
     end
 
     test "deletes chosen quiz", %{conn: conn, quiz: quiz} do
-      response_conn = delete(conn, url_quiz_delete(%{id: quiz.id}))
+      response_conn = delete(conn, url_quiz_delete(%{quiz_id: quiz.id}))
 
       # redirects to object list
       assert redirected_to(response_conn) == url_quiz_index()
 
       # expected object has been deleted
       assert_error_sent 404, fn ->
-        get(response_conn, url_quiz_show(%{id: quiz.id}))
+        get(response_conn, url_quiz_show(%{quiz_id: quiz.id}))
       end
     end
   end

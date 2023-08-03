@@ -9,7 +9,7 @@ defmodule QuizGameWeb.QuizzesRouter do
       scope "/quizzes", QuizGameWeb do
         pipe_through([:browser, :require_authenticated_user])
 
-        resources "/", QuizController, param: "id"
+        resources "/", QuizController, param: "quiz_id"
       end
     end
   end

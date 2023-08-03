@@ -26,19 +26,19 @@ defmodule QuizGameWeb.QuizController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    quiz = Quizzes.get_quiz!(id)
+  def show(conn, %{"quiz_id" => quiz_id}) do
+    quiz = Quizzes.get_quiz!(quiz_id)
     render(conn, :show, quiz: quiz)
   end
 
-  def edit(conn, %{"id" => id}) do
-    quiz = Quizzes.get_quiz!(id)
+  def edit(conn, %{"quiz_id" => quiz_id}) do
+    quiz = Quizzes.get_quiz!(quiz_id)
     changeset = Quizzes.change_quiz(quiz)
     render(conn, :edit, quiz: quiz, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "quiz" => quiz_params}) do
-    quiz = Quizzes.get_quiz!(id)
+  def update(conn, %{"quiz_id" => quiz_id, "quiz" => quiz_params}) do
+    quiz = Quizzes.get_quiz!(quiz_id)
 
     case Quizzes.update_quiz(quiz, quiz_params) do
       {:ok, quiz} ->
@@ -51,8 +51,8 @@ defmodule QuizGameWeb.QuizController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    quiz = Quizzes.get_quiz!(id)
+  def delete(conn, %{"quiz_id" => quiz_id}) do
+    quiz = Quizzes.get_quiz!(quiz_id)
     {:ok, _quiz} = Quizzes.delete_quiz(quiz)
 
     conn
