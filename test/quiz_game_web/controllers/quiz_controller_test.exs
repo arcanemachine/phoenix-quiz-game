@@ -5,8 +5,6 @@ defmodule QuizGameWeb.QuizControllerTest do
   import QuizGame.QuizzesFixtures
   import QuizGameWeb.TestMacros
 
-  alias QuizGame.UsersFixtures
-
   # data
   @create_attrs %{name: "some name"}
   @update_attrs %{name: "some updated name"}
@@ -27,33 +25,35 @@ defmodule QuizGameWeb.QuizControllerTest do
     %{quiz: quiz}
   end
 
-  setup do
-    %{user: UsersFixtures.user_fixture()}
-  end
-
   describe "quizzes :index" do
+    setup [:register_and_login_user]
+
     test_redirects_unauthenticated_user_to_login_route(url_quiz_index(), "GET")
 
-    test "lists all quizzes", %{conn: conn, user: user} do
-      response_conn = conn |> login_user(user) |> get(url_quiz_index())
+    test "lists all quizzes", %{conn: conn} do
+      response_conn = get(conn, url_quiz_index())
       assert html_response(response_conn, 200) =~ "Listing Quizzes"
     end
   end
 
   describe "quizzes :new" do
+    setup [:register_and_login_user]
+
     test_redirects_unauthenticated_user_to_login_route(url_quiz_new(), "GET")
 
-    test "renders form", %{conn: conn, user: user} do
-      response_conn = conn |> login_user(user) |> get(url_quiz_new())
+    test "renders form", %{conn: conn} do
+      response_conn = get(conn, url_quiz_new())
       assert html_response(response_conn, 200) =~ "New Quiz"
     end
   end
 
   describe "quizzes :create" do
+    setup [:register_and_login_user]
+
     test_redirects_unauthenticated_user_to_login_route(url_quiz_create(), "POST")
 
-    test "redirects to expected route when data is valid", %{conn: conn, user: user} do
-      response_conn = conn |> login_user(user) |> post(url_quiz_create(), quiz: @create_attrs)
+    test "redirects to expected route when data is valid", %{conn: conn} do
+      response_conn = post(conn, url_quiz_create(), quiz: @create_attrs)
 
       # redirects to expected route
       assert %{id: id} = redirected_params(response_conn)
@@ -64,41 +64,40 @@ defmodule QuizGameWeb.QuizControllerTest do
       assert html_response(response_conn_2, 200) =~ "Quiz #{id}"
     end
 
-    test "renders errors when data is invalid", %{conn: conn, user: user} do
-      response_conn = conn |> login_user(user) |> post(url_quiz_create(), quiz: @invalid_attrs)
+    test "renders errors when data is invalid", %{conn: conn} do
+      response_conn = post(conn, url_quiz_create(), quiz: @invalid_attrs)
       assert html_response(response_conn, 200) =~ "New Quiz"
     end
   end
 
   describe "quizzes :edit" do
-    setup [:create_quiz]
+    setup [:register_and_login_user, :create_quiz]
 
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
-      response_conn = conn |> get(url_quiz_edit(%{id: quiz.id}))
+      response_conn = conn |> logout_user() |> get(url_quiz_edit(%{id: quiz.id}))
 
       assert response_conn.status == 302
       assert get_resp_header(response_conn, "location") == [url_users_login()]
     end
 
-    test "renders form for editing chosen quiz", %{conn: conn, user: user, quiz: quiz} do
-      response_conn = conn |> login_user(user) |> get(url_quiz_edit(%{id: quiz.id}))
+    test "renders form for editing chosen quiz", %{conn: conn, quiz: quiz} do
+      response_conn = get(conn, url_quiz_edit(%{id: quiz.id}))
       assert html_response(response_conn, 200) =~ "Edit Quiz"
     end
   end
 
   describe "quizzes :update" do
-    setup [:create_quiz]
+    setup [:register_and_login_user, :create_quiz]
 
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
-      response_conn = conn |> get(url_quiz_update(%{id: quiz.id}))
+      response_conn = conn |> logout_user() |> put(url_quiz_update(%{id: quiz.id}))
 
       assert response_conn.status == 302
       assert get_resp_header(response_conn, "location") == [url_users_login()]
     end
 
-    test "redirects to expected route when data is valid", %{conn: conn, user: user, quiz: quiz} do
-      response_conn =
-        conn |> login_user(user) |> put(url_quiz_update(%{id: quiz.id}), quiz: @update_attrs)
+    test "redirects to expected route when data is valid", %{conn: conn, quiz: quiz} do
+      response_conn = put(conn, url_quiz_update(%{id: quiz.id}), quiz: @update_attrs)
 
       # redirects to expected route
       assert redirected_to(response_conn) == url_quiz_show(%{id: quiz.id})
@@ -108,26 +107,25 @@ defmodule QuizGameWeb.QuizControllerTest do
       assert html_response(response_conn_2, 200) =~ "some updated name"
     end
 
-    test "renders errors when data is invalid", %{conn: conn, user: user, quiz: quiz} do
-      response_conn =
-        conn |> login_user(user) |> put(url_quiz_update(%{id: quiz.id}), quiz: @invalid_attrs)
+    test "renders errors when data is invalid", %{conn: conn, quiz: quiz} do
+      response_conn = put(conn, url_quiz_update(%{id: quiz.id}), quiz: @invalid_attrs)
 
       assert html_response(response_conn, 200) =~ "Edit Quiz"
     end
   end
 
   describe "quizzes :delete" do
-    setup [:create_quiz]
+    setup [:register_and_login_user, :create_quiz]
 
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
-      response_conn = conn |> get(url_quiz_delete(%{id: quiz.id}))
+      response_conn = conn |> logout_user() |> delete(url_quiz_delete(%{id: quiz.id}))
 
       assert response_conn.status == 302
       assert get_resp_header(response_conn, "location") == [url_users_login()]
     end
 
-    test "deletes chosen quiz", %{conn: conn, user: user, quiz: quiz} do
-      response_conn = conn |> login_user(user) |> delete(url_quiz_delete(%{id: quiz.id}))
+    test "deletes chosen quiz", %{conn: conn, quiz: quiz} do
+      response_conn = delete(conn, url_quiz_delete(%{id: quiz.id}))
 
       # redirects to object list
       assert redirected_to(response_conn) == url_quiz_index()
