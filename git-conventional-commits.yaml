@@ -29,6 +29,6 @@ changelog:
     perf: Performance Improvements
     merge: Merges
     breakingChange: BREAKING CHANGES
-  commitUrl: https://github.com/arcanemachine/phoenix-todo-list/commit/%commit%
-  issueUrl: https://github.com/arcanemachine/phoenix-todo-list/issues/%issue%
+  commitUrl: https://gitlab.com/arcanemachine/phoenix-quiz-game/commit/%commit%
+  issueUrl: https://gitlab.com/arcanemachine/phoenix-quiz-game/issues/%issue%
   issueRegexPattern: "#[0-9]+"
