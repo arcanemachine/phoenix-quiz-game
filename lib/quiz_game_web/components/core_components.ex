@@ -86,6 +86,7 @@ defmodule QuizGameWeb.CoreComponents do
     values: ~w(primary secondary accent neutral info success warning error)
 
   attr :class, :string, default: nil
+  attr :rest, :global
 
   slot :inner_block, required: true
 
@@ -101,10 +102,13 @@ defmodule QuizGameWeb.CoreComponents do
   """
   def alert(assigns) do
     ~H"""
-    <div class={[
-      "max-w-lg mx-auto mb-8 alert alert-#{@kind} bg-#{@kind} text-#{@kind}-content",
-      @class
-    ]}>
+    <div
+      class={[
+        "max-w-lg mx-auto mb-8 alert alert-#{@kind} bg-#{@kind} text-#{@kind}-content",
+        @class
+      ]}
+      {@rest}
+    >
       <%= render_slot(@inner_block) %>
     </div>
     """
@@ -120,7 +124,7 @@ defmodule QuizGameWeb.CoreComponents do
   """
   def alert_form_errors(assigns) do
     ~H"""
-    <.alert kind="error">
+    <.alert kind="error" data-test-label="alert-form-errors">
       Fix the errors in the form to continue.
     </.alert>
     """
