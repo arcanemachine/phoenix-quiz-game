@@ -23,24 +23,24 @@ defmodule QuizGameWeb.Router do
 
   # BASE - allow any user
   scope "/", QuizGameWeb do
-    pipe_through(:browser)
+    pipe_through :browser
 
-    get("/", BaseController, :home)
-    live("/contact-us", BaseLive.ContactUsLive, :contact_us)
-    get("/privacy-policy", BaseController, :privacy_policy)
-    get("/terms-of-use", BaseController, :terms_of_use)
+    get "/", BaseController, :home
+    live "/contact-us", BaseLive.ContactUsLive, :contact_us
+    get "/privacy-policy", BaseController, :privacy_policy
+    get "/terms-of-use", BaseController, :terms_of_use
   end
 
   # QUIZZES - login required
   scope "/quizzes", QuizGameWeb do
-    pipe_through([:browser, :require_authenticated_user])
+    pipe_through [:browser, :require_authenticated_user]
 
     resources "/", QuizController, param: "quiz_id"
   end
 
   # USERS - allow any user
   scope "/users", QuizGameWeb do
-    pipe_through(:browser)
+    pipe_through :browser
 
     get "/logout", UserSessionController, :logout_confirm
     post "/logout", UserSessionController, :logout
@@ -54,7 +54,7 @@ defmodule QuizGameWeb.Router do
 
   # USERS - logout required
   scope "/users", QuizGameWeb do
-    pipe_through([:browser, :redirect_if_user_is_authenticated])
+    pipe_through [:browser, :redirect_if_user_is_authenticated]
 
     post "/login", UserSessionController, :create
 
@@ -69,7 +69,7 @@ defmodule QuizGameWeb.Router do
 
   # USERS - login required
   scope "/users", QuizGameWeb do
-    pipe_through([:browser, :require_authenticated_user])
+    pipe_through [:browser, :require_authenticated_user]
 
     get "/me", UserSessionController, :show
     get "/me/update", UserSessionController, :settings
@@ -90,7 +90,7 @@ defmodule QuizGameWeb.Router do
     alias QuizGameWeb.DevLive
 
     scope "/dev" do
-      pipe_through(:browser)
+      pipe_through :browser
 
       # built-in routes
       live_dashboard("/dashboard", metrics: QuizGameWeb.Telemetry)
