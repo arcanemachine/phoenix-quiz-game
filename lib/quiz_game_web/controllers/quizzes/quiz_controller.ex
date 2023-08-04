@@ -34,7 +34,7 @@ defmodule QuizGameWeb.QuizController do
   def edit(conn, %{"quiz_id" => quiz_id}) do
     quiz = Quizzes.get_quiz!(quiz_id)
     changeset = Quizzes.change_quiz(quiz)
-    render(conn, :edit, page_title: "Update Quiz", quiz: quiz, changeset: changeset)
+    render(conn, :edit, page_title: "Edit Quiz", quiz: quiz, changeset: changeset)
   end
 
   def update(conn, %{"quiz_id" => quiz_id, "quiz" => quiz_params}) do
@@ -47,7 +47,7 @@ defmodule QuizGameWeb.QuizController do
         |> redirect(to: ~p"/quizzes/#{quiz}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :edit, page_title: "Update Quiz", quiz: quiz, changeset: changeset)
+        render(conn, :edit, page_title: "Edit Quiz", quiz: quiz, changeset: changeset)
     end
   end
 
