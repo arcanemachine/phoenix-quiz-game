@@ -14,7 +14,7 @@ defmodule QuizGameWeb.UsersLive.UserForgotPasswordLive do
     </.form_intro_text>
 
     <.simple_form for={@form} id="reset_password_form" phx-submit="send_email">
-      <.input field={@form[:email]} type="email" placeholder="Email" required />
+      <.input field={@form[:email]} type="email" label="Your email" required />
       <.input type="captcha" />
 
       <:actions>

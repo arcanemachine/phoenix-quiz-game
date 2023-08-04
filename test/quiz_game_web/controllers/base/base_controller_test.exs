@@ -1,19 +1,22 @@
 defmodule QuizGameWeb.BaseControllerTest do
   @moduledoc false
+
   use QuizGameWeb.ConnCase
 
+  import QuizGameWeb.TestSupport.Assertions
+
   test "GET /", %{conn: conn} do
-    conn = get(conn, ~p"/")
-    assert html_response(conn, 200) =~ "Hello world!"
+    response_conn = get(conn, ~p"/")
+    assert html_response_has_title(response_conn, Application.get_env(:quiz_game, :project_name))
   end
 
   test "GET /terms-of-use", %{conn: conn} do
-    conn = get(conn, ~p"/terms-of-use")
-    assert html_response(conn, 200) =~ "Terms of Use"
+    response_conn = get(conn, ~p"/terms-of-use")
+    assert html_response_has_title(response_conn, "Terms of Use")
   end
 
   test "GET /privacy-policy", %{conn: conn} do
-    conn = get(conn, ~p"/privacy-policy")
-    assert html_response(conn, 200) =~ "Privacy Policy"
+    response_conn = get(conn, ~p"/privacy-policy")
+    assert html_response_has_text(response_conn, "Privacy Policy")
   end
 end

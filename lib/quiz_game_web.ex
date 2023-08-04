@@ -67,6 +67,9 @@ defmodule QuizGameWeb do
 
       # Routes generation with the ~p sigil
       unquote(verified_routes())
+
+      # custom
+      import QuizGameWeb.Support.Router
     end
   end
 

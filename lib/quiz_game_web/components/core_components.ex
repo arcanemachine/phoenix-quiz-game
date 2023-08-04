@@ -29,7 +29,7 @@ defmodule QuizGameWeb.CoreComponents do
   def action_links(assigns) do
     ~H"""
     <section class={["mt-8", @class]}>
-      <div class="text-2xl font-bold">
+      <div :if={@title} class="text-2xl font-bold">
         <%= @title %>
       </div>
       <ul class="mt-2 ml-6 [&>*:first-child]:mt-4">
@@ -242,7 +242,8 @@ defmodule QuizGameWeb.CoreComponents do
           <.icon :if={@kind == :warning} name="hero-exclamation-circle-mini" class="h-7 w-7" />
           <.icon :if={@kind == :error} name="hero-exclamation-triangle-mini" class="h-7 w-7" />
         </div>
-        <p class="grow flex justify-center px-4 font-semibold text-center cursor-pointer select-none">
+        <p class="grow flex justify-center px-4 font-semibold text-center cursor-pointer
+                  select-none">
           <%= msg %>
         </p>
         <button class="block group" aria-label={gettext("close")}>

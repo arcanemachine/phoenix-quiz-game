@@ -31,11 +31,18 @@ defmodule QuizGameWeb.Router do
     get "/terms-of-use", BaseController, :terms_of_use
   end
 
+  # QUIZZES - allow any user
+  scope "/quizzes", QuizGameWeb do
+    pipe_through [:browser]
+
+    resources "/", QuizController, param: "quiz_id", only: [:index, :show]
+  end
+
   # QUIZZES - login required
   scope "/quizzes", QuizGameWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    resources "/", QuizController, param: "quiz_id"
+    resources "/", QuizController, param: "quiz_id", except: [:index, :show]
   end
 
   # USERS - allow any user

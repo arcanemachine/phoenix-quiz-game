@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Router.Paths do
+defmodule QuizGameWeb.Support.Router do
   @moduledoc """
   This project's route path helpers.
   """
@@ -12,7 +12,7 @@ defmodule QuizGameWeb.Router.Paths do
   """
   use QuizGameWeb, :verified_routes
 
-  def route_path("base", route_name) do
+  def route("base", route_name) do
     case route_name do
       :root -> ~p"/"
       :contact_us -> ~p"/contact-us"
@@ -21,9 +21,9 @@ defmodule QuizGameWeb.Router.Paths do
     end
   end
 
-  def route_path(context_name, route_name, params \\ [])
+  def route(context_name, route_name, params \\ [])
 
-  def route_path("quizzes", route_name, params) do
+  def route("quizzes", route_name, params) do
     case route_name do
       :index -> ~p"/quizzes"
       :new -> ~p"/quizzes/new"
@@ -34,7 +34,7 @@ defmodule QuizGameWeb.Router.Paths do
   end
 
   # credo:disable-for-next-line
-  def route_path("users", route_name, params) do
+  def route("users", route_name, params) do
     case route_name do
       # auth
       :registration -> ~p"/users/register"

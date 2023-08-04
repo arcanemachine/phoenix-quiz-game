@@ -1,9 +1,7 @@
-<.base_page_title title={assigns[:page_title]} subtitle={assigns[:page_subtitle]} />
-
-<div class="template-center">
-  <button class="w-full btn btn-lg btn-primary" x-data x-tooltip="Goodbye troubles!" id="hello">
-    Hello world!
-  </button>
-</div>
-
-<.flash_group flash={@flash} />
+<.action_links title={false} class="mx-auto text-center">
+  <.action_links_item class="pr-8 !list-none text-xl">
+    <.link href={route("quizzes", :index)}>
+      View Quizzes
+    </.link>
+  </.action_links_item>
+</.action_links>
