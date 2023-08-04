@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.GenericTests do
+defmodule QuizGameWeb.TestSupport.GenericTests do
   @moduledoc "This project's generic/reusable tests."
   use QuizGameWeb.ConnCase
 

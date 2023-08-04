@@ -1,10 +1,11 @@
 defmodule QuizGameWeb.QuizControllerTest do
   @moduledoc false
+
   use QuizGameWeb.ConnCase
 
   import QuizGame.QuizzesFixtures
-  import QuizGameWeb.GenericTests
   import QuizGameWeb.Router.Paths
+  import QuizGameWeb.TestSupport.{Assertions, GenericTests}
 
   # data
   @create_attrs %{name: "some name"}
@@ -24,7 +25,7 @@ defmodule QuizGameWeb.QuizControllerTest do
 
     test "lists all quizzes", %{conn: conn} do
       response_conn = get(conn, route_path("quizzes", :index))
-      assert html_response(response_conn, 200) =~ "Listing Quizzes"
+      assert html_response_has_title(response_conn, "Quiz List")
     end
   end
 
@@ -35,7 +36,7 @@ defmodule QuizGameWeb.QuizControllerTest do
 
     test "renders object creation form", %{conn: conn} do
       response_conn = get(conn, route_path("quizzes", :new))
-      assert html_response(response_conn, 200) =~ "New Quiz"
+      assert html_response_has_title(response_conn, "Create Quiz")
     end
   end
 
@@ -55,17 +56,17 @@ defmodule QuizGameWeb.QuizControllerTest do
       # redirect renders expected template
       object_detail_url = route_path("quizzes", :show, quiz_id: quiz_id)
       response_conn_2 = get(response_conn, object_detail_url)
-      assert html_response(response_conn_2, 200) =~ "Quiz #{quiz_id}"
+      assert html_response_has_text(response_conn_2, "Quiz #{quiz_id}")
 
       # template contains new object content
-      assert html_response(response_conn_2, 200) =~ "#{@create_attrs[:name]}"
+      assert html_response_has_text(response_conn_2, @create_attrs[:name])
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
       test_url = route_path("quizzes", :create)
       response_conn = post(conn, test_url, quiz: @invalid_attrs)
 
-      assert html_response(response_conn, 200) =~ "New Quiz"
+      assert html_response_has_title(response_conn, "Create Quiz")
     end
   end
 
@@ -81,7 +82,7 @@ defmodule QuizGameWeb.QuizControllerTest do
       test_url = route_path("quizzes", :edit, quiz_id: quiz.id)
       response_conn = get(conn, test_url)
 
-      assert html_response(response_conn, 200) =~ "Edit Quiz"
+      assert html_response_has_title(response_conn, "Edit Quiz")
     end
   end
 
@@ -103,17 +104,15 @@ defmodule QuizGameWeb.QuizControllerTest do
 
       # redirect renders expected template
       response_conn_2 = response_conn |> get(object_detail_url)
-      assert html_response(response_conn_2, 200) =~ "some updated name"
-
-      # template contains new object content
-      assert html_response(response_conn_2, 200) =~ "#{@update_attrs[:name]}"
+      assert html_response_has_title(response_conn_2, "Quiz Info")
+      assert html_response_has_text(response_conn_2, @update_attrs[:name])
     end
 
     test "renders errors when data is invalid", %{conn: conn, quiz: quiz} do
       test_url = route_path("quizzes", :update, quiz_id: quiz.id)
       response_conn = put(conn, test_url, quiz: @invalid_attrs)
 
-      assert html_response(response_conn, 200) =~ "Edit Quiz"
+      assert html_response_has_title(response_conn, "Edit Quiz")
     end
   end
 
