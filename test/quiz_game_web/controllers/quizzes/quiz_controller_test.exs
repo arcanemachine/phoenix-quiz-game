@@ -8,8 +8,8 @@ defmodule QuizGameWeb.QuizControllerTest do
   import QuizGameWeb.TestSupport.{Assertions, GenericTests}
 
   # data
-  @create_attrs %{name: "some name"}
-  @update_attrs %{name: "some updated name"}
+  @create_attrs %{name: "test_name"}
+  @update_attrs %{name: "updated_name"}
   @invalid_attrs %{name: nil}
 
   # setup
@@ -34,7 +34,7 @@ defmodule QuizGameWeb.QuizControllerTest do
 
     test_redirects_unauthenticated_user_to_login_route(route_path("quizzes", :new), "GET")
 
-    test "renders object creation form", %{conn: conn} do
+    test "renders expected template", %{conn: conn} do
       response_conn = get(conn, route_path("quizzes", :new))
       assert html_response_has_title(response_conn, "Create Quiz")
     end
@@ -45,7 +45,7 @@ defmodule QuizGameWeb.QuizControllerTest do
 
     test_redirects_unauthenticated_user_to_login_route(route_path("quizzes", :create), "POST")
 
-    test "redirects to object detail route when data is valid", %{conn: conn} do
+    test "creates expected object", %{conn: conn} do
       test_url = route_path("quizzes", :create)
       response_conn = post(conn, test_url, quiz: @create_attrs)
 
@@ -67,6 +67,20 @@ defmodule QuizGameWeb.QuizControllerTest do
       response_conn = post(conn, test_url, quiz: @invalid_attrs)
 
       assert html_response_has_title(response_conn, "Create Quiz")
+    end
+  end
+
+  describe "quizzes :show" do
+    setup [:register_and_login_user, :create_quiz]
+
+    test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
+      test_url = route_path("quizzes", :show, quiz_id: quiz.id)
+      redirects_unauthenticated_user_to_login_route(conn, test_url, "GET")
+    end
+
+    test "renders expected template", %{conn: conn, quiz: quiz} do
+      response_conn = get(conn, route_path("quizzes", :show, quiz_id: quiz.id))
+      assert html_response_has_title(response_conn, "Quiz Info")
     end
   end
 
@@ -94,7 +108,7 @@ defmodule QuizGameWeb.QuizControllerTest do
       redirects_unauthenticated_user_to_login_route(conn, test_url, "PUT")
     end
 
-    test "redirects to expected route when data is valid", %{conn: conn, quiz: quiz} do
+    test "updates expected object", %{conn: conn, quiz: quiz} do
       test_url = route_path("quizzes", :update, quiz_id: quiz.id)
       response_conn = put(conn, test_url, quiz: @update_attrs)
 
@@ -124,7 +138,7 @@ defmodule QuizGameWeb.QuizControllerTest do
       redirects_unauthenticated_user_to_login_route(conn, test_url, "DELETE")
     end
 
-    test "deletes chosen quiz", %{conn: conn, quiz: quiz} do
+    test "deletes expected object", %{conn: conn, quiz: quiz} do
       test_url = route_path("quizzes", :show, quiz_id: quiz.id)
       response_conn = delete(conn, route_path("quizzes", :delete, quiz_id: quiz.id))
 
