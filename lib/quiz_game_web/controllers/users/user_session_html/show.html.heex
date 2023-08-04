@@ -6,8 +6,7 @@
     <%= if @current_user.confirmed_at do %>
       Confirmed
     <% else %>
-      Unconfirmed
-      <.link href={~p"/users/confirm/email"}>(Confirm your account)</.link>
+      Unconfirmed <.link href={~p"/users/confirm/email"}>(Confirm your account)</.link>
     <% end %>
   </:item>
 </.object_list_show>
