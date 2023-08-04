@@ -25,7 +25,7 @@ defmodule QuizGameWeb.Router do
   scope "/", QuizGameWeb do
     pipe_through :browser
 
-    get "/", BaseController, :home
+    get "/", BaseController, :root
     live "/contact-us", BaseLive.ContactUsLive, :contact_us
     get "/privacy-policy", BaseController, :privacy_policy
     get "/terms-of-use", BaseController, :terms_of_use

@@ -1,8 +1,8 @@
 defmodule QuizGameWeb.BaseController do
   use QuizGameWeb, :controller
 
-  def home(conn, _params) do
-    render(conn, :home, tag_title: "Home")
+  def root(conn, _params) do
+    render(conn, :root, tag_title: "Home")
   end
 
   def privacy_policy(conn, _params) do
