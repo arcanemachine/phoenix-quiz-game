@@ -1,6 +1,6 @@
 defmodule QuizGameWeb.Support do
   @moduledoc """
-  This project's helper functions.
+  This project's web-related helper functions.
   """
 
   @doc """

@@ -92,11 +92,11 @@ defmodule QuizGameWeb.Router do
     scope "/dev" do
       pipe_through(:browser)
 
-      # built-in
+      # built-in routes
       live_dashboard("/dashboard", metrics: QuizGameWeb.Telemetry)
       forward "/mailbox", Plug.Swoosh.MailboxPreview
 
-      # custom
+      # custom project routes
       live("/component-showcase", DevLive.ComponentShowcaseLive)
     end
   end
