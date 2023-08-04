@@ -1,30 +1,16 @@
-<div>
-  <ul class="[&>*:not(:first-child)]:mt-2">
-    <li>
-      <span class="font-bold">
-        Email:
-      </span>
-      <span class="ps-1 truncate">
-        <%= @current_user.email %>
-      </span>
-    </li>
-    <li>
-      <span class="font-bold">
-        Account status:
-      </span>
-      <span class="ps-1">
-        <%= if @current_user.confirmed_at do %>
-          Confirmed
-        <% else %>
-          Unconfirmed
-          <.link href={~p"/users/confirm/email"}>
-            (Confirm your account)
-          </.link>
-        <% end %>
-      </span>
-    </li>
-  </ul>
-</div>
+<.object_list_show>
+  <:item title="Email">
+    <%= @current_user.email %>
+  </:item>
+  <:item title="Account status">
+    <%= if @current_user.confirmed_at do %>
+      Confirmed
+    <% else %>
+      Unconfirmed
+      <.link href={~p"/users/confirm/email"}>(Confirm your account)</.link>
+    <% end %>
+  </:item>
+</.object_list_show>
 
 <div class="divider my-12" />
 

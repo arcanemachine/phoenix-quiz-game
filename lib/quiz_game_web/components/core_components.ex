@@ -22,7 +22,7 @@ defmodule QuizGameWeb.CoreComponents do
       </.action_links>
   """
   attr :title, :string, default: "Actions"
-  attr :class, :string, default: ""
+  attr :class, :string, default: nil
 
   slot :inner_block, required: true
 
@@ -69,7 +69,7 @@ defmodule QuizGameWeb.CoreComponents do
   """
 
   attr :kind, :string, default: "dash"
-  attr :class, :string, default: ""
+  attr :class, :string, default: nil
 
   slot :inner_block, required: true
 
@@ -306,7 +306,7 @@ defmodule QuizGameWeb.CoreComponents do
   """
   attr :kind, :string, default: "primary"
   attr :type, :string, default: "button"
-  attr :content, :string, default: "", doc: "the button text (can use default slot instead)"
+  attr :content, :string, default: nil, doc: "the button text (can use default slot instead)"
   attr :class, :any, default: nil
   attr :loader, :boolean, default: false, doc: "show a loading spinner"
   attr :rest, :global, doc: "the arbitrary HTML attributes to add to the component"
@@ -912,6 +912,36 @@ defmodule QuizGameWeb.CoreComponents do
         </div>
       </div>
     </div>
+    """
+  end
+
+  @doc """
+  Renders a list of attributes for a given item. Used in :show pages.
+
+  ## Examples
+
+      <.object_list_show>
+        <:item title="Name"><%= @obj.name %></:item>
+        <:item title="Views" class="bg-red-500"><%= @obj.views %></:item>
+      </.object_list_show>
+  """
+  slot :item, required: true do
+    attr :title, :string, required: true
+    attr :class, :string
+  end
+
+  def object_list_show(assigns) do
+    ~H"""
+    <ul class="mb-8 [&>*:not(:first-child)]:mt-2">
+      <li :for={item <- @item}>
+        <span class="font-bold">
+          <%= item.title %>:
+        </span>
+        <span class={["ps-1", item[:class]]}>
+          <%= render_slot(item) %>
+        </span>
+      </li>
+    </ul>
     """
   end
 
