@@ -4,6 +4,7 @@ defmodule QuizGame.Repo.Migrations.CreateQuizzes do
   def change do
     create table(:quizzes) do
       add :name, :string
+      # add :subject, :string
       add :user_id, references(:users, on_delete: :nothing)
 
       timestamps()
