@@ -31,13 +31,6 @@ defmodule QuizGameWeb.Router do
     get "/terms-of-use", BaseController, :terms_of_use
   end
 
-  # QUIZZES - allow any user
-  scope "/quizzes", QuizGameWeb do
-    pipe_through [:browser]
-
-    resources "/", QuizController, param: "quiz_id", only: [:index, :show]
-  end
-
   # QUIZZES - login required
   scope "/quizzes", QuizGameWeb do
     pipe_through [:browser, :require_authenticated_user]
@@ -45,17 +38,27 @@ defmodule QuizGameWeb.Router do
     resources "/", QuizController, param: "quiz_id", except: [:index, :show]
   end
 
-  # USERS - allow any user
+  # QUIZZES - allow any user
+  scope "/quizzes", QuizGameWeb do
+    pipe_through [:browser]
+
+    resources "/", QuizController, param: "quiz_id", only: [:index, :show]
+  end
+
+  # USERS - login required
   scope "/users", QuizGameWeb do
-    pipe_through :browser
+    pipe_through [:browser, :require_authenticated_user]
 
-    get "/logout", UserSessionController, :logout_confirm
-    post "/logout", UserSessionController, :logout
+    get "/me", UserSessionController, :show
+    get "/me/update", UserSessionController, :settings
+    get "/me/delete", UserController, :delete_confirm
+    post "/me/delete", UserController, :delete
 
-    live_session :confirm_email,
-      on_mount: [{QuizGameWeb.UserAuth, :mount_current_user}] do
-      live "/confirm/email", UsersLive.UserConfirmationInstructionsLive, :new
-      live "/confirm/email/:token", UsersLive.UserConfirmationLive, :edit
+    live_session :require_authenticated_user,
+      on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
+      live "/me/update/email", UsersLive.UserUpdateEmailLive, :edit
+      live "/me/update/email/confirm/:token", UsersLive.UserUpdateEmailLive, :confirm_email
+      live "/me/update/password", UsersLive.UserUpdatePasswordLive, :edit
     end
   end
 
@@ -74,20 +77,17 @@ defmodule QuizGameWeb.Router do
     end
   end
 
-  # USERS - login required
+  # USERS - allow any user
   scope "/users", QuizGameWeb do
-    pipe_through [:browser, :require_authenticated_user]
+    pipe_through :browser
 
-    get "/me", UserSessionController, :show
-    get "/me/update", UserSessionController, :settings
-    get "/me/delete", UserController, :delete_confirm
-    post "/me/delete", UserController, :delete
+    get "/logout", UserSessionController, :logout_confirm
+    post "/logout", UserSessionController, :logout
 
-    live_session :require_authenticated_user,
-      on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
-      live "/me/update/email", UsersLive.UserUpdateEmailLive, :edit
-      live "/me/update/email/confirm/:token", UsersLive.UserUpdateEmailLive, :confirm_email
-      live "/me/update/password", UsersLive.UserUpdatePasswordLive, :edit
+    live_session :confirm_email,
+      on_mount: [{QuizGameWeb.UserAuth, :mount_current_user}] do
+      live "/confirm/email", UsersLive.UserConfirmationInstructionsLive, :new
+      live "/confirm/email/:token", UsersLive.UserConfirmationLive, :edit
     end
   end
 
