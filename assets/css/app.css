@@ -63,6 +63,14 @@
   list-style-type: "< ";
 }
 
+.list-back-more {
+  list-style-type: "<< ";
+}
+
+.list-forward {
+  list-style-type: "> ";
+}
+
 .list-dash {
   list-style-type: "- ";
 }
