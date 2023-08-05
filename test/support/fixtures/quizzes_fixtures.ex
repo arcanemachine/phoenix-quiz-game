@@ -1,7 +1,6 @@
 defmodule QuizGame.QuizzesFixtures do
   @moduledoc """
-  This module defines test helpers for creating
-  entities via the `QuizGame.Quizzes` context.
+  This module defines test helpers for creating entities via the `QuizGame.Quizzes` context.
   """
 
   @doc """

@@ -1,5 +1,6 @@
 defmodule QuizGameWeb.BaseComponents do
   @moduledoc "Provides base Phoenix components."
+
   use Phoenix.Component, global_prefixes: ~w(x-)
   use QuizGameWeb, :verified_routes
 

@@ -1,6 +1,5 @@
 defmodule QuizGame.Repo.Migrations.CreateUsersAuthTables do
   @moduledoc false
-
   use Ecto.Migration
 
   def change do

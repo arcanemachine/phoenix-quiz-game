@@ -1,8 +1,5 @@
 defmodule QuizGame.Release do
-  @moduledoc """
-  Used for executing DB release tasks when run in production without Mix
-  installed.
-  """
+  @moduledoc "Used for executing DB release tasks when run in production without Mix installed."
   @app :quiz_game
 
   def migrate do

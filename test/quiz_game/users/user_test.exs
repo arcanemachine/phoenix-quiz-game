@@ -1,8 +1,6 @@
 defmodule QuizGame.UserTest do
   @moduledoc false
-
   use QuizGame.DataCase
-
   import QuizGame.Users.User
 
   describe "password_length_min/0" do
