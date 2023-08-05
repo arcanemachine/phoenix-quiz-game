@@ -15,6 +15,6 @@ defmodule QuizGameWeb.BaseControllerTest do
 
   test "GET /privacy-policy", %{conn: conn} do
     response_conn = get(conn, ~p"/privacy-policy")
-    assert html_response_has_text(response_conn, "Privacy Policy")
+    assert html_response_has_title(response_conn, "Privacy Policy")
   end
 end
