@@ -3,7 +3,7 @@ defmodule QuizGameWeb.ConnTest do
 
   use QuizGameWeb.ConnCase
 
-  alias QuizGameWeb.Conn, as: ProjectConn
+  alias QuizGameWeb.Support.Conn, as: ProjectConn
 
   describe("text_response/3") do
     test "when is_atom(status)", %{conn: conn} do

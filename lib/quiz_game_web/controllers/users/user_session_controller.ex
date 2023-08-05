@@ -1,7 +1,7 @@
 defmodule QuizGameWeb.UserSessionController do
   use QuizGameWeb, :controller
 
-  import QuizGameWeb.Conn, only: [text_response: 3]
+  import QuizGameWeb.Support.Conn, only: [text_response: 3]
 
   alias QuizGame.Users
   alias QuizGameWeb.UserAuth

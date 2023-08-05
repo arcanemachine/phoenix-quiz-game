@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Conn do
+defmodule QuizGameWeb.Support.Conn do
   @moduledoc "This project's custom conn helper functions."
 
   import Plug.Conn
