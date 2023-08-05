@@ -14,8 +14,8 @@ defmodule QuizGameWeb.CoreComponents do
   ## Example
 
       <.action_links>
-        <.action_links_item class="list-back">
-          <.link navigate={~p"/"}>
+        <.action_links_item kind="back">
+          <.link href={~p"/"}>
             Return to homepage
           </.link>
         </.action_links_item>
@@ -32,7 +32,7 @@ defmodule QuizGameWeb.CoreComponents do
       <div :if={@title} class="text-2xl font-bold">
         <%= @title %>
       </div>
-      <ul class="mt-2 ml-6 [&>*:first-child]:mt-4">
+      <ul class="mt-2 ml-6 [&>*]:mt-2">
         <%= render_slot(@inner_block) %>
       </ul>
     </section>
@@ -916,26 +916,27 @@ defmodule QuizGameWeb.CoreComponents do
   end
 
   @doc """
-  Renders a list of attributes for a given item. Used in :show pages.
+  Renders a list of attributes for a given record. Used in :show templates.
 
   ## Examples
 
-      <.object_list_show>
-        <:item title="Name"><%= @obj.name %></:item>
-        <:item title="Views" class="bg-red-500"><%= @obj.views %></:item>
-      </.object_list_show>
+      <.record_show>
+        <:item title="Name"><%= @user.name %></:item>
+        <:item title="Email" class="bg-red-500"><%= @user.email %></:item>
+      </.record_show>
   """
   slot :item, required: true do
-    attr :title, :string, required: true
+    attr :label, :string, required: true
+    attr :value, :any, required: true
     attr :class, :string
   end
 
-  def object_list_show(assigns) do
+  def record_show(assigns) do
     ~H"""
     <ul class="mb-8 [&>*:not(:first-child)]:mt-2">
       <li :for={item <- @item}>
         <span class="font-bold">
-          <%= item.title %>:
+          <%= item.label %>:
         </span>
         <span class={["ps-1", item[:class]]}>
           <%= render_slot(item) %>

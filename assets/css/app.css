@@ -147,6 +147,16 @@
   }
 
   /* custom */
+  .record-index {
+    margin-bottom: 2rem;
+    font-size: 1.25rem;
+    list-style-type: "- ";
+  }
+
+  .record-index > *:not(:first-child) {
+    margin-top: 0.5rem;
+  }
+
   .template-center {
     display: flex;
     height: 100%;

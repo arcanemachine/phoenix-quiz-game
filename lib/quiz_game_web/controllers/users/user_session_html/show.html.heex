@@ -1,15 +1,15 @@
-<.object_list_show>
-  <:item title="Email">
+<.record_show>
+  <:item label="Email">
     <%= @current_user.email %>
   </:item>
-  <:item title="Account status">
+  <:item label="Account status">
     <%= if @current_user.confirmed_at do %>
       Confirmed
     <% else %>
       Unconfirmed <.link href={~p"/users/confirm/email"}>(Confirm your account)</.link>
     <% end %>
   </:item>
-</.object_list_show>
+</.record_show>
 
 <div class="divider my-12" />
 
