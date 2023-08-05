@@ -29,10 +29,10 @@ defmodule QuizGameWeb.UsersLive.UserConfirmationLive do
     """
   end
 
-  # to avoid a leaked token giving the user access to the account, do not log the user in after
-  # confirming their email
   @impl Phoenix.LiveView
   def handle_event("confirm_account", %{"user" => %{"token" => token}}, socket) do
+    # to avoid a leaked token giving the user access to the account, do not log the user in after
+    # confirming their email
     case Users.confirm_user(token) do
       {:ok, _} ->
         {:noreply,

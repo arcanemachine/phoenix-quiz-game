@@ -46,10 +46,10 @@ defmodule QuizGameWeb.UsersLive.UserResetPasswordLive do
     """
   end
 
-  # to avoid a leaked token giving the user access to the account, do not log the user in after
-  # resetting their password
   @impl Phoenix.LiveView
   def handle_event("reset_password", %{"user" => user_params}, socket) do
+    # to avoid a leaked token giving the user access to the account, do not log the user in after
+    # resetting their password
     case Users.reset_user_password(socket.assigns.user, user_params) do
       {:ok, _} ->
         {:noreply,
