@@ -4,8 +4,8 @@ defmodule QuizGameWeb.QuizControllerTest do
   use QuizGameWeb.ConnCase
 
   import QuizGame.QuizzesFixtures
+  import QuizGame.TestSupport.{Assertions, GenericTests}
   import QuizGameWeb.Support.Router
-  import QuizGameWeb.TestSupport.{Assertions, GenericTests}
 
   # data
   @create_attrs %{name: "test_name"}

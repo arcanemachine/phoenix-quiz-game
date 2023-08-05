@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.TestSupport.Assertions do
+defmodule QuizGame.TestSupport.Assertions do
   @moduledoc "Assertions that are commonly used across multiple tests."
 
   import Phoenix.ConnTest

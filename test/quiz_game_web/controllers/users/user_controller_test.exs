@@ -4,10 +4,9 @@ defmodule QuizGameWeb.UserControllerTest do
   use QuizGameWeb.ConnCase, async: true
 
   import Ecto.Query
+  import QuizGame.TestSupport.{Assertions, GenericTests}
   import QuizGame.UsersFixtures
   import QuizGameWeb.Support.Router
-  import QuizGameWeb.TestSupport.Assertions
-  import QuizGameWeb.TestSupport.GenericTests
 
   alias QuizGame.Repo
   alias QuizGame.Users.User
