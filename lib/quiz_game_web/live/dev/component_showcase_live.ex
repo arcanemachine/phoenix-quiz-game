@@ -54,6 +54,7 @@ defmodule QuizGameWeb.DevLive.ComponentShowcaseLive do
   end
 
   # lifecycle
+  @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     {:ok,
      socket
@@ -69,6 +70,7 @@ defmodule QuizGameWeb.DevLive.ComponentShowcaseLive do
      )}
   end
 
+  @impl Phoenix.LiveView
   def handle_event("flash-info-show", _params, socket) do
     {:noreply, socket |> put_flash(:info, "Info flash message")}
   end

@@ -3,10 +3,12 @@ defmodule QuizGameWeb.UsersLive.UserConfirmationInstructionsLive do
 
   alias QuizGame.Users
 
+  @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     {:ok, assign(socket, form: to_form(%{}, as: "user"), page_title: "Resend Confirmation Email")}
   end
 
+  @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
     <.form_intro_text>
@@ -24,6 +26,7 @@ defmodule QuizGameWeb.UsersLive.UserConfirmationInstructionsLive do
     """
   end
 
+  @impl Phoenix.LiveView
   def handle_event("send_instructions", %{"user" => %{"email" => email}} = form_params, socket) do
     if QuizGameWeb.Support.form_captcha_valid?(form_params) do
       if user = Users.get_user_by_email(email) do

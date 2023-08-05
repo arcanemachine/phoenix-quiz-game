@@ -3,12 +3,14 @@ defmodule QuizGameWeb.UsersLive.UserLoginLive do
 
   @page_title "Account Login"
 
+  @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     email = live_flash(socket.assigns.flash, :email)
     form = to_form(%{"email" => email}, as: "user")
     {:ok, assign(socket, form: form, page_title: @page_title), temporary_assigns: [form: form]}
   end
 
+  @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
     <.form_intro_text>

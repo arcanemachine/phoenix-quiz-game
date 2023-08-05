@@ -4,6 +4,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdatePasswordLive do
   alias QuizGame.Users
   alias QuizGame.Users.User
 
+  @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     user = socket.assigns.current_user
     password_changeset = Users.change_user_password(user)
@@ -19,6 +20,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdatePasswordLive do
     {:ok, socket}
   end
 
+  @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
     <.form_intro_text>
@@ -66,6 +68,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdatePasswordLive do
     """
   end
 
+  @impl Phoenix.LiveView
   def handle_event("validate_password", params, socket) do
     %{"current_password" => password, "user" => user_params} = params
 

@@ -3,6 +3,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
 
   alias QuizGame.Users
 
+  @impl Phoenix.LiveView
   def mount(%{"token" => token}, _session, socket) do
     socket =
       case Users.update_user_email(socket.assigns.current_user, token) do
@@ -33,6 +34,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
     {:ok, socket}
   end
 
+  @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
     <.form_intro_text>
@@ -70,6 +72,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
     """
   end
 
+  @impl Phoenix.LiveView
   def handle_event("validate_email", params, socket) do
     %{"current_password" => password, "user" => %{"email" => email} = user_params} = params
 

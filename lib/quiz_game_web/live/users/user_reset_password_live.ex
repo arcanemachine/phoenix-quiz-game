@@ -3,6 +3,7 @@ defmodule QuizGameWeb.UsersLive.UserResetPasswordLive do
 
   alias QuizGame.Users
 
+  @impl Phoenix.LiveView
   def mount(params, _session, socket) do
     socket = assign_user_and_token(socket, params) |> assign(page_title: "Set New Password")
 
@@ -18,6 +19,7 @@ defmodule QuizGameWeb.UsersLive.UserResetPasswordLive do
     {:ok, assign_form(socket, form_source), temporary_assigns: [form: nil]}
   end
 
+  @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
     <.form_intro_text>
@@ -46,6 +48,7 @@ defmodule QuizGameWeb.UsersLive.UserResetPasswordLive do
 
   # to avoid a leaked token giving the user access to the account, do not log the user in after
   # resetting their password
+  @impl Phoenix.LiveView
   def handle_event("reset_password", %{"user" => user_params}, socket) do
     case Users.reset_user_password(socket.assigns.user, user_params) do
       {:ok, _} ->

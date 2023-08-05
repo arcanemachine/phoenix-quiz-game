@@ -6,6 +6,7 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
 
   @page_title "Register New Account"
 
+  @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     changeset = Users.change_user_registration(%User{})
 
@@ -28,6 +29,7 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
     end
   end
 
+  @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
     <.form_intro_text>
@@ -89,6 +91,7 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
     """
   end
 
+  @impl Phoenix.LiveView
   def handle_event("save", %{"user" => user_params} = form_params, socket) do
     if QuizGameWeb.Support.form_captcha_valid?(form_params) do
       case Users.register_user(user_params) do
