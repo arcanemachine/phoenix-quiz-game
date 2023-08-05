@@ -14,10 +14,13 @@ defmodule QuizGameWeb.UserSessionControllerTest do
           "user" => %{"email" => user.email, "password" => valid_user_password()}
         })
 
-      assert get_session(conn, :user_token)
+      # response redirects to expected route
       assert redirected_to(conn) == ~p"/users/me"
 
-      # Now do a logged in request and assert on the menu
+      # response contains expected session data
+      assert get_session(conn, :user_token)
+
+      # make a request as a logged-in user and check for logged-in menu items
       conn = get(conn, ~p"/")
       response = html_response(conn, 200)
       assert response =~ ~p"/users/me"
@@ -34,13 +37,17 @@ defmodule QuizGameWeb.UserSessionControllerTest do
           }
         })
 
-      assert conn.resp_cookies["_quiz_game_web_user_remember_me"]
+      # response redirects to expected route
       assert redirected_to(conn) == ~p"/users/me"
+
+      # response contains expected cookie
+      assert conn.resp_cookies["_quiz_game_web_user_remember_me"]
     end
 
     test "logs the user in with return to", %{conn: conn, user: user} do
       conn =
         conn
+        # add redirect data to session
         |> init_test_session(user_return_to: "/foo/bar")
         |> post(~p"/users/login", %{
           "user" => %{
@@ -49,11 +56,14 @@ defmodule QuizGameWeb.UserSessionControllerTest do
           }
         })
 
+      # response redirects to specified route
       assert redirected_to(conn) == "/foo/bar"
+
+      # response contains expected flash message
       assert Phoenix.Flash.get(conn.assigns.flash, :success) =~ "Logged in successfully"
     end
 
-    test "login following registration", %{conn: conn, user: user} do
+    test "user is automatically logged in after registering an account", %{conn: conn, user: user} do
       conn =
         conn
         |> post(~p"/users/login", %{
@@ -64,7 +74,10 @@ defmodule QuizGameWeb.UserSessionControllerTest do
           }
         })
 
+      # response redirects to expected route
       assert redirected_to(conn) == ~p"/users/me"
+
+      # response contains expected flash message
       assert Phoenix.Flash.get(conn.assigns.flash, :success) =~ "Account created successfully"
     end
 
@@ -79,7 +92,10 @@ defmodule QuizGameWeb.UserSessionControllerTest do
           }
         })
 
+      # response redirects to expected route
       assert redirected_to(conn) == ~p"/users/me/update"
+
+      # response contains expected flash message
       assert Phoenix.Flash.get(conn.assigns.flash, :success) =~ "Password updated successfully"
     end
 
@@ -89,23 +105,38 @@ defmodule QuizGameWeb.UserSessionControllerTest do
           "user" => %{"email" => "invalid@email.com", "password" => "invalid_password"}
         })
 
-      assert Phoenix.Flash.get(conn.assigns.flash, :error) == "Invalid email or password"
+      # response redirects to expected route
       assert redirected_to(conn) == ~p"/users/login"
+
+      # response contains expected flash message
+      assert Phoenix.Flash.get(conn.assigns.flash, :error) == "Invalid email or password"
     end
   end
 
   describe "DELETE /users/logout" do
     test "logs the user out", %{conn: conn, user: user} do
       conn = conn |> login_user(user) |> post(~p"/users/logout")
+
+      # response redirects to expected route
       assert redirected_to(conn) == ~p"/"
+
+      # response contains expected session data
       refute get_session(conn, :user_token)
+
+      # response contains expected flash message
       assert Phoenix.Flash.get(conn.assigns.flash, :success) =~ "Logged out successfully"
     end
 
     test "succeeds even if the user is not logged in", %{conn: conn} do
       conn = post(conn, ~p"/users/logout")
+
+      # response redirects to expected route
       assert redirected_to(conn) == ~p"/"
+
+      # response contains expected session data
       refute get_session(conn, :user_token)
+
+      # response contains expected flash message
       assert Phoenix.Flash.get(conn.assigns.flash, :success) =~ "Logged out successfully"
     end
   end
