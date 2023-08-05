@@ -1,7 +1,7 @@
 defmodule QuizGameWeb.Router do
   use QuizGameWeb, :router
 
-  import QuizGameWeb.Plug
+  import QuizGameWeb.Support.Plug
   import QuizGameWeb.UserAuth
 
   # # API

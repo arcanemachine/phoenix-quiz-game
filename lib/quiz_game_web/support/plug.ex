@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Plug do
+defmodule QuizGameWeb.Support.Plug do
   @moduledoc """
   This project's custom function plugs.
   """
