@@ -21,7 +21,7 @@ defmodule QuizGameWeb.CoreComponents do
         </.action_links_item>
       </.action_links>
   """
-  attr :title, :string, default: "Actions"
+  attr :title, :any, default: "Actions"
   attr :class, :string, default: nil
 
   slot :inner_block, required: true
@@ -32,7 +32,7 @@ defmodule QuizGameWeb.CoreComponents do
       <div :if={@title} class="text-2xl font-bold">
         <%= @title %>
       </div>
-      <ul class="mt-2 ml-6 [&>*]:mt-2">
+      <ul class="mt-2 ml-6 [&>*:first-child]:mt-4 [&>*:not(:first-child)]:mt-2">
         <%= render_slot(@inner_block) %>
       </ul>
     </section>
@@ -336,7 +336,7 @@ defmodule QuizGameWeb.CoreComponents do
   attr :content, :string, default: nil, doc: "the button text (can use default slot instead)"
   attr :class, :any, default: nil
   attr :loader, :boolean, default: false, doc: "show a loading spinner"
-  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the component"
+  attr :rest, :global, include: ~w(disabled)
 
   slot :inner_block
 
@@ -366,7 +366,7 @@ defmodule QuizGameWeb.CoreComponents do
   attr :content, :string, default: "Cancel"
   attr :class, :any, default: nil
   attr :url, :string, default: nil, doc: "the URL to redirect to"
-  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the component"
+  attr :rest, :global, include: ~w(disabled)
 
   def form_button_cancel(assigns) do
     ~H"""
@@ -395,7 +395,7 @@ defmodule QuizGameWeb.CoreComponents do
   attr :content, :string, default: "Submit"
   attr :class, :any, default: nil
   attr :loader, :boolean, default: true
-  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the component"
+  attr :rest, :global, include: ~w(disabled)
 
   def form_button_submit(assigns) do
     ~H"""
@@ -927,7 +927,6 @@ defmodule QuizGameWeb.CoreComponents do
   """
   slot :item, required: true do
     attr :label, :string, required: true
-    attr :value, :any, required: true
     attr :class, :string
   end
 
