@@ -8,6 +8,8 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
 
   alias QuizGame.Users
 
+  @password_length_min QuizGame.Users.User.password_length_min()
+
   setup do
     user = user_fixture()
 
@@ -43,7 +45,7 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
         |> element("#reset_password_form")
         |> render_change(user: %{"password" => "2short", "confirmation_password" => "short"})
 
-      assert result =~ "should be at least 8 character"
+      assert result =~ "should be at least #{@password_length_min} character"
       assert result =~ "does not match"
     end
   end
@@ -84,7 +86,7 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
       # still on the same page due to form errors
       assert result =~ "Set New Password"
 
-      assert result =~ "should be at least 8 character(s)"
+      assert result =~ "should be at least #{@password_length_min} character(s)"
       assert result =~ "does not match"
     end
   end

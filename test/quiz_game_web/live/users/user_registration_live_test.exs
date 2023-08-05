@@ -5,88 +5,79 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
 
   import Phoenix.LiveViewTest
   import QuizGame.UsersFixtures
+  import QuizGameWeb.Support.Router
+  import QuizGameWeb.TestSupport.Assertions
+
+  @password_length_min QuizGame.Users.User.password_length_min()
+  @test_url route("users", :registration)
 
   describe "Registration page" do
-    test "renders registration page", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, ~p"/users/register")
+    test "renders expected markup", %{conn: conn} do
+      {:ok, lv, _html} = live(conn, @test_url)
 
-      assert html =~ "Register"
-      assert html =~ "Login"
+      assert live_view_has_title(lv, "Register New Account")
     end
 
-    test "redirects if already logged in", %{conn: conn} do
+    test "redirects if user has already logged in", %{conn: conn} do
       result =
         conn
         |> login_user(user_fixture())
-        |> live(~p"/users/register")
-        |> follow_redirect(conn, "/users/me")
+        |> live(@test_url)
+        |> follow_redirect(conn, route("users", :show))
 
       assert {:ok, _conn} = result
     end
 
     test "renders errors for invalid 'change' event", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, ~p"/users/register")
+      {:ok, lv, _html} = live(conn, @test_url)
 
-      result =
+      modified_html =
         lv
         |> element("#registration_form")
         |> render_change(
           user: %{
-            "email" => "with spaces",
+            "email" => "invalid email",
             "password" => "2short"
           }
         )
 
-      # correct page is loaded
-      assert result =~ "Register"
+      # markup has expected title
+      assert live_view_has_title(lv, "Register New Account")
 
-      # markup contains expected error messages
-      assert result =~ "is not a valid email address"
-      assert result =~ "should be at least 8 character"
+      # form contains expected error messages
+      assert html_form_field_has_error_message(
+               modified_html,
+               "user[email]",
+               "is not a valid email address"
+             )
+
+      assert html_form_field_has_error_message(
+               modified_html,
+               "user[password]",
+               "should be at least #{@password_length_min} character"
+             )
     end
 
-    test "renders errors for invalid 'submit' event", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, ~p"/users/register")
+    test "renders errors for empty fields", %{conn: conn} do
+      {:ok, lv, _html} = live(conn, @test_url)
 
-      other_user = user_fixture()
-
-      # username
-      result =
+      modified_html =
         lv
         |> element("#registration_form")
-        |> render_submit(
-          user: %{
-            "username" => other_user.username
-          }
-        )
+        |> render_submit(%{user: %{"username" => "", "email" => ""}})
 
-      # stil on same page
-      assert result =~ "Register"
+      # still on same page due to form errors
+      assert html_has_title(modified_html, "Register New Account")
 
       # markup contains expected error messages
-      assert result =~ "has already been taken"
-
-      # email
-      result =
-        lv
-        |> element("#registration_form")
-        |> render_submit(
-          user: %{
-            "email" => other_user.email
-          }
-        )
-
-      # still on same page
-      assert result =~ "Register"
-
-      # markup contains expected error messages
-      assert result =~ "has already been taken"
+      assert html_form_field_has_error_message(modified_html, "user[username]", "blank")
+      assert html_form_field_has_error_message(modified_html, "user[email]", "blank")
     end
   end
 
   describe "register user" do
     test "creates account and logs the user in", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, ~p"/users/register")
+      {:ok, lv, _html} = live(conn, @test_url)
 
       # build valid set of attributes
       attrs = valid_user_attributes()
@@ -109,43 +100,46 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
       # make a request as the logged-in user
       conn = get(conn, "/")
 
-      # response contains expected status code and body content
-      response = html_response(conn, 200)
-      assert response =~ "Your profile"
-      assert response =~ "Logout"
+      # response contains expected markup
+      response_html = html_response(conn, 200)
+      assert html_has_text(response_html, "Your profile")
+      assert html_has_text(response_html, "Logout")
     end
 
     test "renders errors for duplicated username", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, ~p"/users/register")
-
       user = user_fixture()
 
-      result =
+      {:ok, lv, _html} = live(conn, @test_url)
+
+      modified_html =
         lv
-        |> form("#registration_form",
-          user: %{
-            "username" => user.username,
-            "password" => "valid_password"
-          }
-        )
+        |> form("#registration_form", user: %{"username" => user.username})
         |> render_submit()
 
-      assert result =~ "has already been taken"
+      # markup contains expected error message
+      assert html_form_field_has_error_message(
+               modified_html,
+               "user[username]",
+               "has already been taken"
+             )
     end
 
     test "renders errors for duplicated email", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, ~p"/users/register")
-
       user = user_fixture()
 
-      result =
+      {:ok, lv, _html} = live(conn, @test_url)
+
+      modified_html =
         lv
-        |> form("#registration_form",
-          user: %{"email" => user.email, "password" => "valid_password"}
-        )
+        |> form("#registration_form", user: %{"email" => user.email})
         |> render_submit()
 
-      assert result =~ "has already been taken"
+      # markup contains expected error message
+      assert html_form_field_has_error_message(
+               modified_html,
+               "user[email]",
+               "has already been taken"
+             )
     end
   end
 end

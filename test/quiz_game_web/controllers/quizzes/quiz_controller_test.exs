@@ -26,24 +26,27 @@ defmodule QuizGameWeb.QuizControllerTest do
   end
 
   describe "quizzes :new" do
+    @test_url_path route("quizzes", :new)
+
     setup [:register_and_login_user]
 
-    test_redirects_unauthenticated_user_to_login_route(route("quizzes", :new), "GET")
+    test_redirects_unauthenticated_user_to_login_route(@test_url_path, "GET")
 
     test "renders expected template", %{conn: conn} do
-      response_conn = get(conn, route("quizzes", :new))
+      response_conn = get(conn, @test_url_path)
       assert html_response_has_title(response_conn, "Create Quiz")
     end
   end
 
   describe "quizzes :create" do
+    @test_url_path route("quizzes", :create)
+
     setup [:register_and_login_user]
 
     test_redirects_unauthenticated_user_to_login_route(route("quizzes", :create), "POST")
 
     test "creates expected record", %{conn: conn} do
-      test_url = route("quizzes", :create)
-      response_conn = post(conn, test_url, quiz: @create_attrs)
+      response_conn = post(conn, @test_url_path, quiz: @create_attrs)
 
       # redirects to expected route
       assert %{quiz_id: quiz_id} = redirected_params(response_conn)
@@ -59,8 +62,7 @@ defmodule QuizGameWeb.QuizControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      test_url = route("quizzes", :create)
-      response_conn = post(conn, test_url, quiz: @invalid_attrs)
+      response_conn = post(conn, @test_url_path, quiz: @invalid_attrs)
 
       assert html_response_has_title(response_conn, "Create Quiz")
     end
@@ -80,13 +82,13 @@ defmodule QuizGameWeb.QuizControllerTest do
     setup [:register_and_login_user, :create_quiz]
 
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
-      test_url = route("quizzes", :edit, quiz_id: quiz.id)
-      redirects_unauthenticated_user_to_login_route(conn, test_url, "GET")
+      test_url_path = route("quizzes", :edit, quiz_id: quiz.id)
+      redirects_unauthenticated_user_to_login_route(conn, test_url_path, "GET")
     end
 
     test "renders record update form", %{conn: conn, quiz: quiz} do
-      test_url = route("quizzes", :edit, quiz_id: quiz.id)
-      response_conn = get(conn, test_url)
+      test_url_path = route("quizzes", :edit, quiz_id: quiz.id)
+      response_conn = get(conn, test_url_path)
 
       assert html_response_has_title(response_conn, "Edit Quiz")
     end
@@ -96,13 +98,13 @@ defmodule QuizGameWeb.QuizControllerTest do
     setup [:register_and_login_user, :create_quiz]
 
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
-      test_url = route("quizzes", :update, quiz_id: quiz.id)
-      redirects_unauthenticated_user_to_login_route(conn, test_url, "PUT")
+      test_url_path = route("quizzes", :update, quiz_id: quiz.id)
+      redirects_unauthenticated_user_to_login_route(conn, test_url_path, "PUT")
     end
 
     test "updates expected record", %{conn: conn, quiz: quiz} do
-      test_url = route("quizzes", :update, quiz_id: quiz.id)
-      response_conn = put(conn, test_url, quiz: @update_attrs)
+      test_url_path = route("quizzes", :update, quiz_id: quiz.id)
+      response_conn = put(conn, test_url_path, quiz: @update_attrs)
 
       # redirects to record detail
       record_detail_url = route("quizzes", :show, quiz_id: quiz.id)
@@ -115,8 +117,8 @@ defmodule QuizGameWeb.QuizControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, quiz: quiz} do
-      test_url = route("quizzes", :update, quiz_id: quiz.id)
-      response_conn = put(conn, test_url, quiz: @invalid_attrs)
+      test_url_path = route("quizzes", :update, quiz_id: quiz.id)
+      response_conn = put(conn, test_url_path, quiz: @invalid_attrs)
 
       assert html_response_has_title(response_conn, "Edit Quiz")
     end
@@ -126,19 +128,19 @@ defmodule QuizGameWeb.QuizControllerTest do
     setup [:register_and_login_user, :create_quiz]
 
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
-      test_url = route("quizzes", :delete, quiz_id: quiz.id)
-      redirects_unauthenticated_user_to_login_route(conn, test_url, "DELETE")
+      test_url_path = route("quizzes", :delete, quiz_id: quiz.id)
+      redirects_unauthenticated_user_to_login_route(conn, test_url_path, "DELETE")
     end
 
     test "deletes expected record", %{conn: conn, quiz: quiz} do
-      test_url = route("quizzes", :show, quiz_id: quiz.id)
+      test_url_path = route("quizzes", :show, quiz_id: quiz.id)
       response_conn = delete(conn, route("quizzes", :delete, quiz_id: quiz.id))
 
       # redirects to record list
       assert redirected_to(response_conn) == route("quizzes", :index)
 
       # expected record has been deleted
-      assert_error_sent 404, fn -> get(response_conn, test_url) end
+      assert_error_sent 404, fn -> get(response_conn, test_url_path) end
     end
   end
 end
