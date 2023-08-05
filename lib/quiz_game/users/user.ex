@@ -3,7 +3,7 @@ defmodule QuizGame.Users.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-  def password_length_min, do: 8
+  def password_length_min(), do: 8
 
   schema "users" do
     field :username, :string
