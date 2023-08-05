@@ -5,14 +5,12 @@ defmodule QuizGameWeb.UserControllerTest do
 
   import Ecto.Query
   import QuizGame.UsersFixtures
+  import QuizGameWeb.Support.Router
+  import QuizGameWeb.TestSupport.Assertions
   import QuizGameWeb.TestSupport.GenericTests
 
   alias QuizGame.Repo
   alias QuizGame.Users.User
-
-  # data
-  @url_delete_confirm "/users/me/delete"
-  @url_delete "/users/me/delete"
 
   # setup
   setup do
@@ -20,33 +18,35 @@ defmodule QuizGameWeb.UserControllerTest do
   end
 
   describe "users :delete_confirm" do
-    @test_url @url_delete_confirm
+    @test_url route("users", :delete_confirm)
 
     test_redirects_unauthenticated_user_to_login_route(@test_url, "GET")
 
     test "renders expected template", %{conn: conn, user: user} do
-      conn = conn |> login_user(user) |> get(@test_url)
-
-      assert conn |> html_response(200) |> Floki.find("h1") |> Floki.raw_html() =~
-               "Delete Your Account"
+      response_conn = conn |> login_user(user) |> get(@test_url)
+      assert html_response_has_title(response_conn, "Delete Your Account")
     end
   end
 
   describe "users :delete" do
-    test_redirects_unauthenticated_user_to_login_route(@url_delete, "POST")
+    @test_url route("users", :delete_confirm)
+
+    test_redirects_unauthenticated_user_to_login_route(@test_url, "POST")
 
     test "deletes expected user", %{conn: conn, user: user} do
-      get_user_count = fn -> Repo.one(from u in "users", select: count(u.id)) end
-
       # get initial record count before deletion
+      get_user_count = fn -> Repo.one(from u in "users", select: count(u.id)) end
       initial_record_count = get_user_count.()
 
       # make request
-      conn = conn |> login_user(user) |> post(@url_delete_confirm)
+      response_conn = conn |> login_user(user) |> post(@test_url)
 
       # response contains expected flash message
-      assert Phoenix.Flash.get(conn.assigns.flash, :success) =~
+      assert html_response_has_flash_message(
+               response_conn,
+               :success,
                "Account deleted successfully"
+             )
 
       # expected record has been deleted
       assert_raise Ecto.NoResultsError, fn ->
