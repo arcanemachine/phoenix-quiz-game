@@ -1,7 +1,5 @@
 defmodule QuizGameWeb.UserAuth do
-  @moduledoc """
-  The UserAuth context.
-  """
+  @moduledoc "The UserAuth context."
 
   use QuizGameWeb, :verified_routes
 

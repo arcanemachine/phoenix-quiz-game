@@ -6,13 +6,6 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
   import Phoenix.LiveViewTest
   import QuizGame.UsersFixtures
 
-  # defp valid_form_data() do
-  #   valid_attrs = valid_user_attributes()
-
-  #   # add password confirmation
-  #   Map.put(valid_user_attributes(), :password_confirmation, valid_attrs.password)
-  # end
-
   describe "Registration page" do
     test "renders registration page", %{conn: conn} do
       {:ok, _lv, html} = live(conn, ~p"/users/register")

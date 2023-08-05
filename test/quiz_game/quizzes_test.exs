@@ -1,7 +1,6 @@
 defmodule QuizGame.QuizzesTest do
   @moduledoc false
   use QuizGame.DataCase
-
   alias QuizGame.Quizzes
 
   describe "quizzes" do

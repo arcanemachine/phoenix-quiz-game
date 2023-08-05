@@ -1,6 +1,5 @@
 defmodule QuizGameWeb.Support.PlugTest do
   @moduledoc false
-
   use QuizGameWeb.ConnCase
 
   describe("remove_trailing_slash/2") do

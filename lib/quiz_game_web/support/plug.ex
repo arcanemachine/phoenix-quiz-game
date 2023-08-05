@@ -1,8 +1,5 @@
 defmodule QuizGameWeb.Support.Plug do
-  @moduledoc """
-  This project's custom function plugs.
-  """
-
+  @moduledoc "This project's custom function plugs."
   use QuizGameWeb, :controller
 
   @doc """

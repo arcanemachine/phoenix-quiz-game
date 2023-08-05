@@ -1,8 +1,6 @@
 defmodule QuizGameWeb.SupportTest do
   @moduledoc false
-
   use ExUnit.Case
-
   import QuizGameWeb.Support
 
   @test_site_key "10000000-ffff-ffff-ffff-000000000001"

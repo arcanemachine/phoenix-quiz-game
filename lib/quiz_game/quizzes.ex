@@ -1,11 +1,9 @@
 defmodule QuizGame.Quizzes do
-  @moduledoc """
-  The Quizzes context.
-  """
+  @moduledoc "The Quizzes context."
 
   import Ecto.Query, warn: false
-  alias QuizGame.Repo
 
+  alias QuizGame.Repo
   alias QuizGame.Quizzes.Quiz
 
   @doc """

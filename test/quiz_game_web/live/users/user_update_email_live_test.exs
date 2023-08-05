@@ -3,9 +3,10 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
 
   use QuizGameWeb.ConnCase
 
-  alias QuizGame.Users
   import Phoenix.LiveViewTest
   import QuizGame.UsersFixtures
+
+  alias QuizGame.Users
 
   describe "page" do
     test "renders expected page", %{conn: conn} do

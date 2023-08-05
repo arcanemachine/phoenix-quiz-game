@@ -1,8 +1,6 @@
 defmodule QuizGameWeb.BaseControllerTest do
   @moduledoc false
-
   use QuizGameWeb.ConnCase
-
   import QuizGameWeb.TestSupport.Assertions
 
   test "GET /", %{conn: conn} do

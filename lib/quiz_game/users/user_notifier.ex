@@ -1,10 +1,6 @@
 defmodule QuizGame.Users.UserNotifier do
-  @moduledoc """
-  The UserNotifier context.
-  """
-
+  @moduledoc "The UserNotifier context."
   import Swoosh.Email
-
   alias QuizGame.Mailer
 
   # Delivers the email using the application mailer.

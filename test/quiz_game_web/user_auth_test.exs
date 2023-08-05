@@ -3,10 +3,11 @@ defmodule QuizGameWeb.UserAuthTest do
 
   use QuizGameWeb.ConnCase, async: true
 
+  import QuizGame.UsersFixtures
+
   alias Phoenix.LiveView
   alias QuizGame.Users
   alias QuizGameWeb.UserAuth
-  import QuizGame.UsersFixtures
 
   @remember_me_cookie "_quiz_game_web_user_remember_me"
 

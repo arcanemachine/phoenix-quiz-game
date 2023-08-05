@@ -3,9 +3,9 @@ defmodule QuizGame.UsersTest do
 
   use QuizGame.DataCase
 
-  alias QuizGame.Users
-
   import QuizGame.UsersFixtures
+
+  alias QuizGame.Users
   alias QuizGame.Users.{User, UserToken}
 
   describe "get_user_by_email/1" do

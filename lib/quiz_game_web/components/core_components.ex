@@ -1,11 +1,11 @@
 defmodule QuizGameWeb.CoreComponents do
-  @moduledoc """
-  Provides core UI components.
-  """
+  @moduledoc "Provides core UI components."
+
   use Phoenix.Component, global_prefixes: ~w(x-)
   use QuizGameWeb, :verified_routes
 
   import QuizGameWeb.Gettext
+
   alias Phoenix.LiveView.JS
 
   @doc """

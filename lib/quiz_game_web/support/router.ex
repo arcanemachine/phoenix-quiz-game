@@ -1,14 +1,13 @@
 defmodule QuizGameWeb.Support.Router do
-  @moduledoc """
-  This project's route path helpers.
-  """
+  @moduledoc "This project's router helpers."
 
   @doc """
   Given a context name, a route name, and optional params, produce the matching URL.
 
   ## Examples
 
-      iex> path("users", confirmation, token: 123)
+      iex> path("base", :root)
+      iex> path("users", :confirmation, token: 123)
   """
   use QuizGameWeb, :verified_routes
 

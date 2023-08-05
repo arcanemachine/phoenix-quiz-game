@@ -1,5 +1,5 @@
 defmodule QuizGameWeb.TestSupport.Assertions do
-  @moduledoc "Assertions that are commonly used across tests"
+  @moduledoc "Assertions that are commonly used across multiple tests."
   import Phoenix.ConnTest
 
   # def html_response_has_element(conn, selector) do

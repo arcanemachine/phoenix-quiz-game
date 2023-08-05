@@ -1,8 +1,6 @@
 defmodule QuizGameWeb.ConnTest do
   @moduledoc false
-
   use QuizGameWeb.ConnCase
-
   alias QuizGameWeb.Support.Conn, as: ProjectConn
 
   describe("text_response/3") do

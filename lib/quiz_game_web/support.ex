@@ -1,12 +1,7 @@
 defmodule QuizGameWeb.Support do
-  @moduledoc """
-  This project's web-related helper functions.
-  """
+  @moduledoc "This project's web-related helper functions."
 
-  @doc """
-  A wrapper script that checks if a form's CAPTCHA has been completed, and is valid.
-  """
-
+  @doc "A wrapper script that checks if a form's CAPTCHA has been completed, and is valid."
   @spec form_captcha_valid?(map()) :: boolean()
   def form_captcha_valid?(params) do
     # only check for captcha if captcha enabled
