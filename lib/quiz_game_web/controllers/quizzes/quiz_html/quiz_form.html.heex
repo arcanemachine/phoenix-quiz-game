@@ -1,6 +1,7 @@
 <.simple_form :let={f} for={@changeset} action={@action}>
-  <.input field={f[:name]} type="text" label="Name" />
+  <.input field={f[:name]} type="text" label="Name" required />
   <:actions>
-    <.button>Save Quiz</.button>
+    <.form_button_cancel url={~p"/users/me/update"} />
+    <.form_button_submit />
   </:actions>
 </.simple_form>

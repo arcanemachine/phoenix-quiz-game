@@ -1,15 +1,22 @@
-<.header>
-  Quiz <%= @quiz.id %>
-  <:subtitle>This is a quiz record from your database.</:subtitle>
-  <:actions>
-    <.link href={~p"/quizzes/#{@quiz}/edit"}>
-      <.button>Edit quiz</.button>
+<.record_show>
+  <:item label="Name">
+    <%= @quiz.name %>
+  </:item>
+  <:item label="Created by">
+    <%= @quiz.user_id || "N/A" %>
+  </:item>
+</.record_show>
+
+<.action_links>
+  <.action_links_item kind="forward">
+    <.link href={route("quizzes", :edit, quiz_id: @quiz.id)}>
+      Edit this quiz
     </.link>
-  </:actions>
-</.header>
-
-<.list>
-  <:item title="Name"><%= @quiz.name %></:item>
-</.list>
-
-<.back navigate={~p"/quizzes"}>Back to quizzes</.back>
+  </.action_links_item>
+  <.action_links_spacer />
+  <.action_links_item kind="back">
+    <.link href={route("quizzes", :index)}>
+      Return to quiz list
+    </.link>
+  </.action_links_item>
+</.action_links>

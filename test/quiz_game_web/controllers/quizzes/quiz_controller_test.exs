@@ -52,7 +52,7 @@ defmodule QuizGameWeb.QuizControllerTest do
       # redirect renders expected template
       record_detail_url = route("quizzes", :show, quiz_id: quiz_id)
       response_conn_2 = get(response_conn, record_detail_url)
-      assert html_response_has_text(response_conn_2, "Quiz #{quiz_id}")
+      assert html_response_has_text(response_conn_2, @create_attrs.name)
 
       # template contains new record content
       assert html_response_has_text(response_conn_2, @create_attrs[:name])
@@ -72,6 +72,7 @@ defmodule QuizGameWeb.QuizControllerTest do
     test "renders expected template", %{conn: conn, quiz: quiz} do
       response_conn = get(conn, route("quizzes", :show, quiz_id: quiz.id))
       assert html_response_has_title(response_conn, "Quiz Info")
+      assert html_response_has_text(response_conn, quiz.name)
     end
   end
 

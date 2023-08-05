@@ -1,10 +1,15 @@
 <.alert_form_errors :if={@changeset.action} />
 
-<.header>
-  New Quiz
-  <:subtitle>Use this form to manage quiz records in your database.</:subtitle>
-</.header>
+<.form_intro_text>
+  Fill out the form below to create a new quiz.
+</.form_intro_text>
 
 <.quiz_form changeset={@changeset} action={~p"/quizzes"} />
 
-<.back navigate={~p"/quizzes"}>Back to quizzes</.back>
+<.action_links>
+  <.action_links_item kind="back">
+    <.link href={route("quizzes", :index)}>
+      Return to quiz list
+    </.link>
+  </.action_links_item>
+</.action_links>
