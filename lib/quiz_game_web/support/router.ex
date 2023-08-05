@@ -2,7 +2,7 @@ defmodule QuizGameWeb.Support.Router do
   @moduledoc "This project's router helpers."
 
   @doc """
-  Given a context name, a route name, and optional params, produce the matching URL.
+  Given a context name, a route action, and optional params, produce the matching URL.
 
   ## Examples
 
@@ -11,8 +11,8 @@ defmodule QuizGameWeb.Support.Router do
   """
   use QuizGameWeb, :verified_routes
 
-  def route("base", route_name) do
-    case route_name do
+  def route("base", route_action) do
+    case route_action do
       :root -> ~p"/"
       :contact_us -> ~p"/contact-us"
       :privacy_policy -> ~p"/privacy-policy"
@@ -20,10 +20,10 @@ defmodule QuizGameWeb.Support.Router do
     end
   end
 
-  def route(context_name, route_name, params \\ [])
+  def route(context_name, route_action, params \\ [])
 
-  def route("quizzes", route_name, params) do
-    case route_name do
+  def route("quizzes", route_action, params) do
+    case route_action do
       :index -> ~p"/quizzes"
       :new -> ~p"/quizzes/new"
       :create -> ~p"/quizzes"
@@ -33,8 +33,8 @@ defmodule QuizGameWeb.Support.Router do
   end
 
   # credo:disable-for-next-line
-  def route("users", route_name, params) do
-    case route_name do
+  def route("users", route_action, params) do
+    case route_action do
       # auth
       :registration -> ~p"/users/register"
       :confirmation_instructions -> ~p"/users/confirm/email"
