@@ -38,8 +38,8 @@ defmodule QuizGameWeb.UserControllerTest do
     test "deletes expected user", %{conn: conn, user: user} do
       get_user_count = fn -> Repo.one(from u in "users", select: count(u.id)) end
 
-      # get initial object count before deletion
-      initial_object_count = get_user_count.()
+      # get initial record count before deletion
+      initial_record_count = get_user_count.()
 
       # make request
       conn = conn |> login_user(user) |> post(@url_delete_confirm)
@@ -48,13 +48,13 @@ defmodule QuizGameWeb.UserControllerTest do
       assert Phoenix.Flash.get(conn.assigns.flash, :success) =~
                "Account deleted successfully"
 
-      # expected object has been deleted
+      # expected record has been deleted
       assert_raise Ecto.NoResultsError, fn ->
         Repo.get!(User, user.id)
       end
 
-      # object count has decreased by one
-      assert get_user_count.() == initial_object_count - 1
+      # record count has decreased by one
+      assert get_user_count.() == initial_record_count - 1
     end
   end
 end

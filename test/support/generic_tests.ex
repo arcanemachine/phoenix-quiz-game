@@ -8,7 +8,7 @@ defmodule QuizGameWeb.TestSupport.GenericTests do
     - Unauthenticated users should be redirected to the login page.
 
   If the route contains a URL that is known before runtime (ie. doesn't contain any dynamic
-  parameters, such as an object ID), then you probably just want to use the complementary
+  parameters, such as an record ID), then you probably just want to use the complementary
   macro instead.
   """
   def redirects_unauthenticated_user_to_login_route(conn, url, http_method) do
@@ -37,7 +37,7 @@ defmodule QuizGameWeb.TestSupport.GenericTests do
   @doc """
   A macro that wraps the 'auth-required' test functionality into a single line.
 
-  Use this function if the route under test does not have any dynamic parameters (e.g. object
+  Use this function if the route under test does not have any dynamic parameters (e.g. record
   ID) in the URL.
   """
   defmacro test_redirects_unauthenticated_user_to_login_route(url, http_method) do
