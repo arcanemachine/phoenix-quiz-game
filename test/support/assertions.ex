@@ -46,9 +46,9 @@ defmodule QuizGameWeb.TestSupport.Assertions do
   #   |> Floki.raw_html() =~ "Fix the errors in the form"
   # end
 
-  def live_element_has_text(lv, selector, text) do
-    lv |> element(selector) |> render() =~ text
-  end
+  # def live_element_has_text(lv, selector, text) do
+  #   lv |> element(selector) |> render() =~ text
+  # end
 
   def live_view_has_title(lv, title) do
     lv |> element("h1") |> render() =~ title
