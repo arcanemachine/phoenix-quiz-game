@@ -14,7 +14,7 @@ defmodule QuizGameWeb.Support.Plug do
       # halt the current request
       conn
       |> put_status(301)
-      |> redirect(to: String.slice(conn.request_path, 0..-2))
+      |> redirect(to: String.slice(conn.request_path, 0..-2//1))
       |> halt()
     else
       conn
