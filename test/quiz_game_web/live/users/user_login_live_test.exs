@@ -49,10 +49,10 @@ defmodule QuizGameWeb.UserLoginLiveTest do
       # submit form data
       form_data = [user: %{email: user.email, password: password, remember_me: true}]
       form = form(lv, "#login_form", form_data)
-      response_conn = submit_form(form, conn)
+      resp_conn = submit_form(form, conn)
 
       # redirects to expected route
-      assert redirected_to(response_conn) == route(:users, :show)
+      assert redirected_to(resp_conn) == route(:users, :show)
     end
 
     test "redirects to expected page with expected message if there are no valid credentials", %{
@@ -66,13 +66,13 @@ defmodule QuizGameWeb.UserLoginLiveTest do
       ]
 
       form = form(lv, "#login_form", form_data)
-      response_conn = submit_form(form, conn)
+      resp_conn = submit_form(form, conn)
 
       # response has expected error message
-      assert Phoenix.Flash.get(response_conn.assigns.flash, :error) == "Invalid email or password"
+      assert Phoenix.Flash.get(resp_conn.assigns.flash, :error) == "Invalid email or password"
 
       # response redirects to expected route
-      assert redirected_to(response_conn) == @test_url
+      assert redirected_to(resp_conn) == @test_url
     end
   end
 

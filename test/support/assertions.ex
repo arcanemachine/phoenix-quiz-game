@@ -14,6 +14,7 @@ defmodule QuizGame.TestSupport.Assertions do
     |> (Enum.empty?() |> Kernel.not())
   end
 
+  @doc "Check if a form field has a given error message."
   @spec html_form_field_has_error_message(String.t(), String.t(), String.t()) :: boolean()
   def html_form_field_has_error_message(html, field_name, message) do
     html

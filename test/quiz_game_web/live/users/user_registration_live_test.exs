@@ -97,16 +97,16 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
 
       form = form(lv, "#registration_form", form_data)
       render_submit(form)
-      response_conn = follow_trigger_action(form, conn)
+      resp_conn = follow_trigger_action(form, conn)
 
       # response redirects to expected route
-      assert redirected_to(response_conn) == route(:users, :show)
+      assert redirected_to(resp_conn) == route(:users, :show)
 
       # make a request as the logged-in user
-      response_conn_2 = get(response_conn, ~p"/")
+      resp_conn_2 = get(resp_conn, ~p"/")
 
       # response contains markup that is only visible to an authenticated user
-      result_html = html_response(response_conn_2, 200)
+      result_html = html_response(resp_conn_2, 200)
       assert html_has_link(result_html, url: route(:users, :show), content: "Your profile")
       assert html_has_link(result_html, url: route(:users, :logout_confirm), content: "Logout")
     end

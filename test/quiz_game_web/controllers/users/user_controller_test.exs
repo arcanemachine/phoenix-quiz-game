@@ -21,8 +21,8 @@ defmodule QuizGameWeb.UserControllerTest do
     test_redirects_unauthenticated_user_to_login_route(@test_url_path, "GET")
 
     test "renders expected template", %{conn: conn, user: user} do
-      response_conn = conn |> login_user(user) |> get(@test_url_path)
-      assert html_response_has_title(response_conn, "Delete Your Account")
+      resp_conn = conn |> login_user(user) |> get(@test_url_path)
+      assert html_response_has_title(resp_conn, "Delete Your Account")
     end
   end
 
@@ -37,11 +37,11 @@ defmodule QuizGameWeb.UserControllerTest do
       initial_record_count = get_user_count.()
 
       # make request
-      response_conn = conn |> login_user(user) |> post(@test_url_path)
+      resp_conn = conn |> login_user(user) |> post(@test_url_path)
 
       # response contains expected flash message
       assert html_response_has_flash_message(
-               response_conn,
+               resp_conn,
                :success,
                "Account deleted successfully"
              )

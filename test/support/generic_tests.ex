@@ -16,7 +16,7 @@ defmodule QuizGame.TestSupport.GenericTests do
     conn = logout_user(conn)
 
     # make request
-    response_conn =
+    resp_conn =
       case http_method do
         "GET" -> get(conn, url)
         "POST" -> post(conn, url)
@@ -26,11 +26,11 @@ defmodule QuizGame.TestSupport.GenericTests do
       end
 
     # response contains temporary redirect to login route
-    assert response_conn.status == 302
-    assert get_resp_header(response_conn, "location") == [~p"/users/login"]
+    assert resp_conn.status == 302
+    assert get_resp_header(resp_conn, "location") == [~p"/users/login"]
 
     # response contains expected flash message
-    assert Phoenix.Flash.get(response_conn.assigns.flash, :warning) =~
+    assert Phoenix.Flash.get(resp_conn.assigns.flash, :warning) =~
              "You must login to continue."
   end
 
