@@ -1,10 +1,14 @@
 defmodule QuizGame.TestSupport.Assertions do
   @moduledoc "Assertions that are commonly used across multiple tests."
 
-  import Phoenix.ConnTest
+  # import Phoenix.ConnTest
   # import Phoenix.LiveViewTest
 
   @typep link_option :: {:url, String.t()} | {:content, String.t()}
+
+  def conn_has_flash_message(conn, kind, message) do
+    Phoenix.Flash.get(conn.assigns.flash, kind) =~ message
+  end
 
   @spec html_element_has_content(String.t(), String.t(), String.t()) :: boolean()
   def html_element_has_content(html, selector, content) do
@@ -63,13 +67,9 @@ defmodule QuizGame.TestSupport.Assertions do
   #   !Enum.empty?(element)
   # end
 
-  def conn_has_flash_message(conn, kind, message) do
-    Phoenix.Flash.get(conn.assigns.flash, kind) =~ message
-  end
-
-  def html_response_has_title(conn, title) do
-    html_response(conn, 200) |> html_has_title(title)
-  end
+  # def html_response_has_title(conn, title) do
+  #   html_response(conn, 200) |> html_has_title(title)
+  # end
 
   # def html_response_has_form_errors(conn) do
   #   html_response(conn, 200)

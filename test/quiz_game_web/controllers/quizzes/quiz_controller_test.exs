@@ -20,7 +20,7 @@ defmodule QuizGameWeb.QuizControllerTest do
   describe "quizzes :index" do
     test "permits unauthenticated user", %{conn: conn} do
       resp_conn = get(conn, route(:quizzes, :index))
-      assert html_response_has_title(resp_conn, "Quiz List")
+      assert html_has_title(resp_conn.resp_body, "Quiz List")
     end
   end
 
@@ -33,7 +33,7 @@ defmodule QuizGameWeb.QuizControllerTest do
 
     test "renders expected template", %{conn: conn} do
       resp_conn = get(conn, @test_url_path)
-      assert html_response_has_title(resp_conn, "Create Quiz")
+      assert html_has_title(resp_conn.resp_body, "Create Quiz")
     end
   end
 
@@ -63,7 +63,7 @@ defmodule QuizGameWeb.QuizControllerTest do
       resp_conn = post(conn, @test_url_path, quiz: @invalid_attrs)
 
       # response renders same template
-      assert html_response_has_title(resp_conn, "Create Quiz")
+      assert html_has_title(resp_conn.resp_body, "Create Quiz")
 
       # response contains expected form error message(s)
       assert html_form_field_has_error_message(resp_conn.resp_body, "quiz[name]", "blank")
@@ -80,7 +80,7 @@ defmodule QuizGameWeb.QuizControllerTest do
 
     test "renders expected template", %{conn: conn, quiz: quiz} do
       resp_conn = get(conn, route(:quizzes, :show, quiz_id: quiz.id))
-      assert html_response_has_title(resp_conn, "Quiz Info")
+      assert html_has_title(resp_conn.resp_body, "Quiz Info")
       assert html_response(resp_conn, 200) |> html_has_content(quiz.name)
     end
   end
@@ -96,7 +96,7 @@ defmodule QuizGameWeb.QuizControllerTest do
     test "renders record update form", %{conn: conn, quiz: quiz} do
       test_url_path = route(:quizzes, :edit, quiz_id: quiz.id)
       resp_conn = get(conn, test_url_path)
-      assert html_response_has_title(resp_conn, "Edit Quiz")
+      assert html_has_title(resp_conn.resp_body, "Edit Quiz")
     end
   end
 
@@ -118,14 +118,14 @@ defmodule QuizGameWeb.QuizControllerTest do
 
       # redirect renders expected template
       resp_conn_2 = resp_conn |> get(record_detail_url)
-      assert html_response_has_title(resp_conn_2, "Quiz Info")
+      assert html_has_title(resp_conn_2.resp_body, "Quiz Info")
       assert html_response(resp_conn_2, 200) |> html_has_content(@update_attrs[:name])
     end
 
     test "renders errors when data is invalid", %{conn: conn, quiz: quiz} do
       test_url_path = route(:quizzes, :update, quiz_id: quiz.id)
       resp_conn = put(conn, test_url_path, quiz: @invalid_attrs)
-      assert html_response_has_title(resp_conn, "Edit Quiz")
+      assert html_has_title(resp_conn.resp_body, "Edit Quiz")
     end
   end
 

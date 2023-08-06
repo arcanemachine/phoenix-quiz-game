@@ -22,7 +22,7 @@ defmodule QuizGameWeb.UserControllerTest do
 
     test "renders expected template", %{conn: conn, user: user} do
       resp_conn = conn |> login_user(user) |> get(@test_url_path)
-      assert html_response_has_title(resp_conn, "Delete Your Account")
+      assert html_has_title(resp_conn.resp_body, "Delete Your Account")
     end
   end
 
