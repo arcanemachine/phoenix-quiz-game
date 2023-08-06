@@ -51,7 +51,7 @@ defmodule QuizGameWeb.QuizControllerTest do
       assert %{quiz_id: quiz_id} = redirected_params(response_conn)
       assert redirected_to(response_conn) == route(:quizzes, :show, quiz_id: quiz_id)
 
-      # redirect renders expected template
+      # redirected response renders expected template
       record_detail_url = route(:quizzes, :show, quiz_id: quiz_id)
       response_conn_2 = get(response_conn, record_detail_url)
       assert html_response_has_text(response_conn_2, @create_attrs.name)

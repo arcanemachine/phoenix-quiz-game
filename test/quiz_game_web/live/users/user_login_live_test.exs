@@ -7,9 +7,11 @@ defmodule QuizGameWeb.UserLoginLiveTest do
   import QuizGameWeb.Support.Router
   import QuizGame.TestSupport.{Assertions, UsersFixtures}
 
+  @test_url route(:users, :login)
+
   describe "UserLoginLive page" do
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, ~p"/users/login")
+      {:ok, _lv, html} = live(conn, @test_url)
 
       # markup has expected title
       assert html_has_title(html, "Login")
@@ -53,7 +55,7 @@ defmodule QuizGameWeb.UserLoginLiveTest do
       assert redirected_to(response_conn) == route(:users, :show)
     end
 
-    test "redirects to login page with a flash error if there are no valid credentials", %{
+    test "redirects to expected page with expected message if there are no valid credentials", %{
       conn: conn
     } do
       {:ok, lv, _html} = live(conn, ~p"/users/login")
@@ -70,11 +72,11 @@ defmodule QuizGameWeb.UserLoginLiveTest do
       assert Phoenix.Flash.get(response_conn.assigns.flash, :error) == "Invalid email or password"
 
       # response redirects to expected route
-      assert redirected_to(response_conn) == route(:users, :login)
+      assert redirected_to(response_conn) == @test_url
     end
   end
 
-  describe "login navigation" do
+  describe "Login navigation" do
     test "redirects to forgot password page when the 'Forgot Password' button is clicked", %{
       conn: conn
     } do

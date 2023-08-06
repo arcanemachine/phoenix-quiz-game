@@ -7,13 +7,12 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
   import QuizGameWeb.Support.Router
   import QuizGame.TestSupport.{Assertions, UsersFixtures}
 
-  @password_length_min QuizGame.Users.User.password_length_min()
   @test_url route(:users, :registration)
+  @password_length_min QuizGame.Users.User.password_length_min()
 
   describe "Registration page" do
     test "renders expected markup", %{conn: conn} do
       {:ok, _lv, html} = live(conn, @test_url)
-
       assert html_has_title(html, "Register New Account")
     end
 
@@ -75,35 +74,41 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
     end
   end
 
-  describe "register user" do
+  describe "User registration form" do
     test "creates account and logs the user in", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @test_url)
+      valid_attrs = valid_user_attributes()
 
-      # build valid set of attributes
-      attrs = valid_user_attributes()
+      # make initial request
+      {:ok, lv, html} = live(conn, @test_url)
 
-      # add password_confirmation field
-      attrs = %{"user" => Map.merge(attrs, %{password_confirmation: attrs.password})}
+      # sanitch check: response does not contain markup that should only visible to an
+      # authenticated user
+      refute html_has_link(html, url: route(:users, :show), content: "Your profile")
+      refute html_has_link(html, url: route(:users, :logout_confirm), content: "Logout")
 
-      # build the form
-      form = form(lv, "#registration_form", attrs)
+      # submit valid form
+      form_data = %{
+        "user" =>
+          Map.merge(
+            valid_attrs,
+            %{password_confirmation: valid_attrs.password}
+          )
+      }
 
-      # submit the form
+      form = form(lv, "#registration_form", form_data)
       render_submit(form)
-
-      # get a response
-      conn = follow_trigger_action(form, conn)
+      response_conn = follow_trigger_action(form, conn)
 
       # response redirects to expected route
-      assert redirected_to(conn) == ~p"/users/me"
+      assert redirected_to(response_conn) == route(:users, :show)
 
       # make a request as the logged-in user
-      conn = get(conn, "/")
+      response_conn_2 = get(response_conn, ~p"/")
 
       # response contains markup that is only visible to an authenticated user
-      response_html = html_response(conn, 200)
-      assert html_has_link(response_html, url: route(:users, :show), content: "Your profile")
-      assert html_has_link(response_html, url: route(:users, :logout_confirm), content: "Logout")
+      result_html = html_response(response_conn_2, 200)
+      assert html_has_link(result_html, url: route(:users, :show), content: "Your profile")
+      assert html_has_link(result_html, url: route(:users, :logout_confirm), content: "Logout")
     end
 
     test "renders errors for duplicated username", %{conn: conn} do
