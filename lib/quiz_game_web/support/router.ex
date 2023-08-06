@@ -5,6 +5,9 @@ defmodule QuizGameWeb.Support.Router do
   @typedoc "The contexts available for route matching."
   @type context :: :base | :quizzes | :users
 
+  @typedoc "The actions available in the base context."
+  @type base_action :: :root | :contact_us | :privacy_policy | :terms_of_use
+
   @doc """
   Match against a route with no URL parameters.
 
@@ -29,6 +32,7 @@ defmodule QuizGameWeb.Support.Router do
   @spec route(context, atom(), keyword()) :: String.t()
   def route(context, action, opts)
 
+  @spec route(:base, base_action, keyword()) :: String.t()
   def route(:base, action, _opts) do
     case action do
       :root -> ~p"/"

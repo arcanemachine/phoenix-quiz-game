@@ -4,6 +4,8 @@ defmodule QuizGame.TestSupport.Assertions do
   import Phoenix.ConnTest
   # import Phoenix.LiveViewTest
 
+  @typep link_option :: {:url, String.t()} | {:content, String.t()}
+
   @spec html_element_has_content(String.t(), String.t(), String.t()) :: boolean()
   def html_element_has_content(html, selector, content) do
     html
@@ -35,8 +37,7 @@ defmodule QuizGame.TestSupport.Assertions do
 
       iex> html_has_link(html, url: "/", content: "Hello world!")
   """
-  @type option :: {:url, String.t()} | {:content, String.t()}
-  @spec html_has_link(String.t(), [option()]) :: boolean()
+  @spec html_has_link(String.t(), [link_option()]) :: boolean()
   def html_has_link(html, opts \\ []) when length(opts) > 0 do
     maybe_url = (opts[:url] && "[href='#{opts[:url]}']") || "*"
     maybe_content = (opts[:content] && ":fl-contains('#{opts[:content]}')") || "*"

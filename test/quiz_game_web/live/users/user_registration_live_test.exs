@@ -60,6 +60,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
     test "renders errors for empty fields", %{conn: conn} do
       {:ok, lv, _html} = live(conn, @test_url)
 
+      # submit form data
       modified_html =
         lv
         |> element("#registration_form")
