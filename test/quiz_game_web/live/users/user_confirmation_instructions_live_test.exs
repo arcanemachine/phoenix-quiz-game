@@ -77,6 +77,7 @@ defmodule QuizGameWeb.UserConfirmationInstructionsLiveTest do
       assert Phoenix.Flash.get(conn.assigns.flash, :info) =~
                "If your email is in our system"
 
+      # no user token has been created
       assert Repo.all(Users.UserToken) == []
     end
   end
