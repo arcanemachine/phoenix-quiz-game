@@ -10,7 +10,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
     %{user: user_fixture()}
   end
 
-  describe "POST /users/login" do
+  describe "users:create - POST" do
     @test_url_path route(:users, :login)
 
     test "logs the user in", %{conn: conn, user: user} do
@@ -32,7 +32,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
       assert response =~ route(:users, :logout)
     end
 
-    test "logs the user in with remember me", %{conn: conn, user: user} do
+    test "logs the user in with session persistence", %{conn: conn, user: user} do
       conn =
         post(conn, @test_url_path, %{
           "user" => %{
@@ -49,7 +49,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
       assert conn.resp_cookies["_quiz_game_web_user_remember_me"]
     end
 
-    test "logs the user in with return to", %{conn: conn, user: user} do
+    test "logs the user then redirects via session 'user_return_to'", %{conn: conn, user: user} do
       conn =
         conn
         # add redirect data to session
@@ -68,7 +68,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
       assert Phoenix.Flash.get(conn.assigns.flash, :success) =~ "Logged in successfully"
     end
 
-    test "user is automatically logged in after registering an account", %{conn: conn, user: user} do
+    test "automatically logs in the user after registration", %{conn: conn, user: user} do
       conn =
         conn
         |> post(@test_url_path, %{
@@ -86,7 +86,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
       assert Phoenix.Flash.get(conn.assigns.flash, :success) =~ "Account created successfully"
     end
 
-    test "login following password update", %{conn: conn, user: user} do
+    test "logs in automatically after updating the user's password", %{conn: conn, user: user} do
       conn =
         conn
         |> post(@test_url_path, %{
@@ -104,7 +104,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
       assert Phoenix.Flash.get(conn.assigns.flash, :success) =~ "Password updated successfully"
     end
 
-    test "redirects to login page with invalid credentials", %{conn: conn} do
+    test "redirects to login page when form submitted with invalid credentials", %{conn: conn} do
       conn =
         post(conn, @test_url_path, %{
           "user" => %{"email" => "invalid@email.com", "password" => "invalid_password"}
@@ -118,7 +118,21 @@ defmodule QuizGameWeb.UserSessionControllerTest do
     end
   end
 
-  describe "DELETE /users/logout" do
+  describe "users:show - GET" do
+    @test_url_path route(:users, :show)
+
+    test "renders expected template", %{conn: conn, user: user} do
+      conn = conn |> login_user(user) |> get(@test_url_path)
+
+      # response contains expected session data
+      refute get_session(conn, :user_token)
+
+      # response contains expected flash message
+      assert Phoenix.Flash.get(conn.assigns.flash, :success) =~ "Logged out successfully"
+    end
+  end
+
+  describe "users:logout - DELETE" do
     @test_url_path route(:users, :logout)
 
     test "logs the user out", %{conn: conn, user: user} do
