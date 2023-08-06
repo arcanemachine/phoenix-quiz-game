@@ -40,6 +40,7 @@ defmodule QuizGameWeb.Support.Router do
       :confirmation_instructions -> ~p"/users/confirm/email"
       :confirmation -> ~p"/users/confirm/email/#{params[:token]}"
       :login -> ~p"/users/login"
+      :logout_confirm -> ~p"/users/logout"
       :logout -> ~p"/users/logout"
       :forgot_password -> ~p"/users/reset-password"
       :reset_password -> ~p"/users/reset-password/#{params[:token]}"
