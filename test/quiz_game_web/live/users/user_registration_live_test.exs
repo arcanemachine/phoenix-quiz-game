@@ -13,9 +13,9 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
 
   describe "Registration page" do
     test "renders expected markup", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @test_url)
+      {:ok, _lv, html} = live(conn, @test_url)
 
-      assert live_view_has_title(lv, "Register New Account")
+      assert html_has_title(html, "Register New Account")
     end
 
     test "redirects if user has already logged in", %{conn: conn} do
@@ -41,8 +41,8 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
           }
         )
 
-      # markup has expected title
-      assert live_view_has_title(lv, "Register New Account")
+      # still on same page (markup has expected title)
+      assert html_has_title(modified_html, "Register New Account")
 
       # form contains expected error messages
       assert html_form_field_has_error_message(
@@ -100,10 +100,10 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
       # make a request as the logged-in user
       conn = get(conn, "/")
 
-      # response contains expected markup
+      # response contains markup that is only visible to an authenticated user
       response_html = html_response(conn, 200)
-      assert html_has_text(response_html, "Your profile")
-      assert html_has_text(response_html, "Logout")
+      assert html_has_link(response_html, url: route("users", :show), content: "Your profile")
+      assert html_has_link(response_html, url: route("users", :logout_confirm), content: "Logout")
     end
 
     test "renders errors for duplicated username", %{conn: conn} do

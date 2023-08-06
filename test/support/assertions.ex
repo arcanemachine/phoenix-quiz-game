@@ -2,18 +2,50 @@ defmodule QuizGame.TestSupport.Assertions do
   @moduledoc "Assertions that are commonly used across multiple tests."
 
   import Phoenix.ConnTest
-  import Phoenix.LiveViewTest
+  # import Phoenix.LiveViewTest
 
-  def html_element_has_text(html, selector, text) do
-    html |> Floki.find(selector) |> Floki.raw_html() =~ text
+  @spec html_element_has_content(String.t(), String.t(), String.t()) :: boolean()
+  def html_element_has_content(html, selector, content) do
+    html
+    |> Floki.find(selector)
+    |> Floki.find(":fl-contains('#{content}')")
+    |> (Enum.empty?() |> Kernel.not())
   end
 
+  @spec html_form_field_has_error_message(String.t(), String.t(), String.t()) :: boolean()
   def html_form_field_has_error_message(html, field_name, message) do
-    html |> Floki.find("[phx-feedback-for='#{field_name}']") |> Floki.raw_html() =~ message
+    html
+    |> Floki.find("[phx-feedback-for='#{field_name}']")
+    |> Floki.find(":fl-contains('#{message}')")
+    |> (Enum.empty?() |> Kernel.not())
   end
 
-  def html_has_text(html, text) do
-    html =~ text
+  @doc "Check for an HTML element with matching content."
+  @spec html_has_content(String.t(), String.t()) :: boolean()
+  def html_has_content(html, content) do
+    html |> Floki.find(":fl-contains('#{content}')") |> (Enum.empty?() |> Kernel.not())
+  end
+
+  @doc """
+  Check if HTML has a link with a given content and/or URL.
+
+  Accepts one or more of the following options: 'content', 'url'
+
+  ## Examples
+
+      iex> html_has_link(html, url: "/", content: "Hello world!")
+  """
+  @type option :: {:url, String.t()} | {:content, String.t()}
+  @spec html_has_link(String.t(), [option()]) :: boolean()
+  def html_has_link(html, opts \\ []) when length(opts) > 0 do
+    maybe_url = (opts[:url] && "[href='#{opts[:url]}']") || "*"
+    maybe_content = (opts[:content] && ":fl-contains('#{opts[:content]}')") || "*"
+
+    html
+    |> Floki.find("a")
+    |> Floki.find(maybe_url)
+    |> Floki.find(maybe_content)
+    |> (Enum.empty?() |> Kernel.not())
   end
 
   def html_has_title(html, title) do
@@ -51,7 +83,7 @@ defmodule QuizGame.TestSupport.Assertions do
   #   lv |> element(selector) |> render() =~ text
   # end
 
-  def live_view_has_title(lv, title) do
-    lv |> element("h1") |> render() =~ title
-  end
+  # def live_view_has_title(lv, title) do
+  #   lv |> element("h1") |> render() =~ title
+  # end
 end

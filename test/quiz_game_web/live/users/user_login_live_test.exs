@@ -4,13 +4,14 @@ defmodule QuizGameWeb.UserLoginLiveTest do
   use QuizGameWeb.ConnCase
 
   import Phoenix.LiveViewTest
+  import QuizGame.TestSupport.Assertions
   import QuizGame.UsersFixtures
 
   describe "Login page" do
     test "renders login page", %{conn: conn} do
       {:ok, _lv, html} = live(conn, ~p"/users/login")
 
-      assert html =~ "Login"
+      assert html_has_title(html, "Login")
       assert html =~ "Register new account"
       assert html =~ "Forgot your password?"
     end
