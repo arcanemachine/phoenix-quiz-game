@@ -40,7 +40,7 @@ defmodule QuizGameWeb.UserControllerTest do
       resp_conn = conn |> login_user(user) |> post(@test_url_path)
 
       # response contains expected flash message
-      assert html_response_has_flash_message(
+      assert conn_has_flash_message(
                resp_conn,
                :success,
                "Account deleted successfully"

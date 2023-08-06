@@ -63,7 +63,7 @@ defmodule QuizGame.TestSupport.Assertions do
   #   !Enum.empty?(element)
   # end
 
-  def html_response_has_flash_message(conn, kind, message) do
+  def conn_has_flash_message(conn, kind, message) do
     Phoenix.Flash.get(conn.assigns.flash, kind) =~ message
   end
 
