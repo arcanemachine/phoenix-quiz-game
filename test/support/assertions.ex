@@ -67,10 +67,6 @@ defmodule QuizGame.TestSupport.Assertions do
     Phoenix.Flash.get(conn.assigns.flash, kind) =~ message
   end
 
-  def html_response_has_text(conn, text) do
-    html_response(conn, 200) =~ text
-  end
-
   def html_response_has_title(conn, title) do
     html_response(conn, 200) |> html_has_title(title)
   end

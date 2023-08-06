@@ -3,7 +3,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
 
   use QuizGameWeb.ConnCase, async: true
 
-  import QuizGame.TestSupport.UsersFixtures
+  import QuizGame.TestSupport.{Assertions, UsersFixtures}
   import QuizGameWeb.Support.Router
 
   setup do
@@ -122,13 +122,8 @@ defmodule QuizGameWeb.UserSessionControllerTest do
     @test_url_path route(:users, :show)
 
     test "renders expected template", %{conn: conn, user: user} do
-      conn = conn |> login_user(user) |> get(@test_url_path)
-
-      # response contains expected session data
-      refute get_session(conn, :user_token)
-
-      # response contains expected flash message
-      assert Phoenix.Flash.get(conn.assigns.flash, :success) =~ "Logged out successfully"
+      resp_conn = conn |> login_user(user) |> get(@test_url_path)
+      assert resp_conn |> html_response(200) |> html_has_title("Your Profile")
     end
   end
 

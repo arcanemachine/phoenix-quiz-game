@@ -54,10 +54,9 @@ defmodule QuizGameWeb.QuizControllerTest do
       # redirected response renders expected template
       record_detail_url = route(:quizzes, :show, quiz_id: quiz_id)
       resp_conn_2 = get(resp_conn, record_detail_url)
-      assert html_response_has_text(resp_conn_2, @create_attrs.name)
 
       # template contains new record content
-      assert html_response_has_text(resp_conn_2, @create_attrs[:name])
+      assert html_response(resp_conn_2, 200) |> html_has_content(@create_attrs[:name])
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -82,7 +81,7 @@ defmodule QuizGameWeb.QuizControllerTest do
     test "renders expected template", %{conn: conn, quiz: quiz} do
       resp_conn = get(conn, route(:quizzes, :show, quiz_id: quiz.id))
       assert html_response_has_title(resp_conn, "Quiz Info")
-      assert html_response_has_text(resp_conn, quiz.name)
+      assert html_response(resp_conn, 200) |> html_has_content(quiz.name)
     end
   end
 
@@ -120,7 +119,7 @@ defmodule QuizGameWeb.QuizControllerTest do
       # redirect renders expected template
       resp_conn_2 = resp_conn |> get(record_detail_url)
       assert html_response_has_title(resp_conn_2, "Quiz Info")
-      assert html_response_has_text(resp_conn_2, @update_attrs[:name])
+      assert html_response(resp_conn_2, 200) |> html_has_content(@update_attrs[:name])
     end
 
     test "renders errors when data is invalid", %{conn: conn, quiz: quiz} do
