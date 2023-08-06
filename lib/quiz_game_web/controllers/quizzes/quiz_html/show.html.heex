@@ -9,13 +9,13 @@
 
 <.action_links>
   <.action_links_item kind="forward">
-    <.link href={route("quizzes", :edit, quiz_id: @quiz.id)}>
+    <.link href={route(:quizzes, :edit, quiz_id: @quiz.id)}>
       Edit this quiz
     </.link>
   </.action_links_item>
   <.action_links_spacer />
   <.action_links_item kind="back">
-    <.link href={route("quizzes", :index)}>
+    <.link href={route(:quizzes, :index)}>
       Return to quiz list
     </.link>
   </.action_links_item>

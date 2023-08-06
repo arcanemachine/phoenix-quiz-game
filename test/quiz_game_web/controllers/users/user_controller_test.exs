@@ -17,7 +17,7 @@ defmodule QuizGameWeb.UserControllerTest do
   end
 
   describe "users :delete_confirm" do
-    @test_url_path route("users", :delete_confirm)
+    @test_url_path route(:users, :delete_confirm)
 
     test_redirects_unauthenticated_user_to_login_route(@test_url_path, "GET")
 
@@ -28,7 +28,7 @@ defmodule QuizGameWeb.UserControllerTest do
   end
 
   describe "users :delete" do
-    @test_url_path route("users", :delete_confirm)
+    @test_url_path route(:users, :delete_confirm)
 
     test_redirects_unauthenticated_user_to_login_route(@test_url_path, "POST")
 

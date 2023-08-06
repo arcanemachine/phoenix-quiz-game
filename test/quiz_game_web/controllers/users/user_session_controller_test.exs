@@ -11,7 +11,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
   end
 
   describe "POST /users/login" do
-    @test_url_path route("users", :login)
+    @test_url_path route(:users, :login)
 
     test "logs the user in", %{conn: conn, user: user} do
       conn =
@@ -20,7 +20,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
         })
 
       # response redirects to expected route
-      assert redirected_to(conn) == route("users", :show)
+      assert redirected_to(conn) == route(:users, :show)
 
       # response contains expected session data
       assert get_session(conn, :user_token)
@@ -28,8 +28,8 @@ defmodule QuizGameWeb.UserSessionControllerTest do
       # make a request as a logged-in user and check for logged-in menu items
       conn = get(conn, ~p"/")
       response = html_response(conn, 200)
-      assert response =~ route("users", :show)
-      assert response =~ route("users", :logout)
+      assert response =~ route(:users, :show)
+      assert response =~ route(:users, :logout)
     end
 
     test "logs the user in with remember me", %{conn: conn, user: user} do
@@ -119,7 +119,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
   end
 
   describe "DELETE /users/logout" do
-    @test_url_path route("users", :logout)
+    @test_url_path route(:users, :logout)
 
     test "logs the user out", %{conn: conn, user: user} do
       conn = conn |> login_user(user) |> post(@test_url_path)

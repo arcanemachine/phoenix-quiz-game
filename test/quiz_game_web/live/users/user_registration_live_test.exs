@@ -9,7 +9,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
   import QuizGameWeb.Support.Router
 
   @password_length_min QuizGame.Users.User.password_length_min()
-  @test_url route("users", :registration)
+  @test_url route(:users, :registration)
 
   describe "Registration page" do
     test "renders expected markup", %{conn: conn} do
@@ -23,7 +23,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
         conn
         |> login_user(user_fixture())
         |> live(@test_url)
-        |> follow_redirect(conn, route("users", :show))
+        |> follow_redirect(conn, route(:users, :show))
 
       assert {:ok, _conn} = result
     end
@@ -102,8 +102,8 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
 
       # response contains markup that is only visible to an authenticated user
       response_html = html_response(conn, 200)
-      assert html_has_link(response_html, url: route("users", :show), content: "Your profile")
-      assert html_has_link(response_html, url: route("users", :logout_confirm), content: "Logout")
+      assert html_has_link(response_html, url: route(:users, :show), content: "Your profile")
+      assert html_has_link(response_html, url: route(:users, :logout_confirm), content: "Logout")
     end
 
     test "renders errors for duplicated username", %{conn: conn} do

@@ -1,6 +1,6 @@
 <ul class="record-index">
   <li :for={quiz <- @quizzes}>
-    <a href={route("quizzes", :show, quiz_id: quiz.id)}>
+    <a href={route(:quizzes, :show, quiz_id: quiz.id)}>
       <%= quiz.name %>
     </a>
   </li>
@@ -8,12 +8,12 @@
 
 <.action_links>
   <.action_links_item>
-    <.link href={route("quizzes", :new)}>
+    <.link href={route(:quizzes, :new)}>
       Create new quiz
     </.link>
   </.action_links_item>
   <.action_links_item>
-    <.link href={route("base", :root)}>
+    <.link href={route(:base, :root)}>
       Return to homepage
     </.link>
   </.action_links_item>
