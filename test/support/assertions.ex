@@ -4,12 +4,17 @@ defmodule QuizGame.TestSupport.Assertions do
   # import Phoenix.ConnTest
   # import Phoenix.LiveViewTest
 
+  @typep conn :: %Plug.Conn{}
+  @typep flash_kind :: :info | :success | :warning | :error
   @typep link_option :: {:url, String.t()} | {:content, String.t()}
 
+  @doc "Check if a conn has a given flash message."
+  @spec conn_has_flash_message(conn, flash_kind, String.t()) :: boolean()
   def conn_has_flash_message(conn, kind, message) do
     Phoenix.Flash.get(conn.assigns.flash, kind) =~ message
   end
 
+  @doc "Check a specific HTML element for matching content."
   @spec html_element_has_content(String.t(), String.t(), String.t()) :: boolean()
   def html_element_has_content(html, selector, content) do
     html
@@ -27,7 +32,7 @@ defmodule QuizGame.TestSupport.Assertions do
     |> (Enum.empty?() |> Kernel.not())
   end
 
-  @doc "Check for an HTML element with matching content."
+  @doc "Check all elements in a given HTML string for matching content."
   @spec html_has_content(String.t(), String.t()) :: boolean()
   def html_has_content(html, content) do
     html |> Floki.find(":fl-contains('#{content}')") |> (Enum.empty?() |> Kernel.not())
@@ -54,6 +59,7 @@ defmodule QuizGame.TestSupport.Assertions do
     |> (Enum.empty?() |> Kernel.not())
   end
 
+  @spec html_has_title(String.t(), String.t()) :: boolean()
   def html_has_title(html, title) do
     html |> Floki.find("h1") |> Floki.raw_html() =~ title
   end
