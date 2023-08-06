@@ -4,7 +4,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
   use QuizGameWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import QuizGame.UsersFixtures
+  import QuizGame.TestSupport.UsersFixtures
 
   alias QuizGame.Users
   alias QuizGame.Repo

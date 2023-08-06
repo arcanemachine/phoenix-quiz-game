@@ -4,8 +4,7 @@ defmodule QuizGameWeb.UserLoginLiveTest do
   use QuizGameWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import QuizGame.TestSupport.Assertions
-  import QuizGame.UsersFixtures
+  import QuizGame.TestSupport.{Assertions, UsersFixtures}
 
   describe "Login page" do
     test "renders login page", %{conn: conn} do

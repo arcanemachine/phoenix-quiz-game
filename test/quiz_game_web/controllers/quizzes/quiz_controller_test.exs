@@ -3,8 +3,7 @@ defmodule QuizGameWeb.QuizControllerTest do
 
   use QuizGameWeb.ConnCase
 
-  import QuizGame.QuizzesFixtures
-  import QuizGame.TestSupport.{Assertions, GenericTests}
+  import QuizGame.TestSupport.{Assertions, GenericTests, QuizzesFixtures}
   import QuizGameWeb.Support.Router
 
   # data

@@ -3,7 +3,7 @@ defmodule QuizGameWeb.UserAuthTest do
 
   use QuizGameWeb.ConnCase, async: true
 
-  import QuizGame.UsersFixtures
+  import QuizGame.TestSupport.UsersFixtures
 
   alias Phoenix.LiveView
   alias QuizGame.Users

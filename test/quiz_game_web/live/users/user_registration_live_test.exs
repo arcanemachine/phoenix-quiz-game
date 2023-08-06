@@ -4,9 +4,8 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
   use QuizGameWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import QuizGame.TestSupport.Assertions
-  import QuizGame.UsersFixtures
   import QuizGameWeb.Support.Router
+  import QuizGame.TestSupport.{Assertions, UsersFixtures}
 
   @password_length_min QuizGame.Users.User.password_length_min()
   @test_url route(:users, :registration)

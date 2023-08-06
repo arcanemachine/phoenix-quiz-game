@@ -3,7 +3,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
 
   use QuizGameWeb.ConnCase, async: true
 
-  import QuizGame.UsersFixtures
+  import QuizGame.TestSupport.UsersFixtures
   import QuizGameWeb.Support.Router
 
   setup do

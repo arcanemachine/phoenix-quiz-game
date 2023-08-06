@@ -2,12 +2,10 @@ defmodule QuizGame.QuizzesTest do
   @moduledoc false
   use QuizGame.DataCase
   alias QuizGame.Quizzes
+  alias QuizGame.Quizzes.Quiz
+  import QuizGame.TestSupport.QuizzesFixtures
 
   describe "quizzes" do
-    alias QuizGame.Quizzes.Quiz
-
-    import QuizGame.QuizzesFixtures
-
     @invalid_attrs %{name: nil}
 
     test "list_quizzes/0 returns all quizzes" do
