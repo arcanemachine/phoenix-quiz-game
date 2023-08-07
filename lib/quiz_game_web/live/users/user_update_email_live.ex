@@ -22,14 +22,15 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
     email_changeset = Users.change_user_email(user)
 
     socket =
-      socket
-      |> assign(:page_title, "Update Email")
-      |> assign(:current_email, user.email)
-      |> assign(:email_form_current_email, nil)
-      |> assign(:current_password, nil)
-      |> assign(:email_form_current_password, nil)
-      |> assign(:email_form, to_form(email_changeset))
-      |> assign(:trigger_submit, false)
+      assign(socket, %{
+        page_title: "Update Email",
+        current_email: user.email,
+        email_form_current_email: nil,
+        current_password: nil,
+        email_form_current_password: nil,
+        email_form: to_form(email_changeset),
+        trigger_submit: false
+      })
 
     {:ok, socket}
   end
@@ -102,11 +103,9 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
           &url(~p"/users/me/update/email/confirm/#{&1}")
         )
 
-        info = "Almost done! Check your email inbox for a confirmation link."
-
         {:noreply,
          socket
-         |> put_flash(:info, info)
+         |> put_flash(:info, "Almost done! Check your email inbox for a confirmation link.")
          |> assign(email_form_current_email: nil, email_form_current_password: nil)}
 
       {:error, changeset} ->

@@ -1,4 +1,5 @@
 defmodule QuizGame.Repo.Migrations.CreateQuizzes do
+  @moduledoc false
   use Ecto.Migration
 
   def change do
