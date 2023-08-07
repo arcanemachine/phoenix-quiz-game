@@ -83,7 +83,8 @@ defmodule QuizGameWeb.CoreComponents do
 
   attr :kind, :string,
     required: true,
-    values: ~w(primary secondary accent neutral info success warning error)
+    values: ~w(primary secondary accent neutral info success warning error),
+    doc: "the kind of alert message to be displayed"
 
   attr :class, :string, default: nil
   attr :rest, :global
@@ -165,7 +166,7 @@ defmodule QuizGameWeb.CoreComponents do
     values: ~w(primary secondary accent neutral info success warning error)
 
   attr :class, :any, default: nil
-  attr :loader, :boolean, default: false
+  attr :loader, :boolean, default: false, doc: "show a loading spinner when submitting a form"
   attr :rest, :global, include: ~w(disabled form name value)
 
   slot :inner_block, required: true
@@ -236,7 +237,7 @@ defmodule QuizGameWeb.CoreComponents do
   """
   attr :id, :string, default: "flash", doc: "the optional id of flash container"
   attr :flash, :map, default: %{}, doc: "the map of flash messages to display"
-  attr :title, :string, default: nil
+  attr :title, :string, default: nil, doc: "the title of the flash message"
   attr :kind, :atom, values: [:info, :success, :warning, :error], doc: "flash message style"
   attr :rest, :global, doc: "the arbitrary HTML attributes to add to the component"
 
@@ -333,7 +334,7 @@ defmodule QuizGameWeb.CoreComponents do
   """
   attr :kind, :string, default: "primary"
   attr :type, :string, default: "button"
-  attr :content, :string, default: nil, doc: "the button text (can use default slot instead)"
+  attr :content, :string, default: nil, doc: "the button text (can use inner_block slot instead)"
   attr :class, :any, default: nil
   attr :loader, :boolean, default: false, doc: "show a loading spinner"
   attr :rest, :global, include: ~w(disabled)
@@ -365,7 +366,7 @@ defmodule QuizGameWeb.CoreComponents do
   attr :type, :string, default: "button"
   attr :content, :string, default: "Cancel"
   attr :class, :any, default: nil
-  attr :url, :string, default: nil, doc: "the URL to redirect to"
+  attr :url, :string, default: nil, doc: "the URL to redirect to when cancelling"
   attr :rest, :global, include: ~w(disabled)
 
   def form_button_cancel(assigns) do
@@ -391,10 +392,10 @@ defmodule QuizGameWeb.CoreComponents do
       <.form_button_submit content="Send" />
   """
   attr :type, :string, default: "submit"
-  attr :kind, :any, default: "success"
+  attr :kind, :any, default: "success", doc: "the kind of <.button> to render"
   attr :content, :string, default: "Submit"
   attr :class, :any, default: nil
-  attr :loader, :boolean, default: true
+  attr :loader, :boolean, default: false, doc: "show a loading spinner when submitting a form"
   attr :rest, :global, include: ~w(disabled)
 
   def form_button_submit(assigns) do
@@ -539,7 +540,7 @@ defmodule QuizGameWeb.CoreComponents do
   attr :field, Phoenix.HTML.FormField,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
 
-  attr :errors, :list, default: []
+  attr :errors, :list, default: [], doc: "the errors belonging to this form field"
   attr :checked, :boolean, doc: "the checked flag for checkbox inputs"
   attr :prompt, :string, default: nil, doc: "the prompt for select inputs"
   attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
@@ -960,7 +961,7 @@ defmodule QuizGameWeb.CoreComponents do
   """
   attr :for, :any, required: true, doc: "the datastructure for the form"
   attr :as, :any, default: nil, doc: "the server side parameter to collect all input under"
-  attr :has_errors, :boolean, default: false
+  attr :has_errors, :boolean, default: false, doc: "whether or not the form has errors"
 
   attr :confirmation_required, :boolean,
     default: false,
@@ -979,7 +980,7 @@ defmodule QuizGameWeb.CoreComponents do
     doc: "the arbitrary HTML attributes to apply to the form tag"
 
   slot :inner_block, required: true
-  slot :actions, doc: "the slot for form actions, such as a submit button"
+  slot :actions, doc: "the slots for form actions, such as a submit button"
 
   def simple_form(assigns) do
     ~H"""

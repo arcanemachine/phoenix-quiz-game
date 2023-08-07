@@ -70,7 +70,7 @@ defmodule QuizGameWeb.BaseComponents do
       <.base_navbar />
   """
 
-  attr :current_user, :any, required: true
+  attr :current_user, :any, required: true, doc: "the current user (assigned via conn.assigns)"
 
   def base_navbar(assigns) do
     ~H"""
