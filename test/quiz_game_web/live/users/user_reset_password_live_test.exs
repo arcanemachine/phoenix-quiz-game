@@ -37,7 +37,9 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
 
       # redirect contains expected values
       assert redirect_resp_conn == %{
-               flash: %{"error" => "Reset password link is invalid or it has expired."},
+               flash: %{
+                 "error" => "Reset password link is invalid, expired, or has already been used."
+               },
                to: ~p"/"
              }
     end
@@ -70,7 +72,9 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
       {:error, {:redirect, redirect_resp_conn}} = live(conn, test_url_path(token: token))
 
       assert redirect_resp_conn == %{
-               flash: %{"error" => "Reset password link is invalid or it has expired."},
+               flash: %{
+                 "error" => "Reset password link is invalid, expired, or has already been used."
+               },
                to: ~p"/"
              }
     end

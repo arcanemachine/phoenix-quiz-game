@@ -1,6 +1,5 @@
 defmodule QuizGameWeb.UsersLive.UserLoginLive do
   use QuizGameWeb, :live_view
-
   @page_title "Account Login"
 
   @impl Phoenix.LiveView

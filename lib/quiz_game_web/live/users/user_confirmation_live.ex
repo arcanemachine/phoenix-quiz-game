@@ -1,13 +1,12 @@
 defmodule QuizGameWeb.UsersLive.UserConfirmationLive do
   use QuizGameWeb, :live_view
-
   alias QuizGame.Users
 
   @impl Phoenix.LiveView
   def mount(%{"token" => token}, _session, socket) do
     form = to_form(%{"token" => token}, as: "user")
 
-    {:ok, assign(socket, form: form, page_title: "Confirm Your Account"),
+    {:ok, assign(socket, form: form, page_title: "Confirm Your Email"),
      temporary_assigns: [form: nil]}
   end
 
@@ -37,7 +36,7 @@ defmodule QuizGameWeb.UsersLive.UserConfirmationLive do
       {:ok, _} ->
         {:noreply,
          socket
-         |> put_flash(:success, "Your account has been confirmed.")
+         |> put_flash(:success, "Your email address has been confirmed.")
          |> redirect(to: ~p"/users/me")}
 
       :error ->
@@ -45,13 +44,16 @@ defmodule QuizGameWeb.UsersLive.UserConfirmationLive do
           %{current_user: %{confirmed_at: confirmed_at}} when not is_nil(confirmed_at) ->
             {:noreply,
              socket
-             |> put_flash(:info, "Your account has already been confirmed.")
+             |> put_flash(:info, "Your email address has already been confirmed.")
              |> redirect(to: ~p"/users/me")}
 
           %{} ->
             {:noreply,
              socket
-             |> put_flash(:error, "User confirmation link is invalid or it has expired.")
+             |> put_flash(
+               :error,
+               "Email confirmation link is invalid, expired, or has already been used."
+             )
              |> redirect(to: ~p"/")}
         end
     end

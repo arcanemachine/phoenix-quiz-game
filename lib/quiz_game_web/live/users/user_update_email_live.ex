@@ -1,6 +1,5 @@
 defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
   use QuizGameWeb, :live_view
-
   alias QuizGame.Users
 
   @impl Phoenix.LiveView
@@ -11,7 +10,11 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
           put_flash(socket, :success, "Email updated successfully")
 
         :error ->
-          put_flash(socket, :error, "Email update link is invalid or expired")
+          put_flash(
+            socket,
+            :error,
+            "Email update link is invalid, expired, or has already been used."
+          )
       end
 
     {:ok, push_navigate(socket, to: ~p"/users/me")}

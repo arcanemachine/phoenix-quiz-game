@@ -152,7 +152,9 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
 
       # live redirect contains expected values
       assert redirect_resp_conn_2 == %{
-               flash: %{"error" => "Email update link is invalid or expired"},
+               flash: %{
+                 "error" => "Email update link is invalid, expired, or has already been used."
+               },
                to: route(:users, :show)
              }
     end
@@ -164,7 +166,9 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
 
       # live redirect contains expected values
       assert redirect_resp_conn == %{
-               flash: %{"error" => "Email update link is invalid or expired"},
+               flash: %{
+                 "error" => "Email update link is invalid, expired, or has already been used."
+               },
                to: route(:users, :show)
              }
 

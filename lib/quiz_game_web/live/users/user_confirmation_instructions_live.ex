@@ -1,6 +1,5 @@
 defmodule QuizGameWeb.UsersLive.UserConfirmationInstructionsLive do
   use QuizGameWeb, :live_view
-
   alias QuizGame.Users
 
   @impl Phoenix.LiveView

@@ -1,6 +1,5 @@
 defmodule QuizGameWeb.UsersLive.UserResetPasswordLive do
   use QuizGameWeb, :live_view
-
   alias QuizGame.Users
 
   @impl Phoenix.LiveView
@@ -72,7 +71,7 @@ defmodule QuizGameWeb.UsersLive.UserResetPasswordLive do
       assign(socket, user: user, token: token)
     else
       socket
-      |> put_flash(:error, "Reset password link is invalid or it has expired.")
+      |> put_flash(:error, "Reset password link is invalid, expired, or has already been used.")
       |> redirect(to: ~p"/")
     end
   end

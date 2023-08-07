@@ -19,7 +19,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
   describe "UserConfirmationLive page" do
     test "renders expected markup", %{conn: conn} do
       {:ok, _lv, html} = live(conn, test_url_path(token: "some_token"))
-      assert html_has_title(html, "Confirm Your Account")
+      assert html_has_title(html, "Confirm Your Email")
     end
   end
 
@@ -43,7 +43,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
         |> follow_redirect(conn, route(:users, :show))
 
       # response contains expected flash message
-      assert conn_has_flash_message(resp_conn, :success, "Your account has been confirmed.")
+      assert conn_has_flash_message(resp_conn, :success, "Your email address has been confirmed.")
 
       # the users's email address is now confirmed
       assert Users.get_user!(user.id).confirmed_at
@@ -67,7 +67,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
       assert conn_has_flash_message(
                resp_conn_2,
                :error,
-               "User confirmation link is invalid or it has expired"
+               "Email confirmation link is invalid, expired, or has already been used."
              )
 
       ## does not confirm email more than once - with authenticated user
@@ -84,7 +84,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
       assert conn_has_flash_message(
                resp_conn_3,
                :info,
-               "Your account has already been confirmed."
+               "Your email address has already been confirmed."
              )
     end
 
@@ -103,7 +103,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
       assert conn_has_flash_message(
                resp_conn,
                :error,
-               "User confirmation link is invalid or it has expired"
+               "Email confirmation link is invalid, expired, or has already been used."
              )
 
       # email address has not been confirmed
