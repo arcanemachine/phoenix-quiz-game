@@ -6,41 +6,39 @@ defmodule QuizGameWeb.ContactUsLiveTest do
   import Phoenix.LiveViewTest
   import Swoosh.TestAssertions
 
-  describe "ContactUsLive" do
-    test "renders expected template", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, ~p"/contact-us")
+  import QuizGame.TestSupport.Assertions
+  import QuizGameWeb.Support.Router
 
-      # template contains expected title
-      assert element(lv, "h1") |> render() =~ "Contact Us"
+  @test_url_path route(:base, :contact_us)
+
+  describe "ContactUsLive page" do
+    test "renders expected markup", %{conn: conn} do
+      {:ok, _lv, html} = live(conn, @test_url_path)
+      assert html_has_title(html, "Contact Us")
     end
+  end
 
-    test "submits the form successfully", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, ~p"/contact-us")
+  describe "ContactUsLive form" do
+    test "sends contact email when form data is valid", %{conn: conn} do
+      {:ok, lv, _html} = live(conn, @test_url_path)
 
-      test_name = "test_name"
-      test_email = "test_email@example.com"
-      test_message = "test_message"
-
-      # build the form
-      form_params = %{
+      # build form data
+      form_data = %{
         "contact_us" => %{
-          "name" => test_name,
-          "email" => test_email,
-          "message" => test_message
+          "name" => "some name",
+          "email" => "some_email@example.com",
+          "message" => "some message"
         }
       }
 
-      # submit the form
-      {:ok, conn} =
-        form(lv, "#form_contact_us", form_params)
+      # submit the form and follow the redirect
+      {:ok, resp_conn} =
+        form(lv, "#form_contact_us", form_data)
         |> render_submit()
+        |> follow_redirect(conn, ~p"/")
 
-        # redirects to expected URL
-        |> follow_redirect(conn, "/")
-
-      # renders expected flash message
-      assert Phoenix.Flash.get(conn.assigns.flash, :success) =~
-               "Contact form submitted successfully"
+      # response contains flash message
+      assert conn_has_flash_message(resp_conn, :success, "Contact form submitted successfully")
 
       # expected email has been sent
       assert_email_sent(

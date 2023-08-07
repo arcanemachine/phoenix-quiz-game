@@ -4,6 +4,10 @@ defmodule QuizGameWeb.UserController do
   alias QuizGame.Users
   alias QuizGameWeb.UserAuth
 
+  def settings(conn, _params) do
+    conn |> render(:settings, page_title: "Manage Your Profile")
+  end
+
   def delete_confirm(conn, _params) do
     render(conn, :delete_confirm, page_title: "Delete Your Account")
   end

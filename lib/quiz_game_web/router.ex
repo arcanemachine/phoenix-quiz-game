@@ -54,7 +54,7 @@ defmodule QuizGameWeb.Router do
     get "/me/delete", UserController, :delete_confirm
     post "/me/delete", UserController, :delete
 
-    live_session :require_authenticated_user,
+    live_session :login_required,
       on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
       live "/me/update/email", UsersLive.UserUpdateEmailLive, :edit
       live "/me/update/email/confirm/:token", UsersLive.UserUpdateEmailLive, :confirm_email
@@ -68,7 +68,7 @@ defmodule QuizGameWeb.Router do
 
     post "/login", UserSessionController, :create
 
-    live_session :redirect_if_user_is_authenticated,
+    live_session :logout_required,
       on_mount: [{QuizGameWeb.UserAuth, :redirect_if_user_is_authenticated}] do
       live "/register", UsersLive.UserRegistrationLive, :new
       live "/login", UsersLive.UserLoginLive, :new
@@ -84,7 +84,7 @@ defmodule QuizGameWeb.Router do
     get "/logout", UserSessionController, :logout_confirm
     post "/logout", UserSessionController, :logout
 
-    live_session :confirm_email,
+    live_session :allow_any_user,
       on_mount: [{QuizGameWeb.UserAuth, :mount_current_user}] do
       live "/confirm/email", UsersLive.UserConfirmationInstructionsLive, :new
       live "/confirm/email/:token", UsersLive.UserConfirmationLive, :edit

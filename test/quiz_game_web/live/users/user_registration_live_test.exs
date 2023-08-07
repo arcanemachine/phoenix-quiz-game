@@ -7,86 +7,39 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
   import QuizGameWeb.Support.Router
   import QuizGame.TestSupport.{Assertions, UsersFixtures}
 
-  @test_url route(:users, :registration)
+  @test_url_path route(:users, :registration)
   @password_length_min QuizGame.Users.User.password_length_min()
 
-  describe "Registration page" do
+  describe "UserRegistrationLive page" do
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, @test_url)
+      {:ok, _lv, html} = live(conn, @test_url_path)
       assert html_has_title(html, "Register New Account")
     end
 
-    test "redirects if user has already logged in", %{conn: conn} do
+    test "redirects authenticated user to expected route", %{conn: conn} do
       result =
         conn
         |> login_user(user_fixture())
-        |> live(@test_url)
+        |> live(@test_url_path)
         |> follow_redirect(conn, route(:users, :show))
 
       assert {:ok, _conn} = result
     end
-
-    test "renders errors for invalid 'change' event", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @test_url)
-
-      modified_html =
-        lv
-        |> element("#registration_form")
-        |> render_change(
-          user: %{
-            "email" => "invalid email",
-            "password" => "2short"
-          }
-        )
-
-      # still on same page (markup has expected title)
-      assert html_has_title(modified_html, "Register New Account")
-
-      # form contains expected error messages
-      assert html_form_field_has_error_message(
-               modified_html,
-               "user[email]",
-               "is not a valid email address"
-             )
-
-      assert html_form_field_has_error_message(
-               modified_html,
-               "user[password]",
-               "should be at least #{@password_length_min} character"
-             )
-    end
-
-    test "renders errors for empty fields", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @test_url)
-
-      # submit form data
-      modified_html =
-        lv
-        |> element("#registration_form")
-        |> render_submit(%{user: %{"username" => "", "email" => ""}})
-
-      # still on same page due to form errors
-      assert html_has_title(modified_html, "Register New Account")
-
-      # markup contains expected error messages
-      assert html_form_field_has_error_message(modified_html, "user[username]", "blank")
-      assert html_form_field_has_error_message(modified_html, "user[email]", "blank")
-    end
   end
 
-  describe "User registration form" do
-    test "creates account and logs the user in", %{conn: conn} do
+  describe "UserRegistrationLive form" do
+    test "creates account and logs the user in when form data is valid", %{conn: conn} do
       valid_attrs = valid_user_attributes()
 
       # make initial request
-      {:ok, lv, html} = live(conn, @test_url)
+      {:ok, lv, html} = live(conn, @test_url_path)
 
-      # sanitch check: response does not contain markup that should only visible to an
+      # sanity check: response does not contain markup that should only visible to an
       # authenticated user
       refute html_has_link(html, url: route(:users, :show), content: "Your profile")
       refute html_has_link(html, url: route(:users, :logout_confirm), content: "Logout")
 
-      # submit valid form
+      # submit the form and follow the redirect
       form_data = %{
         "user" =>
           Map.merge(
@@ -111,37 +64,88 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
       assert html_has_link(result_html, url: route(:users, :logout_confirm), content: "Logout")
     end
 
-    test "renders errors for duplicated username", %{conn: conn} do
+    test "renders expected errors on 'change' event when form data is invalid", %{conn: conn} do
+      {:ok, lv, _html} = live(conn, @test_url_path)
+
+      html_after_change =
+        lv
+        |> element("#registration_form")
+        |> render_change(
+          user: %{
+            "email" => "invalid email",
+            "password" => "2short"
+          }
+        )
+
+      # still on same page due to errors in form
+      assert html_has_title(html_after_change, "Register New Account")
+
+      # form has expected error message(s)
+      assert html_form_field_has_error_message(
+               html_after_change,
+               "user[email]",
+               "is not a valid email address"
+             )
+
+      assert html_form_field_has_error_message(
+               html_after_change,
+               "user[password]",
+               "should be at least #{@password_length_min} character"
+             )
+    end
+
+    test "renders expected errors on 'submit' event with blank form fields", %{conn: conn} do
+      {:ok, lv, _html} = live(conn, @test_url_path)
+
+      # submit the form
+      html_after_submit =
+        lv
+        |> element("#registration_form")
+        |> render_submit(%{user: %{"username" => "", "email" => ""}})
+
+      # still on same page due to form error(s)
+      assert html_has_title(html_after_submit, "Register New Account")
+
+      # form has expected error message(s)
+      assert html_form_field_has_error_message(html_after_submit, "user[username]", "blank")
+      assert html_form_field_has_error_message(html_after_submit, "user[email]", "blank")
+    end
+
+    test "renders expected errors on 'submit' event if username has already been taken", %{
+      conn: conn
+    } do
       user = user_fixture()
 
-      {:ok, lv, _html} = live(conn, @test_url)
+      {:ok, lv, _html} = live(conn, @test_url_path)
 
-      modified_html =
+      html_after_submit =
         lv
         |> form("#registration_form", user: %{"username" => user.username})
         |> render_submit()
 
-      # markup contains expected error message
+      # form has expected error message(s)
       assert html_form_field_has_error_message(
-               modified_html,
+               html_after_submit,
                "user[username]",
                "has already been taken"
              )
     end
 
-    test "renders errors for duplicated email", %{conn: conn} do
+    test "renders expected errors on 'submit' event if email has already been taken", %{
+      conn: conn
+    } do
       user = user_fixture()
 
-      {:ok, lv, _html} = live(conn, @test_url)
+      {:ok, lv, _html} = live(conn, @test_url_path)
 
-      modified_html =
+      html_after_submit =
         lv
         |> form("#registration_form", user: %{"email" => user.email})
         |> render_submit()
 
-      # markup contains expected error message
+      # form has expected error message
       assert html_form_field_has_error_message(
-               modified_html,
+               html_after_submit,
                "user[email]",
                "has already been taken"
              )

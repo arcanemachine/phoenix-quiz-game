@@ -10,7 +10,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
     %{user: user_fixture()}
   end
 
-  describe "users:create - POST" do
+  describe "users:create POST" do
     @test_url_path route(:users, :login)
 
     test "logs the user in", %{conn: conn, user: user} do
@@ -118,7 +118,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
     end
   end
 
-  describe "users:show - GET" do
+  describe "users:show GET" do
     @test_url_path route(:users, :show)
 
     test "renders expected template", %{conn: conn, user: user} do
@@ -127,7 +127,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
     end
   end
 
-  describe "users:logout - DELETE" do
+  describe "users:logout DELETE" do
     @test_url_path route(:users, :logout)
 
     test "logs the user out", %{conn: conn, user: user} do

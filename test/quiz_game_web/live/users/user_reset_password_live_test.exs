@@ -4,13 +4,17 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
   use QuizGameWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import QuizGame.TestSupport.UsersFixtures
+  import QuizGame.TestSupport.{Assertions, UsersFixtures}
+  import QuizGameWeb.Support.Router
 
   alias QuizGame.Users
 
   @password_length_min QuizGame.Users.User.password_length_min()
 
+  def test_url_path(opts), do: route(:users, :reset_password, token: opts[:token])
+
   setup do
+    # create user and token
     user = user_fixture()
 
     token =
@@ -21,39 +25,29 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
     %{token: token, user: user}
   end
 
-  describe "Reset password page" do
-    test "renders reset password with valid token", %{conn: conn, token: token} do
-      {:ok, _lv, html} = live(conn, ~p"/users/reset-password/#{token}")
-
-      assert html =~ "Set New Password"
+  describe "UserResetPasswordLive page" do
+    test "renders expected markup", %{conn: conn, token: token} do
+      {:ok, _lv, html} = live(conn, test_url_path(token: token))
+      assert html_has_title(html, "Set New Password")
     end
 
-    test "does not render reset password with invalid token", %{conn: conn} do
-      {:error, {:redirect, to}} = live(conn, ~p"/users/reset-password/invalid")
+    test "returns expected redirect when password reset token is invalid", %{conn: conn} do
+      {:error, {:redirect, redirect_resp_conn}} =
+        live(conn, test_url_path(token: "invalid_token"))
 
-      assert to == %{
+      # redirect contains expected values
+      assert redirect_resp_conn == %{
                flash: %{"error" => "Reset password link is invalid or it has expired."},
                to: ~p"/"
              }
     end
-
-    test "renders errors for invalid data", %{conn: conn, token: token} do
-      {:ok, lv, _html} = live(conn, ~p"/users/reset-password/#{token}")
-
-      result =
-        lv
-        |> element("#reset_password_form")
-        |> render_change(user: %{"password" => "2short", "confirmation_password" => "short"})
-
-      assert result =~ "should be at least #{@password_length_min} character"
-      assert result =~ "does not match"
-    end
   end
 
-  describe "Reset Password" do
-    test "resets password once", %{conn: conn, token: token, user: user} do
-      {:ok, lv, _html} = live(conn, ~p"/users/reset-password/#{token}")
+  describe "UserResetPasswordLive form" do
+    test "resets password once when form data is valid", %{conn: conn, token: token, user: user} do
+      {:ok, lv, _html} = live(conn, test_url_path(token: token))
 
+      # submit the form and follow the redirect
       {:ok, conn} =
         lv
         |> form("#reset_password_form",
@@ -63,31 +57,78 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
           }
         )
         |> render_submit()
-        |> follow_redirect(conn, ~p"/users/login")
+        |> follow_redirect(conn, route(:users, :login))
 
+      # user token has been removed from session data
       refute get_session(conn, :user_token)
+
+      # response contains expected flash message
       assert Phoenix.Flash.get(conn.assigns.flash, :success) =~ "Password reset successfully"
       assert Users.get_user_by_email_and_password(user.email, "new valid password")
+
+      # password reset link is now expired (request now redirects to expected route)
+      {:error, {:redirect, redirect_resp_conn}} = live(conn, test_url_path(token: token))
+
+      assert redirect_resp_conn == %{
+               flash: %{"error" => "Reset password link is invalid or it has expired."},
+               to: ~p"/"
+             }
     end
 
-    test "does not reset password on invalid data", %{conn: conn, token: token} do
+    test "renders expected errors on 'change' event when form data is invalid", %{
+      conn: conn,
+      token: token
+    } do
+      {:ok, lv, _html} = live(conn, test_url_path(token: token))
+
+      # submit the form
+      html_after_change =
+        lv
+        |> element("#reset_password_form")
+        |> render_change(user: %{"password" => "2short", "confirmation_password" => "short"})
+
+      # form has expected error message(s)
+      assert html_form_field_has_error_message(
+               html_after_change,
+               "user[password]",
+               "should be at least #{@password_length_min} character"
+             )
+
+      assert html_form_field_has_error_message(
+               html_after_change,
+               "user[password_confirmation]",
+               "does not match"
+             )
+    end
+
+    test "does not reset password when form data is invalid", %{conn: conn, token: token} do
       {:ok, lv, _html} = live(conn, ~p"/users/reset-password/#{token}")
 
-      result =
+      html_after_submit =
         lv
         |> form("#reset_password_form",
           user: %{
             "password" => "2short",
-            "password_confirmation" => "does not match"
+            "password_confirmation" => "non_matching_password"
           }
         )
         |> render_submit()
 
-      # still on the same page due to form errors
-      assert result =~ "Set New Password"
+      # still on same page due to errors in form
+      assert html_has_title(html_after_submit, "Set New Password")
 
-      assert result =~ "should be at least #{@password_length_min} character(s)"
-      assert result =~ "does not match"
+      # form has expected error message(s)
+      assert html_form_field_has_error_message(
+               html_after_submit,
+               "user[password]",
+               "should be at least #{@password_length_min} character"
+             )
+
+      assert html_form_field_has_error_message(
+               html_after_submit,
+               "user[password_confirmation]",
+               "does not match"
+             )
     end
   end
 end

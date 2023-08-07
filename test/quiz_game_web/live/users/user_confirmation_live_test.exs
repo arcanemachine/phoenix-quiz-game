@@ -10,55 +10,59 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
   alias QuizGame.Users
   alias QuizGame.Repo
 
+  def test_url_path(opts), do: route(:users, :confirmation, token: opts[:token])
+
   setup do
     %{user: user_fixture()}
   end
 
-  describe "Confirm user" do
-    test "renders expected template", %{conn: conn} do
-      test_url = route(:users, :confirmation, token: "some_token")
-      {:ok, _lv, html} = live(conn, test_url)
+  describe "UserConfirmationLive page" do
+    test "renders expected markup", %{conn: conn} do
+      {:ok, _lv, html} = live(conn, test_url_path(token: "some_token"))
       assert html_has_title(html, "Confirm Your Account")
     end
+  end
 
+  describe "UserConfirmationLive form" do
     test "does not confirm a given token more than once", %{conn: conn, user: user} do
       token =
         extract_user_token(fn url ->
           Users.deliver_user_confirmation_instructions(user, url)
         end)
 
-      test_url = route(:users, :confirmation, token: token)
+      test_url_path = test_url_path(token: token)
 
       # make initial request
-      {:ok, lv, _html} = live(conn, test_url)
+      {:ok, lv, _html} = live(conn, test_url_path)
 
-      # submit form data
-      result =
+      # submit the form and follow the redirect
+      {:ok, resp_conn} =
         lv
         |> form("#confirmation_form")
         |> render_submit()
         |> follow_redirect(conn, route(:users, :show))
 
-      # form was submitted successfully
-      assert {:ok, resp_conn} = result
-
       # response contains expected flash message
       assert conn_has_flash_message(resp_conn, :success, "Your account has been confirmed.")
 
+      # the users's email address is now confirmed
       assert Users.get_user!(user.id).confirmed_at
+
+      # user token has been removed from session data
       refute get_session(resp_conn, :user_token)
+
+      # no user tokens have been saved in the database
       assert Repo.all(Users.UserToken) == []
 
-      # does not re-confirm when user is unauthenticated
-      {:ok, lv, _html} = live(conn, test_url)
+      ## does not confirm email more than once - with unauthenticated user
+      {:ok, lv, _html} = live(conn, test_url_path)
 
-      result =
+      # submit the form
+      {:ok, resp_conn_2} =
         lv
         |> form("#confirmation_form")
         |> render_submit()
         |> follow_redirect(conn, ~p"/")
-
-      assert {:ok, resp_conn_2} = result
 
       assert conn_has_flash_message(
                resp_conn_2,
@@ -66,18 +70,15 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
                "User confirmation link is invalid or it has expired"
              )
 
-      # does not re-confirm when user is authenticated
-      {:ok, lv, _html} = build_conn() |> login_user(user) |> live(test_url)
+      ## does not confirm email more than once - with authenticated user
+      {:ok, lv, _html} = build_conn() |> login_user(user) |> live(test_url_path)
 
       # submit the form and follow the redirect
-      result =
+      {:ok, resp_conn_3} =
         lv
         |> form("#confirmation_form")
         |> render_submit()
         |> follow_redirect(conn, route(:users, :show))
-
-      # form was submitted successfully
-      assert {:ok, resp_conn_3} = result
 
       # response contains expected flash message
       assert conn_has_flash_message(
@@ -88,10 +89,8 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
     end
 
     test "does not confirm email address if token is invalid", %{conn: conn, user: user} do
-      test_url = route(:users, :confirmation, token: "invalid_token")
-
       # make request
-      {:ok, lv, _html} = live(conn, test_url)
+      {:ok, lv, _html} = live(conn, test_url_path(token: "invalid_token"))
 
       # submit the form and follow the redirect
       {:ok, resp_conn} =

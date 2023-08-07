@@ -9,7 +9,7 @@ defmodule QuizGame.UsersTest do
   alias QuizGame.Users.{User, UserToken}
 
   describe "get_user_by_email/1" do
-    test "does not return the user if the email does not exist" do
+    test "does not return a user if the email does not exist" do
       refute Users.get_user_by_email("unknown@example.com")
     end
 
@@ -20,16 +20,19 @@ defmodule QuizGame.UsersTest do
   end
 
   describe "get_user_by_email_and_password/2" do
-    test "does not return the user if the email does not exist" do
-      refute Users.get_user_by_email_and_password("unknown@example.com", "hello world!")
+    test "does not return a user if the email does not exist" do
+      refute Users.get_user_by_email_and_password(
+               "non_existent_user@example.com",
+               "incorrect_password"
+             )
     end
 
-    test "does not return the user if the password is not valid" do
+    test "does not return the user if the password is incorrect" do
       user = user_fixture()
-      refute Users.get_user_by_email_and_password(user.email, "badpass")
+      refute Users.get_user_by_email_and_password(user.email, "incorrect_password")
     end
 
-    test "returns the user if the email and password are valid" do
+    test "returns the user if the email and password are correct" do
       %{id: id} = user = user_fixture()
 
       assert %User{id: ^id} =
@@ -61,7 +64,7 @@ defmodule QuizGame.UsersTest do
     end
 
     test "validates email and password when given" do
-      {:error, changeset} = Users.register_user(%{email: "not valid", password: "invalid"})
+      {:error, changeset} = Users.register_user(%{email: "not valid", password: "2short"})
 
       assert %{
                email: ["is not a valid email address"],
@@ -163,7 +166,7 @@ defmodule QuizGame.UsersTest do
 
     test "validates current password", %{user: user} do
       {:error, changeset} =
-        Users.apply_user_email(user, "invalid", %{email: unique_user_email()})
+        Users.apply_user_email(user, "incorrect_password", %{email: unique_user_email()})
 
       assert %{current_password: ["should be your current password"]} = errors_on(changeset)
     end
@@ -264,8 +267,8 @@ defmodule QuizGame.UsersTest do
     test "validates password", %{user: user} do
       {:error, changeset} =
         Users.update_user_password(user, valid_user_password(), %{
-          password: "invalid",
-          password_confirmation: "another"
+          password: "2short",
+          password_confirmation: "non_matching_password"
         })
 
       assert %{
@@ -285,7 +288,9 @@ defmodule QuizGame.UsersTest do
 
     test "validates current password", %{user: user} do
       {:error, changeset} =
-        Users.update_user_password(user, "invalid", %{password: valid_user_password()})
+        Users.update_user_password(user, "non_matching_password", %{
+          password: valid_user_password()
+        })
 
       assert %{current_password: ["should be your current password"]} = errors_on(changeset)
     end
@@ -473,8 +478,8 @@ defmodule QuizGame.UsersTest do
     test "validates password", %{user: user} do
       {:error, changeset} =
         Users.reset_user_password(user, %{
-          password: "invalid",
-          password_confirmation: "another"
+          password: "2short",
+          password_confirmation: "non_matching_password"
         })
 
       assert %{

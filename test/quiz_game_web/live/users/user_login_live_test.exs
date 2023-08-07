@@ -7,13 +7,12 @@ defmodule QuizGameWeb.UserLoginLiveTest do
   import QuizGameWeb.Support.Router
   import QuizGame.TestSupport.{Assertions, UsersFixtures}
 
-  @test_url route(:users, :login)
+  @test_url_path route(:users, :login)
 
   describe "UserLoginLive page" do
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, @test_url)
+      {:ok, _lv, html} = live(conn, @test_url_path)
 
-      # markup has expected title
       assert html_has_title(html, "Login")
 
       assert html_has_link(html,
@@ -27,12 +26,12 @@ defmodule QuizGameWeb.UserLoginLiveTest do
              )
     end
 
-    test "redirects if the user has already logged in", %{conn: conn} do
+    test "redirects authenticated user to expected route", %{conn: conn} do
       result =
         conn
         |> login_user(user_fixture())
-        |> live(~p"/users/login")
-        |> follow_redirect(conn, "/users/me")
+        |> live(@test_url_path)
+        |> follow_redirect(conn, route(:users, :show))
 
       assert {:ok, _conn} = result
     end
@@ -44,7 +43,7 @@ defmodule QuizGameWeb.UserLoginLiveTest do
       user = user_fixture(%{password: password})
 
       # make initial request
-      {:ok, lv, _html} = live(conn, ~p"/users/login")
+      {:ok, lv, _html} = live(conn, @test_url_path)
 
       # submit form data
       form_data = [user: %{email: user.email, password: password, remember_me: true}]
@@ -58,9 +57,9 @@ defmodule QuizGameWeb.UserLoginLiveTest do
     test "redirects to expected page with expected message if there are no valid credentials", %{
       conn: conn
     } do
-      {:ok, lv, _html} = live(conn, ~p"/users/login")
+      {:ok, lv, _html} = live(conn, @test_url_path)
 
-      # submit the form
+      # submit the form and follow the redirect
       form_data = [
         user: %{email: "non_existent_user@example.com", password: "non_existent_password"}
       ]
@@ -72,17 +71,17 @@ defmodule QuizGameWeb.UserLoginLiveTest do
       assert Phoenix.Flash.get(resp_conn.assigns.flash, :error) == "Invalid email or password"
 
       # response redirects to expected route
-      assert redirected_to(resp_conn) == @test_url
+      assert redirected_to(resp_conn) == @test_url_path
     end
   end
 
-  describe "Login navigation" do
-    test "redirects to forgot password page when the 'Forgot Password' button is clicked", %{
+  describe "UserLoginLive navigation" do
+    test "redirects to UserResetPasswordLive when the 'Forgot Password' button is clicked", %{
       conn: conn
     } do
       {:ok, lv, _html} = live(conn, route(:users, :login))
 
-      # click the 'forgot password' button
+      # simulate event on expected element
       {:ok, conn} =
         lv
         |> element(~s|a:fl-contains("Forgot your password?")|)

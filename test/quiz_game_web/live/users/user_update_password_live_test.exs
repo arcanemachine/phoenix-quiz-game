@@ -4,117 +4,145 @@ defmodule QuizGameWeb.UserUpdatePasswordLiveTest do
   use QuizGameWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import QuizGame.TestSupport.UsersFixtures
+  import QuizGame.TestSupport.{Assertions, GenericTests, UsersFixtures}
+  import QuizGameWeb.Support.Router
 
   alias QuizGame.Users
 
-  describe "page" do
-    test "renders page without error", %{conn: conn} do
-      {:ok, _lv, html} =
-        conn
-        |> login_user(user_fixture())
-        |> live(~p"/users/me/update/password")
+  @test_url_path route(:users, :update_password)
+  @password_length_min QuizGame.Users.User.password_length_min()
 
-      assert html =~ "Update Password"
-    end
+  describe "UserUpdatePasswordLive page" do
+    test_redirects_unauthenticated_user_to_login_route(@test_url_path_update, "GET")
 
-    test "redirects if user is not logged in", %{conn: conn} do
-      assert {:error, redirect} = live(conn, ~p"/users/me/update/password")
-
-      assert {:redirect, %{to: path, flash: flash}} = redirect
-      assert path == ~p"/users/login"
-      assert %{"warning" => "You must login to continue."} = flash
+    test "renders expected markup", %{conn: conn} do
+      {:ok, _lv, html} = conn |> login_user(user_fixture()) |> live(@test_url_path)
+      assert html_has_title(html, "Update Password")
     end
   end
 
-  describe "update password form" do
+  describe "UserUpdatePasswordLive form" do
     setup %{conn: conn} do
+      # register and login a user with a specific password
       password = valid_user_password()
       user = user_fixture(%{password: password})
+
       %{conn: login_user(conn, user), user: user, password: password}
     end
 
-    test "updates the user password", %{conn: conn, user: user, password: password} do
-      new_password = valid_user_password()
+    test "updates the user's password when form data is valid", %{
+      conn: conn,
+      user: user,
+      password: password
+    } do
+      updated_password = valid_user_password()
 
-      {:ok, lv, _html} = live(conn, ~p"/users/me/update/password")
+      # make initial request
+      {:ok, lv, _html} = live(conn, @test_url_path)
 
-      form_input = %{
+      # build form data
+      form_data = %{
         "current_password" => password,
         "user" => %{
           "email" => user.email,
-          "password" => new_password,
-          "password_confirmation" => new_password
+          "password" => updated_password,
+          "password_confirmation" => updated_password
         }
       }
 
-      form = form(lv, "#password_form", form_input)
-
+      # submit the form and follow the redirect
+      form = form(lv, "#password_form", form_data)
       render_submit(form)
+      resp_conn = follow_trigger_action(form, conn)
 
-      new_password_conn = follow_trigger_action(form, conn)
+      # response redirects to expected route
+      assert redirected_to(resp_conn) == route(:users, :settings)
 
-      assert redirected_to(new_password_conn) == ~p"/users/me/update"
+      # session has been updated with new token
+      assert get_session(resp_conn, :user_token) != get_session(conn, :user_token)
 
-      assert get_session(new_password_conn, :user_token) != get_session(conn, :user_token)
+      # response contains expected flash message
+      assert conn_has_flash_message(resp_conn, :success, "Password updated successfully")
 
-      assert Phoenix.Flash.get(new_password_conn.assigns.flash, :success) =~
-               "Password updated successfully"
-
-      assert Users.get_user_by_email_and_password(user.email, new_password)
+      # record has been updated with expected value
+      assert Users.get_user_by_email_and_password(user.email, updated_password)
     end
 
-    test "renders errors with invalid data (phx-change)", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, ~p"/users/me/update/password")
+    test "renders expected errors on 'change' event when form data is invalid", %{conn: conn} do
+      {:ok, lv, _html} = live(conn, @test_url_path)
 
-      result =
+      html_after_change =
         lv
         |> element("#password_form")
         |> render_change(%{
-          "current_password" => "badpassword",
+          "current_password" => "invalid_password",
           "user" => %{
             "password" => "2short",
-            "password_confirmation" => "does not match"
+            "password_confirmation" => "non_matching_password"
           }
         })
 
-      # still on the same page due to form errors
-      assert result =~ "Update Password"
+      # still on the same page
+      assert html_has_title(html_after_change, "Update Password")
 
-      assert result =~
-               "should be at least #{QuizGame.Users.User.password_length_min()} character"
+      # form has expected error message(s)
+      assert html_form_field_has_error_message(
+               html_after_change,
+               "user[password]",
+               "should be at least #{@password_length_min} character"
+             )
 
-      assert result =~ "does not match"
+      assert html_form_field_has_error_message(
+               html_after_change,
+               "user[password_confirmation]",
+               "does not match"
+             )
     end
 
-    test "renders errors with invalid data (phx-submit)", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, ~p"/users/me/update/password")
+    test "renders expected errors on 'submit' event when form data is invalid", %{conn: conn} do
+      {:ok, lv, _html} = live(conn, @test_url_path)
 
-      result =
+      # submit the form
+      html_after_submit =
         lv
         |> form("#password_form", %{
-          "current_password" => "invalid",
+          "current_password" => "some_password",
           "user" => %{
             "password" => "2short",
-            "password_confirmation" => "does not match"
+            "password_confirmation" => "non_matching_password"
           }
         })
         |> render_submit()
 
-      # assert result =~ "Update Password"
-      assert result =~
-               "should be at least #{QuizGame.Users.User.password_length_min()} character"
+      # still on the same page due to form error(s)
+      assert html_has_title(html_after_submit, "Update Password")
 
-      assert result =~ "does not match"
+      # form has expected error message(s)
+      assert html_form_field_has_error_message(
+               html_after_submit,
+               "user[password]",
+               "should be at least #{@password_length_min} character"
+             )
+
+      assert html_form_field_has_error_message(
+               html_after_submit,
+               "user[password_confirmation]",
+               "does not match"
+             )
     end
   end
 
-  test "redirects if user is not logged in" do
+  test "redirects if user is not authenticated" do
+    # create new request as unauthenticated user
     conn = build_conn()
-    {:error, redirect} = live(conn, ~p"/users/me/update/password")
-    assert {:redirect, %{to: path, flash: flash}} = redirect
-    assert path == ~p"/users/login"
-    assert %{"warning" => message} = flash
-    assert message == "You must login to continue."
+
+    # make request
+    {:error, {:redirect, redirect_resp_conn}} = live(conn, @test_url_path)
+
+    # response redirects to expected route
+    assert redirect_resp_conn == %{
+             flash: %{"warning" => "You must login to continue."},
+             to: route(:users, :login)
+           }
   end
 end

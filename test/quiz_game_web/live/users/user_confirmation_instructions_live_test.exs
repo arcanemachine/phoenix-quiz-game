@@ -9,31 +9,32 @@ defmodule QuizGameWeb.UserConfirmationInstructionsLiveTest do
 
   alias QuizGame.{Repo, Users}
 
-  @test_url route(:users, :confirmation_instructions)
+  @test_url_path route(:users, :confirmation_instructions)
 
   setup do
     %{user: user_fixture()}
   end
 
-  describe "Resend confirmation template" do
-    test "renders expected template", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, @test_url)
+  describe "UserConfirmationInstructionsLive page" do
+    test "renders expected markup", %{conn: conn} do
+      {:ok, _lv, html} = live(conn, @test_url_path)
       assert html_has_title(html, "Resend Confirmation Email")
     end
+  end
 
-    test "sends a new confirmation token", %{conn: conn, user: user} do
-      {:ok, lv, _html} = live(conn, @test_url)
+  describe "UserConfirmationInstructionsLive form" do
+    test "sends a new confirmation token when form data is valid", %{conn: conn, user: user} do
+      {:ok, lv, _html} = live(conn, @test_url_path)
 
-      # submit the form
-      {:ok, conn} =
+      # submit the form and follow the redirect
+      {:ok, resp_conn} =
         lv
         |> form("#resend_confirmation_form", user: %{email: user.email})
         |> render_submit()
         |> follow_redirect(conn, ~p"/")
 
       # response contains expected flash message
-      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~
-               "If your email is in our system"
+      assert conn_has_flash_message(resp_conn, :info, "If your email is in our system")
 
       # expected record has been created
       assert Repo.get_by!(Users.UserToken, user_id: user.id).context == "confirm"
@@ -47,37 +48,36 @@ defmodule QuizGameWeb.UserConfirmationInstructionsLiveTest do
       Repo.update!(Users.User.confirm_changeset(user))
 
       # make initial request
-      {:ok, lv, _html} = live(conn, @test_url)
+      {:ok, lv, _html} = live(conn, @test_url_path)
 
-      # submit the form
-      {:ok, conn} =
+      # submit the form and follow the redirect
+      {:ok, resp_conn} =
         lv
         |> form("#resend_confirmation_form", user: %{email: user.email})
         |> render_submit()
         |> follow_redirect(conn, ~p"/")
 
-      # response contains same message as when valid form is submitted
-      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~
-               "If your email is in our system"
+      # response contains expected flash message (same as when valid form is submitted)
+      assert conn_has_flash_message(resp_conn, :info, "If your email is in our system")
 
       # expected record has not been created
       refute Repo.get_by(Users.UserToken, user_id: user.id)
     end
 
-    test "does not send confirmation token if email is invalid", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @test_url)
+    test "sends email but no token if email is invalid", %{conn: conn} do
+      {:ok, lv, _html} = live(conn, @test_url_path)
 
-      {:ok, conn} =
+      # submit the form and follow the redirect
+      {:ok, resp_conn} =
         lv
-        |> form("#resend_confirmation_form", user: %{email: "unknown@example.com"})
+        |> form("#resend_confirmation_form", user: %{email: "invalid_email@example.com"})
         |> render_submit()
         |> follow_redirect(conn, ~p"/")
 
       # response contains same message as when valid form is submitted
-      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~
-               "If your email is in our system"
+      assert conn_has_flash_message(resp_conn, :info, "If your email is in our system")
 
-      # no user token has been created
+      # no user tokens have been saved in the database
       assert Repo.all(Users.UserToken) == []
     end
   end

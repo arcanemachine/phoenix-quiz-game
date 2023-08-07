@@ -18,16 +18,16 @@ defmodule QuizGameWeb.QuizControllerTest do
   end
 
   describe "quizzes :index" do
-    test "permits unauthenticated user", %{conn: conn} do
+    test "renders expected markup", %{conn: conn} do
       resp_conn = get(conn, route(:quizzes, :index))
       assert html_has_title(resp_conn.resp_body, "Quiz List")
     end
   end
 
   describe "quizzes :new" do
-    @test_url_path route(:quizzes, :new)
-
     setup [:register_and_login_user]
+
+    @test_url_path route(:quizzes, :new)
 
     test_redirects_unauthenticated_user_to_login_route(@test_url_path, "GET")
 
@@ -38,9 +38,9 @@ defmodule QuizGameWeb.QuizControllerTest do
   end
 
   describe "quizzes :create" do
-    @test_url_path route(:quizzes, :create)
-
     setup [:register_and_login_user]
+
+    @test_url_path route(:quizzes, :create)
 
     test_redirects_unauthenticated_user_to_login_route(route(:quizzes, :create), "POST")
 
@@ -65,7 +65,7 @@ defmodule QuizGameWeb.QuizControllerTest do
       # response renders same template
       assert html_has_title(resp_conn.resp_body, "Create Quiz")
 
-      # response contains expected form error message(s)
+      # form has expected error message(s)
       assert html_form_field_has_error_message(resp_conn.resp_body, "quiz[name]", "blank")
     end
   end
