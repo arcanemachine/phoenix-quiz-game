@@ -49,8 +49,8 @@ defmodule QuizGameWeb.Router do
   scope "/users", QuizGameWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    get "/me", UserSessionController, :show
-    get "/me/update", UserSessionController, :settings
+    get "/me", UserController, :show
+    get "/me/update", UserController, :settings
     get "/me/delete", UserController, :delete_confirm
     post "/me/delete", UserController, :delete
 

@@ -4,6 +4,10 @@ defmodule QuizGameWeb.UserController do
   alias QuizGame.Users
   alias QuizGameWeb.UserAuth
 
+  def show(conn, _params) do
+    render(conn, :show, page_title: "Your Profile")
+  end
+
   def settings(conn, _params) do
     conn |> render(:settings, page_title: "Manage Your Profile")
   end

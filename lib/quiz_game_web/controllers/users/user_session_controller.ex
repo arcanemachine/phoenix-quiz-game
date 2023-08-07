@@ -41,10 +41,6 @@ defmodule QuizGameWeb.UserSessionController do
     end
   end
 
-  def show(conn, _params) do
-    render(conn, :show, page_title: "Your Profile")
-  end
-
   def logout_confirm(conn, _params) do
     render(conn, :logout_confirm, page_title: "Confirm Logout")
   end
