@@ -2,8 +2,62 @@ defmodule QuizGame.TestSupport.GenericTests do
   @moduledoc "This project's generic/reusable tests."
   use QuizGameWeb.ConnCase
 
+  # import Phoenix.LiveViewTest
+  import QuizGameWeb.Support.Router
+
+  # @doc """
+  # A macro that wraps the 'auth-required' test functionality into a single line.
+
+  # Use this function if the route under test does not have any dynamic parameters (e.g. record
+  # ID) in the URL.
+  # """
+  # defmacro test_live_redirects_unauthenticated_user_to_login_route(url) do
+  #   quote do
+  #     test "live_redirects unauthenticated user to login route", %{conn: conn} do
+  #       live_redirects_unauthenticated_user_to_login_route(conn, unquote(url))
+  #     end
+  #   end
+  # end
+
+  # @doc """
+  # Use this test for live views for which:
+  #   - Authentication is required, and
+  #   - Unauthenticated users should be redirected to the login page.
+
+  # If the route contains a URL that is known before runtime (ie. doesn't contain any dynamic
+  # parameters, such as an record ID), then you probably just want to use the complementary
+  # macro instead.
+  # """
+  # def live_redirects_unauthenticated_user_to_login_route(conn, url) do
+  #   # create new conn to ensure user is unauthenticated
+  #   conn = logout_user(conn)
+
+  #   # make request to URL path under test
+  #   {:error, {:redirect, redirect_resp_conn}} = live(conn, url)
+
+  #   # redirect contains expected values
+  #   assert redirect_resp_conn == %{
+  #            flash: %{"warning" => "You must login to continue."},
+  #            to: route(:users, :login)
+  #          }
+  # end
+
   @doc """
-  Use this test for routes for which:
+  A macro that wraps the 'auth-required' test functionality into a single line.
+
+  Use this function if the route under test does not have any dynamic parameters (e.g. record
+  ID) in the URL.
+  """
+  defmacro test_redirects_unauthenticated_user_to_login_route(url, http_method) do
+    quote do
+      test "redirects unauthenticated user to login route: #{unquote(http_method)}", %{conn: conn} do
+        redirects_unauthenticated_user_to_login_route(conn, unquote(url), unquote(http_method))
+      end
+    end
+  end
+
+  @doc """
+  Use this test for dead views for which:
     - Authentication is required, and
     - Unauthenticated users should be redirected to the login page.
 
@@ -27,25 +81,11 @@ defmodule QuizGame.TestSupport.GenericTests do
 
     # response contains temporary redirect to login route
     assert resp_conn.status == 302
-    assert get_resp_header(resp_conn, "location") == [~p"/users/login"]
+    assert get_resp_header(resp_conn, "location") == [route(:users, :login)]
 
     # response contains expected flash message
     assert Phoenix.Flash.get(resp_conn.assigns.flash, :warning) =~
              "You must login to continue."
-  end
-
-  @doc """
-  A macro that wraps the 'auth-required' test functionality into a single line.
-
-  Use this function if the route under test does not have any dynamic parameters (e.g. record
-  ID) in the URL.
-  """
-  defmacro test_redirects_unauthenticated_user_to_login_route(url, http_method) do
-    quote do
-      test "redirects unauthenticated user to login route: #{unquote(http_method)}", %{conn: conn} do
-        redirects_unauthenticated_user_to_login_route(conn, unquote(url), unquote(http_method))
-      end
-    end
   end
 
   # defmacro forbids_unpermissioned_user(conn, url, http_method) do

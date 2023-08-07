@@ -13,12 +13,12 @@ defmodule QuizGameWeb.UserUpdatePasswordLiveTest do
   @password_length_min QuizGame.Users.User.password_length_min()
 
   describe "UserUpdatePasswordLive page" do
-    test_redirects_unauthenticated_user_to_login_route(@test_url_path_update, "GET")
-
     test "renders expected markup", %{conn: conn} do
       {:ok, _lv, html} = conn |> login_user(user_fixture()) |> live(@test_url_path)
       assert html_has_title(html, "Update Password")
     end
+
+    test_redirects_unauthenticated_user_to_login_route(@test_url_path, "GET")
   end
 
   describe "UserUpdatePasswordLive form" do
@@ -30,11 +30,7 @@ defmodule QuizGameWeb.UserUpdatePasswordLiveTest do
       %{conn: login_user(conn, user), user: user, password: password}
     end
 
-    test "updates the user's password when form data is valid", %{
-      conn: conn,
-      user: user,
-      password: password
-    } do
+    test "updates the user's password", %{conn: conn, user: user, password: password} do
       updated_password = valid_user_password()
 
       # make initial request
@@ -133,7 +129,7 @@ defmodule QuizGameWeb.UserUpdatePasswordLiveTest do
   end
 
   test "redirects if user is not authenticated" do
-    # create new request as unauthenticated user
+    # initialize new request so that user
     conn = build_conn()
 
     # make request
