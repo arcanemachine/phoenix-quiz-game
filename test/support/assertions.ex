@@ -29,6 +29,14 @@ defmodule QuizGame.TestSupport.Assertions do
     |> (Enum.empty?() |> Kernel.not())
   end
 
+  @doc "Check if HTML has a form with errors."
+  @spec html_form_has_errors(String.t()) :: boolean()
+  def html_form_has_errors(html) do
+    html
+    |> Floki.find("[data-test-label='alert-form-errors']")
+    |> (Enum.empty?() |> Kernel.not())
+  end
+
   @doc "Check all elements in a given HTML string for matching content."
   @spec html_has_content(String.t(), String.t()) :: boolean()
   def html_has_content(html, content) do

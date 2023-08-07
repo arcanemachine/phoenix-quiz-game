@@ -126,7 +126,7 @@ defmodule QuizGameWeb.CoreComponents do
   def alert_form_errors(assigns) do
     ~H"""
     <.alert kind="error" data-test-label="alert-form-errors">
-      Fix the errors in the form to continue.
+      You must fix the errors in the form to continue.
     </.alert>
     """
   end
@@ -1027,7 +1027,7 @@ defmodule QuizGameWeb.CoreComponents do
           "text-sm text-error font-bold text-center transition-opacity duration-300",
           @has_errors || "opacity-0"
         ]}>
-          Fix the errors in the form to continue.
+          You must fix the errors in the form to continue.
         </div>
       </div>
     </.form>

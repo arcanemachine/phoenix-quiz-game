@@ -3,6 +3,8 @@ defmodule QuizGame.Quizzes.Quiz do
   use Ecto.Schema
   import Ecto.Changeset
 
+  def name_length_max(), do: 96
+
   schema "quizzes" do
     field :name, :string
     # field :subject, :string
@@ -16,6 +18,7 @@ defmodule QuizGame.Quizzes.Quiz do
     quiz
     |> cast(attrs, [:name, :user_id])
     |> validate_required([:name])
+    |> validate_length(:name, max: name_length_max())
 
     # |> cast(attrs, [:name, :subject])
     # |> validate_required([:name, :subject])

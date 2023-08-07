@@ -6,10 +6,12 @@ defmodule QuizGameWeb.QuizControllerTest do
   import QuizGame.TestSupport.{Assertions, GenericTests, QuizzesFixtures}
   import QuizGameWeb.Support.Router
 
-  # data
-  @create_attrs %{name: "test_name"}
-  @update_attrs %{name: "updated_name"}
-  @invalid_attrs %{name: ""}
+  alias QuizGame.Quizzes.Quiz
+
+  @valid_attrs %{name: "some_name"}
+  @valid_attrs_update %{name: "updated_name"}
+
+  @name_length_max Quiz.name_length_max()
 
   # setup
   defp create_quiz(_) do
@@ -45,7 +47,7 @@ defmodule QuizGameWeb.QuizControllerTest do
     test_redirects_unauthenticated_user_to_login_route(route(:quizzes, :create), "POST")
 
     test "creates expected record", %{conn: conn} do
-      resp_conn = post(conn, @test_url_path, quiz: @create_attrs)
+      resp_conn = post(conn, @test_url_path, quiz: @valid_attrs)
 
       # redirects to expected route
       assert %{quiz_id: quiz_id} = redirected_params(resp_conn)
@@ -56,17 +58,36 @@ defmodule QuizGameWeb.QuizControllerTest do
       resp_conn_2 = get(resp_conn, record_detail_url)
 
       # template contains new record content
-      assert html_response(resp_conn_2, 200) |> html_has_content(@create_attrs[:name])
+      assert html_response(resp_conn_2, 200) |> html_has_content(@valid_attrs[:name])
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      resp_conn = post(conn, @test_url_path, quiz: @invalid_attrs)
-
-      # response renders same template
-      assert html_has_title(resp_conn.resp_body, "Create Quiz")
+      ## name - blank
+      resp_conn_name_blank = post(conn, @test_url_path, quiz: %{@valid_attrs | name: ""})
 
       # form has expected error message(s)
-      assert html_form_field_has_error_message(resp_conn.resp_body, "quiz[name]", "blank")
+      assert html_form_has_errors(resp_conn_name_blank.resp_body)
+
+      assert html_form_field_has_error_message(
+               resp_conn_name_blank.resp_body,
+               "quiz[name]",
+               "blank"
+             )
+
+      ## name - too long
+      too_long_name = String.duplicate("i", @name_length_max + 1)
+
+      resp_conn_name_too_long =
+        post(conn, @test_url_path, quiz: %{@valid_attrs | name: too_long_name})
+
+      # form has expected error message(s)
+      assert html_form_has_errors(resp_conn_name_too_long.resp_body)
+
+      assert html_form_field_has_error_message(
+               resp_conn_name_too_long.resp_body,
+               "quiz[name]",
+               "should be at most #{@name_length_max} character(s)"
+             )
     end
   end
 
@@ -110,7 +131,7 @@ defmodule QuizGameWeb.QuizControllerTest do
 
     test "updates expected record", %{conn: conn, quiz: quiz} do
       test_url_path = route(:quizzes, :update, quiz_id: quiz.id)
-      resp_conn = put(conn, test_url_path, quiz: @update_attrs)
+      resp_conn = put(conn, test_url_path, quiz: @valid_attrs_update)
 
       # redirects to record detail
       record_detail_url = route(:quizzes, :show, quiz_id: quiz.id)
@@ -119,13 +140,38 @@ defmodule QuizGameWeb.QuizControllerTest do
       # redirect renders expected template
       resp_conn_2 = resp_conn |> get(record_detail_url)
       assert html_has_title(resp_conn_2.resp_body, "Quiz Info")
-      assert html_response(resp_conn_2, 200) |> html_has_content(@update_attrs[:name])
+      assert html_response(resp_conn_2, 200) |> html_has_content(@valid_attrs_update[:name])
     end
 
     test "renders errors when data is invalid", %{conn: conn, quiz: quiz} do
       test_url_path = route(:quizzes, :update, quiz_id: quiz.id)
-      resp_conn = put(conn, test_url_path, quiz: @invalid_attrs)
-      assert html_has_title(resp_conn.resp_body, "Edit Quiz")
+
+      ## name - blank
+      resp_conn_name_blank = put(conn, test_url_path, quiz: %{@valid_attrs | name: ""})
+
+      # form has expected error message(s)
+      assert html_form_has_errors(resp_conn_name_blank.resp_body)
+
+      assert html_form_field_has_error_message(
+               resp_conn_name_blank.resp_body,
+               "quiz[name]",
+               "blank"
+             )
+
+      ## name - too long
+      too_long_name = String.duplicate("i", @name_length_max + 1)
+
+      resp_conn_name_too_long =
+        put(conn, test_url_path, quiz: %{@valid_attrs | name: too_long_name})
+
+      # form has expected error message(s)
+      assert html_form_has_errors(resp_conn_name_too_long.resp_body)
+
+      assert html_form_field_has_error_message(
+               resp_conn_name_too_long.resp_body,
+               "quiz[name]",
+               "should be at most #{@name_length_max} character(s)"
+             )
     end
   end
 
@@ -141,7 +187,7 @@ defmodule QuizGameWeb.QuizControllerTest do
       test_url_path = route(:quizzes, :show, quiz_id: quiz.id)
       resp_conn = delete(conn, route(:quizzes, :delete, quiz_id: quiz.id))
 
-      # redirects to record list
+      # redirects to record index
       assert redirected_to(resp_conn) == route(:quizzes, :index)
 
       # expected record has been deleted
