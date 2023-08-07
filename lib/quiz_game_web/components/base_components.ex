@@ -190,6 +190,30 @@ defmodule QuizGameWeb.BaseComponents do
   end
 
   @doc """
+  Renders the page title and/or subtitle.
+
+  ## Example
+
+      <.base_page_title title={assigns[:page_title]} subtitle={assigns[:page_subtitle]} />
+  """
+
+  attr :title, :string, doc: "the page title"
+  attr :subtitle, :string, doc: "the page subtitle"
+
+  def base_page_title(assigns) do
+    ~H"""
+    <section :if={@title || @subtitle} class="mb-12">
+      <h1 :if={@title} class="text-4xl text-center font-bold">
+        <%= @title %>
+      </h1>
+      <h2 :if={@subtitle} class="mt-2 text-2xl text-center">
+        <%= @subtitle %>
+      </h2>
+    </section>
+    """
+  end
+
+  @doc """
   Renders a container element for toast messages.
 
   ## Example
@@ -211,30 +235,6 @@ defmodule QuizGameWeb.BaseComponents do
       x-on:phx:toast-show-warning.window="(evt) => $store.toasts.show('warning', evt.detail)"
       x-on:phx:toast-show-error.window="(evt) => $store.toasts.show('error', evt.detail)"
     />
-    """
-  end
-
-  @doc """
-  Renders the page title and/or subtitle.
-
-  ## Example
-
-      <.base_page_title title={assigns[:page_title]} subtitle={assigns[:page_subtitle]} />
-  """
-
-  attr :title, :string, doc: "the page title"
-  attr :subtitle, :string, doc: "the page subtitle"
-
-  def base_page_title(assigns) do
-    ~H"""
-    <section :if={@title || @subtitle} class="mb-8">
-      <h1 :if={@title} class="text-4xl text-center font-bold">
-        <%= @title %>
-      </h1>
-      <h2 :if={@subtitle} class="mt-2 text-2xl text-center">
-        <%= @subtitle %>
-      </h2>
-    </section>
     """
   end
 end
