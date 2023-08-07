@@ -1,3 +1,7 @@
+<div :if={Enum.empty?(@quizzes)} class="italic">
+  No quizzes have been created.
+</div>
+
 <ul class="record-index">
   <li :for={quiz <- @quizzes}>
     <a href={route(:quizzes, :show, quiz_id: quiz.id)}>
