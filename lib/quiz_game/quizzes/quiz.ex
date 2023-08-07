@@ -14,7 +14,7 @@ defmodule QuizGame.Quizzes.Quiz do
   @doc false
   def changeset(quiz, attrs) do
     quiz
-    |> cast(attrs, [:name])
+    |> cast(attrs, [:name, :user_id])
     |> validate_required([:name])
 
     # |> cast(attrs, [:name, :subject])

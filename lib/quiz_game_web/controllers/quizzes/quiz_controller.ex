@@ -15,6 +15,9 @@ defmodule QuizGameWeb.QuizController do
   end
 
   def create(conn, %{"quiz" => quiz_params}) do
+    # set user_id to current_user
+    quiz_params = Map.merge(quiz_params, %{"user_id" => conn.assigns.current_user.id})
+
     case Quizzes.create_quiz(quiz_params) do
       {:ok, quiz} ->
         conn
