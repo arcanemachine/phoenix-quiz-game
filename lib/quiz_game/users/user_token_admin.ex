@@ -13,7 +13,7 @@ defmodule QuizGame.Users.UserTokenAdmin do
 
   def form_fields(_) do
     [
-      id: %{type: :text, create: :readonly, update: :readonly}
+      id: %{create: :readonly, update: :readonly}
     ]
   end
 end
