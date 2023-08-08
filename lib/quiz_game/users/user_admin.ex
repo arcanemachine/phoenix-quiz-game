@@ -6,6 +6,7 @@ defmodule QuizGame.Users.UserAdmin do
       username: nil,
       id: nil,
       email: nil,
+      is_admin: %{choices: [{"Yes", true}, {"No", false}]},
       inserted_at: %{name: "Registered"},
       confirmed_at: nil
     ]
@@ -16,6 +17,7 @@ defmodule QuizGame.Users.UserAdmin do
       id: %{update: :hidden},
       username: %{create: :hidden},
       email: %{create: :hidden},
+      is_admin: %{choices: [{"Yes", true}, {"No", false}]},
       confirmed_at: %{create: :hidden}
     ]
   end
