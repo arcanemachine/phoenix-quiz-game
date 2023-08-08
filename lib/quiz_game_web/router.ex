@@ -1,6 +1,9 @@
 defmodule QuizGameWeb.Router do
   use QuizGameWeb, :router
 
+  # , pipe_through: [:require_authenticated_user]
+  use Kaffy.Routes, scope: "/admin"
+
   import QuizGameWeb.Support.Plug
   import QuizGameWeb.UserAuth
 

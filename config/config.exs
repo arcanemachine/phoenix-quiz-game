@@ -31,6 +31,12 @@ config :esbuild,
 # json
 config :phoenix, :json_library, Jason
 
+# kaffy
+config :kaffy,
+  otp_app: :quiz_game,
+  ecto_repo: QuizGame.Repo,
+  router: QuizGameWeb.Router
+
 # logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
