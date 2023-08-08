@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Support.PlugTest do
+defmodule QuizGameWeb.TestSupport.PlugTest do
   @moduledoc false
   use QuizGameWeb.ConnCase
 

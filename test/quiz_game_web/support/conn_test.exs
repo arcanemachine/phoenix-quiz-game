@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.ConnTest do
+defmodule QuizGameWeb.TestSupport.ConnTest do
   @moduledoc false
   use QuizGameWeb.ConnCase
   alias QuizGameWeb.Support.Conn, as: ProjectConn
