@@ -3,6 +3,9 @@ defmodule QuizGame.TestSupport.UsersFixtures do
   This module defines test helpers for creating entities via the `QuizGame.Users` context.
   """
 
+  alias QuizGame.Repo
+  alias QuizGame.Users.User
+
   def unique_user_username, do: "user#{System.unique_integer()}"
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
   def valid_user_password, do: "hello world!"
@@ -22,6 +25,13 @@ defmodule QuizGame.TestSupport.UsersFixtures do
       |> QuizGame.Users.register_user()
 
     user
+  end
+
+  def grant_admin_permissions_to_user(%User{} = user) do
+    changeset = Ecto.Changeset.change(user, %{is_admin: true})
+    {:ok, updated_user} = Repo.update(changeset)
+
+    updated_user
   end
 
   def extract_user_token(fun) do

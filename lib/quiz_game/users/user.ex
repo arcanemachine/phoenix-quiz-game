@@ -42,7 +42,7 @@ defmodule QuizGame.Users.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:username, :email, :password, :is_admin])
+    |> cast(attrs, [:username, :email, :password])
     |> validate_username(opts)
     |> validate_email(opts)
     |> validate_confirmation(:password, message: "does not match password")
