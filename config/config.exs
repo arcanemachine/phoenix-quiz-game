@@ -20,7 +20,7 @@ config :quiz_game, QuizGameWeb.Endpoint,
 
 # esbuild
 config :esbuild,
-  version: "0.18.11",
+  version: "0.18.20",
   default: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
@@ -47,7 +47,7 @@ config :quiz_game, QuizGame.Mailer, adapter: Swoosh.Adapters.Local
 
 # tailwind
 config :tailwind,
-  version: "3.3.2",
+  version: "3.3.3",
   default: [
     args: ~w(
       --config=tailwind.config.cjs
