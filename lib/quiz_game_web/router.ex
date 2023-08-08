@@ -1,10 +1,6 @@
 defmodule QuizGameWeb.Router do
   use QuizGameWeb, :router
 
-  use Kaffy.Routes,
-    scope: "/admin",
-    pipe_through: [:fetch_current_user, :require_admin_user]
-
   import QuizGameWeb.Support.Plug
   import QuizGameWeb.UserAuth
 
@@ -95,12 +91,17 @@ defmodule QuizGameWeb.Router do
     end
   end
 
-  # DEV
+  # SUPPORT - admin
+  use Kaffy.Routes,
+    scope: "/support/admin",
+    pipe_through: [:fetch_current_user, :require_admin_user]
+
+  # SUPPORT - dev
   if Application.compile_env(:quiz_game, :dev_routes) do
     import Phoenix.LiveDashboard.Router
     alias QuizGameWeb.DevLive
 
-    scope "/dev" do
+    scope "/support/dev" do
       pipe_through :browser
 
       # built-in routes
