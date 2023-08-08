@@ -25,7 +25,12 @@ defmodule QuizGameWeb.Support.Conn do
 
   @spec text_response(conn, status, resp_body) :: any()
   def text_response(%Plug.Conn{} = conn, status, resp_body \\ nil) do
-    resp_body = resp_body || "#{status}"
+    resp_body =
+      resp_body ||
+        cond do
+          is_integer(status) -> Plug.Conn.Status.reason_phrase(status)
+          is_atom(status) -> Atom.to_string(status)
+        end
 
     conn
     |> put_status(status)

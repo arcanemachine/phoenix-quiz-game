@@ -22,14 +22,14 @@ defmodule QuizGameWeb.TestSupport.ConnTest do
       response = ProjectConn.text_response(conn, 200)
 
       # returns expected response
-      assert text_response(response, 200) =~ "200"
+      assert text_response(response, 200) =~ "OK"
     end
 
     test "when is_integer(status) and custom response body", %{conn: conn} do
-      response = ProjectConn.text_response(conn, 200, "OK")
+      response = ProjectConn.text_response(conn, 200, "Some resp_body")
 
       # returns expected response
-      assert text_response(response, 200) =~ "OK"
+      assert text_response(response, 200) =~ "Some resp_body"
     end
   end
 end
