@@ -19,7 +19,7 @@ defmodule QuizGame.Users.UserAdmin do
       id: %{create: :readonly, update: :hidden},
       username: %{create: :hidden},
       email: %{create: :hidden},
-      is_admin: %{choices: [{"Yes", true}, {"No", false}]},
+      is_admin: %{choices: [{"No", false}, {"Yes", true}]},
       confirmed_at: %{create: :hidden}
     ]
   end

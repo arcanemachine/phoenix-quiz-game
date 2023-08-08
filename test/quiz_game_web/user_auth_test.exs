@@ -234,6 +234,42 @@ defmodule QuizGameWeb.UserAuthTest do
     end
   end
 
+  describe "require_admin_user/2" do
+    test "returns unmodified conn if current user is admin", %{conn: conn} do
+      # create admin user
+      admin_user = user_fixture(%{is_admin: true})
+
+      # assign current user
+      admin_conn = conn |> assign(:current_user, admin_user)
+
+      # make request
+      resp_conn = admin_conn |> UserAuth.require_admin_user([])
+
+      # request is unmodified
+      assert resp_conn == admin_conn
+    end
+
+    test "returns expected response if user is unauthenticated", %{conn: conn} do
+      resp_conn = conn |> UserAuth.require_admin_user([])
+      assert resp_conn.halted
+      assert resp_conn.status == 403
+      assert resp_conn.resp_body == "Forbidden"
+    end
+
+    test "returns expected response if authenticated user is not admin", %{conn: conn} do
+      # create non-admin user
+      non_admin_user = user_fixture(%{is_admin: false})
+
+      # make request
+      resp_conn = conn |> assign(:current_user, non_admin_user) |> UserAuth.require_admin_user([])
+
+      # returned expected response
+      assert resp_conn.halted
+      assert resp_conn.status == 403
+      assert resp_conn.resp_body == "Forbidden"
+    end
+  end
+
   describe "require_authenticated_user/2" do
     test "redirects if user is not authenticated", %{conn: conn} do
       conn = conn |> fetch_flash() |> UserAuth.require_authenticated_user([])

@@ -10,6 +10,8 @@ defmodule QuizGame.Users.User do
     field :email, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
+
+    field :is_admin, :boolean, default: false
     field :confirmed_at, :naive_datetime
 
     timestamps()
@@ -40,7 +42,7 @@ defmodule QuizGame.Users.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:username, :email, :password])
+    |> cast(attrs, [:username, :email, :password, :is_admin])
     |> validate_username(opts)
     |> validate_email(opts)
     |> validate_confirmation(:password, message: "does not match password")

@@ -210,6 +210,15 @@ defmodule QuizGameWeb.UserAuth do
     end
   end
 
+  @doc "Used for routes that require the user to have 'admin' permissions."
+  def require_admin_user(conn, _opts) do
+    if conn.assigns[:current_user] && Map.get(conn.assigns.current_user, :is_admin) do
+      conn
+    else
+      conn |> QuizGameWeb.Support.Conn.text_response(403)
+    end
+  end
+
   @doc """
   Used for routes that require the user to be authenticated.
 

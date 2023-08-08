@@ -11,7 +11,7 @@ defmodule QuizGame.Repo.Migrations.CreateUsersAuthTables do
       add :hashed_password, :string, null: false
       add :confirmed_at, :naive_datetime
 
-      add :is_admin, :boolean, null: false, default: false
+      add :is_admin, :boolean, null: false
 
       timestamps()
     end
