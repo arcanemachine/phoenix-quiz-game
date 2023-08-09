@@ -3,7 +3,9 @@ defmodule QuizGame.Users.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  def email_length_max(), do: 160
   def password_length_min(), do: 8
+  def password_length_max(), do: 72
 
   schema "users" do
     field :username, :string
@@ -59,14 +61,14 @@ defmodule QuizGame.Users.User do
     changeset
     |> validate_required([:email])
     |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "is not a valid email address")
-    |> validate_length(:email, max: 160)
+    |> validate_length(:email, max: email_length_max())
     |> maybe_validate_unique_email(opts)
   end
 
   defp validate_password(changeset, opts) do
     changeset
     |> validate_required([:password])
-    |> validate_length(:password, min: password_length_min(), max: 72)
+    |> validate_length(:password, min: password_length_min(), max: password_length_max())
     # Examples of additional password validation:
     # |> validate_format(:password, ~r/[a-z]/, message: "at least one lower case character")
     # |> validate_format(:password, ~r/[A-Z]/, message: "at least one upper case character")
@@ -81,7 +83,7 @@ defmodule QuizGame.Users.User do
     if hash_password? && password && changeset.valid? do
       changeset
       # If using Bcrypt, then further validate it is at most 72 bytes long
-      |> validate_length(:password, max: 72, count: :bytes)
+      |> validate_length(:password, max: password_length_max(), count: :bytes)
       # Hashing could be done with `Ecto.Changeset.prepare_changes/2`, but that
       # would keep the database transaction open longer and hurt performance.
       |> put_change(:hashed_password, Bcrypt.hash_pwd_salt(password))
