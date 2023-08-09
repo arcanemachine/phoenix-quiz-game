@@ -32,14 +32,14 @@ defmodule QuizGameWeb.Router do
   end
 
   # QUIZZES - login required
-  scope "/quizzes", QuizGameWeb do
+  scope "/quizzes", QuizGameWeb.Quizzes do
     pipe_through [:browser, :require_authenticated_user]
 
     resources "/", QuizController, param: "quiz_id", except: [:index, :show]
   end
 
   # QUIZZES - allow any user
-  scope "/quizzes", QuizGameWeb do
+  scope "/quizzes", QuizGameWeb.Quizzes do
     pipe_through [:browser]
 
     resources "/", QuizController, param: "quiz_id", only: [:index, :show]

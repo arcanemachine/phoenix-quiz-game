@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.QuizController do
+defmodule QuizGameWeb.Quizzes.QuizController do
   use QuizGameWeb, :controller
 
   alias QuizGame.Quizzes

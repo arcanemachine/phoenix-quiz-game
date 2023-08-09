@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.QuizControllerTest do
+defmodule QuizGameWeb.Quizzes.QuizControllerTest do
   @moduledoc false
 
   use QuizGameWeb.ConnCase

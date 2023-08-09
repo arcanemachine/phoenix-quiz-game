@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.QuizHTML do
+defmodule QuizGameWeb.Quizzes.QuizHTML do
   use QuizGameWeb, :html
 
   embed_templates "quiz_html/*"
