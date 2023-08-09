@@ -6,12 +6,21 @@
 alias QuizGame.Users
 
 if Application.get_env(:quiz_game, :server_environment) == :dev do
-  # create primary user
+  # create admin user
+  {:ok, user} =
+    Users.register_user(%{
+      username: "admin",
+      email: "admin@example.com",
+      password: "password"
+    })
+
+  Users.update_user_is_admin(user, true)
+
+  # create non-admin user
   Users.register_user(%{
     username: "user",
     email: "user@example.com",
-    password: "password",
-    is_admin: true
+    password: "password"
   })
 
   # # create other users
