@@ -1,6 +1,8 @@
 defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
   use QuizGameWeb, :live_view
+
   alias QuizGame.Users
+  alias QuizGame.Users.User
 
   @impl Phoenix.LiveView
   def mount(%{"token" => token}, _session, socket) do
@@ -57,6 +59,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
         type="email"
         label="New email"
         value={@email_form_current_email}
+        maxlength={User.email_length_max()}
         required
       />
       <.input
@@ -66,6 +69,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
         type="password"
         label="Confirm your password"
         value={@email_form_current_password}
+        maxlength={User.password_length_max()}
         required
       />
       <:actions>

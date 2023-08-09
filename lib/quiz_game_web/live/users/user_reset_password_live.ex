@@ -1,6 +1,8 @@
 defmodule QuizGameWeb.UsersLive.UserResetPasswordLive do
   use QuizGameWeb, :live_view
+
   alias QuizGame.Users
+  alias QuizGame.Users.User
 
   @impl Phoenix.LiveView
   def mount(params, _session, socket) do
@@ -31,7 +33,14 @@ defmodule QuizGameWeb.UsersLive.UserResetPasswordLive do
       phx-submit="reset_password"
       phx-change="validate"
     >
-      <.input field={@form[:password]} type="password" label="New password" required />
+      <.input
+        field={@form[:password]}
+        type="password"
+        label="New password"
+        minlength={User.password_length_min()}
+        maxlength={User.password_length_max()}
+        required
+      />
       <.input
         field={@form[:password_confirmation]}
         type="password"

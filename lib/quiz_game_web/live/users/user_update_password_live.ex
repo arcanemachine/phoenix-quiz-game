@@ -45,6 +45,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdatePasswordLive do
         label="Current password"
         id="current_password_for_password"
         value={@current_password}
+        maxlength={User.password_length_max()}
         required
       />
       <.input
@@ -52,12 +53,14 @@ defmodule QuizGameWeb.UsersLive.UserUpdatePasswordLive do
         type="password"
         label="New password"
         minlength={User.password_length_min()}
+        maxlength={User.password_length_max()}
         required
       />
       <.input
         field={@password_form[:password_confirmation]}
         type="password"
         minlength={User.password_length_min()}
+        maxlength={User.password_length_max()}
         label="Confirm new password"
       />
       <:actions>

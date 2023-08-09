@@ -1,6 +1,8 @@
 defmodule QuizGameWeb.UsersLive.UserForgotPasswordLive do
   use QuizGameWeb, :live_view
+
   alias QuizGame.Users
+  alias QuizGame.Users.User
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
@@ -15,7 +17,13 @@ defmodule QuizGameWeb.UsersLive.UserForgotPasswordLive do
     </.form_intro_text>
 
     <.simple_form for={@form} id="reset_password_form" phx-submit="send_email">
-      <.input field={@form[:email]} type="email" label="Your email" required />
+      <.input
+        field={@form[:email]}
+        type="email"
+        label="Your email"
+        maxlength={User.email_length_max()}
+        required
+      />
       <.input type="captcha" />
 
       <:actions>

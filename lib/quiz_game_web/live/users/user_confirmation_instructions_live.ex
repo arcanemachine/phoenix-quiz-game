@@ -1,6 +1,8 @@
 defmodule QuizGameWeb.UsersLive.UserConfirmationInstructionsLive do
   use QuizGameWeb, :live_view
+
   alias QuizGame.Users
+  alias QuizGame.Users.User
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
@@ -15,7 +17,13 @@ defmodule QuizGameWeb.UsersLive.UserConfirmationInstructionsLive do
     </.form_intro_text>
 
     <.simple_form for={@form} id="resend_confirmation_form" phx-submit="send_instructions">
-      <.input field={@form[:email]} type="email" label="Your email" required />
+      <.input
+        field={@form[:email]}
+        type="email"
+        label="Your email"
+        maxlength={User.email_length_max()}
+        required
+      />
       <.input type="captcha" />
 
       <:actions>

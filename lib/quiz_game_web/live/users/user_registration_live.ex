@@ -47,19 +47,27 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
       phx-trigger-action={@trigger_submit}
     >
       <.input field={@form[:username]} type="text" label="Username" required />
-      <.input field={@form[:email]} type="email" label="Email" required />
+      <.input
+        field={@form[:email]}
+        type="email"
+        label="Email"
+        maxlength={User.email_length_max()}
+        required
+      />
       <.input
         field={@form[:password]}
         type="password"
         label="Password"
-        minlength={QuizGame.Users.User.password_length_min()}
+        minlength={User.password_length_min()}
+        maxlength={User.password_length_max()}
         required
       />
       <.input
         field={@form[:password_confirmation]}
         type="password"
         label="Confirm password"
-        minlength={QuizGame.Users.User.password_length_min()}
+        minlength={User.password_length_min()}
+        maxlength={User.password_length_max()}
         required
       />
 
