@@ -54,4 +54,64 @@ defmodule QuizGame.QuizzesTest do
       assert %Ecto.Changeset{} = Quizzes.change_quiz(quiz)
     end
   end
+
+  describe "cards" do
+    alias QuizGame.Quizzes.Card
+
+    import QuizGame.QuizzesFixtures
+
+    @invalid_attrs %{format: nil, image: nil, question: nil, answers: nil}
+
+    test "list_cards/0 returns all cards" do
+      card = card_fixture()
+      assert Quizzes.list_cards() == [card]
+    end
+
+    test "get_card!/1 returns the card with given id" do
+      card = card_fixture()
+      assert Quizzes.get_card!(card.id) == card
+    end
+
+    test "create_card/1 with valid data creates a card" do
+      valid_attrs = %{format: :multiple_choice, image: "some image", question: "some question", answers: ["option1", "option2"]}
+
+      assert {:ok, %Card{} = card} = Quizzes.create_card(valid_attrs)
+      assert card.format == :multiple_choice
+      assert card.image == "some image"
+      assert card.question == "some question"
+      assert card.answers == ["option1", "option2"]
+    end
+
+    test "create_card/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Quizzes.create_card(@invalid_attrs)
+    end
+
+    test "update_card/2 with valid data updates the card" do
+      card = card_fixture()
+      update_attrs = %{format: :true_or_false, image: "some updated image", question: "some updated question", answers: ["option1"]}
+
+      assert {:ok, %Card{} = card} = Quizzes.update_card(card, update_attrs)
+      assert card.format == :true_or_false
+      assert card.image == "some updated image"
+      assert card.question == "some updated question"
+      assert card.answers == ["option1"]
+    end
+
+    test "update_card/2 with invalid data returns error changeset" do
+      card = card_fixture()
+      assert {:error, %Ecto.Changeset{}} = Quizzes.update_card(card, @invalid_attrs)
+      assert card == Quizzes.get_card!(card.id)
+    end
+
+    test "delete_card/1 deletes the card" do
+      card = card_fixture()
+      assert {:ok, %Card{}} = Quizzes.delete_card(card)
+      assert_raise Ecto.NoResultsError, fn -> Quizzes.get_card!(card.id) end
+    end
+
+    test "change_card/1 returns a card changeset" do
+      card = card_fixture()
+      assert %Ecto.Changeset{} = Quizzes.change_card(card)
+    end
+  end
 end

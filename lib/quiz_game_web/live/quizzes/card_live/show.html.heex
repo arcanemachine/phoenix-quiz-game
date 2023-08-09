@@ -1,0 +1,29 @@
+<.header>
+  Card <%= @card.id %>
+  <:subtitle>This is a card record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/quizzes/cards/#{@card}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit card</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Format"><%= @card.format %></:item>
+  <:item title="Question"><%= @card.question %></:item>
+  <:item title="Image"><%= @card.image %></:item>
+  <:item title="Answers"><%= @card.answers %></:item>
+</.list>
+
+<.back navigate={~p"/quizzes/cards"}>Back to cards</.back>
+
+<.modal :if={@live_action == :edit} id="card-modal" show on_cancel={JS.patch(~p"/quizzes/cards/#{@card}")}>
+  <.live_component
+    module={QuizGameWeb.Quizzes.CardLive.FormComponent}
+    id={@card.id}
+    title={@page_title}
+    action={@live_action}
+    card={@card}
+    patch={~p"/quizzes/cards/#{@card}"}
+  />
+</.modal>

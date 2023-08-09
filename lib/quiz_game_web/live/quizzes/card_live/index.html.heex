@@ -1,0 +1,44 @@
+<.header>
+  Listing Cards
+  <:actions>
+    <.link patch={~p"/quizzes/cards/new"}>
+      <.button>New Card</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="cards"
+  rows={@streams.cards}
+  row_click={fn {_id, card} -> JS.navigate(~p"/quizzes/cards/#{card}") end}
+>
+  <:col :let={{_id, card}} label="Format"><%= card.format %></:col>
+  <:col :let={{_id, card}} label="Question"><%= card.question %></:col>
+  <:col :let={{_id, card}} label="Image"><%= card.image %></:col>
+  <:col :let={{_id, card}} label="Answers"><%= card.answers %></:col>
+  <:action :let={{_id, card}}>
+    <div class="sr-only">
+      <.link navigate={~p"/quizzes/cards/#{card}"}>Show</.link>
+    </div>
+    <.link patch={~p"/quizzes/cards/#{card}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, card}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: card.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="card-modal" show on_cancel={JS.patch(~p"/quizzes/cards")}>
+  <.live_component
+    module={QuizGameWeb.Quizzes.CardLive.FormComponent}
+    id={@card.id || :new}
+    title={@page_title}
+    action={@live_action}
+    card={@card}
+    patch={~p"/quizzes/cards"}
+  />
+</.modal>
