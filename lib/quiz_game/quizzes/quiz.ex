@@ -3,7 +3,7 @@ defmodule QuizGame.Quizzes.Quiz do
   use Ecto.Schema
   import Ecto.Changeset
 
-  def name_length_max(), do: 96
+  def name_length_max(), do: 64
 
   schema "quizzes" do
     field :name, :string
