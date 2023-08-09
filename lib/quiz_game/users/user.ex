@@ -3,6 +3,8 @@ defmodule QuizGame.Users.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  def username_length_min(), do: 3
+  def username_length_max(), do: 32
   def email_length_max(), do: 160
   def password_length_min(), do: 8
   def password_length_max(), do: 72
@@ -54,6 +56,7 @@ defmodule QuizGame.Users.User do
   defp validate_username(changeset, opts) do
     changeset
     |> validate_required([:username])
+    |> validate_length(:username, min: username_length_min(), max: username_length_max())
     |> maybe_validate_unique_username(opts)
   end
 
