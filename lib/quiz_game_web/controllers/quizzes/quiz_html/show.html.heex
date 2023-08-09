@@ -1,9 +1,11 @@
+<% quiz_user = QuizGame.Users.get_user!(@quiz.user_id) %>
+
 <.record_show>
   <:item label="Name">
     <%= @quiz.name %>
   </:item>
   <:item label="Created by">
-    <%= @quiz.user_id || "N/A" %>
+    <%= quiz_user.username %>
   </:item>
 </.record_show>
 
