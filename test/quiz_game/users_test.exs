@@ -122,6 +122,27 @@ defmodule QuizGame.UsersTest do
     end
   end
 
+  describe "update_user_is_admin/2" do
+    test "updates user admin permissions when data is valid" do
+      user = user_fixture()
+
+      # add admin permissions
+      assert {:ok, %User{} = user} = Users.update_user_is_admin(user, true)
+      assert user.is_admin == true
+
+      # remove admin permissions
+      assert {:ok, %User{} = user} = Users.update_user_is_admin(user, false)
+      assert user.is_admin == false
+    end
+
+    test "returns error changeset when data is not valid" do
+      user = user_fixture()
+
+      assert {:error, %Ecto.Changeset{}} = Users.update_user_is_admin(user, "invalid value")
+      assert user == Users.get_user!(user.id)
+    end
+  end
+
   describe "change_user_email/2" do
     test "returns a user changeset" do
       assert %Ecto.Changeset{} = changeset = Users.change_user_email(%User{})

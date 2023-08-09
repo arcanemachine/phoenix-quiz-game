@@ -237,7 +237,8 @@ defmodule QuizGameWeb.UserAuthTest do
   describe "require_admin_user/2" do
     test "returns unmodified conn if current user is admin", %{conn: conn} do
       # create admin user
-      admin_user = user_fixture() |> grant_admin_permissions_to_user()
+      user = user_fixture()
+      {:ok, admin_user} = Users.update_user_is_admin(user, true)
 
       # assign current user
       admin_conn = conn |> assign(:current_user, admin_user)

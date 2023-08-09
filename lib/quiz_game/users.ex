@@ -96,6 +96,23 @@ defmodule QuizGame.Users do
   end
 
   ## Settings
+  @doc """
+  Manages a user's admin permissions.
+
+  ## Examples
+
+      iex> update_user_is_admin(user, true)
+      {:ok, %User{}}
+
+      iex> update_user_is_admin(user, :bad_value)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_user_is_admin(%User{} = user, is_admin) do
+    user
+    |> User.is_admin_changeset(%{is_admin: is_admin})
+    |> Repo.update()
+  end
 
   @doc """
   Returns an `%Ecto.Changeset{}` for changing the user email.

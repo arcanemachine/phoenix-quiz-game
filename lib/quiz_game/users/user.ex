@@ -111,6 +111,13 @@ defmodule QuizGame.Users.User do
     end
   end
 
+  @doc "A user changeset for managing admin permissions."
+  def is_admin_changeset(quiz, attrs, _opts \\ []) do
+    quiz
+    |> cast(attrs, [:is_admin])
+    |> validate_required([:is_admin])
+  end
+
   @doc """
   A user changeset for changing the email.
 
