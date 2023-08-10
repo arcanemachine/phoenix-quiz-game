@@ -1,11 +1,23 @@
 defmodule QuizGameWeb.Quizzes.CardLiveTest do
+  @moduledoc false
+
   use QuizGameWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import QuizGame.QuizzesFixtures
+  import QuizGame.TestSupport.QuizzesFixtures
 
-  @create_attrs %{format: :multiple_choice, image: "some image", question: "some question", answers: ["option1", "option2"]}
-  @update_attrs %{format: :true_or_false, image: "some updated image", question: "some updated question", answers: ["option1"]}
+  @create_attrs %{
+    format: :multiple_choice,
+    image: "some image",
+    question: "some question",
+    answers: ["option1", "option2"]
+  }
+  @update_attrs %{
+    format: :true_or_false,
+    image: "some updated image",
+    question: "some updated question",
+    answers: ["option1"]
+  }
   @invalid_attrs %{format: nil, image: nil, question: nil, answers: []}
 
   defp create_card(_) do

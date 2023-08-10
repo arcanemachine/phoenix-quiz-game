@@ -32,7 +32,12 @@
   </:action>
 </.table>
 
-<.modal :if={@live_action in [:new, :edit]} id="card-modal" show on_cancel={JS.patch(~p"/quizzes/cards")}>
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="card-modal"
+  show
+  on_cancel={JS.patch(~p"/quizzes/cards")}
+>
   <.live_component
     module={QuizGameWeb.Quizzes.CardLive.FormComponent}
     id={@card.id || :new}

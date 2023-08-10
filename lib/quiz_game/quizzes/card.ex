@@ -3,7 +3,9 @@ defmodule QuizGame.Quizzes.Card do
   import Ecto.Changeset
 
   schema "cards" do
-    field :format, Ecto.Enum, values: [:multiple_choice, :true_or_false, :text_entry, :number_entry]
+    field :format, Ecto.Enum,
+      values: [:multiple_choice, :true_or_false, :text_entry, :number_entry]
+
     field :image, :string
     field :question, :string
     field :answers, {:array, :string}

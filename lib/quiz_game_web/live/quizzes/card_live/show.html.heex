@@ -17,7 +17,12 @@
 
 <.back navigate={~p"/quizzes/cards"}>Back to cards</.back>
 
-<.modal :if={@live_action == :edit} id="card-modal" show on_cancel={JS.patch(~p"/quizzes/cards/#{@card}")}>
+<.modal
+  :if={@live_action == :edit}
+  id="card-modal"
+  show
+  on_cancel={JS.patch(~p"/quizzes/cards/#{@card}")}
+>
   <.live_component
     module={QuizGameWeb.Quizzes.CardLive.FormComponent}
     id={@card.id}

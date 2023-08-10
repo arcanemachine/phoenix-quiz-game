@@ -1,11 +1,12 @@
 defmodule QuizGame.QuizzesTest do
   @moduledoc false
   use QuizGame.DataCase
-  alias QuizGame.Quizzes
-  alias QuizGame.Quizzes.Quiz
   import QuizGame.TestSupport.QuizzesFixtures
+  alias QuizGame.Quizzes
 
   describe "quizzes" do
+    alias QuizGame.Quizzes.Quiz
+
     @invalid_attrs %{name: nil}
 
     test "list_quizzes/0 returns all quizzes" do
@@ -58,8 +59,6 @@ defmodule QuizGame.QuizzesTest do
   describe "cards" do
     alias QuizGame.Quizzes.Card
 
-    import QuizGame.QuizzesFixtures
-
     @invalid_attrs %{format: nil, image: nil, question: nil, answers: nil}
 
     test "list_cards/0 returns all cards" do
@@ -73,7 +72,12 @@ defmodule QuizGame.QuizzesTest do
     end
 
     test "create_card/1 with valid data creates a card" do
-      valid_attrs = %{format: :multiple_choice, image: "some image", question: "some question", answers: ["option1", "option2"]}
+      valid_attrs = %{
+        format: :multiple_choice,
+        image: "some image",
+        question: "some question",
+        answers: ["option1", "option2"]
+      }
 
       assert {:ok, %Card{} = card} = Quizzes.create_card(valid_attrs)
       assert card.format == :multiple_choice
@@ -88,7 +92,13 @@ defmodule QuizGame.QuizzesTest do
 
     test "update_card/2 with valid data updates the card" do
       card = card_fixture()
-      update_attrs = %{format: :true_or_false, image: "some updated image", question: "some updated question", answers: ["option1"]}
+
+      update_attrs = %{
+        format: :true_or_false,
+        image: "some updated image",
+        question: "some updated question",
+        answers: ["option1"]
+      }
 
       assert {:ok, %Card{} = card} = Quizzes.update_card(card, update_attrs)
       assert card.format == :true_or_false

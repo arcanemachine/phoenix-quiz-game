@@ -22,7 +22,7 @@ defmodule QuizGameWeb.Router do
   end
 
   # BASE - allow any user
-  scope "/", QuizGameWeb do
+  scope "/", QuizGameWeb, as: :base do
     pipe_through :browser
 
     get "/", BaseController, :root
@@ -32,16 +32,27 @@ defmodule QuizGameWeb.Router do
   end
 
   # QUIZZES - login required
-  scope "/quizzes", QuizGameWeb.Quizzes do
+  scope "/quizzes", QuizGameWeb.Quizzes, as: :quizzes do
     pipe_through [:browser, :require_authenticated_user]
 
+    # card
+    live "/cards/new", CardLive.Index, :new
+    live "/cards/:id/edit", CardLive.Index, :edit
+    live "/cards/:id/show/edit", CardLive.Show, :edit
+
+    # quizzes
     resources "/", QuizController, param: "quiz_id", except: [:index, :show]
   end
 
   # QUIZZES - allow any user
-  scope "/quizzes", QuizGameWeb.Quizzes do
+  scope "/quizzes", QuizGameWeb.Quizzes, as: :quizzes do
     pipe_through [:browser]
 
+    # cards
+    live "/cards", CardLive.Index, :index
+    live "/cards/:id", CardLive.Show, :show
+
+    # quizzes
     resources "/", QuizController, param: "quiz_id", only: [:index, :show]
   end
 
