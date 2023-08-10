@@ -1,13 +1,19 @@
 defmodule QuizGame.Repo.Migrations.CreateCards do
+  @moduledoc false
   use Ecto.Migration
 
   def change do
     create table(:cards) do
-      add :format, :string
+      # associations
+      add :quiz_id, references(:quizzes, on_delete: :delete_all)
+
+      # data
       add :question, :string
       add :image, :string
       add :answers, {:array, :string}
-      add :quiz_id, references(:quizzes, on_delete: :nothing)
+
+      # attributes
+      add :format, :string
 
       timestamps()
     end

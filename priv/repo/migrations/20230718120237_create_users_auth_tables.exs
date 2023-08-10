@@ -6,12 +6,16 @@ defmodule QuizGame.Repo.Migrations.CreateUsersAuthTables do
     execute "CREATE EXTENSION IF NOT EXISTS citext", ""
 
     create table(:users) do
+      # data
       add :username, :citext, null: false
       add :email, :citext, null: false
-      add :hashed_password, :string, null: false
-      add :confirmed_at, :naive_datetime
 
+      # attributes
+      add :confirmed_at, :naive_datetime
       add :is_admin, :boolean, null: false
+
+      # computed
+      add :hashed_password, :string, null: false
 
       timestamps()
     end

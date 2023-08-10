@@ -10,13 +10,20 @@ defmodule QuizGame.Users.User do
   def password_length_max(), do: 72
 
   schema "users" do
+    # associations
+    has_many :quizzes, QuizGame.Quizzes.Quiz
+
+    # data
     field :username, :string
     field :email, :string
     field :password, :string, virtual: true, redact: true
-    field :hashed_password, :string, redact: true
 
-    field :is_admin, :boolean, default: false
+    # attributes
     field :confirmed_at, :naive_datetime
+    field :is_admin, :boolean, default: false
+
+    # computed
+    field :hashed_password, :string, redact: true
 
     timestamps()
   end

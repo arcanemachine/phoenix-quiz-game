@@ -1,15 +1,20 @@
 defmodule QuizGame.Quizzes.Card do
+  @moduledoc "The Card schema."
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "cards" do
-    field :format, Ecto.Enum,
-      values: [:multiple_choice, :true_or_false, :text_entry, :number_entry]
+    # associations
+    belongs_to :quiz, QuizGame.Quizzes.Quiz
 
+    # data
     field :image, :string
     field :question, :string
     field :answers, {:array, :string}
-    field :quiz_id, :id
+
+    # attributes
+    field :format, Ecto.Enum,
+      values: [:multiple_choice, :true_or_false, :text_entry, :number_entry]
 
     timestamps()
   end
