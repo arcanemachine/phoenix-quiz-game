@@ -35,10 +35,12 @@ defmodule QuizGameWeb.Router do
   scope "/quizzes", QuizGameWeb.Quizzes, as: :quizzes do
     pipe_through [:browser, :require_authenticated_user]
 
-    # card
-    live "/cards/new", CardLive.Index, :new
-    live "/cards/:id/edit", CardLive.Index, :edit
-    live "/cards/:id/show/edit", CardLive.Show, :edit
+    # cards
+    scope "/:quiz_id/cards" do
+      live "/new", CardLive.Index, :new
+      live "/:id/edit", CardLive.Index, :edit
+      live "/:id/show/edit", CardLive.Show, :edit
+    end
 
     # quizzes
     resources "/", QuizController, param: "quiz_id", except: [:index, :show]
@@ -49,8 +51,12 @@ defmodule QuizGameWeb.Router do
     pipe_through [:browser]
 
     # cards
-    live "/cards", CardLive.Index, :index
-    live "/cards/:id", CardLive.Show, :show
+    scope "/:quiz_id" do
+      pipe_through [:fetch_quiz]
+
+      live "/cards", CardLive.Index, :index
+      live "/cards/:id", CardLive.Show, :show
+    end
 
     # quizzes
     resources "/", QuizController, param: "quiz_id", only: [:index, :show]

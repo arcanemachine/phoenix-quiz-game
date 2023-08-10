@@ -7,10 +7,12 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
   def render(assigns) do
     ~H"""
     <div>
-      <.header>
+      <div class="mb-4 text-xl font-bold">
         <%= @title %>
-        <:subtitle>Use this form to manage card records in your database.</:subtitle>
-      </.header>
+      </div>
+      <.form_intro_text>
+        Use this form to manage card records in your database.
+      </.form_intro_text>
 
       <.simple_form
         for={@form}

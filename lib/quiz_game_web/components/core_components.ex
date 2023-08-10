@@ -917,6 +917,27 @@ defmodule QuizGameWeb.CoreComponents do
   end
 
   @doc """
+  Renders a modal title.
+
+  Useful in situations where the modal title cannot be passed as a param.
+
+  ## Examples
+
+      <.modal_title>
+        Hello world!
+      </.modal_title>
+  """
+  attr :title, :string, required: true
+
+  def modal_title(assigns) do
+    ~H"""
+    <div class="mb-4 text-xl font-bold">
+      <%= @title %>
+    </div>
+    """
+  end
+
+  @doc """
   Renders a list of attributes for a given record. Used in :show templates.
 
   ## Examples

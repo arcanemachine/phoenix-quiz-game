@@ -59,6 +59,10 @@
 }
 
 /* utility */
+.list-add {
+  list-style-type: "+ ";
+}
+
 .list-back {
   list-style-type: "< ";
 }

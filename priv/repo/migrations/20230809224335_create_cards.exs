@@ -8,12 +8,12 @@ defmodule QuizGame.Repo.Migrations.CreateCards do
       add :quiz_id, references(:quizzes, on_delete: :delete_all)
 
       # data
-      add :question, :string
+      add :question, :string, null: false
       add :image, :string
-      add :answers, {:array, :string}
+      add :answers, {:array, :string}, null: false
 
       # attributes
-      add :format, :string
+      add :format, :string, null: false
 
       timestamps()
     end

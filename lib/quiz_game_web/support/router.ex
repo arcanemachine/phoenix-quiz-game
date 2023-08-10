@@ -52,6 +52,25 @@ defmodule QuizGameWeb.Support.Router do
     end
   end
 
+  def route(:quizzes_cards, action, opts) do
+    case action do
+      :index ->
+        ~p"/quizzes/#{opts[:quiz_id]}/cards"
+
+      :new ->
+        ~p"/quizzes/#{opts[:quiz_id]}/cards/new"
+
+      :create ->
+        ~p"/quizzes/#{opts[:quiz_id]}/cards"
+
+      :edit ->
+        ~p"/quizzes/#{opts[:quiz_id]}/cards/#{opts[:card_id]}/edit"
+
+      n when n in [:show, :update, :delete] ->
+        ~p"/quizzes/#{opts[:quiz_id]}/cards/#{opts[:card_id]}"
+    end
+  end
+
   # credo:disable-for-next-line
   def route(:users, action, opts) do
     case action do

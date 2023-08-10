@@ -4,20 +4,22 @@ defmodule QuizGameWeb.Quizzes.CardLive.Index do
   alias QuizGame.Quizzes
   alias QuizGame.Quizzes.Card
 
-  @impl true
-  def mount(_params, _session, socket) do
-    {:ok, stream(socket, :cards, Quizzes.list_cards())}
+  @impl Phoenix.LiveView
+  def mount(params, _session, socket) do
+    quiz = Quizzes.get_quiz!(params["quiz_id"])
+
+    {:ok, socket |> assign(:quiz, quiz) |> stream(:cards, Quizzes.list_cards())}
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
-  defp apply_action(socket, :edit, %{"id" => id}) do
+  defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Edit Card")
-    |> assign(:card, Quizzes.get_card!(id))
+    |> assign(:page_title, "Card List")
+    |> assign(:card, nil)
   end
 
   defp apply_action(socket, :new, _params) do
@@ -26,18 +28,18 @@ defmodule QuizGameWeb.Quizzes.CardLive.Index do
     |> assign(:card, %Card{})
   end
 
-  defp apply_action(socket, :index, _params) do
+  defp apply_action(socket, :edit, %{"id" => id}) do
     socket
-    |> assign(:page_title, "Listing Cards")
-    |> assign(:card, nil)
+    |> assign(:page_title, "Edit Card")
+    |> assign(:card, Quizzes.get_card!(id))
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_info({QuizGameWeb.Quizzes.CardLive.FormComponent, {:saved, card}}, socket) do
     {:noreply, stream_insert(socket, :cards, card)}
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_event("delete", %{"id" => id}, socket) do
     card = Quizzes.get_card!(id)
     {:ok, _} = Quizzes.delete_card(card)

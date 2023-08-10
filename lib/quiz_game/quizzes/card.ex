@@ -23,6 +23,6 @@ defmodule QuizGame.Quizzes.Card do
   def changeset(card, attrs) do
     card
     |> cast(attrs, [:format, :question, :image, :answers])
-    |> validate_required([:format, :question, :image, :answers])
+    |> validate_required([:format, :question, :answers])
   end
 end

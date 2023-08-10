@@ -1,16 +1,11 @@
-<.header>
-  Listing Cards
-  <:actions>
-    <.link patch={~p"/quizzes/cards/new"}>
-      <.button>New Card</.button>
-    </.link>
-  </:actions>
-</.header>
-
 <.table
   id="cards"
   rows={@streams.cards}
-  row_click={fn {_id, card} -> JS.navigate(~p"/quizzes/cards/#{card}") end}
+  row_click={
+    fn {_id, card} ->
+      JS.navigate(route(:quizzes_cards, :show, quiz_id: @quiz.id, card_id: card.id))
+    end
+  }
 >
   <:col :let={{_id, card}} label="Format"><%= card.format %></:col>
   <:col :let={{_id, card}} label="Question"><%= card.question %></:col>
@@ -18,9 +13,11 @@
   <:col :let={{_id, card}} label="Answers"><%= card.answers %></:col>
   <:action :let={{_id, card}}>
     <div class="sr-only">
-      <.link navigate={~p"/quizzes/cards/#{card}"}>Show</.link>
+      <.link navigate={route(:quizzes_cards, :show, quiz_id: @quiz.id, card_id: card.id)}>
+        Show
+      </.link>
     </div>
-    <.link patch={~p"/quizzes/cards/#{card}/edit"}>Edit</.link>
+    <.link patch={route(:quizzes_cards, :edit, quiz_id: @quiz.id, card_id: card.id)}>Edit</.link>
   </:action>
   <:action :let={{id, card}}>
     <.link
@@ -36,7 +33,7 @@
   :if={@live_action in [:new, :edit]}
   id="card-modal"
   show
-  on_cancel={JS.patch(~p"/quizzes/cards")}
+  on_cancel={JS.patch(route(:quizzes_cards, :index, quiz_id: @quiz.id))}
 >
   <.live_component
     module={QuizGameWeb.Quizzes.CardLive.FormComponent}
@@ -44,6 +41,19 @@
     title={@page_title}
     action={@live_action}
     card={@card}
-    patch={~p"/quizzes/cards"}
+    patch={route(:quizzes_cards, :index, quiz_id: @quiz.id)}
   />
 </.modal>
+
+<.action_links>
+  <.action_links_item kind="add">
+    <.link patch={route(:quizzes_cards, :new, quiz_id: @quiz.id)}>
+      Create new card
+    </.link>
+  </.action_links_item>
+  <.action_links_item kind="back">
+    <.link href={route(:quizzes, :show, quiz_id: @quiz.id)}>
+      Return to quiz
+    </.link>
+  </.action_links_item>
+</.action_links>

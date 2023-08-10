@@ -28,8 +28,11 @@ defmodule QuizGameWeb.Support.Conn do
     resp_body =
       resp_body ||
         cond do
-          is_integer(status) -> Plug.Conn.Status.reason_phrase(status)
-          is_atom(status) -> Atom.to_string(status)
+          is_integer(status) ->
+            Plug.Conn.Status.reason_phrase(status)
+
+          is_atom(status) ->
+            status |> Atom.to_string() |> String.capitalize() |> String.replace("_", " ")
         end
 
     conn
