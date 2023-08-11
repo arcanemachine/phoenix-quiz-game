@@ -181,16 +181,16 @@ defmodule QuizGame.Users do
 
   ## Examples
 
-      iex> deliver_user_update_email_instructions(user, current_email, &url(~p"/users/me/update/confirm/#{&1})")
+      iex> deliver_email_update_instructions(user, current_email, &url(~p"/users/me/update/confirm/#{&1})")
       {:ok, %{to: ..., body: ...}}
 
   """
-  def deliver_user_update_email_instructions(%User{} = user, current_email, update_email_url_fun)
-      when is_function(update_email_url_fun, 1) do
+  def deliver_email_update_instructions(%User{} = user, current_email, email_update_url_fun)
+      when is_function(email_update_url_fun, 1) do
     {encoded_token, user_token} = UserToken.build_email_token(user, "change:#{current_email}")
 
     Repo.insert!(user_token)
-    UserNotifier.deliver_update_email_instructions(user, update_email_url_fun.(encoded_token))
+    UserNotifier.deliver_email_update_instructions(user, email_update_url_fun.(encoded_token))
   end
 
   @doc """
@@ -275,21 +275,21 @@ defmodule QuizGame.Users do
 
   ## Examples
 
-      iex> deliver_user_confirmation_instructions(user, &url(~p"/users/confirm/email/#{&1}"))
+      iex> deliver_email_verify_instructions(user, route(:users, :email_verify_confirm, token: "123"))
       {:ok, %{to: ..., body: ...}}
 
-      iex> deliver_user_confirmation_instructions(confirmed_user, &url(~p"/users/confirm/email/#{&1}"))
+      iex> deliver_email_verify_instructions(confirmed_user, route(:users, :email_verify_confirm, token: "123"))
       {:error, :already_confirmed}
 
   """
-  def deliver_user_confirmation_instructions(%User{} = user, confirmation_url_fun)
+  def deliver_email_verify_instructions(%User{} = user, confirmation_url_fun)
       when is_function(confirmation_url_fun, 1) do
     if user.confirmed_at do
       {:error, :already_confirmed}
     else
       {encoded_token, user_token} = UserToken.build_email_token(user, "confirm")
       Repo.insert!(user_token)
-      UserNotifier.deliver_confirmation_instructions(user, confirmation_url_fun.(encoded_token))
+      UserNotifier.deliver_email_verify_instructions(user, confirmation_url_fun.(encoded_token))
     end
   end
 
@@ -322,15 +322,15 @@ defmodule QuizGame.Users do
 
   ## Examples
 
-      iex> deliver_user_reset_password_instructions(user, &url(~p"/users/reset-password/#{&1}"))
+      iex> deliver_password_reset_instructions(user, &url(~p"/users/reset-password/#{&1}"))
       {:ok, %{to: ..., body: ...}}
 
   """
-  def deliver_user_reset_password_instructions(%User{} = user, reset_password_url_fun)
-      when is_function(reset_password_url_fun, 1) do
-    {encoded_token, user_token} = UserToken.build_email_token(user, "reset_password")
+  def deliver_password_reset_instructions(%User{} = user, password_reset_url_fun)
+      when is_function(password_reset_url_fun, 1) do
+    {encoded_token, user_token} = UserToken.build_email_token(user, "password_reset")
     Repo.insert!(user_token)
-    UserNotifier.deliver_reset_password_instructions(user, reset_password_url_fun.(encoded_token))
+    UserNotifier.deliver_password_reset_instructions(user, password_reset_url_fun.(encoded_token))
   end
 
   @doc """
@@ -338,15 +338,15 @@ defmodule QuizGame.Users do
 
   ## Examples
 
-      iex> get_user_by_reset_password_token("validtoken")
+      iex> get_user_by_password_reset_token("validtoken")
       %User{}
 
-      iex> get_user_by_reset_password_token("invalidtoken")
+      iex> get_user_by_password_reset_token("invalidtoken")
       nil
 
   """
-  def get_user_by_reset_password_token(token) do
-    with {:ok, query} <- UserToken.verify_email_token_query(token, "reset_password"),
+  def get_user_by_password_reset_token(token) do
+    with {:ok, query} <- UserToken.verify_email_token_query(token, "password_reset"),
          %User{} = user <- Repo.one(query) do
       user
     else

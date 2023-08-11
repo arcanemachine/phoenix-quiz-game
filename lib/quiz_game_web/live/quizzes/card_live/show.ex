@@ -4,8 +4,10 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
   alias QuizGame.Quizzes
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, socket}
+  def mount(params, _session, socket) do
+    quiz = Quizzes.get_quiz!(params["quiz_id"])
+
+    {:ok, socket |> assign(:quiz, quiz)}
   end
 
   @impl true

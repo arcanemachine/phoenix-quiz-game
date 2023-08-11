@@ -10,7 +10,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
   alias QuizGame.Users
   alias QuizGame.Repo
 
-  def test_url_path(opts), do: route(:users, :confirmation, token: opts[:token])
+  def test_url_path(opts), do: route(:users, :email_verify_confirm, token: opts[:token])
 
   setup do
     %{user: user_fixture()}
@@ -27,7 +27,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
     test "does not confirm a given token more than once", %{conn: conn, user: user} do
       token =
         extract_user_token(fn url ->
-          Users.deliver_user_confirmation_instructions(user, url)
+          Users.deliver_email_verify_instructions(user, url)
         end)
 
       test_url_path = test_url_path(token: token)

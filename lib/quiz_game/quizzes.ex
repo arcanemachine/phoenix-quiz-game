@@ -40,6 +40,22 @@ defmodule QuizGame.Quizzes do
 
   ## Examples
 
+      iex> create_quiz(%Ecto.Changeset{})
+      {:ok, %Quiz{}}
+
+      iex> create_quiz(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_quiz2(%Ecto.Changeset{} = changeset) do
+    changeset |> Repo.insert()
+  end
+
+  @doc """
+  Creates a quiz.
+
+  ## Examples
+
       iex> create_quiz(%{field: value})
       {:ok, %Quiz{}}
 
@@ -49,7 +65,7 @@ defmodule QuizGame.Quizzes do
   """
   def create_quiz(attrs \\ %{}) do
     %Quiz{}
-    |> Quiz.changeset(attrs)
+    |> Quiz.unsafe_changeset(attrs)
     |> Repo.insert()
   end
 
@@ -67,7 +83,7 @@ defmodule QuizGame.Quizzes do
   """
   def update_quiz(%Quiz{} = quiz, attrs) do
     quiz
-    |> Quiz.changeset(attrs)
+    |> Quiz.unsafe_changeset(attrs)
     |> Repo.update()
   end
 
@@ -97,7 +113,7 @@ defmodule QuizGame.Quizzes do
 
   """
   def change_quiz(%Quiz{} = quiz, attrs \\ %{}) do
-    Quiz.changeset(quiz, attrs)
+    Quiz.safe_changeset(quiz, attrs)
   end
 
   alias QuizGame.Quizzes.Card
@@ -145,7 +161,7 @@ defmodule QuizGame.Quizzes do
   """
   def create_card(attrs \\ %{}) do
     %Card{}
-    |> Card.changeset(attrs)
+    |> Card.unsafe_changeset(attrs)
     |> Repo.insert()
   end
 
@@ -163,7 +179,7 @@ defmodule QuizGame.Quizzes do
   """
   def update_card(%Card{} = card, attrs) do
     card
-    |> Card.changeset(attrs)
+    |> Card.unsafe_changeset(attrs)
     |> Repo.update()
   end
 
@@ -193,6 +209,6 @@ defmodule QuizGame.Quizzes do
 
   """
   def change_card(%Card{} = card, attrs \\ %{}) do
-    Card.changeset(card, attrs)
+    Card.safe_changeset(card, attrs)
   end
 end

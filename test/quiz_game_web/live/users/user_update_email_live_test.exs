@@ -9,10 +9,10 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
 
   alias QuizGame.Users
 
-  @test_url_path_update route(:users, :update_email)
+  @test_url_path_update route(:users, :email_update_solicit)
 
   def test_url_path_confirm(opts) do
-    route(:users, :update_email_confirm, token: opts[:token])
+    route(:users, :email_update_confirm, token: opts[:token])
   end
 
   describe "UserUpdateEmailLive page" do
@@ -68,7 +68,7 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
         lv
         |> element("#email_form")
         |> render_change(%{
-          "action" => "update_email",
+          "action" => "email_update",
           "current_password" => "some_password",
           "user" => %{"email" => "invalid email"}
         })
@@ -125,7 +125,7 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
 
       token =
         extract_user_token(fn url ->
-          Users.deliver_user_update_email_instructions(%{user | email: email}, user.email, url)
+          Users.deliver_user_email_update_instructions(%{user | email: email}, user.email, url)
         end)
 
       %{conn: login_user(conn, user), token: token, email: email, user: user}

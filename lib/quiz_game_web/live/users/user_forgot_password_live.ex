@@ -16,7 +16,7 @@ defmodule QuizGameWeb.UsersLive.UserForgotPasswordLive do
       Fill out the form, and we will send you an email with a link to reset your password.
     </.form_intro_text>
 
-    <.simple_form for={@form} id="reset_password_form" phx-submit="send_email">
+    <.simple_form for={@form} id="password_reset_form" phx-submit="send_email">
       <.input
         field={@form[:email]}
         type="email"
@@ -37,7 +37,7 @@ defmodule QuizGameWeb.UsersLive.UserForgotPasswordLive do
   def handle_event("send_email", %{"user" => %{"email" => email}} = form_params, socket) do
     if QuizGameWeb.Support.form_captcha_valid?(form_params) do
       if user = Users.get_user_by_email(email) do
-        Users.deliver_user_reset_password_instructions(
+        Users.deliver_password_reset_instructions(
           user,
           &url(~p"/users/reset-password/#{&1}")
         )

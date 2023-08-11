@@ -7,7 +7,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
   import QuizGameWeb.Support.Router
   import QuizGame.TestSupport.{Assertions, UsersFixtures}
 
-  @test_url_path route(:users, :registration)
+  @test_url_path route(:users, :register)
   @password_length_min QuizGame.Users.User.password_length_min()
 
   describe "UserRegistrationLive page" do

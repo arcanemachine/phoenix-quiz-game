@@ -28,7 +28,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Index do
     |> assign(:card, %Card{})
   end
 
-  defp apply_action(socket, :edit, %{"id" => id}) do
+  defp apply_action(socket, :edit, %{"quiz_id" => id, "id" => id}) do
     socket
     |> assign(:page_title, "Edit Card")
     |> assign(:card, Quizzes.get_card!(id))

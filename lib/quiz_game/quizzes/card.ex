@@ -19,10 +19,24 @@ defmodule QuizGame.Quizzes.Card do
     timestamps()
   end
 
-  @doc false
-  def changeset(card, attrs) do
+  @unsafe_fields_required [:quiz_id]
+  @safe_fields_optional [:image]
+  @safe_fields_required [:format, :question, :answers]
+
+  @doc """
+  A changeset which contains one or more fields that should not be modified by
+  the user.
+  """
+  def unsafe_changeset(card, attrs) do
     card
-    |> cast(attrs, [:format, :question, :image, :answers])
-    |> validate_required([:format, :question, :answers])
+    |> cast(attrs, @unsafe_fields_required ++ @safe_fields_required ++ @safe_fields_optional)
+    |> validate_required(@unsafe_fields_required ++ @safe_fields_required)
+  end
+
+  @doc "A changeset whose fields can be safely modified by the user."
+  def safe_changeset(card, attrs) do
+    card
+    |> cast(attrs, @safe_fields_required ++ @safe_fields_optional)
+    |> validate_required(@safe_fields_required)
   end
 end

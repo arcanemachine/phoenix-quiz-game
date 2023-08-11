@@ -8,12 +8,18 @@ defmodule QuizGameWeb.Support.Router do
   @typedoc "The actions available in the base context."
   @type base_action :: :root | :contact_us | :privacy_policy | :terms_of_use
 
+  @typedoc "Generic dead view CRUD actions"
+  @type dead_crud_action :: :index | :new | :create | :show
+
+  @typedoc "Generic live view CRUD actions"
+  @type live_crud_action :: :index | :show | :new | :edit
+
   @doc """
   Match against a route with no URL parameters.
 
   ## Examples
 
-      iex> path(:users, :login)
+      iex> route(:users, :login)
       "/users/login"
   """
 
@@ -25,7 +31,7 @@ defmodule QuizGameWeb.Support.Router do
 
   ## Examples
 
-      iex> path(:users, :confirmation, token: 123)
+      iex> route(:users, :email_verify_confirm, token: 123)
       "/users/confirm/email/123"
   """
 
@@ -75,22 +81,35 @@ defmodule QuizGameWeb.Support.Router do
   def route(:users, action, opts) do
     case action do
       # auth
-      :registration -> ~p"/users/register"
-      :confirmation_instructions -> ~p"/users/confirm/email"
-      :confirmation -> ~p"/users/confirm/email/#{opts[:token]}"
+      :register -> ~p"/users/register"
+      :email_verify_solicit -> ~p"/users/confirm/email"
+      :email_verify_confirm -> ~p"/users/confirm/email/#{opts[:token]}"
       :login -> ~p"/users/login"
       :logout_confirm -> ~p"/users/logout"
       :logout -> ~p"/users/logout"
-      :forgot_password -> ~p"/users/reset-password"
-      :reset_password -> ~p"/users/reset-password/#{opts[:token]}"
+      :password_reset -> ~p"/users/reset-password"
+      :password_reset_confirm -> ~p"/users/reset-password/#{opts[:token]}"
       # crud
       :show -> ~p"/users/me"
-      :settings -> ~p"/users/me/update"
-      :update_email -> ~p"/users/me/update/email"
-      :update_email_confirm -> ~p"/users/me/update/email/confirm/#{opts[:token]}"
-      :update_password -> ~p"/users/me/update/password"
+      :settings -> ~p"/users/me/edit"
+      :email_update_solicit -> ~p"/users/me/edit/email"
+      :email_update_confirm -> ~p"/users/me/edit/email/confirm/#{opts[:token]}"
+      :password_update -> ~p"/users/me/edit/password"
       :delete_confirm -> ~p"/users/me/delete"
       :delete -> ~p"/users/me/delete"
     end
+  end
+
+  @doc """
+  Converts params to a query string.
+
+  ## Examples
+
+      iex> query_string(hello: "world")
+      "?hello=world"
+  """
+  @spec query_string(keyword()) :: String.t()
+  def query_string(params) do
+    "?#{URI.encode_query(params)}"
   end
 end

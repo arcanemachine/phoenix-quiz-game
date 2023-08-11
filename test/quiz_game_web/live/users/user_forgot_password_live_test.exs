@@ -10,7 +10,7 @@ defmodule QuizGameWeb.UserForgotPasswordLiveTest do
   alias QuizGame.Users
   alias QuizGame.Repo
 
-  @test_url_path route(:users, :forgot_password)
+  @test_url_path route(:users, :password_reset)
 
   describe "UserForgotPasswordLive page" do
     test "renders expected markup", %{conn: conn} do
@@ -40,7 +40,7 @@ defmodule QuizGameWeb.UserForgotPasswordLiveTest do
       # submit the form
       {:ok, conn} =
         lv
-        |> form("#reset_password_form", user: %{"email" => user.email})
+        |> form("#password_reset_form", user: %{"email" => user.email})
         |> render_submit()
         |> follow_redirect(conn, ~p"/")
 
@@ -48,7 +48,7 @@ defmodule QuizGameWeb.UserForgotPasswordLiveTest do
       assert conn_has_flash_message(conn, :info, "If your email is in our system")
 
       # expected record has been created
-      assert Repo.get_by!(Users.UserToken, user_id: user.id).context == "reset_password"
+      assert Repo.get_by!(Users.UserToken, user_id: user.id).context == "password_reset"
     end
 
     test "does not send reset password token if email is invalid", %{conn: conn} do
@@ -57,7 +57,7 @@ defmodule QuizGameWeb.UserForgotPasswordLiveTest do
       # submit the form and follow the redirect
       {:ok, conn} =
         lv
-        |> form("#reset_password_form", user: %{"email" => "unknown@example.com"})
+        |> form("#password_reset_form", user: %{"email" => "unknown@example.com"})
         |> render_submit()
         |> follow_redirect(conn, ~p"/")
 

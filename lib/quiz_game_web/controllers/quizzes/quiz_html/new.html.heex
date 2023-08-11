@@ -4,7 +4,7 @@
   Fill out the form below to create a new quiz.
 </.form_intro_text>
 
-<.quiz_form changeset={@changeset} action={~p"/quizzes"} />
+<.quiz_form changeset={@changeset} action={route(:quizzes, :index)} />
 
 <.action_links>
   <.action_links_item kind="back">

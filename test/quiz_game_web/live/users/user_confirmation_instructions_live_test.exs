@@ -9,7 +9,7 @@ defmodule QuizGameWeb.UserConfirmationInstructionsLiveTest do
 
   alias QuizGame.{Repo, Users}
 
-  @test_url_path route(:users, :confirmation_instructions)
+  @test_url_path route(:users, :email_verify_solicit)
 
   setup do
     %{user: user_fixture()}

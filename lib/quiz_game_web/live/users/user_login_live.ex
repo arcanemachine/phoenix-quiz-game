@@ -1,13 +1,14 @@
 defmodule QuizGameWeb.UsersLive.UserLoginLive do
   use QuizGameWeb, :live_view
   alias QuizGame.Users.User
-  @page_title "Account Login"
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     email = live_flash(socket.assigns.flash, :email)
     form = to_form(%{"email" => email}, as: "user")
-    {:ok, assign(socket, form: form, page_title: @page_title), temporary_assigns: [form: form]}
+
+    {:ok, assign(socket, form: form, page_title: "Account Login"),
+     temporary_assigns: [form: form]}
   end
 
   @impl Phoenix.LiveView
@@ -17,7 +18,7 @@ defmodule QuizGameWeb.UsersLive.UserLoginLive do
       To login to your account, enter your account details below.
     </.form_intro_text>
 
-    <.simple_form for={@form} id="login_form" action={~p"/users/login"} phx-update="ignore">
+    <.simple_form for={@form} id="login_form" action={route(:users, :login)} phx-update="ignore">
       <.input
         field={@form[:email]}
         type="email"
@@ -46,18 +47,18 @@ defmodule QuizGameWeb.UsersLive.UserLoginLive do
 
     <.action_links>
       <.action_links_item>
-        <.link href={~p"/users/register"}>
+        <.link href={route(:users, :register)}>
           Register new account
         </.link>
       </.action_links_item>
       <.action_links_spacer />
       <.action_links_item>
-        <.link href={~p"/users/reset-password"}>
+        <.link href={route(:users, :password_reset)}>
           Forgot your password?
         </.link>
       </.action_links_item>
       <.action_links_item>
-        <.link href={~p"/users/confirm/email"}>
+        <.link href={route(:users, :email_verify_solicit)}>
           Didn't receive a confirmation email?
         </.link>
       </.action_links_item>

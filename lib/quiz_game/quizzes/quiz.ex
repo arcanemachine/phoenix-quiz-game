@@ -17,7 +17,15 @@ defmodule QuizGame.Quizzes.Quiz do
   end
 
   @doc false
-  def changeset(quiz, attrs) do
+  def unsafe_changeset(quiz, attrs) do
+    quiz
+    |> cast(attrs, [:user_id, :name])
+    |> validate_required([:user_id, :name])
+    |> validate_length(:name, max: name_length_max())
+  end
+
+  @doc false
+  def safe_changeset(quiz, attrs) do
     quiz
     |> cast(attrs, [:name])
     |> validate_required([:name])

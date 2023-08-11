@@ -37,7 +37,7 @@ defmodule QuizGameWeb.UsersLive.UserConfirmationInstructionsLive do
   def handle_event("send_instructions", %{"user" => %{"email" => email}} = form_params, socket) do
     if QuizGameWeb.Support.form_captcha_valid?(form_params) do
       if user = Users.get_user_by_email(email) do
-        Users.deliver_user_confirmation_instructions(
+        Users.deliver_email_verify_instructions(
           user,
           &url(~p"/users/confirm/email/#{&1}")
         )

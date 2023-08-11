@@ -32,8 +32,8 @@ defmodule QuizGameWeb.UsersLive.UserUpdatePasswordLive do
       id="password_form"
       action={~p"/users/login?_action=password_updated"}
       method="post"
-      phx-change="validate_password"
-      phx-submit="update_password"
+      phx-change="validate"
+      phx-submit="password_update"
       phx-trigger-action={@trigger_submit}
     >
       <%!-- email field is required to update the password --%>
@@ -72,7 +72,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdatePasswordLive do
   end
 
   @impl Phoenix.LiveView
-  def handle_event("validate_password", params, socket) do
+  def handle_event("validate", params, socket) do
     %{"current_password" => password, "user" => user_params} = params
 
     password_form =
@@ -84,7 +84,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdatePasswordLive do
     {:noreply, assign(socket, password_form: password_form, current_password: password)}
   end
 
-  def handle_event("update_password", params, socket) do
+  def handle_event("password_update", params, socket) do
     %{"current_password" => password, "user" => user_params} = params
     user = socket.assigns.current_user
 

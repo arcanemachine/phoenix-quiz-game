@@ -4,7 +4,7 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
   use QuizGameWeb.ConnCase
 
   import QuizGame.TestSupport.{Assertions, GenericTests, QuizzesFixtures}
-  import QuizGameWeb.Support.Router
+  import QuizGameWeb.Support.Router, only: [route: 2, route: 3]
 
   alias QuizGame.Quizzes.Quiz
 

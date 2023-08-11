@@ -4,11 +4,6 @@ defmodule QuizGameWeb.Router do
   import QuizGameWeb.Support.Plug
   import QuizGameWeb.UserAuth
 
-  # # API
-  # pipeline :api do
-  #   plug :accepts, ["json"]
-  # end
-
   # BROWSER
   pipeline :browser do
     plug :accepts, ["html"]
@@ -25,20 +20,21 @@ defmodule QuizGameWeb.Router do
   scope "/", QuizGameWeb do
     pipe_through :browser
 
-    get "/", BaseController, :root, as: :root
+    get "/", BaseController, :root
     live "/contact-us", BaseLive.ContactUsLive, :contact_us
     get "/privacy-policy", BaseController, :privacy_policy
     get "/terms-of-use", BaseController, :terms_of_use
   end
 
   # quizzes
-  scope "/quizzes", QuizGameWeb.Quizzes do
+  scope "/quizzes", QuizGameWeb.Quizzes, as: :quizzes do
     pipe_through [:browser]
 
     get "/", QuizController, :index
 
     scope "/" do
       pipe_through [:require_authenticated_user]
+
       get "/new", QuizController, :new
       post "/", QuizController, :create
     end
@@ -46,6 +42,7 @@ defmodule QuizGameWeb.Router do
     scope "/:quiz_id" do
       pipe_through [:fetch_quiz]
 
+      # quizzes
       get "/", QuizController, :show
 
       scope "/" do
@@ -56,40 +53,52 @@ defmodule QuizGameWeb.Router do
         patch "/", QuizController, :update
         delete "/", QuizController, :delete
       end
-    end
 
-    # cards
-    scope "/:quiz_id/cards" do
-      pipe_through [:fetch_quiz]
+      # cards
+      scope "/cards" do
+        live "/", CardLive.Index, :index
 
-      live "/", CardLive.Index, :index
-      live "/:id", CardLive.Show, :show
+        scope "/" do
+          pipe_through [:require_authenticated_user]
 
-      scope "/" do
-        pipe_through [:require_authenticated_user]
+          live "/new", CardLive.Index, :new
+        end
 
-        live "/new", CardLive.Index, :new
-        live "/:id/edit", CardLive.Index, :edit
-        live "/:id/show/edit", CardLive.Show, :edit
+        scope "/:id" do
+          # pipe_through [:fetch_card]
+
+          live "/", CardLive.Show, :show
+
+          scope "/" do
+            pipe_through [:require_authenticated_user]
+
+            live "/edit", CardLive.Index, :edit
+            live "/show/edit", CardLive.Show, :edit
+          end
+        end
       end
     end
   end
 
   # USERS - login required
-  scope "/users", QuizGameWeb do
+  scope "/users/me", QuizGameWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    get "/me", UserController, :show
-    get "/me/update", UserController, :settings
-    get "/me/delete", UserController, :delete_confirm
-    post "/me/delete", UserController, :delete
+    get "/", UserController, :show
 
-    live_session :login_required,
-      on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
-      live "/me/update/email", UsersLive.UserUpdateEmailLive, :edit
-      live "/me/update/email/confirm/:token", UsersLive.UserUpdateEmailLive, :confirm_email
-      live "/me/update/password", UsersLive.UserUpdatePasswordLive, :edit
+    scope "/edit" do
+      get "/", UserController, :settings
+
+      live_session :login_required,
+        on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
+        live "/email", UsersLive.UserUpdateEmailLive, :edit
+        live "/email/confirm/:token", UsersLive.UserUpdateEmailLive, :confirm_email
+        live "/password", UsersLive.UserUpdatePasswordLive, :edit
+      end
     end
+
+    get "/delete", UserController, :delete_confirm
+    post "/delete", UserController, :delete
   end
 
   # USERS - logout required

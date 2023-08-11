@@ -9,7 +9,7 @@ defmodule QuizGameWeb.UserUpdatePasswordLiveTest do
 
   alias QuizGame.Users
 
-  @test_url_path route(:users, :update_password)
+  @test_url_path route(:users, :password_update)
   @password_length_min QuizGame.Users.User.password_length_min()
 
   describe "UserUpdatePasswordLive page" do

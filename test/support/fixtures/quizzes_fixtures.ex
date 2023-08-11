@@ -3,6 +3,8 @@ defmodule QuizGame.TestSupport.QuizzesFixtures do
   This module defines test helpers for creating entities via the `QuizGame.Quizzes` context.
   """
 
+  alias QuizGame.Quizzes
+
   @doc """
   Generate a quiz.
   """
@@ -12,7 +14,7 @@ defmodule QuizGame.TestSupport.QuizzesFixtures do
       |> Enum.into(%{
         name: "some name"
       })
-      |> QuizGame.Quizzes.create_quiz()
+      |> Quizzes.create_quiz()
 
     quiz
   end
@@ -21,6 +23,7 @@ defmodule QuizGame.TestSupport.QuizzesFixtures do
   Generate a card.
   """
   def card_fixture(attrs \\ %{}) do
+    # create card
     {:ok, card} =
       attrs
       |> Enum.into(%{
@@ -29,7 +32,7 @@ defmodule QuizGame.TestSupport.QuizzesFixtures do
         question: "some question",
         answers: ["option1", "option2"]
       })
-      |> QuizGame.Quizzes.create_card()
+      |> Quizzes.create_card()
 
     card
   end

@@ -200,7 +200,7 @@ defmodule QuizGame.UsersTest do
     end
   end
 
-  describe "deliver_user_update_email_instructions/3" do
+  describe "deliver_user_email_update_instructions/3" do
     setup do
       %{user: user_fixture()}
     end
@@ -208,7 +208,7 @@ defmodule QuizGame.UsersTest do
     test "sends token through notification", %{user: user} do
       token =
         extract_user_token(fn url ->
-          Users.deliver_user_update_email_instructions(user, "current@example.com", url)
+          Users.deliver_user_email_update_instructions(user, "current@example.com", url)
         end)
 
       {:ok, token} = Base.url_decode64(token, padding: false)
@@ -226,7 +226,7 @@ defmodule QuizGame.UsersTest do
 
       token =
         extract_user_token(fn url ->
-          Users.deliver_user_update_email_instructions(%{user | email: email}, user.email, url)
+          Users.deliver_user_email_update_instructions(%{user | email: email}, user.email, url)
         end)
 
       %{user: user, token: token, email: email}
@@ -390,7 +390,7 @@ defmodule QuizGame.UsersTest do
     end
   end
 
-  describe "deliver_user_confirmation_instructions/2" do
+  describe "deliver_email_verify_instructions/2" do
     setup do
       %{user: user_fixture()}
     end
@@ -398,7 +398,7 @@ defmodule QuizGame.UsersTest do
     test "sends token through notification", %{user: user} do
       token =
         extract_user_token(fn url ->
-          Users.deliver_user_confirmation_instructions(user, url)
+          Users.deliver_email_verify_instructions(user, url)
         end)
 
       {:ok, token} = Base.url_decode64(token, padding: false)
@@ -415,7 +415,7 @@ defmodule QuizGame.UsersTest do
 
       token =
         extract_user_token(fn url ->
-          Users.deliver_user_confirmation_instructions(user, url)
+          Users.deliver_email_verify_instructions(user, url)
         end)
 
       %{user: user, token: token}
@@ -443,7 +443,7 @@ defmodule QuizGame.UsersTest do
     end
   end
 
-  describe "deliver_user_reset_password_instructions/2" do
+  describe "deliver_user_password_reset_instructions/2" do
     setup do
       %{user: user_fixture()}
     end
@@ -451,42 +451,42 @@ defmodule QuizGame.UsersTest do
     test "sends token through notification", %{user: user} do
       token =
         extract_user_token(fn url ->
-          Users.deliver_user_reset_password_instructions(user, url)
+          Users.deliver_user_password_reset_instructions(user, url)
         end)
 
       {:ok, token} = Base.url_decode64(token, padding: false)
       assert user_token = Repo.get_by(UserToken, token: :crypto.hash(:sha256, token))
       assert user_token.user_id == user.id
       assert user_token.sent_to == user.email
-      assert user_token.context == "reset_password"
+      assert user_token.context == "password_reset"
     end
   end
 
-  describe "get_user_by_reset_password_token/1" do
+  describe "get_user_by_password_reset_token/1" do
     setup do
       user = user_fixture()
 
       token =
         extract_user_token(fn url ->
-          Users.deliver_user_reset_password_instructions(user, url)
+          Users.deliver_user_password_reset_instructions(user, url)
         end)
 
       %{user: user, token: token}
     end
 
     test "returns the user with valid token", %{user: %{id: id}, token: token} do
-      assert %User{id: ^id} = Users.get_user_by_reset_password_token(token)
+      assert %User{id: ^id} = Users.get_user_by_password_reset_token(token)
       assert Repo.get_by(UserToken, user_id: id)
     end
 
     test "does not return the user with invalid token", %{user: user} do
-      refute Users.get_user_by_reset_password_token("oops")
+      refute Users.get_user_by_password_reset_token("oops")
       assert Repo.get_by(UserToken, user_id: user.id)
     end
 
     test "does not return the user if token expired", %{user: user, token: token} do
       {1, nil} = Repo.update_all(UserToken, set: [inserted_at: ~N[2020-01-01 00:00:00]])
-      refute Users.get_user_by_reset_password_token(token)
+      refute Users.get_user_by_password_reset_token(token)
       assert Repo.get_by(UserToken, user_id: user.id)
     end
   end

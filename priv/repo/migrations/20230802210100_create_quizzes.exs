@@ -5,7 +5,7 @@ defmodule QuizGame.Repo.Migrations.CreateQuizzes do
   def change do
     create table(:quizzes) do
       # associations
-      add :user_id, references(:users, on_delete: :restrict)
+      add :user_id, references(:users, on_delete: :restrict), null: false
 
       # data
       add :name, :string

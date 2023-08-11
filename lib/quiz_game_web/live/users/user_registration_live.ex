@@ -4,15 +4,13 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
   alias QuizGame.Users
   alias QuizGame.Users.User
 
-  @page_title "Register New Account"
-
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     changeset = Users.change_user_registration(%User{})
 
     socket =
       socket
-      |> assign(page_title: @page_title)
+      |> assign(page_title: "Register New Account")
       |> assign(trigger_submit: false, check_errors: false)
       |> assign_form(changeset)
 
@@ -40,7 +38,7 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
       for={@form}
       has_errors={@check_errors}
       id="registration_form"
-      action={~p"/users/login?_action=registered"}
+      action={route(:users, :login) <> query_string(action: "registered")}
       method="post"
       phx-change="validate"
       phx-submit="save"
@@ -87,7 +85,7 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
 
     <.action_links>
       <.action_links_item>
-        <.link href={~p"/users/login"}>
+        <.link href={route(:users, :login)}>
           Login to an existing account
         </.link>
       </.action_links_item>
@@ -112,7 +110,7 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
       case Users.register_user(user_params) do
         {:ok, user} ->
           {:ok, _} =
-            Users.deliver_user_confirmation_instructions(
+            Users.deliver_email_verify_instructions(
               user,
               &url(~p"/users/confirm/email/#{&1}")
             )

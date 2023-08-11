@@ -11,7 +11,7 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
 
   @password_length_min QuizGame.Users.User.password_length_min()
 
-  def test_url_path(opts), do: route(:users, :reset_password, token: opts[:token])
+  def test_url_path(opts), do: route(:users, :password_reset_confirm, token: opts[:token])
 
   setup do
     # create user and token
@@ -19,7 +19,7 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
 
     token =
       extract_user_token(fn url ->
-        Users.deliver_user_reset_password_instructions(user, url)
+        Users.deliver_user_password_reset_instructions(user, url)
       end)
 
     %{token: token, user: user}
@@ -52,7 +52,7 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
       # submit the form and follow the redirect
       {:ok, conn} =
         lv
-        |> form("#reset_password_form",
+        |> form("#password_reset_form",
           user: %{
             "password" => "new valid password",
             "password_confirmation" => "new valid password"
@@ -88,7 +88,7 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
       # submit the form
       html_after_change =
         lv
-        |> element("#reset_password_form")
+        |> element("#password_reset_form")
         |> render_change(user: %{"password" => "2short", "confirmation_password" => "short"})
 
       # form has expected error message(s)
@@ -110,7 +110,7 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
 
       html_after_submit =
         lv
-        |> form("#reset_password_form",
+        |> form("#password_reset_form",
           user: %{
             "password" => "2short",
             "password_confirmation" => "non_matching_password"

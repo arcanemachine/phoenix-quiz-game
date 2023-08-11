@@ -29,8 +29,8 @@ defmodule QuizGameWeb.UsersLive.UserResetPasswordLive do
 
     <.simple_form
       for={@form}
-      id="reset_password_form"
-      phx-submit="reset_password"
+      id="password_reset_form"
+      phx-submit="password_reset"
       phx-change="validate"
     >
       <.input
@@ -55,7 +55,7 @@ defmodule QuizGameWeb.UsersLive.UserResetPasswordLive do
   end
 
   @impl Phoenix.LiveView
-  def handle_event("reset_password", %{"user" => user_params}, socket) do
+  def handle_event("password_reset", %{"user" => user_params}, socket) do
     # to avoid a leaked token giving the user access to the account, do not log the user in after
     # resetting their password
     case Users.reset_user_password(socket.assigns.user, user_params) do
@@ -76,7 +76,7 @@ defmodule QuizGameWeb.UsersLive.UserResetPasswordLive do
   end
 
   defp assign_user_and_token(socket, %{"token" => token}) do
-    if user = Users.get_user_by_reset_password_token(token) do
+    if user = Users.get_user_by_password_reset_token(token) do
       assign(socket, user: user, token: token)
     else
       socket

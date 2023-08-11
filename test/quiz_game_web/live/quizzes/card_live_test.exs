@@ -20,13 +20,14 @@ defmodule QuizGameWeb.Quizzes.CardLiveTest do
   }
   @invalid_attrs %{format: nil, image: nil, question: nil, answers: []}
 
-  defp create_card(_) do
-    card = card_fixture()
+  setup do
+    quiz = quiz_fixture()
+    card = card_fixture(quiz_id: quiz.id)
     %{card: card}
   end
 
   describe "Index" do
-    setup [:create_card]
+    # setup [:create_card]
 
     test "lists all cards", %{conn: conn, card: card} do
       {:ok, _index_live, html} = live(conn, ~p"/quizzes/cards")
@@ -52,6 +53,7 @@ defmodule QuizGameWeb.Quizzes.CardLiveTest do
              |> render_submit()
 
       assert_patch(index_live, ~p"/quizzes/cards")
+      # assert_patch(index_live, route(:quizzes_cards, :index, quiz_id: quiz.id))
 
       html = render(index_live)
       assert html =~ "Card created successfully"
@@ -90,7 +92,7 @@ defmodule QuizGameWeb.Quizzes.CardLiveTest do
   end
 
   describe "Show" do
-    setup [:create_card]
+    # setup [:create_card]
 
     test "displays card", %{conn: conn, card: card} do
       {:ok, _show_live, html} = live(conn, ~p"/quizzes/cards/#{card}")

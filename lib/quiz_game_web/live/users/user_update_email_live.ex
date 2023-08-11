@@ -48,12 +48,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
       <p>To confirm your new email address, open that email and click on the activation link.</p>
     </.form_intro_text>
 
-    <.simple_form
-      for={@email_form}
-      id="email_form"
-      phx-submit="update_email"
-      phx-change="validate_email"
-    >
+    <.simple_form for={@email_form} id="email_form" phx-submit="email_update" phx-change="validate">
       <.input
         field={@email_form[:email]}
         type="email"
@@ -81,7 +76,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
   end
 
   @impl Phoenix.LiveView
-  def handle_event("validate_email", params, socket) do
+  def handle_event("validate", params, socket) do
     %{"current_password" => password, "user" => %{"email" => email} = user_params} = params
 
     email_form =
@@ -98,16 +93,16 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
      )}
   end
 
-  def handle_event("update_email", params, socket) do
+  def handle_event("email_update", params, socket) do
     %{"current_password" => password, "user" => user_params} = params
     user = socket.assigns.current_user
 
     case Users.apply_user_email(user, password, user_params) do
       {:ok, applied_user} ->
-        Users.deliver_user_update_email_instructions(
+        Users.deliver_email_update_instructions(
           applied_user,
           user.email,
-          &url(~p"/users/me/update/email/confirm/#{&1}")
+          &url(~p"/users/me/edit/email/confirm/#{&1}")
         )
 
         {:noreply,
