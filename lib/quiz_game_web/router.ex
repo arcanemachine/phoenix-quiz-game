@@ -22,44 +22,57 @@ defmodule QuizGameWeb.Router do
   end
 
   # BASE - allow any user
-  scope "/", QuizGameWeb, as: :base do
+  scope "/", QuizGameWeb do
     pipe_through :browser
 
-    get "/", BaseController, :root
+    get "/", BaseController, :root, as: :root
     live "/contact-us", BaseLive.ContactUsLive, :contact_us
     get "/privacy-policy", BaseController, :privacy_policy
     get "/terms-of-use", BaseController, :terms_of_use
   end
 
-  # QUIZZES - login required
-  scope "/quizzes", QuizGameWeb.Quizzes, as: :quizzes do
-    pipe_through [:browser, :require_authenticated_user]
-
-    # cards
-    scope "/:quiz_id/cards" do
-      live "/new", CardLive.Index, :new
-      live "/:id/edit", CardLive.Index, :edit
-      live "/:id/show/edit", CardLive.Show, :edit
-    end
-
-    # quizzes
-    resources "/", QuizController, param: "quiz_id", except: [:index, :show]
-  end
-
-  # QUIZZES - allow any user
-  scope "/quizzes", QuizGameWeb.Quizzes, as: :quizzes do
+  # quizzes
+  scope "/quizzes", QuizGameWeb.Quizzes do
     pipe_through [:browser]
 
-    # cards
+    get "/", QuizController, :index
+
+    scope "/" do
+      pipe_through [:require_authenticated_user]
+      get "/new", QuizController, :new
+      post "/", QuizController, :create
+    end
+
     scope "/:quiz_id" do
       pipe_through [:fetch_quiz]
 
-      live "/cards", CardLive.Index, :index
-      live "/cards/:id", CardLive.Show, :show
+      get "/", QuizController, :show
+
+      scope "/" do
+        pipe_through [:require_authenticated_user]
+
+        get "/edit", QuizController, :edit
+        put "/", QuizController, :update
+        patch "/", QuizController, :update
+        delete "/", QuizController, :delete
+      end
     end
 
-    # quizzes
-    resources "/", QuizController, param: "quiz_id", only: [:index, :show]
+    # cards
+    scope "/:quiz_id/cards" do
+      pipe_through [:fetch_quiz]
+
+      live "/", CardLive.Index, :index
+      live "/:id", CardLive.Show, :show
+
+      scope "/" do
+        pipe_through [:require_authenticated_user]
+
+        live "/new", CardLive.Index, :new
+        live "/:id/edit", CardLive.Index, :edit
+        live "/:id/show/edit", CardLive.Show, :edit
+      end
+    end
   end
 
   # USERS - login required
@@ -87,8 +100,8 @@ defmodule QuizGameWeb.Router do
 
     live_session :logout_required,
       on_mount: [{QuizGameWeb.UserAuth, :redirect_if_user_is_authenticated}] do
-      live "/register", UsersLive.UserRegistrationLive, :new
-      live "/login", UsersLive.UserLoginLive, :new
+      live "/register", UsersLive.UserRegistrationLive, :new, as: :users_register
+      live "/login", UsersLive.UserLoginLive, :new, as: :users_login
       live "/reset-password", UsersLive.UserForgotPasswordLive, :new
       live "/reset-password/:token", UsersLive.UserResetPasswordLive, :edit
     end
