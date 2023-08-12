@@ -18,8 +18,11 @@ defmodule QuizGameWeb.Quizzes.CardLive.Index do
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Card List")
-    |> assign(:card, nil)
+    |> assign(%{
+      page_title: "Card List",
+      page_subtitle: socket.assigns.quiz.name,
+      card: nil
+    })
   end
 
   defp apply_action(socket, :new, _params) do

@@ -91,12 +91,12 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
       </.action_links_item>
       <.action_links_spacer />
       <.action_links_item>
-        <.link href={~p"/users/reset-password"}>
+        <.link href={route(:users, :password_reset_solicit)}>
           Forgot your password?
         </.link>
       </.action_links_item>
       <.action_links_item>
-        <.link href={~p"/users/confirm/email"}>
+        <.link href={route(:users, :email_verify_solicit)}>
           Didn't receive a confirmation email?
         </.link>
       </.action_links_item>

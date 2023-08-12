@@ -125,7 +125,7 @@ defmodule QuizGameWeb.CoreComponents do
   """
   def alert_form_errors(assigns) do
     ~H"""
-    <.alert kind="error" data-test-label="alert-form-errors">
+    <.alert kind="error" data-component-kind="alert-form-errors">
       You must fix the errors in the form to continue.
     </.alert>
     """
@@ -831,6 +831,7 @@ defmodule QuizGameWeb.CoreComponents do
       phx-mounted={@show && show_modal(@id)}
       phx-remove={hide_modal(@id)}
       class="relative z-40 hidden"
+      data-component-kind="modal"
     >
       <div
         id={"#{@id}-bg"}

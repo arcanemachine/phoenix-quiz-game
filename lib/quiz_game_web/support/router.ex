@@ -82,12 +82,12 @@ defmodule QuizGameWeb.Support.Router do
     case action do
       # auth
       :register -> ~p"/users/register"
-      :email_verify_solicit -> ~p"/users/confirm/email"
-      :email_verify_confirm -> ~p"/users/confirm/email/#{opts[:token]}"
+      :email_verify_solicit -> ~p"/users/verify/email"
+      :email_verify_confirm -> ~p"/users/verify/email/#{opts[:token]}"
       :login -> ~p"/users/login"
       :logout_confirm -> ~p"/users/logout"
       :logout -> ~p"/users/logout"
-      :password_reset -> ~p"/users/reset-password"
+      :password_reset_solicit -> ~p"/users/reset-password"
       :password_reset_confirm -> ~p"/users/reset-password/#{opts[:token]}"
       # crud
       :show -> ~p"/users/me"

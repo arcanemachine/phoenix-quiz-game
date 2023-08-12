@@ -4,7 +4,7 @@ defmodule QuizGame.Quizzes do
   import Ecto.Query, warn: false
 
   alias QuizGame.Repo
-  alias QuizGame.Quizzes.Quiz
+  alias QuizGame.Quizzes.{Card, Quiz}
 
   @doc """
   Returns the list of quizzes.
@@ -40,66 +40,30 @@ defmodule QuizGame.Quizzes do
 
   ## Examples
 
-      iex> create_quiz(%Ecto.Changeset{})
+      iex> create_quiz(changeset)
       {:ok, %Quiz{}}
 
-      iex> create_quiz(%{field: bad_value})
+      iex> create_quiz(invalid_changeset)
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_quiz2(%Ecto.Changeset{} = changeset) do
+  def create_quiz(%Ecto.Changeset{} = changeset) do
     changeset |> Repo.insert()
   end
 
   @doc """
-  Creates a quiz.
-
-  ## Examples
-
-      iex> create_quiz(%{field: value})
-      {:ok, %Quiz{}}
-
-      iex> create_quiz(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_quiz(attrs \\ %{}) do
-    %Quiz{}
-    |> Quiz.changeset_unsafe(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
   Updates a quiz.
 
   ## Examples
 
-      iex> update_quiz(quiz, %{field: new_value})
+      iex> update_quiz(changeset)
       {:ok, %Quiz{}}
 
-      iex> update_quiz(quiz, %{field: bad_value})
+      iex> update_quiz(invalid_changeset)
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_quiz(%Quiz{} = quiz, attrs) do
-    quiz
-    |> Quiz.changeset_unsafe(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Updates a quiz.
-
-  ## Examples
-
-      iex> update_quiz(quiz, %Ecto.Changeset{field: new_value})
-      {:ok, %Quiz{}}
-
-      iex> update_quiz(quiz, %Ecto.Changeset{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_quiz2(%Ecto.Changeset{} = changeset) do
+  def update_quiz(%Ecto.Changeset{} = changeset) do
     changeset |> Repo.update()
   end
 
@@ -148,40 +112,72 @@ defmodule QuizGame.Quizzes do
   """
   def get_card!(id), do: Repo.get!(Card, id)
 
+  # @doc """
+  # Creates a card.
+
+  # ## Examples
+
+  #     iex> create_card(%{field: value})
+  #     {:ok, %Card{}}
+
+  #     iex> create_card(%{field: bad_value})
+  #     {:error, %Ecto.Changeset{}}
+
+  # """
+  # def create_card(attrs \\ %{}) do
+  #   %Card{}
+  #   |> Card.changeset_unsafe(attrs)
+  #   |> Repo.insert()
+  # end
+
   @doc """
   Creates a card.
 
   ## Examples
 
-      iex> create_card(%{field: value})
+      iex> create_card(changeset)
       {:ok, %Card{}}
 
-      iex> create_card(%{field: bad_value})
+      iex> create_card(invalid_changeset)
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_card(attrs \\ %{}) do
-    %Card{}
-    |> Card.changeset_unsafe(attrs)
-    |> Repo.insert()
+  def create_card(%Ecto.Changeset{} = changeset) do
+    changeset |> Repo.insert()
   end
+
+  # @doc """
+  # Updates a card.
+
+  # ## Examples
+
+  #     iex> update_card(card, %{field: new_value})
+  #     {:ok, %Card{}}
+
+  #     iex> update_card(card, %{field: bad_value})
+  #     {:error, %Ecto.Changeset{}}
+
+  # """
+  # def update_card(%Card{} = card, attrs) do
+  #   card
+  #   |> Card.changeset_unsafe(attrs)
+  #   |> Repo.update()
+  # end
 
   @doc """
   Updates a card.
 
   ## Examples
 
-      iex> update_card(card, %{field: new_value})
+      iex> update_card(changeset)
       {:ok, %Card{}}
 
-      iex> update_card(card, %{field: bad_value})
+      iex> update_card(invalid_changeset)
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_card(%Card{} = card, attrs) do
-    card
-    |> Card.changeset_unsafe(attrs)
-    |> Repo.update()
+  def update_card(changeset) do
+    changeset |> Repo.update()
   end
 
   @doc """
@@ -200,16 +196,16 @@ defmodule QuizGame.Quizzes do
     Repo.delete(card)
   end
 
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking card changes.
+  # @doc """
+  # Returns an `%Ecto.Changeset{}` for tracking card changes.
 
-  ## Examples
+  # ## Examples
 
-      iex> change_card(card)
-      %Ecto.Changeset{data: %Card{}}
+  #     iex> change_card(card)
+  #     %Ecto.Changeset{data: %Card{}}
 
-  """
-  def change_card(%Card{} = card, attrs \\ %{}) do
-    Card.safe_changeset(card, attrs)
-  end
+  # """
+  # def change_card(%Card{} = card, attrs \\ %{}) do
+  #   Card.changeset(card, attrs)
+  # end
 end

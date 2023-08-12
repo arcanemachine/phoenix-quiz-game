@@ -206,7 +206,7 @@ defmodule QuizGameWeb.BaseComponents do
       <h1 :if={@title} class="text-4xl text-center font-bold">
         <%= @title %>
       </h1>
-      <h2 :if={@subtitle} class="mt-2 text-2xl text-center">
+      <h2 :if={@subtitle} class="mt-1 text-xl text-center">
         <%= @subtitle %>
       </h2>
     </section>

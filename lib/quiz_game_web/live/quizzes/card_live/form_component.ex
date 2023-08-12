@@ -2,8 +2,9 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
   use QuizGameWeb, :live_component
 
   alias QuizGame.Quizzes
+  alias QuizGame.Quizzes.Card
 
-  @impl true
+  @impl Phoenix.LiveComponent
   def render(assigns) do
     ~H"""
     <div>
@@ -45,9 +46,19 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
     """
   end
 
-  @impl true
+  # @impl Phoenix.LiveComponent
+  # def update(%{card: card} = assigns, socket) do
+  #   changeset = Quizzes.change_card(card)
+
+  #   {:ok,
+  #    socket
+  #    |> assign(assigns)
+  #    |> assign_form(changeset)}
+  # end
+
+  @impl Phoenix.LiveComponent
   def update(%{card: card} = assigns, socket) do
-    changeset = Quizzes.change_card(card)
+    changeset = Card.changeset(card)
 
     {:ok,
      socket
@@ -55,11 +66,11 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
      |> assign_form(changeset)}
   end
 
-  @impl true
+  @impl Phoenix.LiveComponent
   def handle_event("validate", %{"card" => card_params}, socket) do
     changeset =
       socket.assigns.card
-      |> Quizzes.change_card(card_params)
+      |> Card.changeset(card_params)
       |> Map.put(:action, :validate)
 
     {:noreply, assign_form(socket, changeset)}
@@ -69,29 +80,38 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
     save_card(socket, socket.assigns.action, card_params)
   end
 
-  defp save_card(socket, :edit, card_params) do
-    case Quizzes.update_card(socket.assigns.card, card_params) do
-      {:ok, card} ->
-        notify_parent({:saved, card})
+  defp save_card(socket, :new, safe_card_params) do
+    # associate card with its quiz
+    unsafe_card_params = %{quiz_id: socket.assigns.quiz.id}
 
-        {:noreply,
-         socket
-         |> put_flash(:info, "Card updated successfully")
-         |> push_patch(to: socket.assigns.patch)}
+    unsafe_changeset =
+      Card.unsafe_changeset(%Card{}, Map.merge(safe_card_params, unsafe_card_params))
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign_form(socket, changeset)}
-    end
-  end
-
-  defp save_card(socket, :new, card_params) do
-    case Quizzes.create_card(card_params) do
+    case Quizzes.create_card(unsafe_changeset) do
       {:ok, card} ->
         notify_parent({:saved, card})
 
         {:noreply,
          socket
          |> put_flash(:info, "Card created successfully")
+         |> push_patch(to: socket.assigns.patch)}
+
+      {:error, %Ecto.Changeset{} = unsafe_error_changeset} ->
+        safe_error_changeset = Card.changeset_make_safe(unsafe_error_changeset)
+        {:noreply, assign_form(socket, safe_error_changeset)}
+    end
+  end
+
+  defp save_card(socket, :edit, card_params) do
+    changeset = Card.changeset(socket.assigns.card, card_params)
+
+    case Quizzes.update_card(changeset) do
+      {:ok, card} ->
+        notify_parent({:saved, card})
+
+        {:noreply,
+         socket
+         |> put_flash(:info, "Card updated successfully")
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->

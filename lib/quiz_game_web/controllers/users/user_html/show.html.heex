@@ -6,7 +6,8 @@
     <%= if @current_user.confirmed_at do %>
       Confirmed
     <% else %>
-      Unconfirmed <.link href={~p"/users/confirm/email"}>(Confirm your account)</.link>
+      Unconfirmed
+      <.link href={route(:users, :email_verify_solicit)}>(Confirm your account)</.link>
     <% end %>
   </:item>
 </.record_show>
@@ -15,17 +16,17 @@
 
 <.action_links>
   <.action_links_item>
-    <.link navigate={~p"/quizzes"}>
+    <.link navigate={route(:quizzes, :index)}>
       View quizzes
     </.link>
   </.action_links_item>
   <.action_links_item>
-    <.link navigate={~p"/users/me/update"}>
+    <.link navigate={route(:users, :settings)}>
       Manage your profile
     </.link>
   </.action_links_item>
   <.action_links_item>
-    <.link href={~p"/users/logout"}>
+    <.link href={route(:users, :logout)}>
       Logout
     </.link>
   </.action_links_item>

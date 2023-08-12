@@ -18,27 +18,30 @@ defmodule QuizGameWeb.Quizzes.QuizController do
   def new(conn, _params) do
     render(conn, :new,
       page_title: "Create Quiz",
-      changeset: Quiz.changeset_safe(%Quiz{})
+      changeset: Quiz.changeset(%Quiz{})
     )
   end
 
-  def create(conn, %{"quiz" => quiz_params}) do
-    # set user_id to current user ID
-    quiz_params = Map.put(quiz_params, "user_id", conn.assigns.current_user.id)
+  def create(conn, %{"quiz" => safe_quiz_params}) do
+    # associate quiz with current user
+    unsafe_quiz_params = %{"user_id" => conn.assigns.current_user.id}
 
-    # create changeset with non-user-modifiable data
-    unsafe_changeset = Quiz.changeset_unsafe(%Quiz{}, quiz_params)
+    unsafe_changeset =
+      Quiz.unsafe_changeset(%Quiz{}, Map.merge(safe_quiz_params, unsafe_quiz_params))
 
-    case Quizzes.create_quiz2(unsafe_changeset) do
+    case Quizzes.create_quiz(unsafe_changeset) do
       {:ok, quiz} ->
         conn
         |> put_flash(:success, "Quiz created successfully")
         |> redirect(to: route(:quizzes, :show, quiz_id: quiz.id))
 
-      {:error, %Ecto.Changeset{} = error_changeset} ->
+      {:error, %Ecto.Changeset{} = unsafe_error_changeset} ->
+        # remove unsafe data from the changeset before returning it to the template
+        safe_error_changeset = Quiz.changeset_make_safe(unsafe_error_changeset)
+
         render(conn, :new,
           page_title: "Create Quiz",
-          changeset: error_changeset
+          changeset: safe_error_changeset
         )
     end
   end
@@ -53,17 +56,15 @@ defmodule QuizGameWeb.Quizzes.QuizController do
     render(conn, :edit,
       page_title: "Edit Quiz",
       quiz: quiz,
-      changeset: Quiz.changeset_safe(quiz)
+      changeset: Quiz.changeset(quiz)
     )
   end
 
   def update(conn, %{"quiz" => quiz_params}) do
     quiz = conn.assigns.quiz
+    changeset = Quiz.changeset(quiz, quiz_params)
 
-    # use safe changeset to prevent unsafe data from being modified by the user
-    safe_changeset = Quiz.changeset_safe(quiz, quiz_params)
-
-    case Quizzes.update_quiz2(safe_changeset) do
+    case Quizzes.update_quiz(changeset) do
       {:ok, quiz} ->
         conn
         |> put_flash(:success, "Quiz updated successfully")
@@ -79,9 +80,7 @@ defmodule QuizGameWeb.Quizzes.QuizController do
   end
 
   def delete(conn, _params) do
-    # quiz = Quizzes.get_quiz!(quiz_id)
-    quiz = conn.assigns.quiz
-    {:ok, _quiz} = Quizzes.delete_quiz(quiz)
+    {:ok, _quiz} = Quizzes.delete_quiz(conn.assigns.quiz)
 
     conn
     |> put_flash(:success, "Quiz deleted successfully")

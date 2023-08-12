@@ -29,11 +29,9 @@ defmodule QuizGameWeb.Support.Plug do
   If a non-root URL ends with a forward slash (`/`), then do a permanent redirect to a URL that
   removes that slash.
   """
-  @spec fetch_quiz(conn, keyword()) :: conn
+  @spec remove_trailing_slash(conn, keyword()) :: conn
   def remove_trailing_slash(conn, _opts) do
     if conn.request_path != "/" && String.last(conn.request_path) == "/" do
-      # return a permanent redirect to a URL without the trailing slash, and
-      # halt the current request
       conn
       |> put_status(301)
       |> redirect(to: String.slice(conn.request_path, 0..-2//1))

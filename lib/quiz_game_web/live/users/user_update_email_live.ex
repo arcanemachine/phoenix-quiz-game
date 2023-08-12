@@ -68,7 +68,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
         required
       />
       <:actions>
-        <.form_button_cancel url={~p"/users/me/update"} />
+        <.form_button_cancel url={route(:users, :settings)} />
         <.form_button_submit />
       </:actions>
     </.simple_form>
@@ -102,7 +102,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
         Users.deliver_email_update_instructions(
           applied_user,
           user.email,
-          &url(~p"/users/me/edit/email/confirm/#{&1}")
+          &unverified_url(QuizGameWeb.Endpoint, route(:users, :email_update_confirm, token: &1))
         )
 
         {:noreply,

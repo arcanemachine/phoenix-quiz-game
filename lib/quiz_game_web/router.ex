@@ -27,7 +27,7 @@ defmodule QuizGameWeb.Router do
   end
 
   # quizzes
-  scope "/quizzes", QuizGameWeb.Quizzes, as: :quizzes do
+  scope "/quizzes", QuizGameWeb.Quizzes do
     pipe_through [:browser]
 
     get "/", QuizController, :index
@@ -61,7 +61,10 @@ defmodule QuizGameWeb.Router do
         scope "/" do
           pipe_through [:require_authenticated_user]
 
-          live "/new", CardLive.Index, :new
+          live_session :quizzes_cards_login_required,
+            on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
+            live "/new", CardLive.Index, :new
+          end
         end
 
         scope "/:id" do
@@ -72,8 +75,11 @@ defmodule QuizGameWeb.Router do
           scope "/" do
             pipe_through [:require_authenticated_user]
 
-            live "/edit", CardLive.Index, :edit
-            live "/show/edit", CardLive.Show, :edit
+            live_session :quizzes_id_cards_login_required,
+              on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
+              live "/edit", CardLive.Index, :edit
+              live "/show/edit", CardLive.Show, :edit
+            end
           end
         end
       end
@@ -125,8 +131,8 @@ defmodule QuizGameWeb.Router do
 
     live_session :allow_any_user,
       on_mount: [{QuizGameWeb.UserAuth, :mount_current_user}] do
-      live "/confirm/email", UsersLive.UserConfirmationInstructionsLive, :new
-      live "/confirm/email/:token", UsersLive.UserConfirmationLive, :edit
+      live "/verify/email", UsersLive.UserConfirmationInstructionsLive, :new
+      live "/verify/email/:token", UsersLive.UserConfirmationLive, :edit
     end
   end
 
