@@ -22,7 +22,10 @@ function simpleForm() {
     modifiedInputs: new Set(),
 
     init() {
-      // add event listeners for form modification checked
+      // disable form modification detection in LiveView modals
+      if (this.$root.closest("[data-component-kind='modal']")) return;
+
+      // add form modification event listeners
       addEventListener("beforeinput", this.handleBeforeInput.bind(this));
       addEventListener("input", this.handleInput.bind(this) as any);
       addEventListener("submit", this.handleSubmit.bind(this));
@@ -30,6 +33,9 @@ function simpleForm() {
     },
 
     destroy() {
+      // disable form modification detection in LiveView modals
+      if (this.$root.closest("[data-component-kind='modal']")) return;
+
       // clear modified input fields
       this.modifiedInputs.clear();
 
