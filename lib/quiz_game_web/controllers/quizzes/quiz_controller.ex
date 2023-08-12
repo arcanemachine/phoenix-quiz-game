@@ -8,57 +8,73 @@ defmodule QuizGameWeb.Quizzes.QuizController do
 
   def index(conn, _params) do
     quizzes = Quizzes.list_quizzes()
-    render(conn, :index, page_title: "Quiz List", quizzes: quizzes)
+
+    render(conn, :index,
+      page_title: "Quiz List",
+      quizzes: quizzes
+    )
   end
 
   def new(conn, _params) do
-    form_changeset = Quizzes.change_quiz(%Quiz{})
-    render(conn, :new, page_title: "Create Quiz", changeset: form_changeset)
+    render(conn, :new,
+      page_title: "Create Quiz",
+      changeset: Quiz.changeset_safe(%Quiz{})
+    )
   end
 
   def create(conn, %{"quiz" => quiz_params}) do
     # set user_id to current user ID
     quiz_params = Map.put(quiz_params, "user_id", conn.assigns.current_user.id)
 
-    case Quizzes.create_quiz(quiz_params) do
+    # create changeset with non-user-modifiable data
+    unsafe_changeset = Quiz.changeset_unsafe(%Quiz{}, quiz_params)
+
+    case Quizzes.create_quiz2(unsafe_changeset) do
       {:ok, quiz} ->
         conn
         |> put_flash(:success, "Quiz created successfully")
         |> redirect(to: route(:quizzes, :show, quiz_id: quiz.id))
 
-      {:error, %Ecto.Changeset{} = form_changeset} ->
-        render(conn, :new, page_title: "Create Quiz", changeset: form_changeset)
+      {:error, %Ecto.Changeset{} = error_changeset} ->
+        render(conn, :new,
+          page_title: "Create Quiz",
+          changeset: error_changeset
+        )
     end
   end
 
   def show(conn, _params) do
-    quiz = conn.assigns.quiz
-    render(conn, :show, page_title: "Quiz Info", quiz: quiz)
+    render(conn, :show, page_title: "Quiz Info", quiz: conn.assigns.quiz)
   end
 
   def edit(conn, _params) do
-    # quiz = Quizzes.get_quiz!(quiz_id)
     quiz = conn.assigns.quiz
-    changeset = Quizzes.change_quiz(quiz)
-    render(conn, :edit, page_title: "Edit Quiz", quiz: quiz, changeset: changeset)
+
+    render(conn, :edit,
+      page_title: "Edit Quiz",
+      quiz: quiz,
+      changeset: Quiz.changeset_safe(quiz)
+    )
   end
 
   def update(conn, %{"quiz" => quiz_params}) do
     quiz = conn.assigns.quiz
 
-    # safe_changeset = Quizzes.change_quiz(quiz, quiz_params) |> Ecto.Changeset.change()
+    # use safe changeset to prevent unsafe data from being modified by the user
+    safe_changeset = Quiz.changeset_safe(quiz, quiz_params)
 
-    # prevent unsafe data from being modified by the user
-    quiz_params = Map.put(quiz_params, "user_id", quiz.user_id)
-
-    case Quizzes.update_quiz(quiz, quiz_params) do
+    case Quizzes.update_quiz2(safe_changeset) do
       {:ok, quiz} ->
         conn
         |> put_flash(:success, "Quiz updated successfully")
         |> redirect(to: route(:quizzes, :show, quiz_id: quiz.id))
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :edit, page_title: "Edit Quiz", quiz: quiz, changeset: changeset)
+      {:error, %Ecto.Changeset{} = error_changeset} ->
+        render(conn, :edit,
+          page_title: "Edit Quiz",
+          quiz: quiz,
+          changeset: error_changeset
+        )
     end
   end
 

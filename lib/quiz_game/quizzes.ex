@@ -65,7 +65,7 @@ defmodule QuizGame.Quizzes do
   """
   def create_quiz(attrs \\ %{}) do
     %Quiz{}
-    |> Quiz.unsafe_changeset(attrs)
+    |> Quiz.changeset_unsafe(attrs)
     |> Repo.insert()
   end
 
@@ -83,8 +83,24 @@ defmodule QuizGame.Quizzes do
   """
   def update_quiz(%Quiz{} = quiz, attrs) do
     quiz
-    |> Quiz.unsafe_changeset(attrs)
+    |> Quiz.changeset_unsafe(attrs)
     |> Repo.update()
+  end
+
+  @doc """
+  Updates a quiz.
+
+  ## Examples
+
+      iex> update_quiz(quiz, %Ecto.Changeset{field: new_value})
+      {:ok, %Quiz{}}
+
+      iex> update_quiz(quiz, %Ecto.Changeset{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_quiz2(%Ecto.Changeset{} = changeset) do
+    changeset |> Repo.update()
   end
 
   @doc """
@@ -102,21 +118,6 @@ defmodule QuizGame.Quizzes do
   def delete_quiz(%Quiz{} = quiz) do
     Repo.delete(quiz)
   end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking quiz changes.
-
-  ## Examples
-
-      iex> change_quiz(quiz)
-      %Ecto.Changeset{data: %Quiz{}}
-
-  """
-  def change_quiz(%Quiz{} = quiz, attrs \\ %{}) do
-    Quiz.safe_changeset(quiz, attrs)
-  end
-
-  alias QuizGame.Quizzes.Card
 
   @doc """
   Returns the list of cards.
@@ -161,7 +162,7 @@ defmodule QuizGame.Quizzes do
   """
   def create_card(attrs \\ %{}) do
     %Card{}
-    |> Card.unsafe_changeset(attrs)
+    |> Card.changeset_unsafe(attrs)
     |> Repo.insert()
   end
 
@@ -179,7 +180,7 @@ defmodule QuizGame.Quizzes do
   """
   def update_card(%Card{} = card, attrs) do
     card
-    |> Card.unsafe_changeset(attrs)
+    |> Card.changeset_unsafe(attrs)
     |> Repo.update()
   end
 
