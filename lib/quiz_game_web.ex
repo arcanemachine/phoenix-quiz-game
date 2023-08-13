@@ -70,6 +70,7 @@ defmodule QuizGameWeb do
 
       # custom
       import QuizGameWeb.Support.Router
+      import QuizGameWeb.Support.Html
     end
   end
 

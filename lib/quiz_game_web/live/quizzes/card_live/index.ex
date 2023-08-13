@@ -36,16 +36,22 @@ defmodule QuizGameWeb.Quizzes.CardLive.Index do
     })
   end
 
+  # defp apply_action(socket, :edit, %{"id" => id}) do
+  #   socket
+  #   |> assign(:page_title, "Edit Card")
+  #   |> assign(:card, Quizzes.get_card!(id))
+  # end
+
   @impl Phoenix.LiveView
   def handle_info({QuizGameWeb.Quizzes.CardLive.FormComponent, {:saved, card}}, socket) do
     {:noreply, stream_insert(socket, :cards, card)}
   end
 
-  @impl Phoenix.LiveView
-  def handle_event("delete", %{"id" => id}, socket) do
-    card = Quizzes.get_card!(id)
-    {:ok, _} = Quizzes.delete_card(card)
+  # @impl Phoenix.LiveView
+  # def handle_event("delete", %{"id" => id}, socket) do
+  #   card = Quizzes.get_card!(id)
+  #   {:ok, _} = Quizzes.delete_card(card)
 
-    {:noreply, stream_delete(socket, :cards, card)}
-  end
+  #   {:noreply, stream_delete(socket, :cards, card)}
+  # end
 end

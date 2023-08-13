@@ -126,6 +126,10 @@
     color: black;
   }
 
+  ol {
+    list-style-type: decimal !important;
+  }
+
   .dropdown-content {
     /* prevent other elements (e.g. inputs) from obscuring dropdowns */
     z-index: 1;
@@ -163,13 +167,24 @@
   }
 
   /* custom */
-  .record-index {
+  .list {
     margin-bottom: 2rem;
+    padding-left: 1.5rem;
+    list-style-type: "- ";
+  }
+
+  .list > * {
+    margin-top: 0.5rem;
+  }
+
+  .list-index {
+    margin-bottom: 2rem;
+    padding-left: 2rem;
     font-size: 1.25rem;
     list-style-type: "- ";
   }
 
-  .record-index > *:not(:first-child) {
+  .list-index > *:not(:first-child) {
     margin-top: 0.5rem;
   }
 

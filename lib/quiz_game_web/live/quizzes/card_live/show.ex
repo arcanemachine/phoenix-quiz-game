@@ -35,6 +35,12 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
   end
 
   @impl Phoenix.LiveView
+  def handle_info({QuizGameWeb.Quizzes.CardLive.FormComponent, {:saved, card}}, socket) do
+    # update the saved card after saving the form
+    {:noreply, assign(socket, :card, card)}
+  end
+
+  @impl Phoenix.LiveView
   def handle_event("delete", _params, socket) do
     # delete the card and redirect to the card list
     case Quizzes.delete(socket.assigns.card) do

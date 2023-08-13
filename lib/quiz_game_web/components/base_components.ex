@@ -202,11 +202,11 @@ defmodule QuizGameWeb.BaseComponents do
 
   def base_page_title(assigns) do
     ~H"""
-    <section :if={@title || @subtitle} class="mb-12">
+    <section :if={@title || @subtitle} class="mb-8">
       <h1 :if={@title} class="text-4xl text-center font-bold">
         <%= @title %>
       </h1>
-      <h2 :if={@subtitle} class="mt-2 text-xl text-center">
+      <h2 :if={@subtitle} class="mt-1 text-xl text-center">
         <%= @subtitle %>
       </h2>
     </section>

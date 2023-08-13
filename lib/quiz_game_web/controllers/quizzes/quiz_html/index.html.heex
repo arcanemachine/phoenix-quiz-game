@@ -2,7 +2,7 @@
   No quizzes have been created.
 </div>
 
-<ul class="record-index">
+<ul class="list-index">
   <li :for={quiz <- @quizzes}>
     <a href={route(:quizzes, :show, quiz_id: quiz.id)}>
       <%= quiz.name %>

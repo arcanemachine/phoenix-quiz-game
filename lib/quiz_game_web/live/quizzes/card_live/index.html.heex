@@ -1,7 +1,8 @@
-<p>
+<.crud_intro_text>
   Click on a card to get more information about it.
-</p>
+</.crud_intro_text>
 
+<%!--
 <.table
   id="cards"
   rows={@streams.cards}
@@ -31,6 +32,17 @@
     </.link>
   </:action>
 </.table>
+--%>
+
+
+<ol class="list-index" id="list-cards" phx-update="stream">
+  <li :for={{id, card} <- @streams.cards} id={id}>
+    <.link patch={route(:quizzes_cards, :show, quiz_id: @quiz.id, card_id: card.id)}>
+      <%= card.question %>
+    </.link>
+  </li>
+</ol>
+
 
 <.action_links>
   <.action_links_item kind="create">

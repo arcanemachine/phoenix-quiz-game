@@ -1,4 +1,4 @@
-<.record_show>
+<.list_show>
   <:item label="Email">
     <%= @current_user.email %>
   </:item>
@@ -10,7 +10,7 @@
       <.link href={route(:users, :email_verify_solicit)}>(Confirm your account)</.link>
     <% end %>
   </:item>
-</.record_show>
+</.list_show>
 
 <div class="divider my-12" />
 

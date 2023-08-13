@@ -1,19 +1,31 @@
-<.list>
-  <:item title="Format"><%= @card.format %></:item>
-  <:item title="Question"><%= @card.question %></:item>
-  <:item title="Image"><%= @card.image %></:item>
-  <:item title="Answers"><%= @card.answers %></:item>
-</.list>
+<.list_show>
+  <:item label="Format">
+    <%= @card.format %>
+  </:item>
+  <:item label="Question">
+    <%= @card.question %>
+  </:item>
+  <:item label="Image">
+    <%= @card.image || null_value_content() %>
+  </:item>
+  <:item label="Answers">
+    <ul class="list">
+      <li :for={answer <- @card.answers}>
+        <%= answer %>
+      </li>
+    </ul>
+  </:item>
+</.list_show>
 
 <.action_links>
   <.action_links_item kind="edit">
-    <.link patch={route(:quizzes_cards, :edit, quiz_id: @card.quiz.id, card_id: @card.id)}>
+    <.link navigate={route(:quizzes_cards, :edit, quiz_id: @card.quiz.id, card_id: @card.id)}>
       Edit this card
     </.link>
   </.action_links_item>
   <.action_links_item kind="delete">
     <.link
-      phx-click={JS.push("delete", value: %{id: @card.id}) |> hide("##{@card.id}")}
+      phx-click="delete"
       class="!text-error"
       data-confirm="Are you sure you want to delete this card?"
     >
@@ -22,7 +34,7 @@
   </.action_links_item>
   <.action_links_spacer />
   <.action_links_item kind="back">
-    <.link href={route(:quizzes_cards, :index, quiz_id: @card.quiz.id)}>
+    <.link patch={route(:quizzes_cards, :index, quiz_id: @card.quiz.id)}>
       Return to card list
     </.link>
   </.action_links_item>
@@ -44,7 +56,6 @@
     id={@card.id}
     title="Edit Card"
     action={@live_action}
-    quiz={@quiz}
     card={@card}
     patch={route(:quizzes_cards, :show, quiz_id: @card.quiz.id, card_id: @card.id)}
   />

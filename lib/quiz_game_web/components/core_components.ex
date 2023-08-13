@@ -32,7 +32,7 @@ defmodule QuizGameWeb.CoreComponents do
       <div :if={@title} class="text-2xl font-bold">
         <%= @title %>
       </div>
-      <ul class="mt-2 ml-6 [&>*:first-child]:mt-4 [&>*:not(:first-child)]:mt-2">
+      <ul class="mt-2 ml-8 [&>*:first-child]:mt-4 [&>*:not(:first-child)]:mt-2">
         <%= render_slot(@inner_block) %>
       </ul>
     </section>
@@ -397,7 +397,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   def crud_intro_text(assigns) do
     ~H"""
-    <div class="text-center [&>*:not(:first-child)]:mt-4">
+    <div class="mb-8 text-center [&>*:not(:first-child)]:mt-4">
       <%= render_slot(@inner_block) %>
     </div>
     """
@@ -753,16 +753,16 @@ defmodule QuizGameWeb.CoreComponents do
 
   ## Examples
 
-      <.list>
+      <.description_list>
         <:item title="Title"><%= @post.title %></:item>
         <:item title="Views"><%= @post.views %></:item>
-      </.list>
+      </.description_list>
   """
   slot :item, required: true do
     attr :title, :string, required: true
   end
 
-  def list(assigns) do
+  def description_list(assigns) do
     ~H"""
     <div class="mt-14">
       <dl class="-my-4 divide-y divide-base-content">
@@ -772,6 +772,36 @@ defmodule QuizGameWeb.CoreComponents do
         </div>
       </dl>
     </div>
+    """
+  end
+
+  @doc """
+  Renders a list of attributes for a given item. Used in :show templates.
+
+  ## Examples
+
+      <.list_show>
+        <:item title="Name"><%= @user.name %></:item>
+        <:item title="Email" class="bg-red-500"><%= @user.email %></:item>
+      </.list_show>
+  """
+  slot :item, required: true do
+    attr :label, :string, required: true
+    attr :class, :string
+  end
+
+  def list_show(assigns) do
+    ~H"""
+    <ul class="mb-8 [&>*:not(:first-child)]:mt-2">
+      <li :for={item <- @item}>
+        <span class="font-bold">
+          <%= item.label %>:
+        </span>
+        <span class={["ps-1", item[:class]]}>
+          <%= render_slot(item) %>
+        </span>
+      </li>
+    </ul>
     """
   end
 
@@ -935,36 +965,6 @@ defmodule QuizGameWeb.CoreComponents do
     <div class="mb-4 text-xl font-bold">
       <%= @title %>
     </div>
-    """
-  end
-
-  @doc """
-  Renders a list of attributes for a given record. Used in :show templates.
-
-  ## Examples
-
-      <.record_show>
-        <:item title="Name"><%= @user.name %></:item>
-        <:item title="Email" class="bg-red-500"><%= @user.email %></:item>
-      </.record_show>
-  """
-  slot :item, required: true do
-    attr :label, :string, required: true
-    attr :class, :string
-  end
-
-  def record_show(assigns) do
-    ~H"""
-    <ul class="mb-8 [&>*:not(:first-child)]:mt-2">
-      <li :for={item <- @item}>
-        <span class="font-bold">
-          <%= item.label %>:
-        </span>
-        <span class={["ps-1", item[:class]]}>
-          <%= render_slot(item) %>
-        </span>
-      </li>
-    </ul>
     """
   end
 
