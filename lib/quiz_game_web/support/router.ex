@@ -69,6 +69,9 @@ defmodule QuizGameWeb.Support.Router do
       :create ->
         ~p"/quizzes/#{opts[:quiz_id]}/cards"
 
+      :show ->
+        ~p"/quizzes/#{opts[:quiz_id]}/cards/#{opts[:card_id]}"
+
       :edit ->
         ~p"/quizzes/#{opts[:quiz_id]}/cards/#{opts[:card_id]}/edit"
 

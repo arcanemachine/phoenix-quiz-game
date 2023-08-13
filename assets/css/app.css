@@ -59,24 +59,36 @@
 }
 
 /* utility */
-.list-create {
-  list-style-type: "+ ";
-}
-
 .list-back {
   list-style-type: "< ";
 }
 
-.list-back-more {
+.list-back-2 {
   list-style-type: "<< ";
+}
+
+.list-create {
+  list-style-type: "+ ";
+}
+
+.list-dash {
+  list-style-type: "- ";
+}
+
+.list-delete {
+  list-style-type: "❌";
+}
+
+.list-edit {
+  list-style-type: "✏️ ";
 }
 
 .list-forward {
   list-style-type: "> ";
 }
 
-.list-dash {
-  list-style-type: "- ";
+.list-index {
+  list-style-type: "🗂️ ";
 }
 
 @layer base {

@@ -14,13 +14,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
         Use this form to manage card records in your database.
       </.form_intro_text>
 
-      <.simple_form
-        for={@form}
-        id="card-form"
-        phx-target={@myself}
-        phx-change="validate"
-        phx-submit="save"
-      >
+      <.simple_form for={@form} id="card-form" phx-target={@myself} phx-submit="save">
         <.input
           field={@form[:format]}
           type="select"
@@ -79,7 +73,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
 
         {:noreply,
          socket
-         |> put_flash(:info, "Card created successfully")
+         |> put_flash(:success, "Card created successfully")
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = error_changeset} ->
@@ -94,7 +88,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
 
         {:noreply,
          socket
-         |> put_flash(:info, "Card updated successfully")
+         |> put_flash(:success, "Card updated successfully")
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->

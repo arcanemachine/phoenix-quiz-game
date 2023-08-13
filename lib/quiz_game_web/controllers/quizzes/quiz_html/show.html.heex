@@ -13,12 +13,12 @@
 </.record_show>
 
 <.action_links>
-  <.action_links_item>
+  <.action_links_item kind="index">
     <.link href={route(:quizzes_cards, :index, quiz_id: @quiz.id)}>
       View cards for this quiz
     </.link>
   </.action_links_item>
-  <.action_links_item>
+  <.action_links_item kind="edit">
     <.link href={route(:quizzes, :edit, quiz_id: @quiz.id)}>
       Edit this quiz
     </.link>

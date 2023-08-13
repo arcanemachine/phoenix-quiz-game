@@ -1,3 +1,7 @@
+<p>
+  Click on a card to get more information about it.
+</p>
+
 <.table
   id="cards"
   rows={@streams.cards}
@@ -17,7 +21,6 @@
         Show
       </.link>
     </div>
-    <.link patch={route(:quizzes_cards, :edit, quiz_id: @quiz.id, card_id: card.id)}>Edit</.link>
   </:action>
   <:action :let={{id, card}}>
     <.link
@@ -28,23 +31,6 @@
     </.link>
   </:action>
 </.table>
-
-<.modal
-  :if={@live_action in [:new, :edit]}
-  id="card-modal"
-  show
-  on_cancel={JS.patch(route(:quizzes_cards, :index, quiz_id: @quiz.id))}
->
-  <.live_component
-    module={QuizGameWeb.Quizzes.CardLive.FormComponent}
-    id={@card.id || :new}
-    title={@page_title}
-    action={@live_action}
-    quiz={@quiz}
-    card={@card}
-    patch={route(:quizzes_cards, :index, quiz_id: @quiz.id)}
-  />
-</.modal>
 
 <.action_links>
   <.action_links_item kind="create">
@@ -58,3 +44,20 @@
     </.link>
   </.action_links_item>
 </.action_links>
+
+<.modal
+  :if={@live_action == :new}
+  id="card-modal"
+  show
+  on_cancel={JS.patch(route(:quizzes_cards, :index, quiz_id: @quiz.id))}
+>
+  <.live_component
+    module={QuizGameWeb.Quizzes.CardLive.FormComponent}
+    id={@card.id || :new}
+    title={@modal_title}
+    action={@live_action}
+    quiz={@quiz}
+    card={@card}
+    patch={route(:quizzes_cards, :index, quiz_id: @quiz.id)}
+  />
+</.modal>

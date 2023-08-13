@@ -15,13 +15,14 @@ defmodule QuizGame.Quizzes.Card do
     belongs_to :quiz, QuizGame.Quizzes.Quiz
 
     # data
+    field :format, Ecto.Enum,
+      values: [:multiple_choice, :true_or_false, :text_entry, :number_entry]
     field :image, :string
     field :question, :string
     field :answers, {:array, :string}
 
-    # attributes
-    field :format, Ecto.Enum,
-      values: [:multiple_choice, :true_or_false, :text_entry, :number_entry]
+    # # computed
+    # field :index, :integer
 
     timestamps()
   end
@@ -46,6 +47,7 @@ defmodule QuizGame.Quizzes.Card do
     card
     |> cast(attrs, @unsafe_fields_required ++ @safe_fields_required ++ @safe_fields_optional)
     |> validate_required(@unsafe_fields_required ++ @safe_fields_required)
+    |> foreign_key_constraint(:quiz_id)
   end
 
   # @doc "Returns a changeset with all unsafe parameters removed."

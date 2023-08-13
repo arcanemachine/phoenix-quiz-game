@@ -68,8 +68,6 @@ defmodule QuizGameWeb.Router do
         end
 
         scope "/:id" do
-          # pipe_through [:fetch_card]
-
           live "/", CardLive.Show, :show
 
           scope "/" do
@@ -77,8 +75,7 @@ defmodule QuizGameWeb.Router do
 
             live_session :quizzes_id_cards_login_required,
               on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
-              live "/edit", CardLive.Index, :edit
-              live "/show/edit", CardLive.Show, :edit
+              live "/edit", CardLive.Show, :edit
             end
           end
         end

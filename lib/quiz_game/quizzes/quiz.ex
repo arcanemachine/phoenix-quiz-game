@@ -27,6 +27,7 @@ defmodule QuizGame.Quizzes.Quiz do
     |> cast(attrs, [:name])
     |> cast(attrs, @safe_fields_required)
     |> validate_required(@safe_fields_required)
+    |> foreign_key_constraint(:user_id)
   end
 
   @doc "A changeset that contains one or more fields that should not be modified by the user."

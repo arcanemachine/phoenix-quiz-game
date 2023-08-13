@@ -1,40 +1,39 @@
 defmodule QuizGameWeb.Quizzes.CardLive.Index do
   use QuizGameWeb, :live_view
 
+  import Ecto.Query
+
+  alias QuizGame.Repo
   alias QuizGame.Quizzes
-  alias QuizGame.Quizzes.Card
+  alias QuizGame.Quizzes.{Card, Quiz}
 
   @impl Phoenix.LiveView
   def mount(params, _session, socket) do
-    quiz = Quizzes.get_quiz!(params["quiz_id"])
+    quiz = Quizzes.get_quiz!(params["quiz_id"]) |> Repo.preload([:cards])
 
-    {:ok, socket |> assign(:quiz, quiz) |> stream(:cards, Quizzes.list_cards())}
+    {:ok, socket |> assign(:quiz, quiz) |> stream(:cards, quiz.cards)}
   end
 
   @impl Phoenix.LiveView
   def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+    {:noreply,
+     socket
+     |> apply_action(socket.assigns.live_action, params)
+     |> assign(%{
+       page_title: "Card List",
+       page_subtitle: socket.assigns.quiz.name
+     })}
   end
 
   defp apply_action(socket, :index, _params) do
-    socket
-    |> assign(%{
-      page_title: "Card List",
-      page_subtitle: socket.assigns.quiz.name,
-      card: nil
-    })
+    assign(socket, card: nil)
   end
 
   defp apply_action(socket, :new, _params) do
-    socket
-    |> assign(:page_title, "New Card")
-    |> assign(:card, %Card{})
-  end
-
-  defp apply_action(socket, :edit, %{"id" => id}) do
-    socket
-    |> assign(:page_title, "Edit Card")
-    |> assign(:card, Quizzes.get_card!(id))
+    assign(socket, %{
+      card: %Card{},
+      modal_title: "New Card"
+    })
   end
 
   @impl Phoenix.LiveView

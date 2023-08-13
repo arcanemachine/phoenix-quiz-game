@@ -1,16 +1,3 @@
-<.header>
-  Card <%= @card.id %>
-  <:subtitle>This is a card record from your database.</:subtitle>
-  <:actions>
-    <.link
-      patch={route(:quizzes_cards, :edit, quiz_id: @quiz.id, card_id: @card.id)}
-      phx-click={JS.push_focus()}
-    >
-      <.button>Edit card</.button>
-    </.link>
-  </:actions>
-</.header>
-
 <.list>
   <:item title="Format"><%= @card.format %></:item>
   <:item title="Question"><%= @card.question %></:item>
@@ -18,21 +5,47 @@
   <:item title="Answers"><%= @card.answers %></:item>
 </.list>
 
-<.back navigate={route(:quizzes_cards, :index, quiz_id: @quiz.id)}>Back to cards</.back>
+<.action_links>
+  <.action_links_item kind="edit">
+    <.link patch={route(:quizzes_cards, :edit, quiz_id: @card.quiz.id, card_id: @card.id)}>
+      Edit this card
+    </.link>
+  </.action_links_item>
+  <.action_links_item kind="delete">
+    <.link
+      phx-click={JS.push("delete", value: %{id: @card.id}) |> hide("##{@card.id}")}
+      class="!text-error"
+      data-confirm="Are you sure you want to delete this card?"
+    >
+      Delete this card
+    </.link>
+  </.action_links_item>
+  <.action_links_spacer />
+  <.action_links_item kind="back">
+    <.link href={route(:quizzes_cards, :index, quiz_id: @card.quiz.id)}>
+      Return to card list
+    </.link>
+  </.action_links_item>
+  <.action_links_item kind="back-2">
+    <.link href={route(:quizzes, :show, quiz_id: @card.quiz.id)}>
+      Return to quiz
+    </.link>
+  </.action_links_item>
+</.action_links>
 
 <.modal
   :if={@live_action == :edit}
   id="card-modal"
   show
-  on_cancel={JS.patch(route(:quizzes_cards, :show, quiz_id: @quiz.id, card_id: @card.id))}
+  on_cancel={JS.patch(route(:quizzes_cards, :show, quiz_id: @card.quiz.id, card_id: @card.id))}
 >
   <.live_component
     module={QuizGameWeb.Quizzes.CardLive.FormComponent}
     id={@card.id}
-    title={@page_title}
+    title="Edit Card"
     action={@live_action}
     quiz={@quiz}
     card={@card}
-    patch={route(:quizzes_cards, :show, quiz_id: @quiz.id, card_id: @card.id)}
+    patch={route(:quizzes_cards, :show, quiz_id: @card.quiz.id, card_id: @card.id)}
   />
 </.modal>

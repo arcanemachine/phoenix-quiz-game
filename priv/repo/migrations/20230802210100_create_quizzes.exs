@@ -8,7 +8,11 @@ defmodule QuizGame.Repo.Migrations.CreateQuizzes do
       add :user_id, references(:users, on_delete: :restrict), null: false
 
       # data
-      add :name, :string
+      add :name, :string, null: false
+      # add :format, :string, null: false
+
+      # # attributes
+      # add :is_shuffled, :boolean, default: false
 
       timestamps()
     end
