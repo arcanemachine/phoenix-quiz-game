@@ -26,7 +26,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
           type="select"
           label="Format"
           prompt="Choose a value"
-          options={Ecto.Enum.values(QuizGame.Quizzes.Card, :format)}
+          options={QuizGame.Quizzes.Card.format_options()}
         />
         <.input field={@form[:question]} type="text" label="Question" />
         <.input field={@form[:image]} type="text" label="Image" />

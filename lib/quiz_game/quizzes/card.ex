@@ -3,6 +3,13 @@ defmodule QuizGame.Quizzes.Card do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @doc "Creates :format options usable in a <.input type='select'> component."
+  def format_options() do
+    Ecto.Enum.values(__MODULE__, :format) |> Enum.map(fn item ->
+      {item |> Atom.to_string() |> String.replace("_", " ") |> String.capitalize(), item}
+    end)
+  end
+
   schema "cards" do
     # associations
     belongs_to :quiz, QuizGame.Quizzes.Quiz
