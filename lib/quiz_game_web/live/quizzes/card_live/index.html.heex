@@ -40,6 +40,7 @@
     id={@card.id || :new}
     title={@page_title}
     action={@live_action}
+    quiz={@quiz}
     card={@card}
     patch={route(:quizzes_cards, :index, quiz_id: @quiz.id)}
   />

@@ -4,7 +4,6 @@ defmodule QuizGameWeb.Quizzes.QuizController do
   import QuizGameWeb.Support.Router, only: [route: 2, route: 3]
 
   alias QuizGame.Quizzes
-  alias QuizGame.Quizzes.Quiz
 
   def index(conn, _params) do
     quizzes = Quizzes.list_quizzes()
@@ -18,12 +17,12 @@ defmodule QuizGameWeb.Quizzes.QuizController do
   def new(conn, _params) do
     render(conn, :new,
       page_title: "Create Quiz",
-      changeset: Quiz.changeset(%Quiz{})
+      changeset: Quizzes.change_quiz()
     )
   end
 
   def create(conn, %{"quiz" => quiz_params}) do
-    # associate quiz with current user
+    # associate new quiz with current user
     unsafe_quiz_params = Map.merge(quiz_params, %{"user_id" => conn.assigns.current_user.id})
 
     case Quizzes.create_quiz(unsafe_quiz_params, unsafe: true) do
@@ -50,7 +49,7 @@ defmodule QuizGameWeb.Quizzes.QuizController do
     render(conn, :edit,
       page_title: "Edit Quiz",
       quiz: quiz,
-      changeset: Quiz.changeset(quiz)
+      changeset: Quizzes.change_quiz(quiz)
     )
   end
 

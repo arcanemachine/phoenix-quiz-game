@@ -101,6 +101,19 @@ defmodule QuizGame.Quizzes do
   end
 
   @doc """
+  Returns an `%Ecto.Changeset{}` for tracking quiz changes.
+
+  ## Examples
+
+      iex> change_quiz(quiz)
+      %Ecto.Changeset{data: %Quiz{}}
+
+  """
+  def change_quiz(%Quiz{} = quiz \\ %Quiz{}, attrs \\ %{}) do
+    Quiz.changeset(quiz, attrs)
+  end
+
+  @doc """
   Returns the list of cards.
 
   ## Examples
@@ -208,16 +221,16 @@ defmodule QuizGame.Quizzes do
     Repo.delete(card)
   end
 
-  # @doc """
-  # Returns an `%Ecto.Changeset{}` for tracking card changes.
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking card changes.
 
-  # ## Examples
+  ## Examples
 
-  #     iex> change_card(card)
-  #     %Ecto.Changeset{data: %Card{}}
+      iex> change_card(card)
+      %Ecto.Changeset{data: %Card{}}
 
-  # """
-  # def change_card(%Card{} = card, attrs \\ %{}) do
-  #   Card.changeset(card, attrs)
-  # end
+  """
+  def change_card(%Card{} = card \\ %Card{}, attrs \\ %{}) do
+    Card.changeset(card, attrs)
+  end
 end
