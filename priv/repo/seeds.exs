@@ -34,10 +34,14 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
   # end
 
   # create example quiz
-  Quizzes.create_quiz(%{
-    name: "Example Quiz",
-    user_id: non_admin_user.id
-  })
+  {:ok, quiz} =
+    Quizzes.create_quiz(
+      %{
+        user_id: non_admin_user.id,
+        name: "Example Quiz"
+      },
+      unsafe: true
+    )
 
   # # create quizzes for all generated users (except the primary user)
   # user_ids = Repo.all(from u in User, select: u.id)
@@ -52,6 +56,17 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
   #     end
   #   end
   # end
+
+  # create example card
+  Quizzes.create_card(
+    %{
+      quiz_id: quiz.id,
+      format: :multiple_choice,
+      question: "some question?",
+      answers: ["answer 1", "answer 2"]
+    },
+    unsafe: true
+  )
 
   # # create cards for all generated quizzes
   # quiz_ids = Repo.all(from q in Quiz, select: q.id)
