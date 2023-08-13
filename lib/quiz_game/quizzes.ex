@@ -40,31 +40,48 @@ defmodule QuizGame.Quizzes do
 
   ## Examples
 
-      iex> create_quiz(changeset)
-      {:ok, %Quiz{}}
+      iex> create_quiz(%{name: "some name", user_id: 123}, unsafe: true)
+      {:ok, %Card{}}
 
-      iex> create_quiz(invalid_changeset)
+      iex> create_quiz(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_quiz(%Ecto.Changeset{} = changeset) do
-    changeset |> Repo.insert()
+  def create_quiz(attrs \\ %{}, opts \\ [unsafe: false]) do
+    if !opts[:unsafe], do: raise("This function must called with the option `unsafe: true`.")
+
+    %Quiz{}
+    |> Quiz.unsafe_changeset(attrs)
+    |> Repo.insert()
   end
 
   @doc """
   Updates a quiz.
 
+  To allow modification of non-user-editable fields, pass the option `unsafe: true`.
+
   ## Examples
 
-      iex> update_quiz(changeset)
+      iex> update_quiz(quiz, %{field: new_value})
       {:ok, %Quiz{}}
 
-      iex> update_quiz(invalid_changeset)
+      iex> update_quiz(quiz, %{user_id: 123}, unsafe: true)
+      {:ok, %Quiz{}}
+
+      iex> update_quiz(quiz, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_quiz(%Ecto.Changeset{} = changeset) do
-    changeset |> Repo.update()
+  def update_quiz(%Quiz{} = quiz, attrs, opts \\ [unsafe: false]) do
+    if opts[:unsafe] do
+      quiz
+      |> Quiz.unsafe_changeset(attrs)
+      |> Repo.update()
+    else
+      quiz
+      |> Quiz.changeset(attrs)
+      |> Repo.update()
+    end
   end
 
   @doc """
@@ -112,38 +129,51 @@ defmodule QuizGame.Quizzes do
   """
   def get_card!(id), do: Repo.get!(Card, id)
 
-  # @doc """
-  # Creates a card.
-
-  # ## Examples
-
-  #     iex> create_card(%{field: value})
-  #     {:ok, %Card{}}
-
-  #     iex> create_card(%{field: bad_value})
-  #     {:error, %Ecto.Changeset{}}
-
-  # """
-  # def create_card(attrs \\ %{}) do
-  #   %Card{}
-  #   |> Card.changeset_unsafe(attrs)
-  #   |> Repo.insert()
-  # end
-
   @doc """
   Creates a card.
 
   ## Examples
 
-      iex> create_card(changeset)
+      iex> create_card(%{name: "some name", quiz_id: 123}, unsafe: true)
       {:ok, %Card{}}
 
-      iex> create_card(invalid_changeset)
+      iex> create_card(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_card(%Ecto.Changeset{} = changeset) do
-    changeset |> Repo.insert()
+  def create_card(attrs \\ %{}, opts \\ [unsafe: false]) do
+    if !opts[:unsafe], do: raise("This function must called with the option `unsafe: true`.")
+
+    %Card{}
+    |> Card.unsafe_changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a card.
+
+  ## Examples
+
+      iex> update_card(card, %{field: new_value})
+      {:ok, %Card{}}
+
+      iex> update_card(card, %{field: new_value}, unsafe: true)
+      {:ok, %Card{}}
+
+      iex> update_card(card, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_card(%Card{} = card, attrs \\ %{}, opts \\ [unsafe: false]) do
+    if opts[:unsafe] do
+      card
+      |> Card.unsafe_changeset(attrs)
+      |> Repo.update()
+    else
+      card
+      |> Card.changeset(attrs)
+      |> Repo.update()
+    end
   end
 
   # @doc """
@@ -151,34 +181,16 @@ defmodule QuizGame.Quizzes do
 
   # ## Examples
 
-  #     iex> update_card(card, %{field: new_value})
+  #     iex> update_card(changeset)
   #     {:ok, %Card{}}
 
-  #     iex> update_card(card, %{field: bad_value})
+  #     iex> update_card(invalid_changeset)
   #     {:error, %Ecto.Changeset{}}
 
   # """
-  # def update_card(%Card{} = card, attrs) do
-  #   card
-  #   |> Card.changeset_unsafe(attrs)
-  #   |> Repo.update()
+  # def update_card(changeset) do
+  #   changeset |> Repo.update()
   # end
-
-  @doc """
-  Updates a card.
-
-  ## Examples
-
-      iex> update_card(changeset)
-      {:ok, %Card{}}
-
-      iex> update_card(invalid_changeset)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_card(changeset) do
-    changeset |> Repo.update()
-  end
 
   @doc """
   Deletes a card.

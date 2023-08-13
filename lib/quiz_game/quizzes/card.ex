@@ -24,25 +24,25 @@ defmodule QuizGame.Quizzes.Card do
   @safe_fields_optional [:image]
 
   @doc "A changeset whose fields can be safely modified by the user."
-  def changeset(card, attrs \\ %{})
+  def changeset(card \\ %__MODULE__{}, attrs \\ %{})
 
-  def changeset(card, attrs) do
+  def changeset(%__MODULE__{} = card, attrs) do
     card
     |> cast(attrs, @safe_fields_required ++ @safe_fields_optional)
     |> validate_required(@safe_fields_required)
   end
 
   @doc "A changeset that contains one or more fields that should not be modified by the user."
-  def unsafe_changeset(card, attrs \\ %{})
+  def unsafe_changeset(card \\ %__MODULE__{}, attrs \\ %{})
 
-  def unsafe_changeset(card, attrs) do
+  def unsafe_changeset(%__MODULE__{} = card, attrs) do
     card
     |> cast(attrs, @unsafe_fields_required ++ @safe_fields_required ++ @safe_fields_optional)
     |> validate_required(@unsafe_fields_required ++ @safe_fields_required)
   end
 
-  @doc "Returns a changeset with all unsafe parameters removed."
-  def changeset_make_safe(%Ecto.Changeset{} = unsafe_changeset) do
-    changeset(%__MODULE__{}, unsafe_changeset.params)
-  end
+  # @doc "Returns a changeset with all unsafe parameters removed."
+  # def changeset_make_safe(%Ecto.Changeset{} = unsafe_changeset) do
+  #   changeset(%__MODULE__{}, unsafe_changeset.params)
+  # end
 end

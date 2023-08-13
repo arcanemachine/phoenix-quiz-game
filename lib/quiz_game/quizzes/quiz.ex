@@ -20,9 +20,9 @@ defmodule QuizGame.Quizzes.Quiz do
   @safe_fields_required [:name]
 
   @doc "A changeset whose fields can be safely modified by the user."
-  def changeset(quiz, attrs \\ %{})
+  def changeset(quiz \\ %__MODULE__{}, attrs \\ %{})
 
-  def changeset(quiz, attrs) do
+  def changeset(%__MODULE__{} = quiz, attrs) do
     quiz
     |> cast(attrs, [:name])
     |> cast(attrs, @safe_fields_required)
@@ -32,15 +32,15 @@ defmodule QuizGame.Quizzes.Quiz do
   @doc "A changeset that contains one or more fields that should not be modified by the user."
   def unsafe_changeset(quiz, attrs \\ %{})
 
-  def unsafe_changeset(quiz, attrs) do
+  def unsafe_changeset(%__MODULE__{} = quiz, attrs) do
     quiz
     |> cast(attrs, @unsafe_fields_required ++ @safe_fields_required)
     |> validate_required(@unsafe_fields_required ++ @safe_fields_required)
     |> validate_length(:name, max: name_length_max())
   end
 
-  @doc "Returns a changeset with all unsafe parameters removed."
-  def changeset_make_safe(%Ecto.Changeset{} = unsafe_changeset) do
-    changeset(%__MODULE__{}, unsafe_changeset.params)
-  end
+  # @doc "Returns a changeset with all unsafe parameters removed."
+  # def changeset_make_safe(%Ecto.Changeset{} = unsafe_changeset) do
+  #   changeset(%__MODULE__{}, unsafe_changeset.params)
+  # end
 end

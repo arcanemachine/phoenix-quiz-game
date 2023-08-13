@@ -22,26 +22,20 @@ defmodule QuizGameWeb.Quizzes.QuizController do
     )
   end
 
-  def create(conn, %{"quiz" => safe_quiz_params}) do
+  def create(conn, %{"quiz" => quiz_params}) do
     # associate quiz with current user
-    unsafe_quiz_params = %{"user_id" => conn.assigns.current_user.id}
+    unsafe_quiz_params = Map.merge(quiz_params, %{"user_id" => conn.assigns.current_user.id})
 
-    unsafe_changeset =
-      Quiz.unsafe_changeset(%Quiz{}, Map.merge(safe_quiz_params, unsafe_quiz_params))
-
-    case Quizzes.create_quiz(unsafe_changeset) do
+    case Quizzes.create_quiz(unsafe_quiz_params, unsafe: true) do
       {:ok, quiz} ->
         conn
         |> put_flash(:success, "Quiz created successfully")
         |> redirect(to: route(:quizzes, :show, quiz_id: quiz.id))
 
-      {:error, %Ecto.Changeset{} = unsafe_error_changeset} ->
-        # remove unsafe data from the changeset before returning it to the template
-        safe_error_changeset = Quiz.changeset_make_safe(unsafe_error_changeset)
-
+      {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, :new,
           page_title: "Create Quiz",
-          changeset: safe_error_changeset
+          changeset: changeset
         )
     end
   end
@@ -62,9 +56,8 @@ defmodule QuizGameWeb.Quizzes.QuizController do
 
   def update(conn, %{"quiz" => quiz_params}) do
     quiz = conn.assigns.quiz
-    changeset = Quiz.changeset(quiz, quiz_params)
 
-    case Quizzes.update_quiz(changeset) do
+    case Quizzes.update_quiz(quiz, quiz_params) do
       {:ok, quiz} ->
         conn
         |> put_flash(:success, "Quiz updated successfully")
