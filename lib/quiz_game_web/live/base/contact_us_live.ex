@@ -7,10 +7,10 @@ defmodule QuizGameWeb.BaseLive.ContactUsLive do
 
   def render(assigns) do
     ~H"""
-    <.form_intro_text>
+    <.crud_intro_text>
       <p>Please enter your contact information and message.</p>
       <p>If necessary, we will get back to you as soon as possible.</p>
-    </.form_intro_text>
+    </.crud_intro_text>
 
     <.simple_form for={@form} id="form_contact_us" phx-submit="submit">
       <.input field={@form[:name]} type="text" label="Your name" required />

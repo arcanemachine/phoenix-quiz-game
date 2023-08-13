@@ -14,9 +14,9 @@ defmodule QuizGameWeb.UsersLive.UserLoginLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <.form_intro_text>
+    <.crud_intro_text>
       To login to your account, enter your account details below.
-    </.form_intro_text>
+    </.crud_intro_text>
 
     <.simple_form for={@form} id="login_form" action={route(:users, :login)} phx-update="ignore">
       <.input

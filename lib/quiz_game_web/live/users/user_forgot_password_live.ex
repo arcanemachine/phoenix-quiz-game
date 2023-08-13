@@ -12,9 +12,9 @@ defmodule QuizGameWeb.UsersLive.UserForgotPasswordLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <.form_intro_text>
+    <.crud_intro_text>
       Fill out the form, and we will send you an email with a link to reset your password.
-    </.form_intro_text>
+    </.crud_intro_text>
 
     <.simple_form for={@form} id="password_reset_form" phx-submit="send_email">
       <.input

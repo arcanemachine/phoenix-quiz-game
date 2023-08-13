@@ -1,8 +1,8 @@
 <.alert_form_errors :if={@changeset.action} />
 
-<.form_intro_text>
+<.crud_intro_text>
   Fill out the form below to edit this quiz.
-</.form_intro_text>
+</.crud_intro_text>
 
 <.quiz_form changeset={@changeset} action={route(:quizzes, :update, quiz_id: @quiz.id)} />
 

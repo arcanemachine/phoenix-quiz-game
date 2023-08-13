@@ -30,9 +30,9 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <.form_intro_text>
+    <.crud_intro_text>
       To register a new account, enter your account details below.
-    </.form_intro_text>
+    </.crud_intro_text>
 
     <.simple_form
       for={@form}

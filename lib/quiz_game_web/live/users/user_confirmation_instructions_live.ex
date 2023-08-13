@@ -12,9 +12,9 @@ defmodule QuizGameWeb.UsersLive.UserConfirmationInstructionsLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <.form_intro_text>
+    <.crud_intro_text>
       Fill out the form, and we will send you an email with a link to confirm your account.
-    </.form_intro_text>
+    </.crud_intro_text>
 
     <.simple_form for={@form} id="resend_confirmation_form" phx-submit="send_instructions">
       <.input

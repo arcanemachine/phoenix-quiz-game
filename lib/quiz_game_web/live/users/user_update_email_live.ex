@@ -43,10 +43,10 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <.form_intro_text>
+    <.crud_intro_text>
       <p>Complete this form, and we will send a confirmation email to your new email address.</p>
       <p>To confirm your new email address, open that email and click on the activation link.</p>
-    </.form_intro_text>
+    </.crud_intro_text>
 
     <.simple_form for={@email_form} id="email_form" phx-submit="email_update" phx-change="validate">
       <.input

@@ -1,7 +1,7 @@
 <%= if assigns[:current_user] do %>
-  <.form_intro_text>
+  <.crud_intro_text>
     Are you sure you want to log out?
-  </.form_intro_text>
+  </.crud_intro_text>
 
   <.simple_form for={%{}} method="post">
     <.input type="csrf-token" />
@@ -11,9 +11,9 @@
     </:actions>
   </.simple_form>
 <% else %>
-  <.form_intro_text>
+  <.crud_intro_text>
     You are already logged out.
-  </.form_intro_text>
+  </.crud_intro_text>
 
   <.simple_form for={%{}} id="logout-form">
     <:actions>

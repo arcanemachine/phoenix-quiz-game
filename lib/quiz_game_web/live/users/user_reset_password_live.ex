@@ -23,9 +23,9 @@ defmodule QuizGameWeb.UsersLive.UserResetPasswordLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <.form_intro_text>
+    <.crud_intro_text>
       Fill out the form to finish resetting your password.
-    </.form_intro_text>
+    </.crud_intro_text>
 
     <.simple_form
       for={@form}

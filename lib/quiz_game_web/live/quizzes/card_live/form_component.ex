@@ -10,9 +10,9 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
       <div class="mb-4 text-xl font-bold">
         <%= @title %>
       </div>
-      <.form_intro_text>
+      <.crud_intro_text>
         Use this form to manage card records in your database.
-      </.form_intro_text>
+      </.crud_intro_text>
 
       <.simple_form for={@form} id="card-form" phx-target={@myself} phx-submit="save">
         <.input

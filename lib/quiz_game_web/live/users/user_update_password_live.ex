@@ -23,9 +23,9 @@ defmodule QuizGameWeb.UsersLive.UserUpdatePasswordLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <.form_intro_text>
+    <.crud_intro_text>
       Fill out the form below to change your password.
-    </.form_intro_text>
+    </.crud_intro_text>
 
     <.simple_form
       for={@password_form}
