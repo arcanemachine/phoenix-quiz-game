@@ -15,7 +15,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
   def handle_params(params, _url, socket) do
     # get card
     query = from c in Card, where: c.quiz_id == ^params["quiz_id"] and c.id == ^params["card_id"]
-    card = Repo.one(query) |> Repo.preload(:quiz)
+    card = Repo.one!(query) |> Repo.preload(:quiz)
 
     {:noreply,
      assign(socket, %{

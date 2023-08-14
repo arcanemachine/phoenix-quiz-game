@@ -58,25 +58,17 @@ defmodule QuizGameWeb.Router do
       scope "/cards" do
         live "/", CardLive.Index, :index
 
-        scope "/" do
-          pipe_through [:require_authenticated_user]
-
-          live_session :quizzes_cards_login_required,
-            on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
-            live "/new", CardLive.Index, :new
-          end
+        live_session :quizzes_cards_login_required,
+          on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
+          live "/new", CardLive.Index, :new
         end
 
         scope "/:card_id" do
           live "/", CardLive.Show, :show
 
-          scope "/" do
-            pipe_through [:require_authenticated_user]
-
-            live_session :quizzes_id_cards_login_required,
-              on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
-              live "/edit", CardLive.Show, :edit
-            end
+          live_session :quizzes_id_cards_login_required,
+            on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
+            live "/edit", CardLive.Show, :edit
           end
         end
       end
