@@ -67,7 +67,7 @@ defmodule QuizGameWeb.Router do
           end
         end
 
-        scope "/:id" do
+        scope "/:card_id" do
           live "/", CardLive.Show, :show
 
           scope "/" do

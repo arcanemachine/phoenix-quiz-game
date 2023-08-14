@@ -7,14 +7,14 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
   alias QuizGame.Quizzes.Card
 
   @impl Phoenix.LiveView
-  def mount(params, _session, socket) do
+  def mount(_params, _session, socket) do
     {:ok, socket}
   end
 
   @impl Phoenix.LiveView
-  def handle_params(%{"id" => id} = params, _url, socket) do
+  def handle_params(params, _url, socket) do
     # get card
-    query = from c in Card, where: c.quiz_id == ^params["quiz_id"] and c.id == ^params["id"]
+    query = from c in Card, where: c.quiz_id == ^params["quiz_id"] and c.id == ^params["card_id"]
     card = Repo.one(query) |> Repo.preload(:quiz)
 
     {:noreply,
@@ -57,8 +57,8 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
   end
 
   # @impl Phoenix.LiveView
-  # def handle_event("delete", %{"id" => id}, socket) do
-  #   card = Quizzes.get_card!(id)
+  # def handle_event("delete", %{"card_id" => card_id}, socket) do
+  #   card = Quizzes.get_card!(card_id)
   #   {:ok, _} = Quizzes.delete_card(card)
 
   #   {:noreply, stream_delete(socket, :cards, card)}

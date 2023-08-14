@@ -21,6 +21,10 @@ defmodule QuizGame.Quizzes.Card do
     field :question, :string
     field :answers, {:array, :string}
 
+    # # attributes
+    # add :shuffle_questions, :boolean, null: false
+    # add :shuffle_answers, :boolean, null: false
+
     # # computed
     # field :index, :integer
 

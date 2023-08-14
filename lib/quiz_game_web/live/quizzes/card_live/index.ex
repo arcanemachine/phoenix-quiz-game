@@ -1,8 +1,6 @@
 defmodule QuizGameWeb.Quizzes.CardLive.Index do
   use QuizGameWeb, :live_view
 
-  import Ecto.Query
-
   alias QuizGame.Repo
   alias QuizGame.Quizzes
   alias QuizGame.Quizzes.Card
@@ -36,10 +34,10 @@ defmodule QuizGameWeb.Quizzes.CardLive.Index do
     })
   end
 
-  # defp apply_action(socket, :edit, %{"id" => id}) do
+  # defp apply_action(socket, :edit, %{"card_id" => card_id}) do
   #   socket
   #   |> assign(:page_title, "Edit Card")
-  #   |> assign(:card, Quizzes.get_card!(id))
+  #   |> assign(:card, Quizzes.get_card!(card_id))
   # end
 
   @impl Phoenix.LiveView
@@ -48,8 +46,8 @@ defmodule QuizGameWeb.Quizzes.CardLive.Index do
   end
 
   # @impl Phoenix.LiveView
-  # def handle_event("delete", %{"id" => id}, socket) do
-  #   card = Quizzes.get_card!(id)
+  # def handle_event("delete", %{"card_id" => card_id}, socket) do
+  #   card = Quizzes.get_card!(card_id)
   #   {:ok, _} = Quizzes.delete_card(card)
 
   #   {:noreply, stream_delete(socket, :cards, card)}
