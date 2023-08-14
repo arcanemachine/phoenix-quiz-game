@@ -9,11 +9,11 @@
     <%= @card.image || null_value_content() %>
   </:item>
   <:item label="Answers">
-    <ul class="list">
+    <ol class="list">
       <li :for={answer <- @card.answers}>
         <%= answer %>
       </li>
-    </ul>
+    </ol>
   </:item>
 </.list_show>
 

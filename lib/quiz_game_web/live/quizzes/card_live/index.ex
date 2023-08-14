@@ -5,7 +5,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Index do
 
   alias QuizGame.Repo
   alias QuizGame.Quizzes
-  alias QuizGame.Quizzes.{Card, Quiz}
+  alias QuizGame.Quizzes.Card
 
   @impl Phoenix.LiveView
   def mount(params, _session, socket) do
