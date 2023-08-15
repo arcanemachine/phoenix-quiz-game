@@ -20,3 +20,11 @@ defmodule QuizGameWeb.Support do
     end
   end
 end
+
+defmodule QuizGameWeb.Support.Atom do
+  @moduledoc "This project's atom-related helper functions."
+
+  def to_human_friendly_string(atom) do
+    Atom.to_string(atom) |> String.replace("_", " ") |> String.capitalize()
+  end
+end

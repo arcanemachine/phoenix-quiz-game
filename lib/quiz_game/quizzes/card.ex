@@ -5,8 +5,9 @@ defmodule QuizGame.Quizzes.Card do
 
   @doc "Creates :format options usable in a <.input type='select'> component."
   def format_options() do
-    Ecto.Enum.values(__MODULE__, :format) |> Enum.map(fn item ->
-      {item |> Atom.to_string() |> String.replace("_", " ") |> String.capitalize(), item}
+    Ecto.Enum.values(__MODULE__, :format)
+    |> Enum.map(fn item ->
+      {item |> QuizGameWeb.Support.Atom.to_human_friendly_string(), item}
     end)
   end
 
@@ -17,6 +18,7 @@ defmodule QuizGame.Quizzes.Card do
     # data
     field :format, Ecto.Enum,
       values: [:multiple_choice, :true_or_false, :text_entry, :number_entry]
+
     field :image, :string
     field :question, :string
     field :answers, {:array, :string}

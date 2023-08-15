@@ -1,6 +1,6 @@
 <.list_show>
   <:item label="Format">
-    <%= @card.format %>
+    <%= QuizGameWeb.Support.Atom.to_human_friendly_string(@card.format) %>
   </:item>
   <:item label="Question">
     <%= @card.question %>
