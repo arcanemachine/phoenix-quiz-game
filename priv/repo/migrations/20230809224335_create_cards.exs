@@ -12,7 +12,7 @@ defmodule QuizGame.Repo.Migrations.CreateCards do
       add :question, :string, null: false
       add :image, :string
       add :choices, {:array, :string}, null: false
-      add :answer, :integer, default: 0, null: false
+      add :answer, :string, null: false
 
       # # attributes
       # add :shuffle_questions, :boolean, default: false, null: false

@@ -23,7 +23,7 @@ defmodule QuizGame.Quizzes.Card do
     field :image, :string
     field :question, :string
     field :choices, {:array, :string}, default: ["", "", "", ""]
-    field :answer, :integer
+    field :answer, :string
 
     # # attributes
     # add :shuffle_questions, :boolean, null: false
@@ -36,7 +36,7 @@ defmodule QuizGame.Quizzes.Card do
   end
 
   @unsafe_fields_required [:quiz_id]
-  @safe_fields_required [:format, :question, :answers, :correct_answer]
+  @safe_fields_required [:format, :question, :choices, :answer]
   @safe_fields_optional [:image]
 
   @doc "A changeset whose fields can be safely modified by the user."
@@ -46,7 +46,6 @@ defmodule QuizGame.Quizzes.Card do
     card
     |> cast(attrs, @safe_fields_required ++ @safe_fields_optional)
     |> validate_required(@safe_fields_required)
-    |> validate_length(:answers, is: 4)
   end
 
   @doc "A changeset that contains one or more fields that should not be modified by the user."

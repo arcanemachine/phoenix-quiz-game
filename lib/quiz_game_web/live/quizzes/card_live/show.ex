@@ -3,7 +3,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
 
   import Ecto.Query
 
-  alias QuizGame.{Quizzes, Repo}
+  alias QuizGame.Quizzes
   alias QuizGame.Quizzes.Card
 
   @impl Phoenix.LiveView
