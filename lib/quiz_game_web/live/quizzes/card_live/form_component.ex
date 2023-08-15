@@ -23,16 +23,43 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
           options={QuizGame.Quizzes.Card.format_options()}
         />
         <.input field={@form[:question]} type="text" label="Question" />
-        <.input field={@form[:image]} type="text" label="Image" />
-        <.input
-          field={@form[:answers]}
-          type="select"
-          multiple
-          label="Answers"
-          options={[{"Option 1", "option1"}, {"Option 2", "option2"}]}
-        />
+        <%!--
+          <.input field={@form[:image]} type="text" label="Image" />
+        --%>
+
+        <%!--
+          <.input
+            field={@form[:answers]}
+            type="select"
+            multiple
+            label="Answers"
+            options={[{"Option 1", "option1"}, {"Option 2", "option2"}]}
+          />
+        --%>
+
+        <.label>Answers</.label>
+        <%= for {answer, i} <- Enum.with_index(@form[:answers].value) do %>
+          <.input
+            name="hello"
+            type="text"
+            value={answer}
+            placeholder={"Answer #{i+1}"}
+            show_errors={
+              # show error after last input only
+              i == length(@form[:answers].value) - 1
+            }
+          />
+        <% end %>
+        <%!--
+          <.inputs_for :let={f_nested} field={@form[:answers]}>
+            <input type="text" label="Answer #??" />
+          </.inputs_for>
+          <%= for answer <- @form[:answers].value do %>
+            <pre><%= IO.inspect(answer, pretty: true) %></pre>
+          <% end %>
+        --%>
         <:actions>
-          <.button phx-disable-with="Saving...">Save Card</.button>
+          <.form_actions_default />
         </:actions>
       </.simple_form>
     </div>

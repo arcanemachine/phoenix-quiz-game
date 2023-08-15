@@ -298,6 +298,21 @@ defmodule QuizGameWeb.CoreComponents do
   end
 
   @doc """
+  Renders the default actions for a `<.form>` component.
+
+  ## Examples
+
+      <.form_actions_default />
+  """
+
+  def form_actions_default(assigns) do
+    ~H"""
+    <.form_button_cancel />
+    <.form_button_submit />
+    """
+  end
+
+  @doc """
   Renders a generic form button.
 
   ## Examples
@@ -514,6 +529,7 @@ defmodule QuizGameWeb.CoreComponents do
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
 
   attr :errors, :list, default: [], doc: "the errors belonging to this form field"
+  attr :show_errors, :boolean, default: true, doc: "whether or not to show this input's errors"
   attr :checked, :boolean, doc: "the checked flag for checkbox inputs"
   attr :prompt, :string, default: nil, doc: "the prompt for select inputs"
   attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
@@ -632,7 +648,7 @@ defmodule QuizGameWeb.CoreComponents do
         />
         <%= @label %><%= (Map.has_key?(@rest, :required) && "*") || "" %>
       </label>
-      <.input_errors errors={@errors} />
+      <.input_errors :if={@show_errors} errors={@errors} />
     </div>
     """
   end
@@ -666,7 +682,7 @@ defmodule QuizGameWeb.CoreComponents do
         <option :if={@prompt} value=""><%= @prompt %></option>
         <%= Phoenix.HTML.Form.options_for_select(@options, @value) %>
       </select>
-      <.input_errors errors={@errors} />
+      <.input_errors :if={@show_errors} errors={@errors} />
     </div>
     """
   end
@@ -689,7 +705,7 @@ defmodule QuizGameWeb.CoreComponents do
         phx-debounce={@debounce}
         {@rest}
       ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
-      <.input_errors errors={@errors} />
+      <.input_errors :if={@show_errors} errors={@errors} />
     </div>
     """
   end
@@ -697,7 +713,7 @@ defmodule QuizGameWeb.CoreComponents do
   def input(assigns) do
     ~H"""
     <div phx-feedback-for={@name}>
-      <.label for={@id}>
+      <.label :if={@id} for={@id}>
         <%= @label %><%= (Map.has_key?(@rest, :required) && "*") || "" %>
       </.label>
       <input
@@ -714,7 +730,7 @@ defmodule QuizGameWeb.CoreComponents do
         phx-debounce={@debounce}
         {@rest}
       />
-      <.input_errors errors={@errors} />
+      <.input_errors :if={@show_errors} errors={@errors} />
     </div>
     """
   end
@@ -1053,21 +1069,6 @@ defmodule QuizGameWeb.CoreComponents do
         </div>
       </div>
     </.form>
-    """
-  end
-
-  @doc """
-  Renders the default actions for the `<.simple_form>` component.
-
-  ## Examples
-
-      <.simple_form_actions_default />
-  """
-
-  def simple_form_actions_default(assigns) do
-    ~H"""
-    <.form_button_cancel />
-    <.form_button_submit />
     """
   end
 

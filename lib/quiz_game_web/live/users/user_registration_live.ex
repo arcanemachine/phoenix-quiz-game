@@ -79,7 +79,7 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
       <.input type="captcha" />
 
       <:actions>
-        <.simple_form_actions_default />
+        <.form_actions_default />
       </:actions>
     </.simple_form>
 

@@ -8,10 +8,11 @@ defmodule QuizGame.Repo.Migrations.CreateCards do
       add :quiz_id, references(:quizzes, on_delete: :delete_all), null: false
 
       # data
-      add :format, :string, null: false
+      add :format, :string, default: "multiple_choice", null: false
       add :question, :string, null: false
       add :image, :string
       add :answers, {:array, :string}, null: false
+      add :correct_answer, :integer, default: 0, null: false
 
       # # attributes
       # add :shuffle_questions, :boolean, default: false, null: false

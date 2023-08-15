@@ -48,7 +48,7 @@ defmodule QuizGameWeb.UsersLive.UserResetPasswordLive do
         required
       />
       <:actions>
-        <.simple_form_actions_default />
+        <.form_actions_default />
       </:actions>
     </.simple_form>
     """
