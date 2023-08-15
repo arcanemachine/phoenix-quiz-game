@@ -2,6 +2,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
   use QuizGameWeb, :live_view
 
   import Ecto.Query
+  import QuizGameWeb.Support, only: [get_record_or_404: 1]
 
   alias QuizGame.Quizzes
   alias QuizGame.Quizzes.Card
@@ -19,7 +20,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
         where: c.quiz_id == ^params["quiz_id"] and c.id == ^params["card_id"],
         preload: [:quiz]
 
-    card = Repo.one(query)
+    card = get_record_or_404(query)
 
     {:noreply,
      assign(socket, %{
