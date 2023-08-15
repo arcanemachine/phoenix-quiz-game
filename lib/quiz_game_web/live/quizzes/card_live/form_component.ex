@@ -27,13 +27,17 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
         <.label>Answers</.label>
         <%= for {answer, i} <- Enum.with_index(@form[:answers].value) do %>
           <.input
-            name="hello"
+            name="card[answers-#{i}]"
             type="text"
             value={answer}
-            placeholder={"Answer #{i+1}"}
+            placeholder={"Answer #{i+1}" <> ((i+1) <= 2 && " (Required)" || "")}
             show_errors={
               # show error after last input only
               i == length(@form[:answers].value) - 1
+            }
+            required={
+              # must have 2 or more answers
+              i + 1 <= 2
             }
           />
         <% end %>
