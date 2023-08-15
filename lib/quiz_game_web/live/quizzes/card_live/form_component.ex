@@ -27,8 +27,8 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
         <.label>Answers</.label>
         <%= for {answer, i} <- Enum.with_index(@form[:answers].value) do %>
           <.input
-            name="card[answers-#{i}]"
             type="text"
+            name={"card[answer-#{i}]"}
             value={answer}
             placeholder={"Answer #{i+1}" <> ((i+1) <= 2 && " (Required)" || "")}
             show_errors={
@@ -100,7 +100,9 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
   end
 
   defp save_card(socket, :edit, card_params) do
-    case Quizzes.update_card(socket.assigns.card, card_params) do
+    parsed_card_params = card_params |> card_params_parse_answers()
+
+    case Quizzes.update_card(socket.assigns.card, parsed_card_params) do
       {:ok, card} ->
         notify_parent({:saved, card})
 
@@ -116,6 +118,22 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
 
   defp assign_form(socket, %Ecto.Changeset{} = changeset) do
     assign(socket, :form, to_form(changeset))
+  end
+
+  defp card_params_parse_answers(card_params) do
+    answer_field_names = ["answer-0", "answer-1", "answer-2", "answer-3"]
+
+    # construct a list containing the parsed answers
+    answers_list = card_params |> Map.take(answer_field_names) |> Map.values()
+
+    # remove unparsed answers from params
+    filtered_card_params =
+      Map.filter(card_params, fn {k, _v} -> !Enum.member?(answer_field_names, k) end)
+
+    # insert parsed answers into card_params
+    parsed_card_params = filtered_card_params |> Map.put("answers", answers_list)
+
+    parsed_card_params
   end
 
   defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
