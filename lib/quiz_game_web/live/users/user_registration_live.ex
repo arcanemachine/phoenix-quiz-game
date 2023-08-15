@@ -112,7 +112,10 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
           {:ok, _} =
             Users.deliver_email_verify_instructions(
               user,
-              &url(~p"/users/confirm/email/#{&1}")
+              &unverified_url(
+                QuizGameWeb.Endpoint,
+                route(:users, :email_verify_confirm, token: &1)
+              )
             )
 
           changeset = Users.change_user_registration(user)
