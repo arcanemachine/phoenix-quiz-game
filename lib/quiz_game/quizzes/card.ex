@@ -35,7 +35,7 @@ defmodule QuizGame.Quizzes.Card do
   end
 
   @unsafe_fields_required [:quiz_id]
-  @safe_fields_required [:format, :question, :answers]
+  @safe_fields_required [:format, :question, :answers, :correct_answer]
   @safe_fields_optional [:image]
 
   @doc "A changeset whose fields can be safely modified by the user."

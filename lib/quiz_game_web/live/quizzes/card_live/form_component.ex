@@ -23,19 +23,6 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
           options={QuizGame.Quizzes.Card.format_options()}
         />
         <.input field={@form[:question]} type="text" label="Question" />
-        <%!--
-          <.input field={@form[:image]} type="text" label="Image" />
-        --%>
-
-        <%!--
-          <.input
-            field={@form[:answers]}
-            type="select"
-            multiple
-            label="Answers"
-            options={[{"Option 1", "option1"}, {"Option 2", "option2"}]}
-          />
-        --%>
 
         <.label>Answers</.label>
         <%= for {answer, i} <- Enum.with_index(@form[:answers].value) do %>
@@ -50,14 +37,14 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
             }
           />
         <% end %>
-        <%!--
-          <.inputs_for :let={f_nested} field={@form[:answers]}>
-            <input type="text" label="Answer #??" />
-          </.inputs_for>
-          <%= for answer <- @form[:answers].value do %>
-            <pre><%= IO.inspect(answer, pretty: true) %></pre>
-          <% end %>
-        --%>
+
+        <.input
+          field={@form[:correct_answer]}
+          type="select"
+          label="Correct answer"
+          options={[{"Answer #1", 0}, {"Answer #2", 1}, {"Answer #3", 2}, {"Answer #4", 3}]}
+        />
+
         <:actions>
           <.form_actions_default />
         </:actions>
