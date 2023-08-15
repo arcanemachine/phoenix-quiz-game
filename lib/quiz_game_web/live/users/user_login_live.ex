@@ -34,7 +34,7 @@ defmodule QuizGameWeb.UsersLive.UserLoginLive do
         required
       />
 
-      <div class="-my-4 flex flex-center">
+      <div class="-mt-4 flex flex-center">
         <.input field={@form[:remember_me]} type="checkbox" label="Keep me logged in" />
       </div>
 

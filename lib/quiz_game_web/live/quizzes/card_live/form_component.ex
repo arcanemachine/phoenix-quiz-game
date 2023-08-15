@@ -24,29 +24,29 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
         />
         <.input field={@form[:question]} type="text" label="Question" />
 
-        <.label>Answers</.label>
-        <%= for {answer, i} <- Enum.with_index(@form[:answers].value) do %>
+        <.label>Choices</.label>
+        <%= for i <- 0..3 do %>
           <.input
             type="text"
-            name={"card[answer-#{i}]"}
-            value={answer}
-            placeholder={"Answer #{i+1}" <> ((i+1) <= 2 && " (Required)" || "")}
+            name={"card[choice-#{i}]"}
+            value={@form[:choices].value |> Enum.at(i)}
+            placeholder={"Choice #{i+1}" <> ((i+1) <= 2 && " (Required)" || "")}
             show_errors={
               # show error after last input only
-              i == length(@form[:answers].value) - 1
+              i == length(@form[:choices].value) - 1
             }
             required={
-              # must have 2 or more answers
+              # must have 2 or more choices
               i + 1 <= 2
             }
           />
         <% end %>
 
         <.input
-          field={@form[:correct_answer]}
+          field={@form[:answer]}
           type="select"
-          label="Correct answer"
-          options={[{"Answer #1", 0}, {"Answer #2", 1}, {"Answer #3", 2}, {"Answer #4", 3}]}
+          label="Answer"
+          options={[{"Choice #1", 0}, {"Choice #2", 1}, {"Choice #3", 2}, {"Choice #4", 3}]}
         />
 
         <:actions>
@@ -81,9 +81,11 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
     save_card(socket, socket.assigns.action, card_params)
   end
 
-  defp save_card(socket, :new, safe_card_params) do
+  defp save_card(socket, :new, card_params) do
+    parsed_card_params = card_params |> card_params_parse_choices()
+
     # associate new card with its quiz
-    unsafe_card_params = Map.merge(safe_card_params, %{"quiz_id" => socket.assigns.quiz.id})
+    unsafe_card_params = Map.merge(parsed_card_params, %{"quiz_id" => socket.assigns.quiz.id})
 
     case Quizzes.create_card(unsafe_card_params, unsafe: true) do
       {:ok, card} ->
@@ -100,7 +102,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
   end
 
   defp save_card(socket, :edit, card_params) do
-    parsed_card_params = card_params |> card_params_parse_answers()
+    parsed_card_params = card_params |> card_params_parse()
 
     case Quizzes.update_card(socket.assigns.card, parsed_card_params) do
       {:ok, card} ->
@@ -120,18 +122,22 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
     assign(socket, :form, to_form(changeset))
   end
 
-  defp card_params_parse_answers(card_params) do
-    answer_field_names = ["answer-0", "answer-1", "answer-2", "answer-3"]
+  defp card_params_parse(card_params) do
+    card_params |> card_params_parse_choices()
+  end
 
-    # construct a list containing the parsed answers
-    answers_list = card_params |> Map.take(answer_field_names) |> Map.values()
+  defp card_params_parse_choices(card_params) do
+    choice_fields = ["choice-0", "choice-1", "choice-2", "choice-3"]
 
-    # remove unparsed answers from params
-    filtered_card_params =
-      Map.filter(card_params, fn {k, _v} -> !Enum.member?(answer_field_names, k) end)
+    # construct a list containing the parsed choices (return empty string for a given value if
+    # the field is empty)
+    choices_list = for field <- choice_fields, do: card_params |> Map.get(field, nil)
 
-    # insert parsed answers into card_params
-    parsed_card_params = filtered_card_params |> Map.put("answers", answers_list)
+    # remove unparsed choices from params
+    filtered_card_params = card_params |> Map.filter(fn {k, _v} -> !Enum.member?(choice_fields, k) end)
+
+    # insert parsed choices into card_params
+    parsed_card_params = filtered_card_params |> Map.put("choices", choices_list)
 
     parsed_card_params
   end

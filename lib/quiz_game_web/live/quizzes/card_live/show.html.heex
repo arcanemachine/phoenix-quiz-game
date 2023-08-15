@@ -8,15 +8,15 @@
   <:item label="Image">
     <%= @card.image || null_value_content() %>
   </:item>
-  <:item label="Answers">
+  <:item label="Choices">
     <ol class="list">
-      <li :for={answer <- @card.answers}>
-        <%= answer %>
+      <li :for={choice <- @card.choices} :if={choice}>
+        <%= choice %>
       </li>
     </ol>
   </:item>
-  <:item label="Correct answer">
-    <%= "Answer ##{@card.correct_answer + 1}" %>
+  <:item label="Answer">
+    <%= @card.choices |> Enum.at(@card.answer) %>
   </:item>
 </.list_show>
 

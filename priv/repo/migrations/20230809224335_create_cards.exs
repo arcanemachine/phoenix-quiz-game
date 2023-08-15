@@ -11,12 +11,12 @@ defmodule QuizGame.Repo.Migrations.CreateCards do
       add :format, :string, default: "multiple_choice", null: false
       add :question, :string, null: false
       add :image, :string
-      add :answers, {:array, :string}, null: false
-      add :correct_answer, :integer, default: 0, null: false
+      add :choices, {:array, :string}, null: false
+      add :answer, :integer, default: 0, null: false
 
       # # attributes
       # add :shuffle_questions, :boolean, default: false, null: false
-      # add :shuffle_answers, :boolean, default: false, null: false
+      # add :shuffle_choices, :boolean, default: false, null: false
 
       # # computed
       # add :index, :integer, null: false
