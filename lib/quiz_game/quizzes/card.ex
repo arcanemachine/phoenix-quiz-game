@@ -16,13 +16,18 @@ defmodule QuizGame.Quizzes.Card do
     belongs_to :quiz, QuizGame.Quizzes.Quiz
 
     # data
+    field :question, :string
     field :format, Ecto.Enum,
       values: [:multiple_choice, :true_or_false, :text_entry, :number_entry],
       default: :multiple_choice
 
     field :image, :string
-    field :question, :string
-    field :choices, {:array, :string}, default: ["", "", "", ""]
+
+    field :choice_1, :string
+    field :choice_2, :string
+    field :choice_3, :string
+    field :choice_4, :string
+
     field :answer, :string
 
     # # attributes
@@ -36,8 +41,8 @@ defmodule QuizGame.Quizzes.Card do
   end
 
   @unsafe_fields_required [:quiz_id]
-  @safe_fields_required [:format, :question, :choices, :answer]
-  @safe_fields_optional [:image]
+  @safe_fields_required [:format, :question, :answer]
+  @safe_fields_optional [:image, :choice_1, :choice_2, :choice_3, :choice_4]
 
   @doc "A changeset whose fields can be safely modified by the user."
   def changeset(card \\ %__MODULE__{}, attrs \\ %{})
@@ -46,6 +51,7 @@ defmodule QuizGame.Quizzes.Card do
     card
     |> cast(attrs, @safe_fields_required ++ @safe_fields_optional)
     |> validate_required(@safe_fields_required)
+    |> validate_choices()
   end
 
   @doc "A changeset that contains one or more fields that should not be modified by the user."
@@ -58,8 +64,13 @@ defmodule QuizGame.Quizzes.Card do
     |> foreign_key_constraint(:quiz_id)
   end
 
-  # @doc "Returns a changeset with all unsafe parameters removed."
-  # def changeset_make_safe(%Ecto.Changeset{} = unsafe_changeset) do
-  #   changeset(%__MODULE__{}, unsafe_changeset.params)
-  # end
+  def validate_choices(changeset) do
+    if changeset.data.format != :multiple_choice do
+      # ignore this field if we're not in a multiple choice question
+      # TO-DO: convert all choices to empty string values?
+      true
+    else
+      changeset |> validate_required([:choice_1, :choice_2, :choice_3, :choice_4])
+    end
+  end
 end

@@ -62,9 +62,13 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
     %{
       quiz_id: quiz.id,
       format: :multiple_choice,
-      question: "What is 1 + 1?",
-      choices: ["1", "2", "3", "4"],
-      answer: "1"
+      question: "What is 2 + 2?",
+      # choices: ["1", "2", "3", "4"],
+      choice_1: "2",
+      choice_2: "4",
+      choice_3: "6",
+      choice_4: "8",
+      answer: "2"
     },
     unsafe: true
   )

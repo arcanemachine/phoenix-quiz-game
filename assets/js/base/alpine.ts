@@ -14,6 +14,8 @@ function simpleForm() {
    */
 
   return {
+    form: undefined,
+
     // optional confirmation checkbox
     confirmed: false,
 
@@ -22,6 +24,8 @@ function simpleForm() {
     modifiedInputs: new Set(),
 
     init() {
+      this.form = this.$root;
+
       // disable form modification detection in LiveView modals
       if (this.$root.closest("[data-component-kind='modal']")) return;
 

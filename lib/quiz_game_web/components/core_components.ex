@@ -646,7 +646,7 @@ defmodule QuizGameWeb.CoreComponents do
           ]}
           {@rest}
         />
-        <%= @label %><%= (Map.has_key?(@rest, :required) && "*") || "" %>
+        <%= @label %><%= (Map.has_key?(@rest, :required) && " (Required)") || "" %>
       </label>
       <.input_errors :if={@show_errors} errors={@errors} />
     </div>
@@ -665,7 +665,7 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <div phx-feedback-for={@name}>
       <.label for={@id}>
-        <%= @label %><%= (Map.has_key?(@rest, :required) && "*") || "" %>
+        <%= @label %><%= (Map.has_key?(@rest, :required) && " (Required)") || "" %>
       </.label>
       <select
         id={@id}
@@ -691,7 +691,7 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <div phx-feedback-for={@name}>
       <.label for={@id}>
-        <%= @label %><%= (Map.has_key?(@rest, :required) && "*") || "" %>
+        <%= @label %><%= (Map.has_key?(@rest, :required) && " (Required)") || "" %>
       </.label>
       <textarea
         id={@id}
@@ -714,7 +714,7 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <div phx-feedback-for={@name}>
       <.label :if={@id} for={@id}>
-        <%= @label %><%= (Map.has_key?(@rest, :required) && "*") || "" %>
+        <%= @label %><%= (Map.has_key?(@rest, :required) && " (Required)") || "" %>
       </.label>
       <input
         type={@type}
