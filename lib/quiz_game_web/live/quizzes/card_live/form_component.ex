@@ -12,14 +12,15 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
   @impl Phoenix.LiveComponent
   def update(%{card: card} = assigns, socket) do
     changeset = Quizzes.change_card(card)
+    card_format = if assigns.action == :new, do: nil, else: Atom.to_string(changeset.data.format)
+
+    # assign card format
+    assigns = assigns |> Map.put(:card_format, card_format)
 
     {:ok,
      socket
      |> assign_form(changeset)
-     |> assign(
-       # assign card_format
-       assigns |> Map.put(:card_format, Atom.to_string(changeset.data.format))
-     )}
+     |> assign(assigns)}
   end
 
   @impl Phoenix.LiveComponent
@@ -37,8 +38,8 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
         for={@form}
         id="card-form"
         phx-target={@myself}
-        phx-change="validate"
-        phx-submit="save"
+        phx-change="change"
+        phx-submit="submit"
       >
         <.input field={@form[:question]} type="text" label="Question" required />
 
@@ -46,7 +47,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
           field={@form[:format]}
           type="select"
           label="Format"
-          prompt="Choose a value"
+          prompt="Choose a format"
           options={QuizGame.Quizzes.Card.format_options()}
           required
         />
@@ -72,7 +73,8 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
             field={@form[:answer]}
             type="select"
             label="Answer"
-            options={[{"True", "true"}, {"False", "false"}]}
+            prompt="Choose true or false"
+            options={[{"True", "True"}, {"False", "False"}]}
             required
           />
         </div>
@@ -94,10 +96,11 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
   end
 
   @impl Phoenix.LiveComponent
-  def handle_event("validate", %{"card" => card_params}, socket) do
+  def handle_event("change", %{"card" => card_params}, socket) do
     # assign card format
-    socket = socket |> assign(:card_format, card_params["format"])
+    socket = socket |> assign(%{card_format: card_params["format"]})
 
+    # validate the changeset
     changeset =
       socket.assigns.card
       |> Quizzes.change_card(card_params)
@@ -106,7 +109,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
     {:noreply, assign_form(socket, changeset)}
   end
 
-  def handle_event("save", %{"card" => card_params}, socket) do
+  def handle_event("submit", %{"card" => card_params}, socket) do
     save_card(socket, socket.assigns.action, card_params)
   end
 

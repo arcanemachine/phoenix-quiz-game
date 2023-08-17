@@ -18,8 +18,7 @@ defmodule QuizGame.Quizzes.Card do
     # data
     field :question, :string
     field :format, Ecto.Enum,
-      values: [:multiple_choice, :true_or_false, :text_entry, :number_entry],
-      default: :multiple_choice
+      values: [:multiple_choice, :true_or_false, :text_entry, :number_entry]
 
     field :image, :string
 
@@ -51,7 +50,8 @@ defmodule QuizGame.Quizzes.Card do
     card
     |> cast(attrs, @safe_fields_required ++ @safe_fields_optional)
     |> validate_required(@safe_fields_required)
-    |> validate_choices()
+    # |> maybe_validate_multiple_choice()
+    # |> maybe_validate_non_multiple_choice()
   end
 
   @doc "A changeset that contains one or more fields that should not be modified by the user."
