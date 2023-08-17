@@ -412,7 +412,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   def crud_intro_text(assigns) do
     ~H"""
-    <div class="mb-8 text-center [&>*:not(:first-child)]:mt-4">
+    <div class="mb-4 text-center [&>*:not(:first-child)]:mt-4">
       <%= render_slot(@inner_block) %>
     </div>
     """
@@ -646,7 +646,7 @@ defmodule QuizGameWeb.CoreComponents do
           ]}
           {@rest}
         />
-        <%= @label %><%= (Map.has_key?(@rest, :required) && " (Required)") || "" %>
+        <%= @label %><%= (Map.has_key?(@rest, :required) && "*") || "" %>
       </label>
       <.input_errors :if={@show_errors} errors={@errors} />
     </div>
@@ -665,7 +665,7 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <div phx-feedback-for={@name}>
       <.label for={@id}>
-        <%= @label %><%= (Map.has_key?(@rest, :required) && " (Required)") || "" %>
+        <%= @label %><%= (Map.has_key?(@rest, :required) && "*") || "" %>
       </.label>
       <select
         id={@id}
@@ -691,7 +691,7 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <div phx-feedback-for={@name}>
       <.label for={@id}>
-        <%= @label %><%= (Map.has_key?(@rest, :required) && " (Required)") || "" %>
+        <%= @label %><%= (Map.has_key?(@rest, :required) && "*") || "" %>
       </.label>
       <textarea
         id={@id}
@@ -714,7 +714,7 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <div phx-feedback-for={@name}>
       <.label :if={@id} for={@id}>
-        <%= @label %><%= (Map.has_key?(@rest, :required) && " (Required)") || "" %>
+        <%= @label %><%= (Map.has_key?(@rest, :required) && "*") || "" %>
       </.label>
       <input
         type={@type}
@@ -1057,14 +1057,14 @@ defmodule QuizGameWeb.CoreComponents do
           </label>
         <% end %>
 
-        <div :for={action <- @actions} class="flex flex-center flex-wrap w-full -mt-2 mx-auto">
+        <div :for={action <- @actions} class="flex flex-center flex-wrap w-full mx-auto">
           <%= render_slot(action, f) %>
         </div>
 
-        <div class={[
-          "text-sm text-error font-bold text-center transition-opacity duration-300",
-          @has_errors || "opacity-0"
-        ]}>
+        <div
+          :if={@has_errors}
+          class="text-sm text-error font-bold text-center transition-opacity duration-300"
+        >
           You must fix the errors in the form to continue.
         </div>
       </div>

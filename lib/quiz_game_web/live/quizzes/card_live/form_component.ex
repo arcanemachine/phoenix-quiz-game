@@ -15,11 +15,10 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
 
     {:ok,
      socket
+     |> assign_form(changeset)
      |> assign(
-       assigns
        # assign card_format
-       |> Map.put(:card_format, Atom.to_string(:true_or_false))
-       |> assign_form(changeset)
+       assigns |> Map.put(:card_format, Atom.to_string(changeset.data.format))
      )}
   end
 
@@ -41,7 +40,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
-        <.input field={@form[:question]} type="text" label="Question" />
+        <.input field={@form[:question]} type="text" label="Question" required />
 
         <.input
           field={@form[:format]}
@@ -51,35 +50,40 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
           options={QuizGame.Quizzes.Card.format_options()}
           required
         />
-        <%= case @card_format do %>
-          <% "multiple_choice" -> %>
-            <.label>Answer Choices</.label>
-            <.input field={@form[:choice_1]} type="text" label="Choice 1" required />
-            <.input field={@form[:choice_2]} type="text" label="Choice 2" required />
-            <.input field={@form[:choice_3]} type="text" label="Choice 3" required />
-            <.input field={@form[:choice_4]} type="text" label="Choice 4" required />
 
-            <.input
-              field={@form[:answer]}
-              type="select"
-              label="Answer"
-              options={[{"Choice #1", 0}, {"Choice #2", 1}, {"Choice #3", 2}, {"Choice #4", 3}]}
-              required
-            />
-          <% "true_or_false" -> %>
-            <.input
-              field={@form[:answer]}
-              type="select"
-              label="Answer"
-              options={[{"True", "true"}, {"False", "false"}]}
-              required
-            />
-          <% "text_entry" -> %>
-            <.input field={@form[:answer]} type="text" label="Answer" required />
-          <% "number_entry" -> %>
-            <.input field={@form[:answer]} type="text" label="Answer" required />
-          <% _ -> %>
-        <% end %>
+        <div :if={@card_format == "multiple_choice"}>
+          <.label>Answer Choices</.label>
+          <.input field={@form[:choice_1]} type="text" label="Choice 1" required />
+          <.input field={@form[:choice_2]} type="text" label="Choice 2" required />
+          <.input field={@form[:choice_3]} type="text" label="Choice 3" required />
+          <.input field={@form[:choice_4]} type="text" label="Choice 4" required />
+
+          <.input
+            field={@form[:answer]}
+            type="select"
+            label="Answer"
+            options={[{"Choice #1", 0}, {"Choice #2", 1}, {"Choice #3", 2}, {"Choice #4", 3}]}
+            required
+          />
+        </div>
+
+        <div :if={@card_format == "true_or_false"}>
+          <.input
+            field={@form[:answer]}
+            type="select"
+            label="Answer"
+            options={[{"True", "true"}, {"False", "false"}]}
+            required
+          />
+        </div>
+
+        <div :if={@card_format == "text_entry"}>
+          <.input field={@form[:answer]} type="text" label="Answer" required />
+        </div>
+
+        <div :if={@card_format == "number_entry"}>
+          <.input field={@form[:answer]} type="number" label="Answer" required />
+        </div>
 
         <:actions>
           <.form_actions_default />
