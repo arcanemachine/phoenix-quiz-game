@@ -7,20 +7,26 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
   alias QuizGame.Quizzes
   alias QuizGame.Quizzes.Card
 
-  @impl Phoenix.LiveView
-  def mount(_params, _session, socket) do
-    {:ok, socket}
-  end
-
-  @impl Phoenix.LiveView
-  def handle_params(params, _url, socket) do
-    # get card
+  def get_card_or_404(params) do
     query =
       from c in Card,
         where: c.quiz_id == ^params["quiz_id"] and c.id == ^params["card_id"],
         preload: [:quiz]
 
-    card = get_record_or_404(query)
+    get_record_or_404(query)
+  end
+
+  @impl Phoenix.LiveView
+  def mount(params, _session, socket) do
+    card = get_card_or_404(params)
+
+    {:ok, socket |> assign(:card, card)}
+  end
+
+  @impl Phoenix.LiveView
+  def handle_params(params, _url, socket) do
+    # get card
+    card = socket.assigns[:card] || get_card_or_404(params)
 
     {:noreply,
      assign(socket, %{

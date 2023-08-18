@@ -49,9 +49,7 @@ defmodule QuizGameWeb.CoreComponents do
       <.action_links_spacer />
   """
   def action_links_spacer(assigns) do
-    ~H"""
-    <div class="h-0 w-0 mt-4 show-empty-element" />
-    """
+    ~H|<div class="h-2 w-0" />|
   end
 
   @doc """
@@ -975,10 +973,11 @@ defmodule QuizGameWeb.CoreComponents do
       </.modal_title>
   """
   attr :title, :string, required: true
+  attr :class, :string, default: nil
 
   def modal_title(assigns) do
     ~H"""
-    <div class="mb-4 text-xl font-bold">
+    <div class={["mb-4 text-xl font-bold", @class]}>
       <%= @title %>
     </div>
     """

@@ -1,1 +1,21 @@
-Hello world!
+<section class="flex flex-col h-full mt-8">
+  <div class="card w-96 mx-auto bg-base-100 shadow-xl">
+    <div class="card-body">
+      <.modal_title title={@card.question} class="text-center" />
+      <p>Answers go here</p>
+      <div class="card-actions justify-end">
+        <button class="btn btn-primary">Buy Now</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="grow" />
+
+  <.action_links>
+    <.action_links_item>
+      <.link navigate={route(:quizzes, :show, quiz_id: @quiz.id)}>
+        Exit this quiz
+      </.link>
+    </.action_links_item>
+  </.action_links>
+</section>

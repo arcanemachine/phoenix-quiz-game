@@ -93,6 +93,10 @@ defmodule QuizGame.Quizzes.Card do
       :true_or_false ->
         # correct_answer must be 'true' or 'false'
         changeset |> validate_format(:correct_answer, ~r/^true|false$/)
+
+      nil ->
+        # new card
+        changeset
     end
   end
 end
