@@ -6,6 +6,7 @@ alias QuizGame.Quizzes
 alias QuizGame.Users
 
 if Application.get_env(:quiz_game, :server_environment) == :dev do
+  # ADMIN USER #
   # create admin user
   {:ok, admin_user} =
     Users.register_user(%{
@@ -16,48 +17,26 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
 
   Users.update_user_is_admin(admin_user, true)
 
-  # create non-admin user
-  {:ok, non_admin_user} =
+  # USER/QUIZ #
+  # create user
+  {:ok, user} =
     Users.register_user(%{
       username: "user",
       email: "user@example.com",
       password: "password"
     })
 
-  # # create other users
-  # for i <- 1..5 do
-  #   Users.register_user(%{
-  #     username: "user#{i}",
-  #     email: "user#{i}@example.com",
-  #     password: "password#{i}"
-  #   })
-  # end
-
-  # create example quiz
+  # create quiz for user
   {:ok, quiz} =
     Quizzes.create_quiz(
       %{
-        user_id: non_admin_user.id,
+        user_id: user.id,
         name: "Example Quiz"
       },
       unsafe: true
     )
 
-  # # create quizzes for all generated users (except the primary user)
-  # user_ids = Repo.all(from u in User, select: u.id)
-
-  # for user_id <- user_ids do
-  #   if user_id != primary_user.id do
-  #     for i <- Enum.random(0..3) do
-  #       Quizzes.create_quiz(%{
-  #         name: "Quiz ##{user_id}.#{i}"
-  #         user_id: user_id,
-  #       })
-  #     end
-  #   end
-  # end
-
-  # create example cards
+  # create example cards for user's quiz
   Quizzes.create_card(
     %{
       quiz_id: quiz.id,
@@ -102,13 +81,33 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
     unsafe: true
   )
 
-  # # create cards for all generated quizzes
-  # quiz_ids = Repo.all(from q in Quiz, select: q.id)
+  # OTHER USER/QUIZ #
+  # create other user
+  {:ok, other_user} =
+    Users.register_user(%{
+      username: "other_user",
+      email: "other_user@example.com",
+      password: "password"
+    })
 
-  # for user_id <- user_ids, quiz_id <- quiz_ids do
-  #   Quizzes.create_card(%{
-  #     user_id: user_id,
-  #     content: %{}
-  #   })
-  # end
+  # create quiz for other user
+  {:ok, other_quiz} =
+    Quizzes.create_quiz(
+      %{
+        user_id: other_user.id,
+        name: "Other Quiz"
+      },
+      unsafe: true
+    )
+
+  # create example card for other user's quiz
+  Quizzes.create_card(
+    %{
+      quiz_id: other_quiz.id,
+      format: :true_or_false,
+      question: "Other question",
+      correct_answer: "true"
+    },
+    unsafe: true
+  )
 end
