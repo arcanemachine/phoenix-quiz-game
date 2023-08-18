@@ -740,7 +740,7 @@ defmodule QuizGameWeb.CoreComponents do
   """
   def input_errors(assigns) do
     ~H"""
-    <div class="flex min-h-5 px-2 show-empty-element">
+    <div class="flex min-h-5 mt-2 px-2 show-empty-element">
       <div>
         <.error :for={msg <- @errors}>Value <%= msg %></.error>
       </div>
