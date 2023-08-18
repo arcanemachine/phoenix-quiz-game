@@ -40,4 +40,15 @@ defmodule QuizGameWeb.Support.Plug do
       conn
     end
   end
+
+  @doc "Ensure that the requesting user is the creator of a given Quiz."
+  def require_quiz_permissions(conn, _opts) do
+    quiz = conn.assigns.quiz
+
+    if quiz.user_id == conn.assigns.current_user.id do
+      conn
+    else
+      conn |> ProjectConn.text_response(403)
+    end
+  end
 end

@@ -46,7 +46,7 @@ defmodule QuizGameWeb.Router do
       get "/", QuizController, :show
 
       scope "/" do
-        pipe_through [:require_authenticated_user]
+        pipe_through [:require_authenticated_user, :require_quiz_permissions]
 
         get "/edit", QuizController, :edit
         put "/", QuizController, :update
