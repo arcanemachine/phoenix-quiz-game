@@ -55,6 +55,7 @@ defmodule QuizGameWeb.Support.Router do
       :create -> ~p"/quizzes"
       :edit -> ~p"/quizzes/#{opts[:quiz_id]}/edit"
       n when n in [:show, :update, :delete] -> ~p"/quizzes/#{opts[:quiz_id]}"
+      :take -> ~p"/quizzes/#{opts[:quiz_id]}/take"
     end
   end
 

@@ -44,6 +44,7 @@ defmodule QuizGameWeb.Router do
 
       # quizzes
       get "/", QuizController, :show
+      live "/take", QuizTakeLive, :take
 
       scope "/" do
         pipe_through [:require_authenticated_user, :require_quiz_permissions]
