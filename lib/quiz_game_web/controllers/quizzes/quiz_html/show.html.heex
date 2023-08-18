@@ -4,8 +4,7 @@
   </:item>
   <:item label="Created by">
     <%= if @quiz.user_id do %>
-      <% quiz_user = QuizGame.Users.get_user!(@quiz.user_id) %>
-      <%= quiz_user.username %>
+      <%= QuizGame.Users.get_user!(@quiz.user_id).username %>
     <% else %>
       N/A
     <% end %>
