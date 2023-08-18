@@ -57,18 +57,47 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
   #   end
   # end
 
-  # create example card
+  # create example cards
   Quizzes.create_card(
     %{
       quiz_id: quiz.id,
       format: :multiple_choice,
       question: "What is 2 + 2?",
-      # choices: ["1", "2", "3", "4"],
       choice_1: "2",
       choice_2: "4",
       choice_3: "6",
       choice_4: "8",
-      answer: "2"
+      correct_answer: "2"
+    },
+    unsafe: true
+  )
+
+  Quizzes.create_card(
+    %{
+      quiz_id: quiz.id,
+      format: :true_or_false,
+      question: "2 is larger than 1",
+      correct_answer: "true"
+    },
+    unsafe: true
+  )
+
+  Quizzes.create_card(
+    %{
+      quiz_id: quiz.id,
+      format: :text_entry,
+      question: "How do you spell the number 1 using letters?",
+      correct_answer: "one"
+    },
+    unsafe: true
+  )
+
+  Quizzes.create_card(
+    %{
+      quiz_id: quiz.id,
+      format: :number_entry,
+      question: "What is 1 + 1?",
+      correct_answer: "2"
     },
     unsafe: true
   )

@@ -60,9 +60,9 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
           <.input field={@form[:choice_4]} type="text" label="Choice 4" required />
 
           <.input
-            field={@form[:answer]}
+            field={@form[:correct_answer]}
             type="select"
-            label="Answer"
+            label="Correct answer"
             options={[{"Choice #1", 0}, {"Choice #2", 1}, {"Choice #3", 2}, {"Choice #4", 3}]}
             required
           />
@@ -70,21 +70,21 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
 
         <div :if={@card_format == "true_or_false"}>
           <.input
-            field={@form[:answer]}
+            field={@form[:correct_answer]}
             type="select"
-            label="Answer"
+            label="Correct answer"
             prompt="Choose true or false"
-            options={[{"True", "True"}, {"False", "False"}]}
+            options={[{"True", "true"}, {"False", "false"}]}
             required
           />
         </div>
 
         <div :if={@card_format == "text_entry"}>
-          <.input field={@form[:answer]} type="text" label="Answer" required />
+          <.input field={@form[:correct_answer]} type="text" label="Correct answer" required />
         </div>
 
         <div :if={@card_format == "number_entry"}>
-          <.input field={@form[:answer]} type="number" label="Answer" required />
+          <.input field={@form[:correct_answer]} type="number" label="Correct answer" required />
         </div>
 
         <:actions>
@@ -97,6 +97,20 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
 
   @impl Phoenix.LiveComponent
   def handle_event("change", %{"card" => card_params}, socket) do
+    # if card format field value has changed, then reset the 'correct_answer' and 'choice' fields
+    card_params =
+      if socket.assigns.card_format != card_params["card_format"] do
+        Map.merge(card_params, %{
+          "correct_answer" => "",
+          "choice_1" => "",
+          "choice_2" => "",
+          "choice_3" => "",
+          "choice_4" => ""
+        })
+      else
+        card_params
+      end
+
     # assign card format
     socket = socket |> assign(%{card_format: card_params["format"]})
 

@@ -24,11 +24,11 @@
       </li>
     </ol>
   </:item>
-  <:item label="Answer">
+  <:item label="Correct answer">
     <%= if @card.format == :multiple_choice do %>
-      <%= Map.get(@card, String.to_atom("choice_#{@card.answer}")) %>
+      <%= Map.get(@card, String.to_atom("choice_#{@card.correct_answer}")) %>
     <% else %>
-      <%= @card.answer %>
+      <%= @card.correct_answer %>
     <% end %>
   </:item>
 </.list_show>

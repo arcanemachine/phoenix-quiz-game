@@ -20,14 +20,14 @@ defmodule QuizGame.Quizzes.Card do
     field :format, Ecto.Enum,
       values: [:multiple_choice, :true_or_false, :text_entry, :number_entry]
 
-    field :image, :string
+    # field :image, :string
 
     field :choice_1, :string
     field :choice_2, :string
     field :choice_3, :string
     field :choice_4, :string
 
-    field :answer, :string
+    field :correct_answer, :string
 
     # # attributes
     # add :shuffle_questions, :boolean, null: false
@@ -40,8 +40,8 @@ defmodule QuizGame.Quizzes.Card do
   end
 
   @unsafe_fields_required [:quiz_id]
-  @safe_fields_required [:format, :question, :answer]
-  @safe_fields_optional [:image, :choice_1, :choice_2, :choice_3, :choice_4]
+  @safe_fields_required [:format, :question, :correct_answer]
+  @safe_fields_optional [:choice_1, :choice_2, :choice_3, :choice_4]
 
   @doc "A changeset whose fields can be safely modified by the user."
   def changeset(card \\ %__MODULE__{}, attrs \\ %{})
@@ -49,9 +49,9 @@ defmodule QuizGame.Quizzes.Card do
   def changeset(%__MODULE__{} = card, attrs) do
     card
     |> cast(attrs, @safe_fields_required ++ @safe_fields_optional)
+    |> cast_card()
     |> validate_required(@safe_fields_required)
-    # |> maybe_validate_multiple_choice()
-    # |> maybe_validate_non_multiple_choice()
+    |> validate_card()
   end
 
   @doc "A changeset that contains one or more fields that should not be modified by the user."
@@ -64,13 +64,35 @@ defmodule QuizGame.Quizzes.Card do
     |> foreign_key_constraint(:quiz_id)
   end
 
-  def validate_choices(changeset) do
-    if changeset.data.format != :multiple_choice do
-      # ignore this field if we're not in a multiple choice question
-      # TO-DO: convert all choices to empty string values?
-      true
-    else
-      changeset |> validate_required([:choice_1, :choice_2, :choice_3, :choice_4])
+  def cast_card(changeset) do
+    case changeset.data.format do
+      :multiple_choice ->
+         # clear all choices
+        changeset |> change(choice_1: "", choice_2: "", choice_3: "", choice_4: "")
+      _ ->
+        changeset
+    end
+  end
+
+  def validate_card(changeset) do
+    case changeset.data.format do
+      :multiple_choice ->
+        changeset
+        # all choice fields must be filled
+        |> validate_required([:choice_1, :choice_2, :choice_3, :choice_4])
+        # answer must match one of the given choices (1-4)
+        |> validate_format(:correct_answer, ~r/^[1234]$/)
+
+      :number_entry ->
+        # correct_answer must be a number (with or without a decimal)
+        changeset |> validate_format(:correct_answer, ~r/^\d+\.?\d*$/)
+
+      :text_entry ->
+        changeset
+
+      :true_or_false ->
+        # correct_answer must be 'true' or 'false'
+        changeset |> validate_format(:correct_answer, ~r/^true|false$/)
     end
   end
 end
