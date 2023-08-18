@@ -1,0 +1,24 @@
+<div :if={Enum.empty?(@quizzes)} class="italic">
+  No quizzes have been created.
+</div>
+
+<ul class="list-index">
+  <li :for={quiz <- @quizzes}>
+    <a href={route(:quizzes, :show, quiz_id: quiz.id)}>
+      <%= quiz.name %>
+    </a>
+  </li>
+</ul>
+
+<.action_links>
+  <.action_links_item kind="create">
+    <.link href={route(:quizzes, :new)}>
+      Create new quiz
+    </.link>
+  </.action_links_item>
+  <.action_links_item kind="back">
+    <.link href={route(:users, :show)}>
+      Return to your profile
+    </.link>
+  </.action_links_item>
+</.action_links>

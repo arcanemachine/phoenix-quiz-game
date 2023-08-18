@@ -7,7 +7,7 @@
 <.quiz_form changeset={@changeset} action={route(:quizzes, :update, quiz_id: @quiz.id)} />
 
 <.action_links>
-  <.action_links_item>
+  <.action_links_item kind="delete">
     <.link
       href={route(:quizzes, :delete, quiz_id: @quiz.id)}
       class="!text-error"

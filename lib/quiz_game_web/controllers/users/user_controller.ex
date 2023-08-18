@@ -1,9 +1,13 @@
 defmodule QuizGameWeb.UserController do
   use QuizGameWeb, :controller
 
-  alias QuizGame.Users
+  import Ecto.Query
+
+  alias QuizGame.{Repo, Users}
+  alias QuizGame.Quizzes.Quiz
   alias QuizGameWeb.UserAuth
 
+  # user
   def show(conn, _params) do
     render(conn, :show, page_title: "Your Profile")
   end
@@ -19,9 +23,18 @@ defmodule QuizGameWeb.UserController do
   def delete(conn, _params) do
     Users.delete_user(conn.assigns[:current_user])
 
-    # queue success message and log the user out
     conn
+    # queue success message
     |> put_flash(:success, "Account deleted successfully")
+    # log the user out
     |> UserAuth.logout_user()
+  end
+
+  # quizzes
+  def quizzes_index(conn, _params) do
+    query = from q in Quiz, where: q.user_id == ^conn.assigns.current_user.id
+    quizzes = Repo.all(query)
+
+    render(conn, :quizzes_index, page_title: "Your Quizzes", quizzes: quizzes)
   end
 end

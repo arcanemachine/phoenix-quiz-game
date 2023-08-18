@@ -80,6 +80,7 @@ defmodule QuizGameWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     get "/", UserController, :show
+    get "/quizzes", UserController, :quizzes_index
 
     scope "/edit" do
       get "/", UserController, :settings

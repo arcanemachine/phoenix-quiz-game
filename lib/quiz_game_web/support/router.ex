@@ -100,6 +100,8 @@ defmodule QuizGameWeb.Support.Router do
       :password_update -> ~p"/users/me/edit/password"
       :delete_confirm -> ~p"/users/me/delete"
       :delete -> ~p"/users/me/delete"
+      # quizzes
+      :quizzes_index -> ~p"/users/me/quizzes"
     end
   end
 
