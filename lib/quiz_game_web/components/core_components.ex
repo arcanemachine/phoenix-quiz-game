@@ -68,14 +68,14 @@ defmodule QuizGameWeb.CoreComponents do
       </.action_links_item>
   """
 
-  attr :kind, :string, default: "dash"
+  attr :kind, :string, default: nil
   attr :class, :string, default: nil
 
   slot :inner_block, required: true
 
   def action_links_item(assigns) do
     ~H"""
-    <li class={["mt-2 pl-2 text-lg list-#{@kind}", @class]}>
+    <li class={["mt-2 pl-2 text-lg", (@kind && "list-kind-#{@kind}") || "list-dash", @class]}>
       <%= render_slot(@inner_block) %>
     </li>
     """

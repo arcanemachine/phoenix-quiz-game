@@ -59,35 +59,31 @@
 }
 
 /* utility */
-.list-back {
+.list-kind-back {
   list-style-type: "< ";
 }
 
-.list-back-2 {
+.list-kind-back-2 {
   list-style-type: "<< ";
 }
 
-.list-create {
+.list-kind-create {
   list-style-type: "+ ";
 }
 
-.list-dash {
-  list-style-type: "- ";
-}
-
-.list-delete {
+.list-kind-delete {
   list-style-type: "❌ ";
 }
 
-.list-edit {
+.list-kind-edit {
   list-style-type: "✏️ ";
 }
 
-.list-forward {
+.list-kind-forward {
   list-style-type: "> ";
 }
 
-.list-index {
+.list-kind-index {
   list-style-type: "🗂️ ";
 }
 
@@ -201,6 +197,10 @@
 }
 
 @layer utilities {
+  .list-dash {
+    list-style-type: "- ";
+  }
+
   .show-when-empty {
     content: "\00A0"; /* non-breaking space */
   }
