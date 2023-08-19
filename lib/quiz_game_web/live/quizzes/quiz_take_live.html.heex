@@ -1,21 +1,52 @@
-<section class="flex flex-col h-full mt-8">
-  <div class="card w-96 mx-auto bg-base-100 shadow-xl">
-    <div class="card-body">
-      <.modal_title title={@card.question} class="text-center" />
-      <p>Answers go here</p>
-      <div class="card-actions justify-end">
-        <button class="btn btn-primary">Buy Now</button>
+<.back
+  class="text-error"
+  navigate={route(:quizzes, :show, quiz_id: @quiz.id)}
+  confirm="Are you sure you want to exit this quiz? You will lose all your progress!"
+>
+  Return to quiz
+</.back>
+
+<div class="mt-8 card w-full max-w-lg mx-auto bg-primary/20 shadow-xl">
+  <div class="card-body text-center">
+    <.modal_title title={@card.question} />
+
+    <.simple_form for={@form} id="form_quiz_take" phx-submit="submit">
+      <p class="-mt-8">Select your answer:</p>
+
+      <div class="mt-4 text-2xl [&>*]:mt-4">
+        <%= if @card.format == :multiple_choice do %>
+          <div>
+            <label class="align-middle">
+              <input type="radio" name="user-answer" value="1" />
+              <%= @card.choice_1 %>
+            </label>
+          </div>
+          <div>
+            <label class="align-middle">
+              <input type="radio" name="user-answer" value="4" />
+              <%= @card.choice_2 %>
+            </label>
+          </div>
+          <div>
+            <label class="align-middle">
+              <input type="radio" name="user-answer" value="3" />
+              <%= @card.choice_3 %>
+            </label>
+          </div>
+          <div>
+            <label class="align-middle">
+              <input type="radio" name="user-answer" value="4" />
+              <%= @card.choice_4 %>
+            </label>
+          </div>
+        <% end %>
       </div>
-    </div>
+
+      <:actions>
+        <div class="mt-8">
+          <.form_button_submit />
+        </div>
+      </:actions>
+    </.simple_form>
   </div>
-
-  <div class="grow" />
-
-  <.action_links>
-    <.action_links_item>
-      <.link navigate={route(:quizzes, :show, quiz_id: @quiz.id)}>
-        Exit this quiz
-      </.link>
-    </.action_links_item>
-  </.action_links>
-</section>
+</div>

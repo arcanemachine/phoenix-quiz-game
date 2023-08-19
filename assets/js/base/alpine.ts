@@ -24,10 +24,16 @@ function simpleForm() {
     modifiedInputs: new Set(),
 
     init() {
-      this.form = this.$root;
-
-      // disable form modification detection in LiveView modals
-      if (this.$root.closest("[data-component-kind='modal']")) return;
+      // maybe disable form modification detection
+      if (
+        // disable in LiveView modals (automatic)
+        this.$root.closest("[data-component-kind='modal']") ||
+        // via localStorage attribute (manual)
+        localStorage.getItem("detectFormModifications") === "false"
+        // // via HTML data attribute (manual)
+        // || this.$root.children[0].dataset.detectFormModifications === "false"
+      )
+        return;
 
       // add form modification event listeners
       addEventListener("beforeinput", this.handleBeforeInput.bind(this));
@@ -37,8 +43,16 @@ function simpleForm() {
     },
 
     destroy() {
-      // disable form modification detection in LiveView modals
-      if (this.$root.closest("[data-component-kind='modal']")) return;
+      // maybe disable form modification detection
+      if (
+        // disable in LiveView modals (automatic)
+        this.$root.closest("[data-component-kind='modal']") ||
+        // via localStorage attribute (manual)
+        localStorage.getItem("detectFormModifications") === "false"
+        // // via HTML data attribute (manual)
+        // || this.$root.children[0].dataset.detectModifications === "false"
+      )
+        return;
 
       // clear modified input fields
       this.modifiedInputs.clear();

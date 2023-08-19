@@ -17,6 +17,7 @@ defmodule QuizGame.Quizzes.Card do
 
     # data
     field :question, :string
+
     field :format, Ecto.Enum,
       values: [:multiple_choice, :true_or_false, :text_entry, :number_entry]
 
@@ -67,8 +68,9 @@ defmodule QuizGame.Quizzes.Card do
   def cast_card(changeset) do
     case changeset.data.format do
       :multiple_choice ->
-         # clear all choices
+        # clear all choices
         changeset |> change(choice_1: "", choice_2: "", choice_3: "", choice_4: "")
+
       _ ->
         changeset
     end

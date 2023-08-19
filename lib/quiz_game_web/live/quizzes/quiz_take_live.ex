@@ -15,7 +15,14 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   def mount(params, _session, socket) do
     quiz = get_quiz_or_404(params)
 
-    {:ok, socket |> assign(%{quiz: quiz, card: quiz.cards |> Enum.at(0)})}
+    {:ok,
+     socket
+     |> assign(%{
+       quiz: quiz,
+       card: quiz.cards |> Enum.at(0),
+       form: to_form(%{}, as: "quiz_take"),
+       current_card_index: 0,
+     })}
   end
 
   # @impl Phoenix.LiveView
