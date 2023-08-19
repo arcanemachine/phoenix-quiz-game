@@ -34,8 +34,8 @@
 }
 
 .toastify.on:nth-child(2) {
-  /* apply a fade effect to the 2nd toast in the stack (the 3rd toast will be
-   * removed with javascript) */
+  /* apply a fade effect to the 2nd toast in the stack (it will be removed
+     via javsacript) */
   opacity: 0.5;
   pointer-events: initial;
 }

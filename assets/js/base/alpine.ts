@@ -335,12 +335,14 @@ const toasts = {
       textElement.innerHTML = options.text as string;
     }
 
-    // only show 2 toasts at a time
+    // only show 1 toasts at a time
     const existingToasts = document.querySelectorAll(".toastify.on");
-    if (existingToasts.length > 1) {
+    if (existingToasts.length) {
       // remove the last toast
-      Array.from(existingToasts)
+      Array!
+        .from(existingToasts)
         .slice(-1)[0]
+        .querySelector(".toast-close")!
         .dispatchEvent(new MouseEvent("click"));
     }
 
