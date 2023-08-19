@@ -99,9 +99,10 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
         })
       end
 
+    # check if the quiz is completed
     socket =
       if socket.assigns.current_card_index == length(socket.assigns.quiz.cards) - 1 do
-        # quiz is completed. display the user's score and offer to restart the quiz.
+        # quiz is completed. display the user's score and offer to restart the quiz
         assign(socket, %{quiz_is_completed: true})
       else
         # quiz is still in progress. get next card and increment current card index
