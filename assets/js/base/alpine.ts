@@ -335,9 +335,9 @@ const toasts = {
       textElement.innerHTML = options.text as string;
     }
 
-    // only show 3 toasts at a time
+    // only show 2 toasts at a time
     const existingToasts = document.querySelectorAll(".toastify.on");
-    if (existingToasts.length > 2) {
+    if (existingToasts.length > 1) {
       // remove the last toast
       Array.from(existingToasts)
         .slice(-1)[0]

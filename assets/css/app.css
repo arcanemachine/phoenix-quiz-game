@@ -33,8 +33,8 @@
   border-radius: 0.25rem;
 }
 
-.toastify.on:nth-child(3) {
-  /* apply a fade effect to the 3rd toast in the stack (the 4th toast will be
+.toastify.on:nth-child(2) {
+  /* apply a fade effect to the 2nd toast in the stack (the 3rd toast will be
    * removed with javascript) */
   opacity: 0.5;
   pointer-events: initial;
