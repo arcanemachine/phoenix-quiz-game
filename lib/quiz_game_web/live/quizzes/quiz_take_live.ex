@@ -80,7 +80,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
           {user_answer, correct_answer}
 
         _ ->
-          {params["user-answer"], card.correct_answer}
+          {String.downcase(params["user-answer"]), card.correct_answer}
       end
 
     # check if answer was correct and dispatch the appropriate actions
