@@ -21,7 +21,8 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
        quiz: quiz,
        card: quiz.cards |> Enum.at(0),
        form: to_form(%{}, as: "quiz_take"),
-       current_card_index: 0
+       current_card_index: 0,
+       score: 0
      })}
   end
 
@@ -32,7 +33,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   """
   @spec convert_user_answer_to_choice_atom(String.t()) ::
           :choice_1 | :choice_2 | :choice_3 | :choice_4
-  defp convert_user_answer_to_choice_atom(user_answer) do
+  def convert_user_answer_to_choice_atom(user_answer) do
     # convert choice to integer
     choice_int =
       try do
@@ -51,6 +52,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   def handle_event("submit", params, socket) do
     card = socket.assigns.card
 
+    # check if user answer is correct
     {user_answer, correct_answer} =
       case socket.assigns.card.format do
         :multiple_choice ->
@@ -62,23 +64,32 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
           # get correct answer
           {user_answer, correct_answer}
 
-        :true_or_false ->
-          raise "fixme"
-
         _ ->
           {params["user-answer"], card.correct_answer}
       end
 
-    # push flash message
+    # check if answer was correct and dispatch the appropriate actions
     socket =
       if user_answer == correct_answer do
-        socket |> push_event("toast-show-success", %{content: "Correct!"})
+        socket
+        # show success message
+        |> push_event("toast-show-success", %{content: "Correct!"})
+        # increment score
+        |> assign(:score, socket.assigns.score + 1)
       else
         socket
+        # show failure message
         |> push_event("toast-show-error", %{
           content: "Incorrect! The correct answer is '#{correct_answer}'."
         })
       end
+
+    # get next card and increment current card index
+    next_card = socket.assigns.quiz.cards |> Enum.at(socket.assigns.current_card_index + 1)
+
+    socket =
+      socket
+      |> assign(%{card: next_card, current_card_index: socket.assigns.current_card_index + 1})
 
     {:noreply, socket}
   end

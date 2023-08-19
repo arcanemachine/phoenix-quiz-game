@@ -10,36 +10,49 @@
   <div class="card-body text-center">
     <.modal_title title={@card.question} />
 
-    <.simple_form for={@form} id="form_quiz_take" phx-submit="submit">
-      <p class="-mt-8">Select your answer:</p>
+    <.simple_form for={@form} id="form_quiz_take" class="max-w-xs mx-auto" phx-submit="submit">
+      <div :if={@card.format == :multiple_choice}>
+        <p class="-mt-8 mb-4">Select your answer:</p>
+        <div class="mt-4">
+          <label class="flex flex-center p-2 gap-2 text-xl">
+            <input type="radio" name="user-answer" value="1" required />
+            <%= @card.choice_1 %>
+          </label>
+          <label class="flex flex-center p-2 gap-2 text-xl">
+            <input type="radio" name="user-answer" value="2" required />
+            <%= @card.choice_2 %>
+          </label>
+          <label class="flex flex-center p-2 gap-2 text-xl">
+            <input type="radio" name="user-answer" value="3" required />
+            <%= @card.choice_3 %>
+          </label>
+          <label class="flex flex-center p-2 gap-2 text-xl">
+            <input type="radio" name="user-answer" value="4" required />
+            <%= @card.choice_4 %>
+          </label>
+        </div>
+      </div>
 
-      <div class="mt-4 text-2xl [&>*]:mt-4">
-        <%= if @card.format == :multiple_choice do %>
-          <div>
-            <label class="align-middle">
-              <input type="radio" name="user-answer" value="1" />
-              <%= @card.choice_1 %>
-            </label>
-          </div>
-          <div>
-            <label class="align-middle">
-              <input type="radio" name="user-answer" value="2" />
-              <%= @card.choice_2 %>
-            </label>
-          </div>
-          <div>
-            <label class="align-middle">
-              <input type="radio" name="user-answer" value="3" />
-              <%= @card.choice_3 %>
-            </label>
-          </div>
-          <div>
-            <label class="align-middle">
-              <input type="radio" name="user-answer" value="4" />
-              <%= @card.choice_4 %>
-            </label>
-          </div>
-        <% end %>
+      <div :if={@card.format == :number_entry}>
+        <p class="-mt-8 mb-4">Enter the correct number:</p>
+        <.input type="number" name="user-answer" autocomplete="off" required />
+      </div>
+
+      <div :if={@card.format == :text_entry}>
+        <p class="-mt-8 mb-4">Enter the correct answer:</p>
+        <.input type="text" name="user-answer" autocomplete="off" required />
+      </div>
+
+      <div :if={@card.format == :true_or_false}>
+        <p class="-mt-8 mb-4">Select true or false:</p>
+        <div class="mt-4 text-xl">
+          <label class="flex flex-center p-2 gap-2 text-xl">
+            <input type="radio" name="user-answer" value="true" required /> True
+          </label>
+          <label class="flex flex-center p-2 gap-2 text-xl">
+            <input type="radio" name="user-answer" value="false" required /> False
+          </label>
+        </div>
       </div>
 
       <:actions>
@@ -48,5 +61,10 @@
         </div>
       </:actions>
     </.simple_form>
+
+    <div>
+      <span class="font-bold">Your score:</span>
+      <%= @score %> / <%= @current_card_index %>
+    </div>
   </div>
 </div>

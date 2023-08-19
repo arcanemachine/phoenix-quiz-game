@@ -529,6 +529,7 @@ defmodule QuizGameWeb.CoreComponents do
                number password range radio search select tel text textarea time url week)
 
   attr :field, Phoenix.HTML.FormField,
+    default: nil,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
 
   attr :errors, :list, default: [], doc: "the errors belonging to this form field"
@@ -538,10 +539,11 @@ defmodule QuizGameWeb.CoreComponents do
   attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
   attr :debounce, :integer, default: 750, doc: "how long to debounce before emitting an event"
   attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
+  attr :required, :boolean, default: false, doc: "whether or not the field is required"
 
   attr :rest, :global,
     include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
-                multiple pattern placeholder readonly required rows size step)
+                multiple pattern placeholder readonly rows size step)
 
   slot :inner_block
 
@@ -647,9 +649,10 @@ defmodule QuizGameWeb.CoreComponents do
             @errors != [] && "border-error/80 focus:border-error/40",
             "phx-no-feedback:border-base-content phx-no-feedback:focus:border-base-content/40"
           ]}
+          required={@required}
           {@rest}
         />
-        <%= @label %><%= (Map.has_key?(@rest, :required) && "*") || "" %>
+        <%= @label %><%= (@label && @required && "*") || "" %>
       </label>
       <.input_errors :if={@show_errors} errors={@errors} />
     </div>
@@ -668,7 +671,7 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <div phx-feedback-for={@name}>
       <.label for={@id}>
-        <%= @label %><%= (Map.has_key?(@rest, :required) && "*") || "" %>
+        <%= @label %><%= (@label && @required && "*") || "" %>
       </.label>
       <select
         id={@id}
@@ -680,6 +683,7 @@ defmodule QuizGameWeb.CoreComponents do
           "phx-no-feedback:border-base-content phx-no-feedback:focus:border-base-content/40"
         ]}
         multiple={@multiple}
+        required={@required}
         {@rest}
       >
         <option :if={@prompt} value=""><%= @prompt %></option>
@@ -694,7 +698,7 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <div phx-feedback-for={@name}>
       <.label for={@id}>
-        <%= @label %><%= (Map.has_key?(@rest, :required) && "*") || "" %>
+        <%= @label %><%= (@label && @required && "*") || "" %>
       </.label>
       <textarea
         id={@id}
@@ -706,6 +710,7 @@ defmodule QuizGameWeb.CoreComponents do
           "phx-no-feedback:border-base-content phx-no-feedback:focus:border-base-content/40"
         ]}
         phx-debounce={@debounce}
+        required={@required}
         {@rest}
       ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
       <.input_errors :if={@show_errors} errors={@errors} />
@@ -717,19 +722,20 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <div phx-feedback-for={@name}>
       <.label :if={@id} for={@id}>
-        <%= @label %><%= (Map.has_key?(@rest, :required) && "*") || "" %>
+        <%= @label %><%= (@label && @required && "*") || "" %>
       </.label>
       <input
         type={@type}
         name={@name}
         id={@id}
-        value={Phoenix.HTML.Form.normalize_value(@type, @value)}
+        value={@field && Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
           "w-full input",
           @errors == [] && "border-base-content focus:border-base-content/30",
           @errors != [] && "border-error/80 focus:border-error/40",
           "phx-no-feedback:border-base-content phx-no-feedback:focus:border-base-content/40"
         ]}
+        required={@required}
         phx-debounce={@debounce}
         {@rest}
       />
@@ -1004,6 +1010,7 @@ defmodule QuizGameWeb.CoreComponents do
   attr :for, :any, required: true, doc: "the datastructure for the form"
   attr :as, :any, default: nil, doc: "the server side parameter to collect all input under"
   attr :has_errors, :boolean, default: false, doc: "whether or not the form has errors"
+  attr :class, :string, default: nil
 
   attr :confirmation_required, :boolean,
     default: false,
@@ -1033,7 +1040,8 @@ defmodule QuizGameWeb.CoreComponents do
       {@rest}
       class={[
         "w-full max-w-md mt-4 mx-auto transition-colors duration-300 rounded-lg",
-        @has_errors && "bg-red-200"
+        @has_errors && "bg-red-200",
+        @class
       ]}
     >
       <div class="p-2" x-data="simpleForm">
