@@ -6,7 +6,7 @@
   Return to quiz
 </.back>
 
-<div class="mt-8 card w-full max-w-lg mx-auto bg-primary/20 shadow-xl">
+<div :if={!@quiz_is_completed} class="mt-8 card w-full max-w-lg mx-auto bg-primary/20 shadow-xl">
   <div class="card-body text-center">
     <.modal_title title={@card.question} />
 
@@ -66,5 +66,25 @@
       <span class="font-bold">Your score:</span>
       <%= @score %> / <%= @current_card_index %>
     </div>
+  </div>
+</div>
+
+<div :if={@quiz_is_completed} class="mt-8 card w-full max-w-lg mx-auto bg-primary/20 shadow-xl">
+  <div class="card-body text-center">
+    <.modal_title title="Quiz Complete!" />
+
+    <div>
+      <span class="font-bold">Your score:</span>
+      <%= @score %> / <%= length(@quiz.cards) %>
+    </div>
+
+    <.simple_form for={@form} id="form_quiz_take" class="max-w-xs mx-auto" phx-submit="submit">
+      <:actions>
+        <div class="mt-8">
+          <.form_button content="Reset" phx-click="reset" />
+        </div>
+      </:actions>
+    </.simple_form>
+
   </div>
 </div>
