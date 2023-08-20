@@ -2,16 +2,16 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   use QuizGameWeb, :live_view
 
   import Ecto.Query
-  import QuizGameWeb.Support, only: [get_record_or_404: 1, params_to_keyword_list: 1]
 
   alias QuizGame.Quizzes.Quiz
+  alias QuizGameWeb.Support, as: S
 
-  defp get_quiz_or_404(params) do
+  defp _get_quiz_or_404(params) do
     query = from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards]
-    get_record_or_404(query)
+    S.get_record_or_404(query)
   end
 
-  defp initialize_socket(socket) do
+  defp _initialize_socket(socket) do
     display_name =
       if socket.assigns.current_user, do: socket.assigns.current_user.display_name, else: nil
 
@@ -29,15 +29,15 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
 
   @impl Phoenix.LiveView
   def mount(params, _session, socket) do
-    quiz = get_quiz_or_404(params)
+    quiz = _get_quiz_or_404(params)
 
     {:ok,
      socket
      |> assign(
-       current_path: route(:quizzes, :take, params_to_keyword_list(params)),
+       current_path: route(:quizzes, :take, S.params_to_keyword_list(params)),
        quiz: quiz
      )
-     |> initialize_socket()}
+     |> _initialize_socket()}
   end
 
   @doc """
@@ -76,7 +76,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   end
 
   def handle_event("reset-quiz", _params, socket) do
-    {:noreply, initialize_socket(socket)}
+    {:noreply, _initialize_socket(socket)}
   end
 
   def handle_event("submit-display-name", %{"display-name" => display_name}, socket) do
