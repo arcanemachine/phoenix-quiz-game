@@ -14,13 +14,10 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
     changeset = Quizzes.change_card(card)
     card_format = if assigns.action == :new, do: nil, else: Atom.to_string(changeset.data.format)
 
-    # assign card format
-    assigns = assigns |> Map.put(:card_format, card_format)
-
     {:ok,
      socket
      |> assign_form(changeset)
-     |> assign(assigns)}
+     |> assign(card_format: card_format)}
   end
 
   @impl Phoenix.LiveComponent

@@ -3,11 +3,11 @@ defmodule QuizGameWeb.UsersLive.UserLoginLive do
   alias QuizGame.Users.User
 
   @impl Phoenix.LiveView
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
     email = live_flash(socket.assigns.flash, :email)
     form = to_form(%{"email" => email}, as: "user")
 
-    {:ok, assign(socket, form: form, page_title: "Account Login"),
+    {:ok, assign(socket, params: params, form: form, page_title: "Account Login"),
      temporary_assigns: [form: form]}
   end
 
@@ -18,7 +18,12 @@ defmodule QuizGameWeb.UsersLive.UserLoginLive do
       To login to your account, enter your account details below.
     </.crud_intro_text>
 
-    <.simple_form for={@form} id="login_form" action={route(:users, :login)} phx-update="ignore">
+    <.simple_form
+      for={@form}
+      id="login_form"
+      action={route(:users, :login) <> query_string(@params)}
+      phx-update="ignore"
+    >
       <.input
         field={@form[:email]}
         type="email"

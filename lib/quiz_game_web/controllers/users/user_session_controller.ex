@@ -26,10 +26,16 @@ defmodule QuizGameWeb.UserSessionController do
     end
   end
 
-  defp create(conn, %{"user" => user_params}, success_message) do
+  defp create(conn, %{"user" => user_params} = params, success_message) do
     %{"email" => email, "password" => password} = user_params
 
     if user = Users.get_user_by_email_and_password(email, password) do
+      # if 'next' URL param exists, redirect to it
+      conn =
+        if "next" in Map.keys(params),
+          do: conn |> put_session(:user_return_to, params["next"]),
+          else: conn
+
       conn
       |> put_flash(:success, success_message)
       |> UserAuth.login_user(user, user_params)
@@ -50,5 +56,10 @@ defmodule QuizGameWeb.UserSessionController do
     conn
     |> put_flash(:success, "Logged out successfully")
     |> UserAuth.logout_user()
+  end
+
+  def redirect_to_url_param_next() do
+    quote do
+    end
   end
 end

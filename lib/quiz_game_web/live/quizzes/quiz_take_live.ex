@@ -11,11 +11,12 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
     get_record_or_404(query)
   end
 
-  def initialize_socket(socket) do
+  defp initialize_socket(socket) do
     display_name =
       if socket.assigns.current_user, do: socket.assigns.current_user.display_name, else: nil
 
-    assign(socket, %{
+    socket
+    |> assign(
       quiz: socket.assigns.quiz,
       display_name: display_name,
       card: socket.assigns.quiz.cards |> Enum.at(0),
@@ -23,7 +24,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
       current_card_index: 0,
       score: 0,
       quiz_is_completed: false
-    })
+    )
   end
 
   @impl Phoenix.LiveView
@@ -32,16 +33,11 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
 
     {:ok,
      socket
-     |> assign(:quiz, quiz)
+     |> assign(
+       current_path: route(:quizzes, :take, params_to_keyword_list(params)),
+       quiz: quiz
+     )
      |> initialize_socket()}
-  end
-
-  @impl Phoenix.LiveView
-  def handle_params(params, _url, socket) do
-    # add current URL path to assigns
-    current_path = route(:quizzes, :take, params_to_keyword_list(params))
-
-    {:noreply, socket |> assign(:current_path, current_path)}
   end
 
   @doc """
@@ -123,7 +119,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
         |> clear_flash()
         |> put_flash(:success, "Correct!")
         # increment score
-        |> assign(:score, socket.assigns.score + 1)
+        |> assign(score: socket.assigns.score + 1)
       else
         socket
         # show failure message
@@ -135,15 +131,16 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
     socket =
       if socket.assigns.current_card_index == length(socket.assigns.quiz.cards) - 1 do
         # quiz is completed. display the user's score and offer to restart the quiz
-        assign(socket, %{quiz_is_completed: true})
+        socket |> assign(quiz_is_completed: true)
       else
         # quiz is still in progress. get next card and increment current card index
         next_card = socket.assigns.quiz.cards |> Enum.at(socket.assigns.current_card_index + 1)
 
-        assign(socket, %{
+        socket
+        |> assign(
           card: next_card,
           current_card_index: socket.assigns.current_card_index + 1
-        })
+        )
       end
 
     {:noreply, socket}
