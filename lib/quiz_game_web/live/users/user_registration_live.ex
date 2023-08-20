@@ -48,6 +48,7 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
         field={@form[:username]}
         type="text"
         label="Username"
+        help_text="A unique username used to identify you"
         minlength={User.username_length_min()}
         maxlength={User.username_length_max()}
         required
@@ -56,6 +57,7 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
         field={@form[:display_name]}
         type="text"
         label="Display name"
+        help_text="The name that will be shown when you take a quiz"
         minlength={User.display_name_length_min()}
         maxlength={User.display_name_length_max()}
         required
@@ -64,6 +66,7 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
         field={@form[:email]}
         type="email"
         label="Email"
+        help_text="Your email address"
         maxlength={User.email_length_max()}
         required
       />
@@ -71,6 +74,7 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
         field={@form[:password]}
         type="password"
         label="Password"
+        help_text="Enter a secure password"
         minlength={User.password_length_min()}
         maxlength={User.password_length_max()}
         required
@@ -79,6 +83,7 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
         field={@form[:password_confirmation]}
         type="password"
         label="Confirm password"
+        help_text="Re-enter your password to ensure you entered it correctly"
         minlength={User.password_length_min()}
         maxlength={User.password_length_max()}
         required

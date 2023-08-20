@@ -521,6 +521,7 @@ defmodule QuizGameWeb.CoreComponents do
   attr :id, :any, default: nil
   attr :name, :any
   attr :label, :string, default: nil
+  attr :help_text, :string, default: nil
   attr :value, :any
 
   attr :type, :string,
@@ -654,6 +655,9 @@ defmodule QuizGameWeb.CoreComponents do
         />
         <%= @label %><%= (@label && @required && "*") || "" %>
       </label>
+      <label :if={@help_text} class="label pb-0">
+        <span class="label-text-alt"><%= @help_text %></span>
+      </label>
       <.input_errors :if={@show_errors} errors={@errors} />
     </div>
     """
@@ -689,6 +693,9 @@ defmodule QuizGameWeb.CoreComponents do
         <option :if={@prompt} value=""><%= @prompt %></option>
         <%= Phoenix.HTML.Form.options_for_select(@options, @value) %>
       </select>
+      <label :if={@help_text} class="label pb-0">
+        <span class="label-text-alt"><%= @help_text %></span>
+      </label>
       <.input_errors :if={@show_errors} errors={@errors} />
     </div>
     """
@@ -713,6 +720,9 @@ defmodule QuizGameWeb.CoreComponents do
         required={@required}
         {@rest}
       ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
+      <label :if={@help_text} class="label pb-0">
+        <span class="label-text-alt"><%= @help_text %></span>
+      </label>
       <.input_errors :if={@show_errors} errors={@errors} />
     </div>
     """
@@ -739,6 +749,9 @@ defmodule QuizGameWeb.CoreComponents do
         phx-debounce={@debounce}
         {@rest}
       />
+      <label :if={@help_text} class="label pb-0">
+        <span class="label-text-alt"><%= @help_text %></span>
+      </label>
       <.input_errors :if={@show_errors} errors={@errors} />
     </div>
     """
