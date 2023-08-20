@@ -3,6 +3,8 @@ defmodule QuizGame.Users.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  def display_name_length_min(), do: 3
+  def display_name_length_max(), do: 32
   def username_length_min(), do: 3
   def username_length_max(), do: 32
   def email_length_max(), do: 160
@@ -15,6 +17,7 @@ defmodule QuizGame.Users.User do
 
     # data
     field :username, :string
+    field :display_name, :string
     field :email, :string
     field :password, :string, virtual: true, redact: true
 
@@ -53,11 +56,21 @@ defmodule QuizGame.Users.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:username, :email, :password])
+    |> cast(attrs, [:username, :display_name, :email, :password])
     |> validate_username(opts)
+    |> validate_display_name()
     |> validate_email(opts)
     |> validate_confirmation(:password, message: "does not match password")
     |> validate_password(opts)
+  end
+
+  defp validate_display_name(changeset) do
+    changeset
+    |> validate_required([:display_name])
+    |> validate_length(:display_name,
+      min: display_name_length_min(),
+      max: display_name_length_max()
+    )
   end
 
   defp validate_username(changeset, opts) do

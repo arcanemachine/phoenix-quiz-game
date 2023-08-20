@@ -53,6 +53,14 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
         required
       />
       <.input
+        field={@form[:display_name]}
+        type="text"
+        label="Display name"
+        minlength={User.display_name_length_min()}
+        maxlength={User.display_name_length_max()}
+        required
+      />
+      <.input
         field={@form[:email]}
         type="email"
         label="Email"

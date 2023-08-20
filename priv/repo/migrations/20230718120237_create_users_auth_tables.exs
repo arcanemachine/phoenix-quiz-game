@@ -8,6 +8,7 @@ defmodule QuizGame.Repo.Migrations.CreateUsersAuthTables do
     create table(:users) do
       # data
       add :username, :citext, null: false
+      add :display_name, :string, null: false
       add :email, :citext, null: false
 
       # attributes

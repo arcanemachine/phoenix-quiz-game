@@ -11,6 +11,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
   {:ok, admin_user} =
     Users.register_user(%{
       username: "admin",
+      display_name: "Admin",
       email: "admin@example.com",
       password: "password"
     })
@@ -22,6 +23,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
   {:ok, user} =
     Users.register_user(%{
       username: "user",
+      display_name: "User",
       email: "user@example.com",
       password: "password"
     })
@@ -86,6 +88,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
   {:ok, other_user} =
     Users.register_user(%{
       username: "other_user",
+      display_name: "Other User",
       email: "other_user@example.com",
       password: "password"
     })
