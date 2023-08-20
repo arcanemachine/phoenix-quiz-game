@@ -2,11 +2,11 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   use QuizGameWeb, :live_view
 
   import Ecto.Query
-  import QuizGameWeb.Support, only: [get_record_or_404: 1]
+  import QuizGameWeb.Support, only: [get_record_or_404: 1, params_to_keyword_list: 1]
 
   alias QuizGame.Quizzes.Quiz
 
-  def get_quiz_or_404(params) do
+  defp get_quiz_or_404(params) do
     query = from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards]
     get_record_or_404(query)
   end
@@ -34,6 +34,14 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
      socket
      |> assign(:quiz, quiz)
      |> initialize_socket()}
+  end
+
+  @impl Phoenix.LiveView
+  def handle_params(params, _url, socket) do
+    # add current URL path to assigns
+    current_path = route(:quizzes, :take, params_to_keyword_list(params))
+
+    {:noreply, socket |> assign(:current_path, current_path)}
   end
 
   @doc """

@@ -27,7 +27,7 @@ defmodule QuizGameWeb.Support.Router do
   def route(context, action), do: route(context, action, [])
 
   @doc """
-  Match against a route that contains URL parameters.
+  Match against a route that contains a given set of URL parameters.
 
   ## Examples
 

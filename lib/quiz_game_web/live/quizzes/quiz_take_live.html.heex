@@ -33,25 +33,24 @@
         <:actions>
           <.form_button content="Confirm" />
         </:actions>
-
       </.simple_form>
 
-        <div class="divider" />
-        <div>
-          Want to save your quiz history?
-          <ul class="[&>*]:mt-4">
-            <li>
-              <a href={route(:users, :register)} class="p-4">
-                Register a new account
-              </a>
-            </li>
-            <li>
-              <a href={route(:users, :login)} class="p-4">
-                Login to your account
-              </a>
-            </li>
-          </ul>
-        </div>
+      <div class="divider" />
+      <div>
+        Want to save your quiz history?
+        <ul class="[&>*]:mt-4">
+          <li>
+            <a href={route(:users, :register) <> query_string(next: @current_path)} class="p-4">
+              Register a new account
+            </a>
+          </li>
+          <li>
+            <a href={route(:users, :login) <> query_string(next: @current_path)} class="p-4">
+              Login to your account
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 <% else %>

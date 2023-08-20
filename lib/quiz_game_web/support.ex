@@ -13,7 +13,6 @@ defmodule QuizGameWeb.Support do
       iex> get_record_or_404(empty_query)
       ** (Ecto.NoResultsError)
   """
-
   def get_record_or_404(query) do
     if record = QuizGame.Repo.one!(query) do
       record
@@ -39,6 +38,12 @@ defmodule QuizGameWeb.Support do
           false
       end
     end
+  end
+
+  @doc "Convert URL params to a keyword list."
+  @spec params_to_keyword_list(map()) :: keyword()
+  def params_to_keyword_list(params) do
+    params |> Enum.map(fn {k, v} -> {String.to_existing_atom(k), v} end)
   end
 end
 
