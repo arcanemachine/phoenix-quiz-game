@@ -9,109 +9,145 @@
   Return to quiz
 </.back>
 
-<div
-  :if={!@quiz_is_completed}
-  id="not-quiz-is-completed"
-  class="mt-8 card w-full max-w-lg mx-auto bg-primary/20 shadow-xl"
-  x-data
-  @keypress.window="(evt) => {
-     if (['1', '2', '3', '4'].includes(evt.key)) {
-       // select 'multiple choice' radio element via keypress
-       const multipleChoiceInputElt = document.querySelector(`[value='${evt.key}']`);
-       if (multipleChoiceInputElt) multipleChoiceInputElt.click();
-
-       else if (['1', '2'].includes(evt.key)) {
-         // select 'true or false' element via keypress
-         const trueOrFalseValue = evt.key === '1' ? 'true' : 'false';
-         const trueOrFalseInputElt = document.querySelector(`[value='${trueOrFalseValue}']`)
-         if (trueOrFalseInputElt) trueOrFalseInputElt.click();
-       }
-     } else if (evt.key === 'Enter') {
-       $el.querySelector('form button').click();
-     }
-   }"
->
-  <div class="card-body text-center">
-    <.modal_title title={@card.question} />
-
-    <.simple_form for={@form} id="form_quiz_take" class="max-w-xs mx-auto" phx-submit="submit">
-      <div :if={@card.format == :multiple_choice}>
-        <p class="-mt-8 mb-4">Select your answer:</p>
-        <div class="mt-4">
-          <label class="flex flex-center p-2 gap-2 text-xl">
-            <input type="radio" name="user-answer" value="1" required />
-            <%= @card.choice_1 %>
-          </label>
-          <label class="flex flex-center p-2 gap-2 text-xl">
-            <input type="radio" name="user-answer" value="2" required />
-            <%= @card.choice_2 %>
-          </label>
-          <label class="flex flex-center p-2 gap-2 text-xl">
-            <input type="radio" name="user-answer" value="3" required />
-            <%= @card.choice_3 %>
-          </label>
-          <label class="flex flex-center p-2 gap-2 text-xl">
-            <input type="radio" name="user-answer" value="4" required />
-            <%= @card.choice_4 %>
-          </label>
+<%= if !@display_name do %>
+  <div id="not-display-name" class="mt-4 card w-full max-w-lg mx-auto bg-primary/20 shadow-xl">
+    <div class="card-body text-center">
+      <.modal_title title="Your Name" />
+      <.simple_form for={@form} id="form_quiz_take" class="max-w-xs mx-auto" phx-submit="submit-display-name">
+        <div>
+          <p class="-mt-8 mb-4">Enter your name:</p>
+          <.input type="text" name="display-name" autocomplete="off" required x-init="$el.focus()" />
         </div>
-      </div>
 
-      <div :if={@card.format == :number_entry}>
-        <p class="-mt-8 mb-4">Enter the correct number:</p>
-        <.input type="number" name="user-answer" autocomplete="off" required x-init="$el.focus()" />
-      </div>
-
-      <div :if={@card.format == :text_entry}>
-        <p class="-mt-8 mb-4">Enter the correct answer:</p>
-        <.input type="text" name="user-answer" autocomplete="off" required x-init="$el.focus()" />
-      </div>
-
-      <div :if={@card.format == :true_or_false}>
-        <p class="-mt-8 mb-4">Select true or false:</p>
-        <div class="mt-4 text-xl">
-          <label class="flex flex-center p-2 gap-2 text-xl">
-            <input type="radio" name="user-answer" value="true" required /> True
-          </label>
-          <label class="flex flex-center p-2 gap-2 text-xl">
-            <input type="radio" name="user-answer" value="false" required /> False
-          </label>
-        </div>
-      </div>
-
-      <:actions>
-        <div class="mt-8">
+        <:actions>
           <.form_button_submit />
+        </:actions>
+      </.simple_form>
+    </div>
+  </div>
+<% else %>
+  <div
+    :if={!@quiz_is_completed}
+    id="not-quiz-is-completed"
+    class="mt-4 card w-full max-w-lg mx-auto bg-primary/20 shadow-xl"
+    x-data
+    @keypress.window="(evt) => {
+       if (['1', '2', '3', '4'].includes(evt.key)) {
+         // select 'multiple choice' radio element via keypress
+         const multipleChoiceInputElt = document.querySelector(`[value='${evt.key}']`);
+         if (multipleChoiceInputElt) multipleChoiceInputElt.click();
+
+         else if (['1', '2'].includes(evt.key)) {
+           // select 'true or false' element via keypress
+           const trueOrFalseValue = evt.key === '1' ? 'true' : 'false';
+           const trueOrFalseInputElt = document.querySelector(`[value='${trueOrFalseValue}']`)
+           if (trueOrFalseInputElt) trueOrFalseInputElt.click();
+         }
+       } else if (evt.key === 'Enter') {
+         $el.querySelector('form button').click();
+       }
+     }"
+  >
+    <div class="card-body text-center">
+      <.modal_title title={@card.question} />
+      <.simple_form
+        for={@form}
+        id="form_quiz_take"
+        class="max-w-xs mx-auto"
+        phx-submit="submit-user-answer"
+      >
+        <div :if={@card.format == :multiple_choice}>
+          <p class="-mt-8 mb-4">Select your answer:</p>
+          <div class="mt-4">
+            <label class="flex flex-center p-2 gap-2 text-xl">
+              <input type="radio" name="user-answer" value="1" required />
+              <%= @card.choice_1 %>
+            </label>
+            <label class="flex flex-center p-2 gap-2 text-xl">
+              <input type="radio" name="user-answer" value="2" required />
+              <%= @card.choice_2 %>
+            </label>
+            <label class="flex flex-center p-2 gap-2 text-xl">
+              <input type="radio" name="user-answer" value="3" required />
+              <%= @card.choice_3 %>
+            </label>
+            <label class="flex flex-center p-2 gap-2 text-xl">
+              <input type="radio" name="user-answer" value="4" required />
+              <%= @card.choice_4 %>
+            </label>
+          </div>
         </div>
-      </:actions>
-    </.simple_form>
 
-    <div>
-      <span class="font-bold">Your score:</span>
-      <%= @score %> / <%= @current_card_index %>
-    </div>
-    <div>
-      <span class="font-bold">Questions remaining:</span>
-      <%= length(@quiz.cards) - @current_card_index - 1 %>
+        <div :if={@card.format == :number_entry}>
+          <p class="-mt-8 mb-4">Enter the correct number:</p>
+          <.input
+            id="input-number-entry"
+            type="number"
+            name="user-answer"
+            autocomplete="off"
+            required
+            x-init="$el.focus()"
+          />
+        </div>
+
+        <div :if={@card.format == :text_entry}>
+          <p class="-mt-8 mb-4">Enter the correct answer:</p>
+          <.input type="text" name="user-answer" autocomplete="off" required x-init="$el.focus()" />
+        </div>
+
+        <div :if={@card.format == :true_or_false}>
+          <p class="-mt-8 mb-4">Select true or false:</p>
+          <div class="mt-4 text-xl">
+            <label class="flex flex-center p-2 gap-2 text-xl">
+              <input type="radio" name="user-answer" value="true" required /> True
+            </label>
+            <label class="flex flex-center p-2 gap-2 text-xl">
+              <input type="radio" name="user-answer" value="false" required /> False
+            </label>
+          </div>
+        </div>
+
+        <:actions>
+          <div class="mt-8">
+            <.form_button_submit />
+          </div>
+        </:actions>
+      </.simple_form>
+
+      <div>
+        <span class="font-bold">Your name:</span>
+        <%= @display_name %>
+        <button class="text-primary font-bold" phx-click="reset-display-name">
+          (Change)
+        </button>
+      </div>
+      <div>
+        <span class="font-bold">Your score:</span>
+        <%= @score %> / <%= @current_card_index %>
+      </div>
+      <div>
+        <span class="font-bold">Questions remaining:</span>
+        <%= length(@quiz.cards) - @current_card_index - 1 %>
+      </div>
     </div>
   </div>
-</div>
 
-<div
-  :if={@quiz_is_completed}
-  id="quiz-is-completed"
-  class="mt-8 card w-full max-w-lg mx-auto bg-success/30 shadow-xl"
->
-  <div class="card-body text-center">
-    <.modal_title title="Quiz Complete!" />
+  <div
+    :if={@quiz_is_completed}
+    id="quiz-is-completed"
+    class="mt-8 card w-full max-w-lg mx-auto bg-success/30 shadow-xl"
+  >
+    <div class="card-body text-center">
+      <.modal_title title="Quiz Complete!" />
 
-    <div>
-      <span class="font-bold">Your score:</span>
-      <%= @score %> / <%= length(@quiz.cards) %>
-    </div>
+      <div>
+        <span class="font-bold">Your score:</span>
+        <%= @score %> / <%= length(@quiz.cards) %>
+      </div>
 
-    <div class="mt-8 mx-auto">
-      <.form_button type="button" content="Reset" phx-click="reset" />
+      <div class="mt-8 mx-auto">
+        <.form_button type="button" content="Reset" x-init="$el.focus()" phx-click="reset-quiz" />
+      </div>
     </div>
   </div>
-</div>
+<% end %>

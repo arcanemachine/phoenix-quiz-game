@@ -11,20 +11,26 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
     get_record_or_404(query)
   end
 
+  def initialize_socket(socket) do
+    assign(socket, %{
+      quiz: socket.assigns.quiz,
+      display_name: nil,
+      card: socket.assigns.quiz.cards |> Enum.at(0),
+      form: to_form(%{}, as: "quiz_take"),
+      current_card_index: 0,
+      score: 0,
+      quiz_is_completed: false
+    })
+  end
+
   @impl Phoenix.LiveView
   def mount(params, _session, socket) do
     quiz = get_quiz_or_404(params)
 
     {:ok,
      socket
-     |> assign(%{
-       quiz: quiz,
-       card: quiz.cards |> Enum.at(0),
-       form: to_form(%{}, as: "quiz_take"),
-       current_card_index: 0,
-       score: 0,
-       quiz_is_completed: false
-     })}
+     |> assign(:quiz, quiz)
+     |> initialize_socket()}
   end
 
   @doc """
@@ -50,20 +56,27 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   end
 
   @impl Phoenix.LiveView
-  def handle_event("reset", _params, socket) do
-    {:noreply,
-     socket
-     |> assign(%{
-       quiz: socket.assigns.quiz,
-       card: socket.assigns.quiz.cards |> Enum.at(0),
-       form: to_form(%{}, as: "quiz_take"),
-       current_card_index: 0,
-       score: 0,
-       quiz_is_completed: false
-     })}
+  def handle_event("reset-display-name", _params, socket) do
+    {:noreply, socket |> assign(:display_name, nil)}
   end
 
-  def handle_event("submit", params, socket) do
+  def handle_event("reset-quiz", _params, socket) do
+    {:noreply, initialize_socket(socket)}
+  end
+
+  def handle_event("submit-display-name", %{"display-name" => display_name}, socket) do
+    if String.trim(display_name) != "" do
+      {:noreply,
+       socket
+       |> assign(:display_name, display_name)
+       |> clear_flash()
+       |> put_flash(:info, "You may now begin the quiz. Good luck!")}
+    else
+      {:noreply, socket |> put_flash(:error, "You must enter a display name.")}
+    end
+  end
+
+  def handle_event("submit-user-answer", params, socket) do
     ## Check the validity of the card and proceed to the next card (or finish the quiz).
     card = socket.assigns.card
 
@@ -88,15 +101,15 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
       if user_answer == correct_answer do
         socket
         # show success message
-        |> push_event("toast-show-success", %{content: "Correct!"})
+        |> clear_flash()
+        |> put_flash(:success, "Correct!")
         # increment score
         |> assign(:score, socket.assigns.score + 1)
       else
         socket
         # show failure message
-        |> push_event("toast-show-error", %{
-          content: "Incorrect! The correct answer is '#{correct_answer}'."
-        })
+        |> clear_flash()
+        |> put_flash(:error, "Incorrect! The correct answer is '#{correct_answer}'.")
       end
 
     # check if the quiz is completed
