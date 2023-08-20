@@ -12,9 +12,12 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   end
 
   def initialize_socket(socket) do
+    display_name =
+      if socket.assigns.current_user, do: socket.assigns.current_user.display_name, else: nil
+
     assign(socket, %{
       quiz: socket.assigns.quiz,
-      display_name: nil,
+      display_name: display_name,
       card: socket.assigns.quiz.cards |> Enum.at(0),
       form: to_form(%{}, as: "quiz_take"),
       current_card_index: 0,
@@ -57,7 +60,15 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
 
   @impl Phoenix.LiveView
   def handle_event("reset-display-name", _params, socket) do
-    {:noreply, socket |> assign(:display_name, nil)}
+    socket = socket |> clear_flash()
+
+    if socket.assigns.current_user do
+      {:noreply,
+       socket
+       |> put_flash(:warning, "To change your display name, you must update your user profile.")}
+    else
+      {:noreply, socket |> assign(:display_name, nil)}
+    end
   end
 
   def handle_event("reset-quiz", _params, socket) do

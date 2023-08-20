@@ -13,16 +13,45 @@
   <div id="not-display-name" class="mt-4 card w-full max-w-lg mx-auto bg-primary/20 shadow-xl">
     <div class="card-body text-center">
       <.modal_title title="Your Name" />
-      <.simple_form for={@form} id="form_quiz_take" class="max-w-xs mx-auto" phx-submit="submit-display-name">
+      <.simple_form
+        for={@form}
+        id="form_quiz_take"
+        class="max-w-xs mx-auto"
+        phx-submit="submit-display-name"
+      >
         <div>
           <p class="-mt-8 mb-4">Enter your name:</p>
-          <.input type="text" name="display-name" autocomplete="off" required x-init="$el.focus()" />
+          <.input
+            type="text"
+            name="display-name"
+            autocomplete="off"
+            required
+            x-init="$el.focus()"
+          />
         </div>
 
         <:actions>
-          <.form_button_submit />
+          <.form_button content="Confirm" />
         </:actions>
+
       </.simple_form>
+
+        <div class="divider" />
+        <div>
+          Want to save your quiz history?
+          <ul class="[&>*]:mt-4">
+            <li>
+              <a href={route(:users, :register)} class="p-4">
+                Register a new account
+              </a>
+            </li>
+            <li>
+              <a href={route(:users, :login)} class="p-4">
+                Login to your account
+              </a>
+            </li>
+          </ul>
+        </div>
     </div>
   </div>
 <% else %>
@@ -58,7 +87,7 @@
       >
         <div :if={@card.format == :multiple_choice}>
           <p class="-mt-8 mb-4">Select your answer:</p>
-          <div class="mt-4">
+          <div class="mt-4 text-xl">
             <label class="flex flex-center p-2 gap-2 text-xl">
               <input type="radio" name="user-answer" value="1" required />
               <%= @card.choice_1 %>
@@ -114,20 +143,20 @@
         </:actions>
       </.simple_form>
 
-      <div>
-        <span class="font-bold">Your name:</span>
+      <div :if={!@current_user}>
+        <span class="font-bold">Your display name:</span>
         <%= @display_name %>
         <button class="text-primary font-bold" phx-click="reset-display-name">
           (Change)
         </button>
       </div>
       <div>
-        <span class="font-bold">Your score:</span>
-        <%= @score %> / <%= @current_card_index %>
-      </div>
-      <div>
         <span class="font-bold">Questions remaining:</span>
         <%= length(@quiz.cards) - @current_card_index - 1 %>
+      </div>
+      <div>
+        <span class="font-bold">Your score:</span>
+        <%= @score %> / <%= @current_card_index %>
       </div>
     </div>
   </div>
@@ -135,7 +164,7 @@
   <div
     :if={@quiz_is_completed}
     id="quiz-is-completed"
-    class="mt-8 card w-full max-w-lg mx-auto bg-success/30 shadow-xl"
+    class="mt-4 card w-full max-w-lg mx-auto bg-success/30 shadow-xl"
   >
     <div class="card-body text-center">
       <.modal_title title="Quiz Complete!" />
