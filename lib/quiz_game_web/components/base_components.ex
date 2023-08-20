@@ -15,9 +15,9 @@ defmodule QuizGameWeb.BaseComponents do
   """
   def base_footer(assigns) do
     ~H"""
-    <section class="w-full lg:p-2">
+    <section name="base-footer" class="w-full lg:p-2">
       <%!-- limit max width of footer by nesting it inside a full-width element --%>
-      <div class="max-w-[100rem] mx-auto py-6 bg-brand text-slate-300 text-center
+      <footer class="max-w-[100rem] mx-auto py-6 bg-brand text-slate-300 text-center
                   lg:rounded-box lg:shadow-xl lg:shadow-black/20">
         <ul class="list-none">
           <li>
@@ -57,7 +57,7 @@ defmodule QuizGameWeb.BaseComponents do
             </small>
           </li>
         </ul>
-      </div>
+      </footer>
     </section>
     """
   end
@@ -74,7 +74,7 @@ defmodule QuizGameWeb.BaseComponents do
 
   def base_navbar(assigns) do
     ~H"""
-    <div class="w-full lg:p-2">
+    <section name="base-navbar" class="w-full lg:p-2">
       <%!-- limit max width of navbar by nesting it inside a full-width element --%>
       <nav
         data-component="page-navbar"
@@ -185,7 +185,7 @@ defmodule QuizGameWeb.BaseComponents do
           </div>
         </div>
       </nav>
-    </div>
+    </section>
     """
   end
 
@@ -222,19 +222,21 @@ defmodule QuizGameWeb.BaseComponents do
   """
   def base_toast_container(assigns) do
     ~H"""
-    <section
-      id="toast-container"
-      x-data
-      x-on:clear="$store.toasts.clear()"
-      x-on:phx:toast-show-primary.window="(evt) => $store.toasts.show('primary', evt.detail)"
-      x-on:phx:toast-show-secondary.window="(evt) => $store.toasts.show('secondary', evt.detail)"
-      x-on:phx:toast-show-accent.window="(evt) => $store.toasts.show('accent', evt.detail)"
-      x-on:phx:toast-show-neutral.window="(evt) => $store.toasts.show('neutral', evt.detail)"
-      x-on:phx:toast-show-info.window="(evt) => $store.toasts.show('info', evt.detail)"
-      x-on:phx:toast-show-success.window="(evt) => $store.toasts.show('success', evt.detail)"
-      x-on:phx:toast-show-warning.window="(evt) => $store.toasts.show('warning', evt.detail)"
-      x-on:phx:toast-show-error.window="(evt) => $store.toasts.show('error', evt.detail)"
-    />
+    <section name="base-toast-container">
+      <div
+        id="toast-container"
+        x-data
+        x-on:clear="$store.toasts.clear()"
+        x-on:phx:toast-show-primary.window="(evt) => $store.toasts.show('primary', evt.detail)"
+        x-on:phx:toast-show-secondary.window="(evt) => $store.toasts.show('secondary', evt.detail)"
+        x-on:phx:toast-show-accent.window="(evt) => $store.toasts.show('accent', evt.detail)"
+        x-on:phx:toast-show-neutral.window="(evt) => $store.toasts.show('neutral', evt.detail)"
+        x-on:phx:toast-show-info.window="(evt) => $store.toasts.show('info', evt.detail)"
+        x-on:phx:toast-show-success.window="(evt) => $store.toasts.show('success', evt.detail)"
+        x-on:phx:toast-show-warning.window="(evt) => $store.toasts.show('warning', evt.detail)"
+        x-on:phx:toast-show-error.window="(evt) => $store.toasts.show('error', evt.detail)"
+      />
+    </section>
     """
   end
 end

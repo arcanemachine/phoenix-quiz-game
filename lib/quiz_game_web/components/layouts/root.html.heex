@@ -32,21 +32,13 @@
     </script>
   </head>
   <body class="flex flex-col h-full bg-base-100 antialiased">
-    <%!-- utility --%>
-    <div>
-      <div class="hidden">
-        <%!-- search engine description --%>
-        A fun and educational quiz game. Practice alone, or compete against your peers!
-      </div>
-
-      <noscript>
-        <div class="py-4 text-3xl bg-warning text-black text-center">
-          You must enable Javascript to enable full functionality for this website.
-        </div>
-      </noscript>
-    </div>
-
     <.base_navbar current_user={assigns[:current_user]} />
+
+    <noscript>
+      <div class="py-4 text-3xl bg-warning text-black text-center">
+        You must enable Javascript to enable full functionality for this website.
+      </div>
+    </noscript>
 
     <main class="grow flex flex-col max-w-4xl mt-4 mx-auto mb-20 container px-4 sm:px-10 md:px-20">
       <%= @inner_content %>
