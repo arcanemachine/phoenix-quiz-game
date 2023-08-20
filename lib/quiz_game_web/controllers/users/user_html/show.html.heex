@@ -16,10 +16,16 @@
 
 <.action_links>
   <.action_links_item>
-    <.link navigate={route(:users, :quizzes_index)}>
-      Your quizzes
+    <.link navigate={route(:users, :quizzes_taken_index)}>
+      Quizzes you have taken
     </.link>
   </.action_links_item>
+  <.action_links_item>
+    <.link navigate={route(:users, :quizzes_index)}>
+      Quizzes you have created
+    </.link>
+  </.action_links_item>
+  <.action_links_spacer />
   <.action_links_item>
     <.link navigate={route(:users, :settings)}>
       Manage your profile
