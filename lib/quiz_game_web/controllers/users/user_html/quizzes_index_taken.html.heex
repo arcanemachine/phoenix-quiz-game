@@ -11,6 +11,17 @@
 </ul>
 
 <.action_links>
+  <.action_links_item>
+    <.link href={route(:users, :quizzes_index)}>
+      View your quizzes
+    </.link>
+  </.action_links_item>
+  <.action_links_item>
+    <.link href={route(:quizzes, :index)}>
+      View all quizzes
+    </.link>
+  </.action_links_item>
+  <.action_links_spacer />
   <.action_links_item kind="back">
     <.link href={route(:users, :show)}>
       Return to your profile

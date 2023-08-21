@@ -104,7 +104,7 @@ defmodule QuizGameWeb.Support.Router do
       :delete -> ~p"/users/me/delete"
       # quizzes
       :quizzes_index -> ~p"/users/me/quizzes"
-      :quizzes_taken_index -> ~p"/users/me/quizzes/taken"
+      :quizzes_index_taken -> ~p"/users/me/quizzes/taken"
     end
   end
 
