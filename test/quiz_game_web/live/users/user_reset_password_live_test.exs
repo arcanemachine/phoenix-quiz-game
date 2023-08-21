@@ -11,7 +11,7 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
 
   @password_length_min QuizGame.Users.User.password_length_min()
 
-  def test_url_path(opts), do: route(:users, :password_reset_confirm, token: opts[:token])
+  def test_url_path(opts), do: route(:users, :reset_password_confirm, token: opts[:token])
 
   setup do
     # create user and token

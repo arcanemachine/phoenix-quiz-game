@@ -21,7 +21,7 @@ defmodule QuizGameWeb.UserLoginLiveTest do
              )
 
       assert html_has_link(html,
-               url: route(:users, :password_reset),
+               url: route(:users, :reset_password),
                content: "Forgot your password?"
              )
     end
@@ -86,7 +86,7 @@ defmodule QuizGameWeb.UserLoginLiveTest do
         lv
         |> element(~s|a:fl-contains("Forgot your password?")|)
         |> render_click()
-        |> follow_redirect(conn, route(:users, :password_reset))
+        |> follow_redirect(conn, route(:users, :reset_password))
 
       # response has expected title
       assert html_has_title(conn.resp_body, "Reset Your Password")

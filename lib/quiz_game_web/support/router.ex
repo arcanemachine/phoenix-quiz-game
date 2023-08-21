@@ -89,8 +89,8 @@ defmodule QuizGameWeb.Support.Router do
       :login -> ~p"/users/login"
       :logout_confirm -> ~p"/users/logout"
       :logout -> ~p"/users/logout"
-      :password_reset_solicit -> ~p"/users/reset/password"
-      :password_reset_confirm -> ~p"/users/reset/password/#{opts[:token]}"
+      :reset_password_solicit -> ~p"/users/reset/password"
+      :reset_password_confirm -> ~p"/users/reset/password/#{opts[:token]}"
       :verify_email_solicit -> ~p"/users/verify/email"
       :verify_email_confirm -> ~p"/users/verify/email/#{opts[:token]}"
       # crud

@@ -58,7 +58,7 @@ defmodule QuizGameWeb.UsersLive.UserLoginLive do
       </.action_links_item>
       <.action_links_spacer />
       <.action_links_item>
-        <.link href={route(:users, :password_reset_solicit)}>
+        <.link href={route(:users, :reset_password_solicit)}>
           Forgot your password?
         </.link>
       </.action_links_item>
