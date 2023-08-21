@@ -113,4 +113,14 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
     },
     unsafe: true
   )
+
+  # create quiz with no cards
+  {:ok, other_quiz} =
+    Quizzes.create_quiz(
+      %{
+        user_id: other_user.id,
+        name: "Quiz With No Cards"
+      },
+      unsafe: true
+    )
 end

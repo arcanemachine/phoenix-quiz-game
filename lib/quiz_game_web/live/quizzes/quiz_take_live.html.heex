@@ -31,7 +31,7 @@
         </div>
 
         <:actions>
-          <.form_button content="Confirm" />
+          <.form_button type="submit" content="Confirm" />
         </:actions>
       </.simple_form>
 
@@ -156,6 +156,9 @@
       <div>
         <span class="font-bold">Your score:</span>
         <%= @score %> / <%= @current_card_index %>
+        <%= if @current_card_index > 0 do %>
+          (<%= Float.round(@score / @current_card_index * 100, 1) %>%)
+        <% end %>
       </div>
     </div>
   </div>
@@ -168,9 +171,26 @@
     <div class="card-body text-center">
       <.modal_title title="Quiz Complete!" />
 
-      <div>
+      <div class="-mt-4">
         <span class="font-bold">Your score:</span>
         <%= @score %> / <%= length(@quiz.cards) %>
+      </div>
+
+      <div class="mt-6 text-xl font-bold">
+        You got <%= Float.round(@score / length(@quiz.cards) * 100, 1) %>%!
+        <%= if (@score / length(@quiz.cards)) == 1.0 do %>
+          A perfect score!
+        <% else %>
+          <%= if (@score / length(@quiz.cards)) >= 0.8 do %>
+            Great work!
+          <% else %>
+            <%= if (@score / length(@quiz.cards)) >= 0.5 do %>
+              Not bad!
+            <% else %>
+              Keep trying!
+            <% end %>
+          <% end %>
+        <% end %>
       </div>
 
       <div class="mt-8 mx-auto">
