@@ -163,6 +163,11 @@
   }
 
   /* custom */
+  .fake-link {
+    color: hsl(var(--p));
+    font-weight: bold;
+  }
+
   .list {
     margin-bottom: 2rem;
     padding-left: 2rem;

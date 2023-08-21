@@ -4,11 +4,11 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   import Ecto.Query
 
   alias QuizGame.Quizzes.Quiz
-  alias QuizGameWeb.Support, as: S
+  alias QuizGameWeb.Support
 
   defp _get_quiz_or_404(params) do
     query = from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards]
-    S.get_record_or_404(query)
+    Support.Repo.get_record_or_404(query)
   end
 
   defp _initialize_socket(socket) do
@@ -34,7 +34,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
     {:ok,
      socket
      |> assign(
-       current_path: route(:quizzes, :take, S.params_to_keyword_list(params)),
+       current_path: route(:quizzes, :take, Support.Map.params_to_keyword_list(params)),
        quiz: quiz
      )
      |> _initialize_socket()}

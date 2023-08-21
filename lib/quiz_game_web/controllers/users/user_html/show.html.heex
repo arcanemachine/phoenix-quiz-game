@@ -1,8 +1,11 @@
 <.list_show>
+  <:item label="Display name">
+    <%= @current_user.display_name %>
+  </:item>
   <:item label="Email">
     <%= @current_user.email %>
   </:item>
-  <:item label="Account status">
+  <:item label="Account status" gap="6">
     <%= if @current_user.confirmed_at do %>
       Confirmed
     <% else %>

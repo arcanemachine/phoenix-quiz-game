@@ -2,23 +2,22 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
   use QuizGameWeb, :live_view
 
   import Ecto.Query
-  import QuizGameWeb.Support, only: [get_record_or_404: 1]
 
   alias QuizGame.Quizzes
   alias QuizGame.Quizzes.Card
 
-  def get_card_or_404(params) do
+  defp _get_card_or_404(params) do
     query =
       from c in Card,
         where: c.quiz_id == ^params["quiz_id"] and c.id == ^params["card_id"],
         preload: [:quiz]
 
-    get_record_or_404(query)
+    QuizGameWeb.Support.Repo.get_record_or_404(query)
   end
 
   @impl Phoenix.LiveView
   def mount(params, _session, socket) do
-    card = get_card_or_404(params)
+    card = _get_card_or_404(params)
 
     {:ok, socket |> assign(:card, card)}
   end
@@ -26,7 +25,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
   @impl Phoenix.LiveView
   def handle_params(params, _url, socket) do
     # get card
-    card = socket.assigns[:card] || get_card_or_404(params)
+    card = socket.assigns[:card] || _get_card_or_404(params)
 
     {:noreply,
      assign(socket, %{

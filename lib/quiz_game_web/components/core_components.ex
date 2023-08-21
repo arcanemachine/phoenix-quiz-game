@@ -825,13 +825,14 @@ defmodule QuizGameWeb.CoreComponents do
   """
   slot :item, required: true do
     attr :label, :string, required: true
-    attr :class, :string
+    attr :class, :string, doc: "custom styles for the item value"
+    attr :gap, :string, doc: "adds a vertical gap above an item"
   end
 
   def list_show(assigns) do
     ~H"""
-    <ul class="mb-8 [&>*:not(:first-child)]:mt-2">
-      <li :for={item <- @item}>
+    <ul>
+      <li :for={item <- @item} class={"mt-#{Map.get(item, :gap, 2)}"}>
         <span class="font-bold">
           <%= item.label %>:
         </span>
@@ -1095,6 +1096,22 @@ defmodule QuizGameWeb.CoreComponents do
       </div>
     </.form>
     """
+  end
+
+  @doc ~S"""
+  Renders a spacer element.
+
+  Used for adding space between other elements.
+
+  ## Examples
+
+      <.spacer height="4" />
+  """
+  attr :height, :string, default: "0", doc: "the height of the spacer (e.g. 1 -> 0.25rem)"
+  attr :width, :string, default: "0", doc: "the width of the spacer (e.g. 2 -> 0.5rem)"
+
+  def spacer(assigns) do
+    ~H|<div name="spacer" class={"show-empty-element h-#{@height} w-#{@width}"}>hello</div>|
   end
 
   @doc ~S"""
