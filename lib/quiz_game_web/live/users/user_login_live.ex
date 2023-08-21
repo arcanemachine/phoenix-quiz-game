@@ -63,7 +63,7 @@ defmodule QuizGameWeb.UsersLive.UserLoginLive do
         </.link>
       </.action_links_item>
       <.action_links_item>
-        <.link href={route(:users, :email_verify_solicit)}>
+        <.link href={route(:users, :verify_email_solicit)}>
           Didn't receive a confirmation email?
         </.link>
       </.action_links_item>

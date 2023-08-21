@@ -1,6 +1,6 @@
 <.list_show>
   <:item label="Display name">
-    <%= @current_user.display_name %> (<a href={route(:users, :update_display_name)}>Edit</a>)
+    <%= @current_user.display_name %> (<a href={route(:users, :display_name_update)}>Edit</a>)
   </:item>
   <:item label="Email">
     <%= @current_user.email %>
@@ -10,7 +10,7 @@
       Confirmed
     <% else %>
       Unconfirmed
-      <.link href={route(:users, :email_verify_solicit)}>(Confirm your account)</.link>
+      <.link href={route(:users, :verify_email_solicit)}>(Confirm your account)</.link>
     <% end %>
   </:item>
 </.list_show>

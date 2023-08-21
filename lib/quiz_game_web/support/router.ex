@@ -31,7 +31,7 @@ defmodule QuizGameWeb.Support.Router do
 
   ## Examples
 
-      iex> route(:users, :email_verify_confirm, token: 123)
+      iex> route(:users, :verify_email_confirm, token: 123)
       "/users/confirm/email/123"
   """
 
@@ -86,19 +86,19 @@ defmodule QuizGameWeb.Support.Router do
     case action do
       # auth
       :register -> ~p"/users/register"
-      :email_verify_solicit -> ~p"/users/verify/email"
-      :email_verify_confirm -> ~p"/users/verify/email/#{opts[:token]}"
       :login -> ~p"/users/login"
       :logout_confirm -> ~p"/users/logout"
       :logout -> ~p"/users/logout"
       :password_reset_solicit -> ~p"/users/reset/password"
       :password_reset_confirm -> ~p"/users/reset/password/#{opts[:token]}"
+      :verify_email_solicit -> ~p"/users/verify/email"
+      :verify_email_confirm -> ~p"/users/verify/email/#{opts[:token]}"
       # crud
       :show -> ~p"/users/me"
       :settings -> ~p"/users/me/edit"
       :email_update_solicit -> ~p"/users/me/edit/email"
       :email_update_confirm -> ~p"/users/me/edit/email/#{opts[:token]}"
-      :update_display_name -> ~p"/users/me/edit/display-name"
+      :display_name_update -> ~p"/users/me/edit/display-name"
       :password_update -> ~p"/users/me/edit/password"
       :delete_confirm -> ~p"/users/me/delete"
       :delete -> ~p"/users/me/delete"

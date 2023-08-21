@@ -39,7 +39,7 @@ defmodule QuizGameWeb.UsersLive.UserConfirmationInstructionsLive do
       if user = Users.get_user_by_email(email) do
         Users.deliver_email_verify_instructions(
           user,
-          &unverified_url(QuizGameWeb.Endpoint, route(:users, :email_verify_confirm, token: &1))
+          &unverified_url(QuizGameWeb.Endpoint, route(:users, :verify_email_confirm, token: &1))
         )
       end
 

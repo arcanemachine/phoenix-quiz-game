@@ -296,10 +296,10 @@ defmodule QuizGame.Users do
 
   ## Examples
 
-      iex> deliver_email_verify_instructions(user, route(:users, :email_verify_confirm, token: "123"))
+      iex> deliver_email_verify_instructions(user, route(:users, :verify_email_confirm, token: "123"))
       {:ok, %{to: ..., body: ...}}
 
-      iex> deliver_email_verify_instructions(confirmed_user, route(:users, :email_verify_confirm, token: "123"))
+      iex> deliver_email_verify_instructions(confirmed_user, route(:users, :verify_email_confirm, token: "123"))
       {:error, :already_confirmed}
 
   """

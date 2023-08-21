@@ -10,7 +10,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
   alias QuizGame.Users
   alias QuizGame.Repo
 
-  def test_url_path(opts), do: route(:users, :email_verify_confirm, token: opts[:token])
+  def test_url_path(opts), do: route(:users, :verify_email_confirm, token: opts[:token])
 
   setup do
     %{user: user_fixture()}
