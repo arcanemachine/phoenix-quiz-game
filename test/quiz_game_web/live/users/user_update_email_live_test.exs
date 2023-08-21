@@ -9,10 +9,10 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
 
   alias QuizGame.Users
 
-  @test_url_path_update route(:users, :email_update_solicit)
+  @test_url_path_update route(:users, :update_email_solicit)
 
   def test_url_path_confirm(opts) do
-    route(:users, :email_update_confirm, token: opts[:token])
+    route(:users, :update_email_confirm, token: opts[:token])
   end
 
   describe "UserUpdateEmailLive page" do

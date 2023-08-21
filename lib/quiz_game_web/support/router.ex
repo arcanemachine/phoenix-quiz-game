@@ -96,8 +96,8 @@ defmodule QuizGameWeb.Support.Router do
       # crud
       :show -> ~p"/users/me"
       :settings -> ~p"/users/me/edit"
-      :email_update_solicit -> ~p"/users/me/edit/email"
-      :email_update_confirm -> ~p"/users/me/edit/email/#{opts[:token]}"
+      :update_email_solicit -> ~p"/users/me/edit/email"
+      :update_email_confirm -> ~p"/users/me/edit/email/#{opts[:token]}"
       :display_name_update -> ~p"/users/me/edit/display-name"
       :password_update -> ~p"/users/me/edit/password"
       :delete_confirm -> ~p"/users/me/delete"

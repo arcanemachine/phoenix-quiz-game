@@ -102,7 +102,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
         Users.deliver_email_update_instructions(
           applied_user,
           user.email,
-          &unverified_url(QuizGameWeb.Endpoint, route(:users, :email_update_confirm, token: &1))
+          &unverified_url(QuizGameWeb.Endpoint, route(:users, :update_email_confirm, token: &1))
         )
 
         {:noreply,
