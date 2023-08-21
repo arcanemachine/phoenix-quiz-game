@@ -9,7 +9,8 @@ defmodule QuizGameWeb.SupportTest do
   @valid_form_params %{"h-captcha-response" => "10000000-aaaa-bbbb-cccc-000000000001"}
   @invalid_form_params %{"h-captcha-response" => "invalid_response"}
 
-  describe "form_captcha_valid?/1" do
+   # REFACTOR: move into proper submodule
+  describe "captcha_valid?/1" do
     setup do
       # set temporary values for hcaptcha environment variables
       Application.put_env(:hcaptcha, :public_key, @test_site_key)

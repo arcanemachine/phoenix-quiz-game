@@ -119,7 +119,7 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
 
   @impl Phoenix.LiveView
   def handle_event("save", %{"user" => user_params} = form_params, socket) do
-    if QuizGameWeb.Support.form_captcha_valid?(form_params) do
+    if QuizGameWeb.Support.HTML.Form.captcha_valid?(form_params) do
       case Users.register_user(user_params) do
         {:ok, user} ->
           {:ok, _} =

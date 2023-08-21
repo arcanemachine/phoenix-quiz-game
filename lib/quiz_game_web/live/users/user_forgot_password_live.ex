@@ -35,7 +35,7 @@ defmodule QuizGameWeb.UsersLive.UserForgotPasswordLive do
 
   @impl Phoenix.LiveView
   def handle_event("send_email", %{"user" => %{"email" => email}} = form_params, socket) do
-    if QuizGameWeb.Support.form_captcha_valid?(form_params) do
+    if QuizGameWeb.Support.HTML.Form.captcha_valid?(form_params) do
       if user = Users.get_user_by_email(email) do
         Users.deliver_password_reset_instructions(
           user,

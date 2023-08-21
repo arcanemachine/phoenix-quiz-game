@@ -27,7 +27,7 @@ defmodule QuizGameWeb.BaseLive.ContactUsLive do
   end
 
   def handle_event("submit", %{"contact_us" => contact_us_form_params} = form_params, socket) do
-    if QuizGameWeb.Support.form_captcha_valid?(form_params) do
+    if QuizGameWeb.Support.HTML.Form.captcha_valid?(form_params) do
       QuizGame.Base.BaseNotifier.deliver_contact_us_form(
         contact_us_form_params["name"],
         contact_us_form_params["email"],

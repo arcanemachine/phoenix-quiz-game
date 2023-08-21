@@ -35,7 +35,7 @@ defmodule QuizGameWeb.UsersLive.UserConfirmationInstructionsLive do
 
   @impl Phoenix.LiveView
   def handle_event("send_instructions", %{"user" => %{"email" => email}} = form_params, socket) do
-    if QuizGameWeb.Support.form_captcha_valid?(form_params) do
+    if QuizGameWeb.Support.HTML.form_captcha_valid?(form_params) do
       if user = Users.get_user_by_email(email) do
         Users.deliver_email_verify_instructions(
           user,

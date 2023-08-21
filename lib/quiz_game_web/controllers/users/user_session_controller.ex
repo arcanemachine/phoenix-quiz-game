@@ -19,7 +19,7 @@ defmodule QuizGameWeb.UserSessionController do
 
   def create(conn, form_params) do
     # validate the captcha before finishing the login process
-    if QuizGameWeb.Support.form_captcha_valid?(form_params) do
+    if QuizGameWeb.Support.HTML.Form.captcha_valid?(form_params) do
       create(conn, form_params, "Logged in successfully")
     else
       text_response(conn, 401, "You must complete the human test at the bottom of the form.")

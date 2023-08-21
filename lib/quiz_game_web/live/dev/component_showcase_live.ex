@@ -105,7 +105,7 @@ defmodule QuizGameWeb.DevLive.ComponentShowcaseLive do
     form = form_validate(form_data)
 
     if Enum.empty?(form.errors) do
-      if QuizGameWeb.Support.form_captcha_valid?(params) do
+      if QuizGameWeb.Support.HTML.Form.captcha_valid?(params) do
         # captcha is valid
         {:noreply,
          socket
