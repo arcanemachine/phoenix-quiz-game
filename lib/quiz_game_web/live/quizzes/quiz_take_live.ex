@@ -8,7 +8,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
 
   defp _get_quiz_or_404(params) do
     query = from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards]
-    Support.Repo.get_record_or_404(query)
+    Support.Repo.record_get_or_404(query)
   end
 
   defp _initialize_socket(socket) do

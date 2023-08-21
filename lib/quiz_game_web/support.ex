@@ -63,13 +63,13 @@ defmodule QuizGameWeb.Support.Repo do
 
     ## Examples
 
-      iex> get_record_or_404(query)
+      iex> record_get_or_404(query)
       %User{}
 
-      iex> get_record_or_404(empty_query)
+      iex> record_get_or_404(empty_query)
       ** (Ecto.NoResultsError)
   """
-  def get_record_or_404(query) do
+  def record_get_or_404(query) do
     if record = QuizGame.Repo.one!(query) do
       record
     else
