@@ -12,18 +12,16 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   end
 
   defp _initialize_socket(socket) do
-    display_name =
-      if socket.assigns.current_user, do: socket.assigns.current_user.display_name, else: nil
+    user = socket.assigns.current_user
 
     socket
     |> assign(
       quiz: socket.assigns.quiz,
-      display_name: display_name,
+      quiz_state: (user && :before_start) || :enter_display_name,
+      display_name: (user && user.display_name) || nil,
       card: socket.assigns.quiz.cards |> Enum.at(0),
-      form: to_form(%{}, as: "quiz_take"),
       current_card_index: 0,
-      score: 0,
-      quiz_is_completed: false
+      score: 0
     )
   end
 
@@ -63,33 +61,33 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   end
 
   @impl Phoenix.LiveView
-  def handle_event("reset-display-name", _params, socket) do
-    socket = socket |> clear_flash()
-
-    if socket.assigns.current_user do
-      {:noreply,
-       socket
-       |> put_flash(:warning, "To change your display name, you must update your user profile.")}
-    else
-      {:noreply, socket |> assign(:display_name, nil)}
-    end
-  end
-
-  def handle_event("reset-quiz", _params, socket) do
-    {:noreply, _initialize_socket(socket)}
-  end
-
   def handle_event("submit-display-name", %{"display-name" => display_name}, socket) do
     if String.trim(display_name) != "" do
-      {:noreply,
-       socket
-       |> assign(:display_name, display_name)
-       |> clear_flash()
-       |> put_flash(:info, "You may now begin the quiz. Good luck!")}
+      {:noreply, socket |> assign(display_name: display_name, quiz_state: :before_start)}
     else
       {:noreply, socket |> put_flash(:error, "You must enter a display name.")}
     end
   end
+
+  def handle_event("start-quiz", _params, socket) do
+    {:noreply,
+     socket
+     |> clear_flash()
+     |> put_flash(:info, "The quiz has now started. Good luck!")
+     |> assign(quiz_state: :in_progress)}
+  end
+
+  # def handle_event("change-display-name", _params, socket) do
+  #   socket = socket |> clear_flash()
+
+  #   if socket.assigns.current_user do
+  #     {:noreply,
+  #      socket
+  #      |> put_flash(:warning, "To change your display name, you must update your user profile.")}
+  #   else
+  #     {:noreply, socket |> assign(:display_name, nil)}
+  #   end
+  # end
 
   def handle_event("submit-user-answer", params, socket) do
     ## Check the validity of the card and proceed to the next card (or finish the quiz).
@@ -127,22 +125,24 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
         |> put_flash(:error, "Incorrect! The correct answer is '#{correct_answer}'.")
       end
 
-    # check if the quiz is completed
-    socket =
-      if socket.assigns.current_card_index == length(socket.assigns.quiz.cards) - 1 do
-        # quiz is completed. display the user's score and offer to restart the quiz
-        socket |> assign(quiz_is_completed: true)
-      else
-        # quiz is still in progress. get next card and increment current card index
-        next_card = socket.assigns.quiz.cards |> Enum.at(socket.assigns.current_card_index + 1)
+    # check if quiz is completed
+    if socket.assigns.current_card_index == length(socket.assigns.quiz.cards) - 1 do
+      # quiz is completed. update quiz_state
+      {:noreply, socket |> assign(quiz_state: :completed)}
+    else
+      # quiz is still in progress. get next card and increment current card index
+      next_card = socket.assigns.quiz.cards |> Enum.at(socket.assigns.current_card_index + 1)
 
-        socket
-        |> assign(
-          card: next_card,
-          current_card_index: socket.assigns.current_card_index + 1
-        )
-      end
+      {:noreply,
+       socket
+       |> assign(
+         card: next_card,
+         current_card_index: socket.assigns.current_card_index + 1
+       )}
+    end
+  end
 
-    {:noreply, socket}
+  def handle_event("reset-quiz", _params, socket) do
+    {:noreply, _initialize_socket(socket)}
   end
 end
