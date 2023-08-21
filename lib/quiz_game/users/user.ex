@@ -3,8 +3,7 @@ defmodule QuizGame.Users.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-  def display_name_length_min(), do: 3
-  def display_name_length_max(), do: 32
+  def display_name_length_max(), do: 24
   def username_length_min(), do: 3
   def username_length_max(), do: 32
   def email_length_max(), do: 160
@@ -67,10 +66,7 @@ defmodule QuizGame.Users.User do
   defp validate_display_name(changeset) do
     changeset
     |> validate_required([:display_name])
-    |> validate_length(:display_name,
-      min: display_name_length_min(),
-      max: display_name_length_max()
-    )
+    |> validate_length(:display_name, max: display_name_length_max())
   end
 
   defp validate_username(changeset, opts) do
@@ -136,7 +132,14 @@ defmodule QuizGame.Users.User do
     end
   end
 
-  @doc "A user changeset for managing admin permissions."
+  @doc "A changeset for managing a user's display name."
+  def display_name_changeset(quiz, attrs, _opts \\ []) do
+    quiz
+    |> cast(attrs, [:display_name])
+    |> validate_required([:display_name])
+  end
+
+  @doc "A changeset for managing a users's admin permissions."
   def is_admin_changeset(quiz, attrs, _opts \\ []) do
     quiz
     |> cast(attrs, [:is_admin])

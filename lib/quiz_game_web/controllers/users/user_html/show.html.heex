@@ -1,6 +1,6 @@
 <.list_show>
   <:item label="Display name">
-    <%= @current_user.display_name %>
+    <%= @current_user.display_name %> (<a href={route(:users, :update_display_name)}>Edit</a>)
   </:item>
   <:item label="Email">
     <%= @current_user.email %>

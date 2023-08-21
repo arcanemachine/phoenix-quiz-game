@@ -97,21 +97,24 @@ defmodule QuizGame.Users do
 
   ## Settings
   @doc """
-  Manages a user's admin permissions.
+  Returns an `%Ecto.Changeset{}` for changing the user's display name.
 
   ## Examples
 
-      iex> update_user_is_admin(user, true)
-      {:ok, %User{}}
+      iex> change_user_display_name(user, "Bob")
+      {:ok, %User{display_name: "Bob"}}
 
-      iex> update_user_is_admin(user, :bad_value)
+      iex> change_user_display_name(user, :bad_value)
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_user_is_admin(%User{} = user, is_admin) do
-    user
-    |> User.is_admin_changeset(%{is_admin: is_admin})
-    |> Repo.update()
+  def change_user_display_name(%User{} = user, display_name) do
+    User.display_name_changeset(user, %{display_name: display_name})
+  end
+
+  @doc "Updates the user display name."
+  def update_user_display_name(user, display_name) do
+    user |> change_user_display_name(display_name) |> Repo.update()
   end
 
   @doc """
@@ -191,6 +194,24 @@ defmodule QuizGame.Users do
 
     Repo.insert!(user_token)
     UserNotifier.deliver_email_update_instructions(user, email_update_url_fun.(encoded_token))
+  end
+
+  @doc """
+  Manages a user's admin permissions.
+
+  ## Examples
+
+      iex> update_user_is_admin(user, true)
+      {:ok, %User{}}
+
+      iex> update_user_is_admin(user, :bad_value)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_user_is_admin(%User{} = user, is_admin) do
+    user
+    |> User.is_admin_changeset(%{is_admin: is_admin})
+    |> Repo.update()
   end
 
   @doc """

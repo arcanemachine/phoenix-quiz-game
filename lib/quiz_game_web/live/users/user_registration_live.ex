@@ -58,7 +58,6 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
         type="text"
         label="Display name"
         help_text="The name that will be shown when you take a quiz"
-        minlength={User.display_name_length_min()}
         maxlength={User.display_name_length_max()}
         required
       />

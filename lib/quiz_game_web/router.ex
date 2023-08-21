@@ -93,6 +93,7 @@ defmodule QuizGameWeb.Router do
 
       live_session :login_required,
         on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
+        live "/display-name", UsersLive.UserUpdateDisplayNameLive, :edit
         live "/email", UsersLive.UserUpdateEmailLive, :edit
         live "/email/confirm/:token", UsersLive.UserUpdateEmailLive, :confirm_email
         live "/password", UsersLive.UserUpdatePasswordLive, :edit

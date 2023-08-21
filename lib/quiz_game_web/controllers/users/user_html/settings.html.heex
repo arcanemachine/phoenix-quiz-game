@@ -1,13 +1,18 @@
 <section>
   <.action_links>
     <.action_links_item>
-      <.link href={route(:users, :password_update)}>
-        Update your password
+      <.link href={route(:users, :update_display_name)}>
+        Change your display name
       </.link>
     </.action_links_item>
     <.action_links_item>
       <.link navigate={route(:users, :email_update_solicit)}>
-        Update your email address
+        Change your email address
+      </.link>
+    </.action_links_item>
+    <.action_links_item>
+      <.link href={route(:users, :password_update)}>
+        Change your password
       </.link>
     </.action_links_item>
     <.action_links_spacer />
