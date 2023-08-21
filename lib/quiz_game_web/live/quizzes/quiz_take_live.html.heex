@@ -6,89 +6,78 @@
       "Are you sure you want to exit this quiz? You will lose all your progress!"
   }
 >
-  Return to quiz
+  Exit this quiz
 </.back>
 
 <%= case @quiz_state do %>
   <% :enter_display_name -> %>
-      <%!-- get display_name via user input --%>
-      <div
-        id="quiz-state-init-no-display-name"
-        class="mt-4 card w-full max-w-lg mx-auto bg-primary/20 shadow-xl"
-      >
-        <div class="card-body text-center">
-          <.modal_title title="Your Name" />
-          <.simple_form
-            for={%{}}
-            class="max-w-xs mx-auto"
-            phx-submit="submit-display-name"
-          >
-            <div>
-              <p class="-mt-8 mb-4">Enter your name:</p>
-              <.input
-                type="text"
-                name="display-name"
-                autocomplete="off"
-                required
-                x-init="$el.focus()"
-              />
-            </div>
-
-            <:actions>
-              <.form_button type="submit" content="Confirm" />
-            </:actions>
-          </.simple_form>
-
-          <div class="divider" />
+    <%!-- get display_name via user input --%>
+    <div
+      id="quiz-state-init-no-display-name"
+      class="mt-4 card w-full max-w-lg mx-auto bg-primary/20 shadow-xl"
+    >
+      <div class="card-body text-center">
+        <.modal_title title="Your Name" />
+        <.simple_form for={%{}} class="max-w-xs mx-auto" phx-submit="submit-display-name">
           <div>
-            Want to save your quiz history?
-            <ul class="[&>*]:mt-4">
-              <li>
-                <a
-                  href={route(:users, :register) <> query_string(next: @current_path)}
-                  class="p-4"
-                >
-                  Register a new account
-                </a>
-              </li>
-              <li>
-                <a href={route(:users, :login) <> query_string(next: @current_path)} class="p-4">
-                  Login to your account
-                </a>
-              </li>
-            </ul>
+            <p class="-mt-8 mb-4">Enter your name:</p>
+            <.input
+              type="text"
+              name="display-name"
+              autocomplete="off"
+              required
+              x-init="$el.focus()"
+            />
           </div>
+
+          <:actions>
+            <.form_button type="submit" content="Confirm" />
+          </:actions>
+        </.simple_form>
+
+        <div class="divider" />
+        <div>
+          Want to save your quiz history?
+          <ul class="[&>*]:mt-4">
+            <li>
+              <a href={route(:users, :register) <> query_string(next: @current_path)} class="p-4">
+                Register a new account
+              </a>
+            </li>
+            <li>
+              <a href={route(:users, :login) <> query_string(next: @current_path)} class="p-4">
+                Login to your account
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
+    </div>
   <% :before_start -> %>
-      <div
-        id="quiz-state-init-has-display-name"
-        class="mt-4 card w-full max-w-lg mx-auto bg-primary/20 shadow-xl"
-      >
-        <div class="card-body text-center">
-          <.simple_form
-            for={%{}}
-            class="max-w-xs mx-auto"
-            phx-submit="start-quiz"
-          >
-            <p class="-mt-4">
-              You are about to begin the following quiz:
-            </p>
+    <div
+      id="quiz-state-init-has-display-name"
+      class="mt-4 card w-full max-w-lg mx-auto bg-primary/20 shadow-xl"
+    >
+      <div class="card-body text-center">
+        <.simple_form for={%{}} class="max-w-sm mx-auto" phx-submit="start-quiz">
+          <p class="-mt-4">
+            You are about to begin the following quiz:
+          </p>
 
-            <div class="mt-6 text-xl font-bold">
-              <%= @quiz.name %>
-            </div>
+          <div class="mt-6 text-xl font-bold">
+            <%= @quiz.name %>
+          </div>
 
-            <div class="mt-6 mb-4">
-              When you are ready to begin, click the button below:
-            </div>
+          <div class="my-6">
+            Click the button, when you are ready to begin:
+          </div>
 
-            <:actions>
-              <.form_button type="submit" content="Begin the quiz" />
-            </:actions>
-          </.simple_form>
-        </div>
+          <:actions>
+            <.form_button type="submit" content="Begin the quiz" />
+          </:actions>
+        </.simple_form>
       </div>
+    </div>
   <% :in_progress -> %>
     <div
       id="quiz-state-in-progress"
@@ -220,22 +209,24 @@
           <%= @score %> / <%= length(@quiz.cards) %>
         </div>
 
-        <div class="mt-6 text-xl font-bold">
-          You got <%= Float.round(@score / length(@quiz.cards) * 100, 1) %>%!
-          <%= if (@score / length(@quiz.cards)) == 1.0 do %>
-            A perfect score!
-          <% else %>
-            <%= if (@score / length(@quiz.cards)) >= 0.8 do %>
-              Great work!
-            <% else %>
-              <%= if (@score / length(@quiz.cards)) >= 0.5 do %>
+        <div class="mt-4 text-xl font-bold">
+          <div class="mt-6">
+          You got <%= Float.round(@score / length(@quiz.cards) * 100, 1) |> round() |> trunc() %>%!
+          </div>
+          <div class="mt-4">
+            <%= case (@score / length(@quiz.cards)) * 100 |> round() |> trunc() do %>
+              <% p when p == 100 -> %>
+                A perfect score! 😎
+              <% p when p in 80..99 -> %>
+                Good work!
+              <% p when p in 50..79 -> %>
                 Not bad!
-              <% else %>
+              <% _ -> %>
                 Keep trying!
-              <% end %>
             <% end %>
-          <% end %>
+          </div>
         </div>
+
 
         <div class="mt-8 mx-auto">
           <.form_button type="button" content="Reset" x-init="$el.focus()" phx-click="reset-quiz" />
