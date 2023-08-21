@@ -1,236 +1,244 @@
-<.back
-  class="text-error"
-  navigate={route(:quizzes, :show, quiz_id: @quiz.id)}
-  confirm={
-    @quiz_state != :completed &&
-      "Are you sure you want to exit this quiz? You will lose all your progress!"
-  }
->
-  Exit this quiz
-</.back>
+<div class="mb-4">
+  <.back
+    class="text-error"
+    navigate={route(:quizzes, :show, quiz_id: @quiz.id)}
+    confirm={
+      @quiz_state != :completed &&
+        "Are you sure you want to exit this quiz? You will lose all your progress!"
+    }
+  >
+    Exit this quiz
+  </.back>
+</div>
 
-<%= case @quiz_state do %>
-  <% :enter_display_name -> %>
-    <%!-- get display_name via user input --%>
-    <div
-      id="quiz-state-init-no-display-name"
-      class="mt-4 card w-full max-w-lg mx-auto bg-primary/20 shadow-xl"
-    >
-      <div class="card-body text-center">
-        <.modal_title title="Your Name" />
-        <.simple_form for={%{}} class="max-w-xs mx-auto" phx-submit="submit-display-name">
+<div class="w-full max-w-lg flex flex-col justify-center mx-auto">
+  <%= case @quiz_state do %>
+    <% :enter_display_name -> %>
+      <%!-- get display_name via user input --%>
+      <div
+        id="quiz-state-init-no-display-name"
+        class="mt-6 card w-full bg-primary/20 shadow-xl"
+      >
+        <div class="card-body text-center">
+          <.modal_title title="Your Name" />
+          <.simple_form for={%{}} class="max-w-xs mx-auto" phx-submit="submit-display-name">
+            <div>
+              <p class="-mt-8 mb-4">Enter your name:</p>
+              <.input
+                type="text"
+                name="display-name"
+                autocomplete="off"
+                required
+                x-init="$el.focus()"
+              />
+            </div>
+
+            <:actions>
+              <.form_button type="submit" content="Confirm" />
+            </:actions>
+          </.simple_form>
+
+          <div class="divider" />
           <div>
-            <p class="-mt-8 mb-4">Enter your name:</p>
-            <.input
-              type="text"
-              name="display-name"
-              autocomplete="off"
-              required
-              x-init="$el.focus()"
-            />
+            Want to save your quiz history?
+            <ul class="[&>*]:mt-4">
+              <li>
+                <a href={route(:users, :register) <> query_string(next: @current_path)} class="p-4">
+                  Register a new account
+                </a>
+              </li>
+              <li>
+                <a href={route(:users, :login) <> query_string(next: @current_path)} class="p-4">
+                  Login to your account
+                </a>
+              </li>
+            </ul>
           </div>
-
-          <:actions>
-            <.form_button type="submit" content="Confirm" />
-          </:actions>
-        </.simple_form>
-
-        <div class="divider" />
-        <div>
-          Want to save your quiz history?
-          <ul class="[&>*]:mt-4">
-            <li>
-              <a href={route(:users, :register) <> query_string(next: @current_path)} class="p-4">
-                Register a new account
-              </a>
-            </li>
-            <li>
-              <a href={route(:users, :login) <> query_string(next: @current_path)} class="p-4">
-                Login to your account
-              </a>
-            </li>
-          </ul>
         </div>
       </div>
-    </div>
-  <% :before_start -> %>
-    <div
-      id="quiz-state-init-has-display-name"
-      class="mt-4 card w-full max-w-lg mx-auto bg-primary/20 shadow-xl"
-    >
-      <div class="card-body text-center">
-        <.simple_form for={%{}} class="max-w-sm mx-auto" phx-submit="start-quiz">
-          <p class="-mt-4">
-            You are about to begin the following quiz:
-          </p>
+    <% :before_start -> %>
+      <div
+        id="quiz-state-init-has-display-name"
+        class="mt-6 card w-full bg-primary/20 shadow-xl"
+      >
+        <div class="card-body text-center">
+          <.simple_form for={%{}} class="max-w-sm mx-auto" phx-submit="start-quiz">
+            <p class="-mt-4">
+              You are about to begin the following quiz:
+            </p>
 
-          <div class="mt-6 text-xl font-bold">
-            <%= @quiz.name %>
-          </div>
+            <div class="mt-6 text-xl font-bold">
+              <%= @quiz.name %>
+            </div>
 
-          <div class="my-6">
-            Click the button, when you are ready to begin:
-          </div>
+            <div class="my-6">
+              Click the button, when you are ready to begin:
+            </div>
 
-          <:actions>
-            <.form_button type="submit" content="Begin the quiz" />
-          </:actions>
-        </.simple_form>
+            <:actions>
+              <.form_button type="submit" content="Begin the quiz" />
+            </:actions>
+          </.simple_form>
+        </div>
       </div>
-    </div>
-  <% :in_progress -> %>
-    <div
-      id="quiz-state-in-progress"
-      class="mt-4 card w-full max-w-lg mx-auto bg-primary/20 shadow-xl"
-      x-data
-      @keypress.window="(evt) => {
-         if (['1', '2', '3', '4'].includes(evt.key)) {
-           // select 'multiple choice' radio element via keypress
-           const multipleChoiceInputElt = document.querySelector(`[value='${evt.key}']`);
-           if (multipleChoiceInputElt) multipleChoiceInputElt.click();
+    <% :in_progress -> %>
+      <progress
+        class="h-2 progress w-full max-w-lg"
+        value={_get_progress_percentage_as_integer(assigns)}
+        max="100"
+      />
+      <div
+        id="quiz-state-in-progress"
+        class="mt-4 card w-full bg-primary/20 shadow-xl"
+        x-data
+        @keypress.window="(evt) => {
+           if (['1', '2', '3', '4'].includes(evt.key)) {
+             // select 'multiple choice' radio element via keypress
+             const multipleChoiceInputElt = document.querySelector(`[value='${evt.key}']`);
+             if (multipleChoiceInputElt) multipleChoiceInputElt.click();
 
-           else if (['1', '2'].includes(evt.key)) {
-             // select 'true or false' element via keypress
-             const trueOrFalseValue = evt.key === '1' ? 'true' : 'false';
-             const trueOrFalseInputElt = document.querySelector(`[value='${trueOrFalseValue}']`)
-             if (trueOrFalseInputElt) trueOrFalseInputElt.click();
+             else if (['1', '2'].includes(evt.key)) {
+               // select 'true or false' element via keypress
+               const trueOrFalseValue = evt.key === '1' ? 'true' : 'false';
+               const trueOrFalseInputElt = document.querySelector(`[value='${trueOrFalseValue}']`)
+               if (trueOrFalseInputElt) trueOrFalseInputElt.click();
+             }
+           } else if (evt.key === 'Enter') {
+             $el.querySelector('form button').click();
            }
-         } else if (evt.key === 'Enter') {
-           $el.querySelector('form button').click();
-         }
-       }"
-    >
-      <div class="card-body text-center">
-        <.modal_title title={@card.question} />
-        <.simple_form
-          for={%{}}
-          id="form_quiz_take"
-          class="max-w-xs mx-auto"
-          phx-submit="submit-user-answer"
-        >
-          <div :if={@card.format == :multiple_choice}>
-            <p class="-mt-8 mb-4">Select your answer:</p>
-            <div class="mt-4 text-xl">
-              <label class="flex flex-center p-2 gap-2 text-xl">
-                <input type="radio" name="user-answer" value="1" required />
-                <%= @card.choice_1 %>
-              </label>
-              <label class="flex flex-center p-2 gap-2 text-xl">
-                <input type="radio" name="user-answer" value="2" required />
-                <%= @card.choice_2 %>
-              </label>
-              <label class="flex flex-center p-2 gap-2 text-xl">
-                <input type="radio" name="user-answer" value="3" required />
-                <%= @card.choice_3 %>
-              </label>
-              <label class="flex flex-center p-2 gap-2 text-xl">
-                <input type="radio" name="user-answer" value="4" required />
-                <%= @card.choice_4 %>
-              </label>
+         }"
+      >
+        <div class="card-body text-center">
+          <.modal_title title={@card.question} />
+          <.simple_form
+            for={%{}}
+            id="form_quiz_take"
+            class="max-w-xs mx-auto"
+            phx-submit="submit-user-answer"
+          >
+            <div :if={@card.format == :multiple_choice}>
+              <p class="-mt-8 mb-4">Select your answer:</p>
+              <div class="mt-4 text-xl">
+                <label class="flex flex-center p-2 gap-2 text-xl">
+                  <input type="radio" name="user-answer" value="1" required />
+                  <%= @card.choice_1 %>
+                </label>
+                <label class="flex flex-center p-2 gap-2 text-xl">
+                  <input type="radio" name="user-answer" value="2" required />
+                  <%= @card.choice_2 %>
+                </label>
+                <label class="flex flex-center p-2 gap-2 text-xl">
+                  <input type="radio" name="user-answer" value="3" required />
+                  <%= @card.choice_3 %>
+                </label>
+                <label class="flex flex-center p-2 gap-2 text-xl">
+                  <input type="radio" name="user-answer" value="4" required />
+                  <%= @card.choice_4 %>
+                </label>
+              </div>
             </div>
-          </div>
 
-          <div :if={@card.format == :number_entry}>
-            <p class="-mt-8 mb-4">Enter the correct number:</p>
-            <.input
-              id="input-number-entry"
-              type="number"
-              name="user-answer"
-              autocomplete="off"
-              required
-              x-init="$el.focus()"
-            />
-          </div>
-
-          <div :if={@card.format == :text_entry}>
-            <p class="-mt-8 mb-4">Enter the correct answer:</p>
-            <.input
-              type="text"
-              name="user-answer"
-              autocomplete="off"
-              required
-              x-init="$el.focus()"
-            />
-          </div>
-
-          <div :if={@card.format == :true_or_false}>
-            <p class="-mt-8 mb-4">Select true or false:</p>
-            <div class="mt-4 text-xl">
-              <label class="flex flex-center p-2 gap-2 text-xl">
-                <input type="radio" name="user-answer" value="true" required /> True
-              </label>
-              <label class="flex flex-center p-2 gap-2 text-xl">
-                <input type="radio" name="user-answer" value="false" required /> False
-              </label>
+            <div :if={@card.format == :number_entry}>
+              <p class="-mt-8 mb-4">Enter the correct number:</p>
+              <.input
+                id="input-number-entry"
+                type="number"
+                name="user-answer"
+                autocomplete="off"
+                required
+                x-init="$el.focus()"
+              />
             </div>
-          </div>
 
-          <:actions>
-            <div class="mt-8">
-              <.form_button_submit />
+            <div :if={@card.format == :text_entry}>
+              <p class="-mt-8 mb-4">Enter the correct answer:</p>
+              <.input
+                type="text"
+                name="user-answer"
+                autocomplete="off"
+                required
+                x-init="$el.focus()"
+              />
             </div>
-          </:actions>
-        </.simple_form>
 
-        <div :if={!@current_user}>
-          <span class="font-bold">Your display name:</span>
-          <%= @display_name %>
-          <%!--
-            <button class="text-primary font-bold" phx-click="change-display-name">
-              (Change)
-            </button>
-          --%>
-        </div>
+            <div :if={@card.format == :true_or_false}>
+              <p class="-mt-8 mb-4">Select true or false:</p>
+              <div class="mt-4 text-xl">
+                <label class="flex flex-center p-2 gap-2 text-xl">
+                  <input type="radio" name="user-answer" value="true" required /> True
+                </label>
+                <label class="flex flex-center p-2 gap-2 text-xl">
+                  <input type="radio" name="user-answer" value="false" required /> False
+                </label>
+              </div>
+            </div>
 
-        <div>
-          <span class="font-bold">Questions remaining:</span>
-          <%= length(@quiz.cards) - @current_card_index - 1 %>
-        </div>
+            <:actions>
+              <div class="mt-8">
+                <.form_button_submit />
+              </div>
+            </:actions>
+          </.simple_form>
 
-        <div>
-          <span class="font-bold">Your score:</span>
-          <%= @score %> / <%= @current_card_index %>
-          <%= if @current_card_index > 0 do %>
-            (<%= Float.round(@score / @current_card_index * 100, 1) %>%)
-          <% end %>
-        </div>
-      </div>
-    </div>
-  <% :completed -> %>
-    <div
-      id="quiz-state-completed"
-      class="mt-4 card w-full max-w-lg mx-auto bg-success/30 shadow-xl"
-    >
-      <div class="card-body text-center">
-        <.modal_title title="Quiz Complete!" />
-
-        <div class="-mt-4">
-          <span class="font-bold">Your score:</span>
-          <%= @score %> / <%= length(@quiz.cards) %>
-        </div>
-
-        <div class="mt-4 text-xl font-bold">
-          <div class="mt-6">
-          You got <%= Float.round(@score / length(@quiz.cards) * 100, 1) |> round() |> trunc() %>%!
+          <div :if={!@current_user}>
+            <span class="font-bold">Your display name:</span>
+            <%= @display_name %>
+            <%!--
+              <button class="text-primary font-bold" phx-click="change-display-name">
+                (Change)
+              </button>
+            --%>
           </div>
-          <div class="mt-4">
-            <%= case (@score / length(@quiz.cards)) * 100 |> round() |> trunc() do %>
-              <% p when p == 100 -> %>
-                A perfect score! 😎
-              <% p when p in 80..99 -> %>
-                Good work!
-              <% p when p in 50..79 -> %>
-                Not bad!
-              <% _ -> %>
-                Keep trying!
+
+          <div>
+            <span class="font-bold">Questions remaining:</span>
+            <%= length(@quiz.cards) - @current_card_index - 1 %>
+          </div>
+
+          <div>
+            <span class="font-bold">Your score:</span>
+            <%= @score %> / <%= @current_card_index %>
+            <%= if @current_card_index > 0 do %>
+              (<%= Float.round(@score / @current_card_index * 100, 1) %>%)
             <% end %>
           </div>
         </div>
+      </div>
+    <% :completed -> %>
+      <div
+        id="quiz-state-completed"
+        class="mt-6 card w-full bg-success/30 shadow-xl"
+      >
+        <div class="card-body text-center">
+          <.modal_title title="Quiz Complete!" />
 
+          <div class="-mt-4">
+            <span class="font-bold">Your score:</span>
+            <%= @score %> / <%= length(@quiz.cards) %>
+          </div>
 
-        <div class="mt-8 mx-auto">
-          <.form_button type="button" content="Reset" x-init="$el.focus()" phx-click="reset-quiz" />
+          <div class="mt-4 text-xl font-bold">
+            <div class="mt-6">
+              You got <%= _get_score_percentage_as_integer(assigns) %>%!
+            </div>
+            <div class="mt-4">
+              <%= case _get_score_percentage_as_integer(assigns) do %>
+                <% p when p == 100 -> %>
+                  A perfect score! 😎
+                <% p when p in 80..99 -> %>
+                  Good work!
+                <% p when p in 50..79 -> %>
+                  Not bad!
+                <% _ -> %>
+                  Keep trying!
+              <% end %>
+            </div>
+          </div>
+
+          <div class="mt-8 mx-auto">
+            <.form_button type="button" content="Reset" x-init="$el.focus()" phx-click="reset-quiz" />
+          </div>
         </div>
       </div>
-    </div>
-<% end %>
+  <% end %>
+</div>

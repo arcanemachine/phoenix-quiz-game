@@ -38,6 +38,14 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
      |> _initialize_socket()}
   end
 
+  defp _get_progress_percentage_as_integer(assigns) do
+    (assigns.current_card_index / length(assigns.quiz.cards) * 100) |> round() |> trunc()
+  end
+
+  defp _get_score_percentage_as_integer(assigns) do
+    (assigns.score / (assigns.current_card_index + 1) * 100) |> round() |> trunc()
+  end
+
   @doc """
   Safely converts `user_answer` param to one of the 4 Card choice atoms.
 
