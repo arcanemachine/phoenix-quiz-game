@@ -12,11 +12,16 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
   @impl Phoenix.LiveComponent
   def update(%{card: card} = assigns, socket) do
     changeset = Quizzes.change_card(card)
-    card_format = if assigns.action == :new, do: nil, else: Atom.to_string(changeset.data.format)
+
+    card_format =
+      if assigns.action == :new,
+        do: nil,
+        else: Atom.to_string(changeset.data.format)
 
     {:ok,
      socket
      |> assign_form(changeset)
+     |> assign(assigns)
      |> assign(card_format: card_format)}
   end
 
@@ -45,7 +50,12 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
           type="select"
           label="Format"
           prompt="Choose a format"
-          options={QuizGame.Quizzes.Card.format_options()}
+          options={
+            QuizGameWeb.Support.HTML.Form.select_options_get_from_schema_and_field(
+              QuizGame.Quizzes.Card,
+              :format
+            )
+          }
           required
         />
 

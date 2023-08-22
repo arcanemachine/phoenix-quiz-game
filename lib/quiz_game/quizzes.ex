@@ -40,7 +40,7 @@ defmodule QuizGame.Quizzes do
 
   ## Examples
 
-      iex> create_quiz(%{name: "some name", user_id: 123}, unsafe: true)
+      iex> create_quiz(%{name: "some name", kind: :general, user_id: 123}, unsafe: true)
       {:ok, %Card{}}
 
       iex> create_quiz(%{field: bad_value})
@@ -147,7 +147,14 @@ defmodule QuizGame.Quizzes do
 
   ## Examples
 
-      iex> create_card(%{name: "some name", quiz_id: 123}, unsafe: true)
+      iex> create_card(%{
+          quiz_id: 123,
+          format: :text_entry,
+          question: "some question",
+          correct_answer: "some correct answer"
+        },
+        unsafe: true
+      )
       {:ok, %Card{}}
 
       iex> create_card(%{field: bad_value})

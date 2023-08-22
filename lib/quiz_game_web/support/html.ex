@@ -41,4 +41,20 @@ defmodule QuizGameWeb.Support.HTML.Form do
       end
     end
   end
+
+  @doc """
+  Creates options usable in a <.input type='select'> component.
+
+  ## Examples
+
+      iex> select_options_get_from_schema_and_field(QuizGame.Quizzes.Card, :format)
+      [{"Multiple choice", :multiple_choice}, {"True or false", :true_or_false}]
+  """
+  @spec select_options_get_from_schema_and_field(any(), atom()) :: [{String.t(), atom()}]
+  def select_options_get_from_schema_and_field(queryable, field) do
+    Ecto.Enum.values(queryable, field)
+    |> Enum.map(fn item ->
+      {item |> QuizGameWeb.Support.Atom.to_human_friendly_string(), item}
+    end)
+  end
 end

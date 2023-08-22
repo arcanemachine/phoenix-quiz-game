@@ -28,20 +28,21 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
       password: "password"
     })
 
-  # create quiz for user
-  {:ok, quiz} =
+  # create quizzes for user
+  {:ok, generic_quiz} =
     Quizzes.create_quiz(
       %{
         user_id: user.id,
-        name: "Example Quiz"
+        name: "Example Quiz",
+        subject: :other
       },
       unsafe: true
     )
 
-  # create example cards for user's quiz
+  # create example cards for generic quiz
   Quizzes.create_card(
     %{
-      quiz_id: quiz.id,
+      quiz_id: generic_quiz.id,
       format: :multiple_choice,
       question: "What is 2 + 2?",
       choice_1: "2",
@@ -55,7 +56,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
 
   Quizzes.create_card(
     %{
-      quiz_id: quiz.id,
+      quiz_id: generic_quiz.id,
       format: :true_or_false,
       question: "2 is larger than 1",
       correct_answer: "true"
@@ -65,7 +66,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
 
   Quizzes.create_card(
     %{
-      quiz_id: quiz.id,
+      quiz_id: generic_quiz.id,
       format: :text_entry,
       question: "How do you spell the number 1 using letters?",
       correct_answer: "one"
@@ -75,7 +76,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
 
   Quizzes.create_card(
     %{
-      quiz_id: quiz.id,
+      quiz_id: generic_quiz.id,
       format: :number_entry,
       question: "What is 1 + 1?",
       correct_answer: "2"
@@ -98,7 +99,8 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
     Quizzes.create_quiz(
       %{
         user_id: other_user.id,
-        name: "Other Quiz"
+        name: "Other Quiz",
+        subject: :other
       },
       unsafe: true
     )
@@ -115,11 +117,12 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
   )
 
   # create quiz with no cards
-  {:ok, other_quiz} =
+  {:ok, _quiz_with_no_cards} =
     Quizzes.create_quiz(
       %{
         user_id: other_user.id,
-        name: "Quiz With No Cards"
+        name: "Quiz With No Cards",
+        subject: :other
       },
       unsafe: true
     )

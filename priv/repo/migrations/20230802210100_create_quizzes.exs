@@ -9,7 +9,12 @@ defmodule QuizGame.Repo.Migrations.CreateQuizzes do
 
       # data
       add :name, :string, null: false
-      # add :format, :string, null: false
+      add :subject, :string, null: false
+
+      # add :math_operations, {:array, :string}
+      # add :math_question_count, :integer
+      # add :math_value_min, :integer
+      # add :math_value_max, :integer
 
       # # attributes
       # add :is_shuffled, :boolean, default: false

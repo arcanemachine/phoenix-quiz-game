@@ -6,6 +6,20 @@
     maxlength={QuizGame.Quizzes.Quiz.name_length_max()}
     required
   />
+  <.input
+    field={f[:subject]}
+    type="select"
+    label="Subject"
+    prompt="Choose a subject"
+    options={
+      QuizGameWeb.Support.HTML.Form.select_options_get_from_schema_and_field(
+        QuizGame.Quizzes.Quiz,
+        :subject
+      )
+    }
+    required
+  />
+
   <:actions>
     <.form_button_cancel />
     <.form_button_submit />
