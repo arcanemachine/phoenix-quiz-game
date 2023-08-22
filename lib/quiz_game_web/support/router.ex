@@ -32,7 +32,7 @@ defmodule QuizGameWeb.Support.Router do
   ## Examples
 
       iex> route(:users, :verify_email_confirm, token: 123)
-      "/users/confirm/email/123"
+      "nusers/verify/email/123"
   """
 
   @spec route(context, atom(), keyword()) :: String.t()

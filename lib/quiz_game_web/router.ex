@@ -95,7 +95,7 @@ defmodule QuizGameWeb.Router do
         on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
         live "/display-name", UsersLive.UserUpdateDisplayNameLive, :edit
         live "/email", UsersLive.UserUpdateEmailLive, :edit
-        live "/email/confirm/:token", UsersLive.UserUpdateEmailLive, :confirm_email
+        live "/email/:token", UsersLive.UserUpdateEmailLive, :confirm_email
         live "/password", UsersLive.UserUpdatePasswordLive, :edit
       end
     end
@@ -114,8 +114,8 @@ defmodule QuizGameWeb.Router do
       on_mount: [{QuizGameWeb.UserAuth, :redirect_if_user_is_authenticated}] do
       live "/register", UsersLive.UserRegistrationLive, :new, as: :users_register
       live "/login", UsersLive.UserLoginLive, :new, as: :users_login
-      live "/reset-password", UsersLive.UserForgotPasswordLive, :new
-      live "/reset-password/:token", UsersLive.UserResetPasswordLive, :edit
+      live "/reset/password", UsersLive.UserForgotPasswordLive, :new
+      live "/reset/password/:token", UsersLive.UserResetPasswordLive, :edit
     end
   end
 

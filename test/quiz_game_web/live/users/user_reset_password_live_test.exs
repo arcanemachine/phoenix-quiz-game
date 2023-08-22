@@ -106,7 +106,7 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
     end
 
     test "does not reset password when form data is invalid", %{conn: conn, token: token} do
-      {:ok, lv, _html} = live(conn, ~p"/users/reset-password/#{token}")
+      {:ok, lv, _html} = live(conn, ~p"/users/reset/password/#{token}")
 
       html_after_submit =
         lv

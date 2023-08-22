@@ -343,7 +343,7 @@ defmodule QuizGame.Users do
 
   ## Examples
 
-      iex> deliver_password_reset_instructions(user, &url(~p"/users/reset-password/#{&1}"))
+      iex> deliver_password_reset_instructions(user, &url(~p"/users/reset/password/#{&1}"))
       {:ok, %{to: ..., body: ...}}
 
   """
