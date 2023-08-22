@@ -39,7 +39,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   end
 
   defp _get_progress_percentage_as_integer(assigns) do
-    (assigns.current_card_index / length(assigns.quiz.cards) * 100) |> round() |> trunc()
+    ((assigns.current_card_index + 1) / length(assigns.quiz.cards) * 100) |> round() |> trunc()
   end
 
   defp _get_score_percentage_as_integer(assigns) do

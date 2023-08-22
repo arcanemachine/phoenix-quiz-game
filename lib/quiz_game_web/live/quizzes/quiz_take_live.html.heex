@@ -11,7 +11,7 @@
   </.back>
 </div>
 
-<div class="w-full max-w-lg flex flex-col justify-center mx-auto">
+<div class="w-full max-w-lg mx-auto">
   <%= case @quiz_state do %>
     <% :enter_display_name -> %>
       <%!-- get display_name via user input --%>
@@ -83,10 +83,11 @@
       </div>
     <% :in_progress -> %>
       <progress
-        class="h-2 progress w-full max-w-lg"
+        class="absolute h-4 progress w-full max-w-lg rounded-b-none transition duration-300 opacity-50"
         value={_get_progress_percentage_as_integer(assigns)}
         max="100"
       />
+
       <div
         id="quiz-state-in-progress"
         class="mt-4 card w-full bg-primary/20 shadow-xl"
