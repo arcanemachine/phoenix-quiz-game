@@ -65,7 +65,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
     # ensure value is in the range of 1-4
     choice_int = if choice_int in 1..4, do: choice_int, else: 1
 
-    String.to_atom("choice_#{choice_int}")
+    String.to_existing_atom("choice_#{choice_int}")
   end
 
   @impl Phoenix.LiveView

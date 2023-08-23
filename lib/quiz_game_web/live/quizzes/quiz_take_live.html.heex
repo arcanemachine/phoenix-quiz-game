@@ -24,6 +24,7 @@
               <.input
                 type="text"
                 name="display-name"
+                value=""
                 autocomplete="off"
                 required
                 x-init="$el.focus()"
@@ -73,7 +74,7 @@
             </div>
 
             <:actions>
-              <.form_button type="submit" content="Begin the quiz" />
+              <.form_button type="submit" content="Begin the quiz" autofocus />
             </:actions>
           </.simple_form>
         </div>
@@ -142,6 +143,7 @@
                 id="input-number-entry"
                 type="number"
                 name="user-answer"
+                value=""
                 autocomplete="off"
                 required
                 x-init="$el.focus()"
@@ -153,6 +155,7 @@
               <.input
                 type="text"
                 name="user-answer"
+                value=""
                 autocomplete="off"
                 required
                 x-init="$el.focus()"

@@ -738,7 +738,7 @@ defmodule QuizGameWeb.CoreComponents do
         type={@type}
         name={@name}
         id={@id}
-        value={@field && Phoenix.HTML.Form.normalize_value(@type, @value)}
+        value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
           "w-full input",
           @errors == [] && "border-base-content focus:border-base-content/30",
