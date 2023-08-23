@@ -35,10 +35,10 @@ color_reset := "\\033[39m"
   echo "Running basic setup procedure via 'mix setup'...";
   mix setup
 
-# start a dev server (elixir-dependencies-fetch + db-migrate + server-dev-start-interactive)
-@dev: elixir-dependencies-fetch db-migrate server-dev-start-interactive
+# start a dev server (server-dev-start-interactive)
+@dev: server-dev-start-interactive
 
-# start a dev server (elixir-dependencies-fetch + db-migrate + server-dev-start-interactive)
+# start a dev server (server-dev-start-interactive)
 @start: dev
 
 # run all tests (test-elixir + test-js-unit + test-js-e2e)
