@@ -548,6 +548,17 @@ defmodule QuizGameWeb.CoreComponents do
 
   slot :inner_block
 
+  def input(%{field: false} = assigns) do
+    ## Allow input components to be used without a `form` field.
+    assigns
+    |> assign(:field, nil)
+    |> assign_new(:id, fn -> nil end)
+    |> assign_new(:errors, fn -> [] end)
+    |> assign_new(:name, fn -> nil end)
+    |> assign_new(:value, fn -> nil end)
+    |> input()
+  end
+
   def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
     assigns
     |> assign(field: nil, id: assigns.id || field.id)

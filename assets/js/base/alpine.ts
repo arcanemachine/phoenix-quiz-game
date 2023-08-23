@@ -15,6 +15,7 @@ function simpleForm() {
 
   return {
     form: undefined,
+    locals: {}, // local variables that can be set in the form
 
     // optional confirmation checkbox
     confirmed: false,
