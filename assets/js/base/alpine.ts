@@ -15,7 +15,7 @@ function simpleForm() {
 
   return {
     form: undefined,
-    locals: {}, // local variables that can be set in the form
+    // locals: {}, // local variables that can be set in the form
 
     // optional confirmation checkbox
     confirmed: false,
@@ -25,14 +25,17 @@ function simpleForm() {
     modifiedInputs: new Set(),
 
     init() {
+      // // @ts-ignore-error - add object reference to component store
+      // this.$store.components.simpleForm = this;
+
       // maybe disable form modification detection
       if (
         // disable in LiveView modals (automatic)
         this.$root.closest("[data-component-kind='modal']") ||
         // via localStorage attribute (manual)
-        localStorage.getItem("detectFormModifications") === "false"
+        localStorage.getItem("formDetectModifications") === "false"
         // // via HTML data attribute (manual)
-        // || this.$root.children[0].dataset.detectFormModifications === "false"
+        // || this.$root.children[0].dataset.formDetectModifications === "false"
       )
         return;
 
@@ -44,14 +47,17 @@ function simpleForm() {
     },
 
     destroy() {
+      // // @ts-ignore-error
+      // delete this.$store.components.simpleForm;
+
       // maybe disable form modification detection
       if (
         // disable in LiveView modals (automatic)
         this.$root.closest("[data-component-kind='modal']") ||
         // via localStorage attribute (manual)
-        localStorage.getItem("detectFormModifications") === "false"
+        localStorage.getItem("formDetectModifications") === "false"
         // // via HTML data attribute (manual)
-        // || this.$root.children[0].dataset.detectModifications === "false"
+        // || this.$root.children[0].dataset.formDetectModifications === "false"
       )
         return;
 
@@ -365,6 +371,7 @@ const toasts = {
 };
 
 export const stores = [
+  // { name: "components", store: {} },
   { name: "helpers", store: helpers },
   { name: "toasts", store: toasts },
 ];

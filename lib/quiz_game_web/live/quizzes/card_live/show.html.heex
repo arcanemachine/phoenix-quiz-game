@@ -1,6 +1,6 @@
 <.list_show>
   <:item :if={false} label="Image">
-    <%= @card.image || null_value_content() %>
+    <%= value_or_default(@card.image) %>
   </:item>
   <:item label="Question">
     <%= @card.question %>

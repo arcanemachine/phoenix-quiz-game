@@ -4,19 +4,38 @@ defmodule QuizGameWeb.Support.HTML do
   import Phoenix.HTML
 
   @doc """
-  Placeholder content for null record values.
+  Placeholder content to use when a value is empty text or null.
 
-  Accepts a single optional argument `content` which contains the content to be displayed in the
-  template.
-    - Default: "Not set"
+  Accepts 2 parameters:
+    - `value`: The value to be displayed
+    - `default`: The content to display if the value is null or empty text (default: `Not set`)
 
   ## Examples
 
-      iex> null_value_content()
-      iex> null_value_content("some content")
+      iex> value_or_default("some value")
+      "some value"
+
+      iex> value_or_default(nil)
+      "Not set"
+
+      iex> value_or_default(nil, "N/A")
+      "N/A"
+
+      iex> value_or_default("")
+      "Not set"
+
+      iex> value_or_default("", "N/A")
+      "N/A"
   """
-  def null_value_content(content \\ "Not set") do
-    raw("<span class=\"italic\">#{content |> html_escape() |> safe_to_string()}</span>")
+  def value_or_default(val, default_text \\ "Not set")
+
+  def value_or_default("", default_text) do
+    value_or_default(nil, default_text)
+  end
+
+  def value_or_default(val, default_text) do
+    val ||
+      raw("<span class=\"italic\">#{default_text |> html_escape() |> safe_to_string()}</span>")
   end
 end
 

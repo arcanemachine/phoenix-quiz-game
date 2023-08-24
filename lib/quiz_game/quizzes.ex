@@ -109,7 +109,7 @@ defmodule QuizGame.Quizzes do
       %Ecto.Changeset{data: %Quiz{}}
 
   """
-  def change_quiz(%Quiz{} = quiz \\ %Quiz{}, attrs \\ %{}) do
+  def change_quiz(%Quiz{} = quiz, attrs \\ %{}) do
     Quiz.changeset(quiz, attrs)
   end
 
@@ -237,7 +237,7 @@ defmodule QuizGame.Quizzes do
       %Ecto.Changeset{data: %Card{}}
 
   """
-  def change_card(%Card{} = card \\ %Card{}, attrs \\ %{}) do
+  def change_card(%Card{} = card, attrs \\ %{}) do
     Card.changeset(card, attrs)
   end
 end

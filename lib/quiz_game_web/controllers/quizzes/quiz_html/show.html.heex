@@ -9,6 +9,36 @@
       N/A
     <% end %>
   </:item>
+  <:item label="Subject">
+    <%= QuizGameWeb.Support.Atom.to_human_friendly_string(@quiz.subject) %>
+  </:item>
+  <:item :if={@quiz.subject == :math} label="Has random math questions?">
+    <%= if @quiz.math_random_question_count > 0 do %>
+      Yes
+      <ul class="list">
+        <li>
+          <b>Number of questions:</b>
+          <%= @quiz.math_random_question_count %>
+        </li>
+        <li>
+          <b>Operations used:</b>
+          <%= value_or_default(
+            QuizGame.Quizzes.Quiz.math_random_question_operations_readable(@quiz)
+          ) %>
+        </li>
+        <li>
+          <b>Minimum value:</b>
+          <%= @quiz.math_random_question_value_min %>
+        </li>
+        <li>
+          <b>Maximum value:</b>
+          <%= @quiz.math_random_question_value_max %>
+        </li>
+      </ul>
+    <% else %>
+      No
+    <% end %>
+  </:item>
 </.list_show>
 
 <.action_links>
@@ -18,19 +48,20 @@
     </.link>
   </.action_links_item>
 
-  <.action_links_item kind="index">
-    <.link href={route(:quizzes_cards, :index, quiz_id: @quiz.id)}>
-      View cards for this quiz
-    </.link>
-  </.action_links_item>
-
   <%= if @current_user && @current_user.id == @quiz.user_id do %>
-    <.action_links_item kind="edit">
+    <.action_links_item>
       <.link href={route(:quizzes, :edit, quiz_id: @quiz.id)}>
         Edit this quiz
       </.link>
     </.action_links_item>
+    <.action_links_spacer />
   <% end %>
+
+  <.action_links_item>
+    <.link href={route(:quizzes_cards, :index, quiz_id: @quiz.id)}>
+      View cards for this quiz
+    </.link>
+  </.action_links_item>
 
   <.action_links_spacer />
   <.action_links_item kind="back">

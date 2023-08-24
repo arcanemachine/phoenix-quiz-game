@@ -4,6 +4,7 @@ defmodule QuizGameWeb.Quizzes.QuizController do
   import QuizGameWeb.Support.Router, only: [route: 2, route: 3]
 
   alias QuizGame.Quizzes
+  alias QuizGame.Quizzes.Quiz
 
   def index(conn, _params) do
     quizzes = Quizzes.list_quizzes()
@@ -17,13 +18,20 @@ defmodule QuizGameWeb.Quizzes.QuizController do
   def new(conn, _params) do
     render(conn, :new,
       page_title: "Create Quiz",
-      changeset: Quizzes.change_quiz()
+      changeset: Quizzes.change_quiz(%Quiz{})
     )
   end
 
-  def create(conn, %{"quiz" => quiz_params}) do
-    # associate new quiz with current user
-    unsafe_quiz_params = Map.merge(quiz_params, %{"user_id" => conn.assigns.current_user.id})
+  def create(conn, %{"quiz" => quiz_params} = params) do
+    # if 'generate random math questions' checkbox is not checked, then set random math question
+    # count to 0 (changeset will remove any other 'random math question'-related settings)
+    quiz_params =
+      if Map.get(params, "checkbox-generate-random-math-questions") == "false",
+        do: Map.put(quiz_params, "math_random_question_count", "0"),
+        else: quiz_params
+
+    # (unsafe) associate new quiz with current user
+    unsafe_quiz_params = quiz_params |> Map.put("user_id", conn.assigns.current_user.id)
 
     case Quizzes.create_quiz(unsafe_quiz_params, unsafe: true) do
       {:ok, quiz} ->
@@ -53,8 +61,15 @@ defmodule QuizGameWeb.Quizzes.QuizController do
     )
   end
 
-  def update(conn, %{"quiz" => quiz_params}) do
+  def update(conn, %{"quiz" => quiz_params} = params) do
     quiz = conn.assigns.quiz
+
+    # if 'generate random math questions' checkbox is not checked, then set random math question
+    # count to 0 (changeset will remove any other 'random math question'-related settings)
+    quiz_params =
+      if Map.get(params, "checkbox-generate-random-math-questions") == "false",
+        do: Map.put(quiz_params, "math_random_question_count", "0"),
+        else: quiz_params
 
     case Quizzes.update_quiz(quiz, quiz_params) do
       {:ok, quiz} ->

@@ -529,7 +529,7 @@ defmodule QuizGameWeb.CoreComponents do
     values: ~w(captcha checkbox color csrf-token date datetime-local email file hidden month
                number password range radio search select tel text textarea time url week)
 
-  attr :field, Phoenix.HTML.FormField,
+  attr :field, :any,
     default: nil,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
 
@@ -646,7 +646,7 @@ defmodule QuizGameWeb.CoreComponents do
       assign_new(assigns, :checked, fn -> Phoenix.HTML.Form.normalize_value("checkbox", value) end)
 
     ~H"""
-    <div class="mt-4" phx-feedback-for={@name}>
+    <div phx-feedback-for={@name}>
       <label class="flex items-center gap-2 cursor-pointer">
         <input type="hidden" name={@name} value="false" />
         <input

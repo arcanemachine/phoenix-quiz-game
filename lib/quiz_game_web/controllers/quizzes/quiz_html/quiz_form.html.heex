@@ -1,4 +1,13 @@
-<.simple_form :let={f} for={@changeset} action={@action}>
+<.simple_form
+  :let={f}
+  for={@changeset}
+  action={@action}
+  x-data={"{
+    subject: '#{@changeset.data.subject}',
+    showRandomMathQuestionOptions: #{@changeset.data.math_random_question_count != 0},
+  }"}
+  x-title="quiz-edit-form"
+>
   <.input
     field={f[:name]}
     type="text"
@@ -18,31 +27,64 @@
       )
     }
     required
-    x-model="locals.subject"
+    x-model="subject"
   />
-  <div x-collapse x-show="locals.subject === 'math'">
+  <div x-collapse x-show="subject === 'math'" x-cloak>
     <.input
       field={false}
       type="checkbox"
-      label="Generate random math questions"
-      x-model="locals.showExtraMathOptions"
+      name="checkbox-generate-random-math-questions"
+      label="Generate random math questions (e.g. '5 + 7 = ?')"
+      help_text="Test your quiz takers' knowledge by asking them a series of randomly-generated math questions"
+      x-model="showRandomMathQuestionOptions"
     />
-  </div>
 
-  <div x-collapse x-show="locals.subject === 'math' && locals.showExtraMathOptions">
-    <.input
-      field={f[:subject]}
-      type="select"
-      label="Subject"
-      prompt="Choose a subject"
-      options={
-        QuizGameWeb.Support.HTML.Form.select_options_get_from_schema_and_field(
-          QuizGame.Quizzes.Quiz,
-          :subject
-        )
-      }
-      required
-    />
+    <div x-collapse x-show="showRandomMathQuestionOptions">
+      <.input
+        field={f[:math_random_question_operations]}
+        type="select"
+        multiple={true}
+        label="Operations"
+        help_text="Select which operations should be used for random math questions"
+        options={
+          QuizGameWeb.Support.HTML.Form.select_options_get_from_schema_and_field(
+            QuizGame.Quizzes.Quiz,
+            :math_random_question_operations
+          )
+        }
+        x-bind:required="subject === 'math' && showRandomMathQuestionOptions"
+      />
+      <.input
+        field={f[:math_random_question_count]}
+        type="number"
+        label="Number of questions"
+        help_text="How many random questions should be in each quiz"
+        value={@changeset.data.math_random_question_count || "10"}
+        x-bind:min="showRandomMathQuestionOptions ? '1' : '0'"
+        max={QuizGame.Quizzes.Quiz.math_random_question_count_max()}
+        x-bind:required="subject === 'math' && showRandomMathQuestionOptions"
+      />
+      <.input
+        field={f[:math_random_question_value_min]}
+        type="number"
+        label="Minimum random value"
+        help_text="The lowest value to use when generating random math questions"
+        value={@changeset.data.math_random_question_value_min || "1"}
+        min="-999999"
+        max="999999"
+        x-bind:required="subject === 'math' && showRandomMathQuestionOptions"
+      />
+      <.input
+        field={f[:math_random_question_value_max]}
+        type="number"
+        label="Maximum random value"
+        help_text="The highest value to use when generating random math questions"
+        value={@changeset.data.math_random_question_value_max || "10"}
+        min="-999999"
+        max="999999"
+        x-bind:required="subject === 'math' && showRandomMathQuestionOptions"
+      />
+    </div>
   </div>
 
   <:actions>

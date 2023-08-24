@@ -95,6 +95,7 @@ defmodule QuizGameWeb.BaseComponents do
           <details
             class="dropdown dropdown-end"
             x-data
+            x-title="menu-user-actions"
             x-on:click.outside="$el.removeAttribute('open')"
           >
             <summary
@@ -131,7 +132,7 @@ defmodule QuizGameWeb.BaseComponents do
           <%!-- settings menu --%>
           <div
             x-data="{ show: false }"
-            x-title="navbar-settings-menu"
+            x-title="menu-navbar-settings"
             x-on:click="show = true"
             @keyup.escape="show = false"
           >
