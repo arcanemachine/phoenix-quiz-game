@@ -3,8 +3,8 @@
   for={@changeset}
   action={@action}
   x-data={"{
-    subject: '#{@changeset.data.subject}',
     showRandomMathQuestionOptions: #{@changeset.data.math_random_question_count != 0},
+    subject: '#{@changeset.data.subject}',
   }"}
   x-title="quiz-edit-form"
 >
