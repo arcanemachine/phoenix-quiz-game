@@ -13,7 +13,7 @@ defmodule QuizGame.Repo.Migrations.CreateQuizzes do
       add :name, :string, null: false
       add :subject, :string, null: false
 
-      add :math_random_question_count, :integer, null: false
+      add :math_random_question_count, :integer
       add :math_random_question_operations, {:array, :math_random_operation}
       add :math_random_question_value_min, :integer
       add :math_random_question_value_max, :integer

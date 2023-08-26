@@ -14,16 +14,16 @@ defmodule QuizGameWeb.Support.Changeset do
 
     ## Examples
 
-      iex> changeset_field_will_have_value(changeset, :field_name, "some value")
+      iex> changeset_field_will_have_value(changeset, :some_field, "some value")
       true
 
-      iex> changeset_field_will_have_value(changeset, :field_name, "nonexistent value")
+      iex> changeset_field_will_have_value(changeset, :some_field, "nonexistent value")
       false
   """
   @spec field_will_have_value(Ecto.Changeset.t(), atom(), any()) :: boolean()
   def field_will_have_value(changeset, field, value) do
     # field has expected value which will not be changed, or changes have expected value
-    (Map.get(changeset.data, field) == value && !(Map.get(changeset.changes, field) != value)) ||
+    (Map.get(changeset.data, field) == value && Map.get(changeset.changes, field) != value) ||
       Map.get(changeset.changes, field) == value
   end
 
@@ -38,10 +38,15 @@ defmodule QuizGameWeb.Support.Changeset do
     Checks a changeset's changed and existing data for a given field, and returns the most
     up-to-date value.
 
+    Use the `:ignore` option to ignore a certain value in the changeset, e.g. the number 0.
+
     ## Examples
 
-      iex> get_changed_or_existing_value(changeset, :field_name)
+      iex> get_changed_or_existing_value(changeset, :some_field)
       "some value"
+
+      iex> get_changed_or_existing_value(changeset, :field_with_null_value)
+      nil
   """
   @spec get_changed_or_existing_value(Ecto.Changeset.t(), atom()) :: any()
   def get_changed_or_existing_value(changeset, field) do

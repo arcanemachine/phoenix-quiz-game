@@ -16,7 +16,7 @@
     <%= QuizGame.Quizzes.quiz_card_count(@quiz) %>
   </:item>
   <:item :if={@quiz.subject == :math} label="Has random math questions?">
-    <%= if @quiz.math_random_question_count > 0 do %>
+    <%= if @quiz.math_random_question_count do %>
       Yes
       <ul class="list">
         <li>

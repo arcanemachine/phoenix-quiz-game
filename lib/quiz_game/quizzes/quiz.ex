@@ -15,7 +15,7 @@ defmodule QuizGame.Quizzes.Quiz do
     field :name, :string
     field :subject, Ecto.Enum, values: [:math, :language, :science, :social_studies, :other]
 
-    field :math_random_question_count, :integer, default: 0
+    field :math_random_question_count, :integer
 
     field :math_random_question_operations, {:array, Ecto.Enum},
       values: [:add, :subtract, :multiply, :divide]
@@ -80,43 +80,39 @@ defmodule QuizGame.Quizzes.Quiz do
   @doc "Validations for quizzes whose subject is 'math'."
   @spec validate_subject_math(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def validate_subject_math(changeset) do
-    changeset =
-      if S.Changeset.get_changed_or_existing_value(changeset, :math_random_question_count) !=
-           0 do
-        # quiz has randomly-generated questions. validate data related to them
-        changeset
-        # random question count must be in the allowable range
-        |> validate_number(:math_random_question_count,
-          greater_than_or_equal_to: math_random_question_count_min(),
-          less_than_or_equal_to: math_random_question_count_max()
-        )
-        # minimum random value must be above the allowable minimum value
-        |> validate_number(:math_random_question_value_min,
-          greater_than_or_equal_to: math_random_question_value_min()
-        )
-        # maximum random value must be greater than the minimum value
-        |> validate_number(:math_random_question_value_max,
-          greater_than:
-            S.Changeset.get_changed_or_existing_value(changeset, :math_random_question_value_min),
-          message: "must be greater than the minimum random value"
-        )
-        # maximum random value must be less than the allowable maximum value
-        |> validate_number(:math_random_question_value_max,
-          less_than_or_equal_to: math_random_question_value_max()
-        )
-      else
-        # quiz does not have randomly-generated questions. clear data related to them
-        changeset_remove_math_random_question_data(changeset)
-      end
-
-    changeset
+    if S.Changeset.get_changed_or_existing_value(changeset, :math_random_question_count) != 0 do
+      # quiz has randomly-generated questions. validate data related to them
+      changeset
+      # random question count must be in the allowable range
+      |> validate_number(:math_random_question_count,
+        greater_than_or_equal_to: math_random_question_count_min(),
+        less_than_or_equal_to: math_random_question_count_max()
+      )
+      # minimum random value must be above the allowable minimum value
+      |> validate_number(:math_random_question_value_min,
+        greater_than_or_equal_to: math_random_question_value_min()
+      )
+      # maximum random value must be greater than the minimum value
+      |> validate_number(:math_random_question_value_max,
+        greater_than:
+          S.Changeset.get_changed_or_existing_value(changeset, :math_random_question_value_min),
+        message: "must be greater than the minimum random value"
+      )
+      # maximum random value must be less than the allowable maximum value
+      |> validate_number(:math_random_question_value_max,
+        less_than_or_equal_to: math_random_question_value_max()
+      )
+    else
+      # quiz does not have randomly-generated questions. clear data related to them
+      changeset_remove_math_random_question_data(changeset)
+    end
   end
 
   @spec changeset_remove_math_random_question_data(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def changeset_remove_math_random_question_data(changeset) do
     changeset
     |> change(
-      math_random_question_count: 0,
+      math_random_question_count: nil,
       math_random_question_operations: nil,
       math_random_question_value_min: nil,
       math_random_question_value_max: nil

@@ -3,10 +3,8 @@
   for={@changeset}
   action={@action}
   data-subject={S.Changeset.get_changed_or_existing_value(@changeset, :subject)}
-  data-show-random-math-question-options={to_string(S.Changeset.get_changed_or_existing_value(@changeset, :math_random_question_count) != 0)}
+  data-show-random-math-question-options={to_string(S.Changeset.get_changed_or_existing_value(@changeset, :math_random_question_count) != nil)}
   x-data={"{
-    mathRandomQuestionValueMin: Number($el.dataset.mathRandomQuestionValueMin),
-    mathRandomQuestionValueMax: Number($el.dataset.mathRandomQuestionValueMax),
     showRandomMathQuestionOptions:
       $el.dataset.subject === 'math' && JSON.parse($el.dataset.showRandomMathQuestionOptions),
     subject: $el.dataset.subject,
@@ -71,7 +69,6 @@
         label="Number of questions"
         help_text="How many random questions should be in each quiz"
         max={QuizGame.Quizzes.Quiz.math_random_question_count_max()}
-        x-bind:min="showRandomMathQuestionOptions ? '1' : '0'"
         x-bind:required="subject === 'math' && showRandomMathQuestionOptions"
       />
       <.input
