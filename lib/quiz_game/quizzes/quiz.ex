@@ -67,28 +67,22 @@ defmodule QuizGame.Quizzes.Quiz do
     |> cast(attrs, @unsafe_fields_required ++ @safe_fields_required ++ @safe_fields_optional)
     |> validate_required(@unsafe_fields_required ++ @safe_fields_required)
     |> validate_length(:name, max: name_length_max())
-    # |> validate_number(:math_random_question_count,
-    #   greater_than_or_equal_to: math_random_question_count_min(),
-    #   less_than_or_equal_to: math_random_question_count_max()
-    # )
     |> validate_subject()
     |> foreign_key_constraint(:user_id)
   end
 
-  @spec changeset_field_is_or_will_be(Ecto.Changeset.t(), atom(), any()) :: boolean()
-  def changeset_field_is_or_will_be(changeset, field, value) do
+  @spec changeset_field_has_or_will_have_value(Ecto.Changeset.t(), atom(), any()) :: boolean()
+  def changeset_field_has_or_will_have_value(changeset, field, value) do
     # field has expected value which will not be changed, or changes have expected value
     (Map.get(changeset.data, field) == value && !Map.get(changeset.changes, field) != value) ||
       Map.get(changeset.changes, field) == value
   end
 
-  # @spec changeset_field_will_not_be(Ecto.Changeset.t(), atom(), any()) :: boolean()
-  # def changeset_field_will_not_be(changeset, field, value) do
-  #   require IEx
-  #   IEx.pry()
-
-  #   Map.get(changeset.changes, field) != value ||
-  #     (Map.get(changeset.data, field) != value && Map.get(changeset.changes, field) != value)
+  # @spec changeset_field_will_not_have_value(Ecto.Changeset.t(), atom(), any()) :: boolean()
+  # def changeset_field_will_not_have_value(changeset, field, value) do
+  #   # field has expected value which will be changed, or changes do not have expected value
+  #   (Map.get(changeset.data, field) == value && Map.get(changeset.changes, field) != value) ||
+  #     Map.get(changeset.changes, field) != value
   # end
 
   @spec changeset_get_changed_or_existing_value(Ecto.Changeset.t(), atom(), any()) :: any()
@@ -103,7 +97,7 @@ defmodule QuizGame.Quizzes.Quiz do
 
   @spec validate_subject(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def validate_subject(changeset) do
-    if changeset_field_is_or_will_be(changeset, :subject, :math),
+    if changeset_field_has_or_will_have_value(changeset, :subject, :math),
       do: changeset |> validate_subject_math(),
       else: changeset_remove_math_random_question_data(changeset)
   end

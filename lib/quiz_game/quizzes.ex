@@ -113,6 +113,11 @@ defmodule QuizGame.Quizzes do
     Quiz.changeset(quiz, attrs)
   end
 
+  @doc "Returns the number of cards associated with a given quiz."
+  def quiz_card_count(%Quiz{} = quiz) do
+    Repo.one!(from c in Card, where: c.quiz_id == ^quiz.id, select: count(c.id))
+  end
+
   @doc """
   Returns the list of cards.
 

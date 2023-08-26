@@ -3,8 +3,11 @@
   for={@changeset}
   action={@action}
   x-data={"{
-    showRandomMathQuestionOptions: #{@changeset.data.subject === "math" && @changeset.data.math_random_question_count != 0},
-    subject: '#{@changeset.data.subject}',
+    showRandomMathQuestionOptions: #{
+      Map.get(@changeset.changes, :subject, @changeset.data.subject) == :math &&
+        @changeset.data.math_random_question_count != 0
+    },
+    subject: '#{Map.get(@changeset.changes, :subject, @changeset.data.subject)}',
   }"}
   x-title="quiz-edit-form"
 >

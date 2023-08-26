@@ -12,12 +12,15 @@
   <:item label="Subject">
     <%= QuizGameWeb.Support.Atom.to_human_friendly_string(@quiz.subject) %>
   </:item>
+  <:item label="Number of cards">
+    <%= QuizGame.Quizzes.quiz_card_count(@quiz) %>
+  </:item>
   <:item :if={@quiz.subject == :math} label="Has random math questions?">
     <%= if @quiz.math_random_question_count > 0 do %>
       Yes
       <ul class="list">
         <li>
-          <b>Number of questions:</b>
+          <b>Number of random questions:</b>
           <%= @quiz.math_random_question_count %>
         </li>
         <li>
