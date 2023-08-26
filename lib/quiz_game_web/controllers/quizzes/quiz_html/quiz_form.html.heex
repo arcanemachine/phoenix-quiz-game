@@ -3,9 +3,7 @@
   for={@changeset}
   action={@action}
   data-subject={S.Changeset.get_changed_or_existing_value(@changeset, :subject)}
-  data-show-random-math-question-options={to_string(@changeset.data.math_random_question_count != 0)}
-  data-math-random-question-value-min={S.Changeset.get_changed_or_existing_value(@changeset, :math_random_question_value_min)}
-  data-math-random-question-value-max={S.Changeset.get_changed_or_existing_value(@changeset, :math_random_question_value_max)}
+  data-show-random-math-question-options={to_string(S.Changeset.get_changed_or_existing_value(@changeset, :math_random_question_count) != 0)}
   x-data={"{
     mathRandomQuestionValueMin: Number($el.dataset.mathRandomQuestionValueMin),
     mathRandomQuestionValueMax: Number($el.dataset.mathRandomQuestionValueMax),
@@ -72,9 +70,8 @@
         type="number"
         label="Number of questions"
         help_text="How many random questions should be in each quiz"
-        x-bind:min="showRandomMathQuestionOptions ? '1' : '0'"
-        min={QuizGame.Quizzes.Quiz.math_random_question_value_min_min()}
         max={QuizGame.Quizzes.Quiz.math_random_question_count_max()}
+        x-bind:min="showRandomMathQuestionOptions ? '1' : '0'"
         x-bind:required="subject === 'math' && showRandomMathQuestionOptions"
       />
       <.input
@@ -82,9 +79,8 @@
         type="number"
         label="Minimum random value"
         help_text="The lowest value to use when generating random math questions"
-        min={QuizGame.Quizzes.Quiz.math_random_question_value_min_min()}
-        x-model="mathRandomQuestionValueMin"
-        x-bind:max="Number(mathRandomQuestionValueMax) - 1"
+        min={QuizGame.Quizzes.Quiz.math_random_question_value_min()}
+        max={QuizGame.Quizzes.Quiz.math_random_question_value_max()}
         x-bind:required="subject === 'math' && showRandomMathQuestionOptions"
       />
       <.input
@@ -92,9 +88,8 @@
         type="number"
         label="Maximum random value"
         help_text="The highest value to use when generating random math questions"
-        x-model="mathRandomQuestionValueMax"
-        x-bind:min="Number(mathRandomQuestionValueMin) + 1"
-        max={QuizGame.Quizzes.Quiz.math_random_question_value_max_max()}
+        min={QuizGame.Quizzes.Quiz.math_random_question_value_min()}
+        max={QuizGame.Quizzes.Quiz.math_random_question_value_max()}
         x-bind:required="subject === 'math' && showRandomMathQuestionOptions"
       />
     </div>

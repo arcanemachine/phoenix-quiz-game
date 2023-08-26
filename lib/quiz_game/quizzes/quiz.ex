@@ -36,8 +36,8 @@ defmodule QuizGame.Quizzes.Quiz do
   def math_random_question_count_min(), do: 0
   def math_random_question_count_max(), do: 500
 
-  def math_random_question_value_min_min(), do: -999_999
-  def math_random_question_value_max_max(), do: 999_999
+  def math_random_question_value_min(), do: -999_999
+  def math_random_question_value_max(), do: 999_999
 
   @unsafe_fields_required [:user_id]
   @safe_fields_required [:name, :subject]
@@ -92,7 +92,7 @@ defmodule QuizGame.Quizzes.Quiz do
         )
         # minimum random value must be above the allowable minimum value
         |> validate_number(:math_random_question_value_min,
-          greater_than_or_equal_to: math_random_question_value_min_min()
+          greater_than_or_equal_to: math_random_question_value_min()
         )
         # maximum random value must be greater than the minimum value
         |> validate_number(:math_random_question_value_max,
@@ -102,7 +102,7 @@ defmodule QuizGame.Quizzes.Quiz do
         )
         # maximum random value must be less than the allowable maximum value
         |> validate_number(:math_random_question_value_max,
-          less_than_or_equal_to: math_random_question_value_max_max()
+          less_than_or_equal_to: math_random_question_value_max()
         )
       else
         # quiz does not have randomly-generated questions. clear data related to them
