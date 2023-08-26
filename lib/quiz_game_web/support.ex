@@ -14,16 +14,16 @@ defmodule QuizGameWeb.Support.Changeset do
 
     ## Examples
 
-      iex> changeset_field_has_or_will_have_value(changeset, :field_name, "some value")
+      iex> changeset_field_will_have_value(changeset, :field_name, "some value")
       true
 
-      iex> changeset_field_has_or_will_have_value(changeset, :field_name, "nonexistent value")
+      iex> changeset_field_will_have_value(changeset, :field_name, "nonexistent value")
       false
   """
-  @spec field_has_or_will_have_value(Ecto.Changeset.t(), atom(), any()) :: boolean()
-  def field_has_or_will_have_value(changeset, field, value) do
+  @spec field_will_have_value(Ecto.Changeset.t(), atom(), any()) :: boolean()
+  def field_will_have_value(changeset, field, value) do
     # field has expected value which will not be changed, or changes have expected value
-    (Map.get(changeset.data, field) == value && !Map.get(changeset.changes, field) != value) ||
+    (Map.get(changeset.data, field) == value && !(Map.get(changeset.changes, field) != value)) ||
       Map.get(changeset.changes, field) == value
   end
 
@@ -43,8 +43,8 @@ defmodule QuizGameWeb.Support.Changeset do
       iex> get_changed_or_existing_value(changeset, :field_name)
       "some value"
   """
-  @spec get_changed_or_existing_value(Ecto.Changeset.t(), atom()) :: any()
-  def get_changed_or_existing_value(changeset, field) do
+  @spec get_changed_or_existing_value(Ecto.Changeset.t(), atom(), keyword()) :: any()
+  def get_changed_or_existing_value(changeset, field, opts \\ []) do
     Map.get(changeset.changes, field) || Map.get(changeset.data, field)
   end
 end

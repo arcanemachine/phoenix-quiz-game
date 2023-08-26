@@ -4,16 +4,21 @@
   action={@action}
   data-subject={S.Changeset.get_changed_or_existing_value(@changeset, :subject)}
   data-show-random-math-question-options={to_string(@changeset.data.math_random_question_count != 0)}
+  data-math-random-question-value-min={S.Changeset.get_changed_or_existing_value(@changeset, :math_random_question_value_min)}
+  data-math-random-question-value-max={S.Changeset.get_changed_or_existing_value(@changeset, :math_random_question_value_max)}
   x-data={"{
+    mathRandomQuestionValueMin: Number($el.dataset.mathRandomQuestionValueMin),
+    mathRandomQuestionValueMax: Number($el.dataset.mathRandomQuestionValueMax),
     showRandomMathQuestionOptions:
-      $el.dataset.subject === 'math' && Boolean($el.dataset.showRandomMathQuestionOptions),
+      $el.dataset.subject === 'math' && JSON.parse($el.dataset.showRandomMathQuestionOptions),
     subject: $el.dataset.subject,
   }"}
   x-title="quiz-edit-form"
   x-init="() => {
-    // remove redundant dataset attributes after their data has been parsed
-    $el.removeAttribute('data-subject');
-    $el.removeAttribute('data-show-random-math-question-options');
+    $watch('subject', val => {
+      // untoggle 'show random math question options' checkbox when subject is not math
+      if (val !== 'math') showRandomMathQuestionOptions = false;
+    });
   }"
 >
   <.input
@@ -41,7 +46,7 @@
     <.input
       field={false}
       type="checkbox"
-      name="checkbox-generate-random-math-questions"
+      name="checkbox-show-random-math-question-options"
       label="Generate random math questions (e.g. '5 + 7 = ?')"
       help_text="Test your quiz takers' knowledge by asking them a series of randomly-generated math questions"
       x-model="showRandomMathQuestionOptions"
@@ -68,6 +73,7 @@
         label="Number of questions"
         help_text="How many random questions should be in each quiz"
         x-bind:min="showRandomMathQuestionOptions ? '1' : '0'"
+        min={QuizGame.Quizzes.Quiz.math_random_question_value_min_min()}
         max={QuizGame.Quizzes.Quiz.math_random_question_count_max()}
         x-bind:required="subject === 'math' && showRandomMathQuestionOptions"
       />
@@ -77,7 +83,8 @@
         label="Minimum random value"
         help_text="The lowest value to use when generating random math questions"
         min={QuizGame.Quizzes.Quiz.math_random_question_value_min_min()}
-        max={QuizGame.Quizzes.Quiz.math_random_question_value_max_max()}
+        x-model="mathRandomQuestionValueMin"
+        x-bind:max="Number(mathRandomQuestionValueMax) - 1"
         x-bind:required="subject === 'math' && showRandomMathQuestionOptions"
       />
       <.input
@@ -85,7 +92,8 @@
         type="number"
         label="Maximum random value"
         help_text="The highest value to use when generating random math questions"
-        min={QuizGame.Quizzes.Quiz.math_random_question_value_min_min()}
+        x-model="mathRandomQuestionValueMax"
+        x-bind:min="Number(mathRandomQuestionValueMin) + 1"
         max={QuizGame.Quizzes.Quiz.math_random_question_value_max_max()}
         x-bind:required="subject === 'math' && showRandomMathQuestionOptions"
       />

@@ -72,7 +72,7 @@ defmodule QuizGame.Quizzes.Quiz do
 
   @spec validate_subject(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def validate_subject(changeset) do
-    if S.Changeset.field_has_or_will_have_value(changeset, :subject, :math),
+    if S.Changeset.field_will_have_value(changeset, :subject, :math),
       do: changeset |> validate_subject_math(),
       else: changeset_remove_math_random_question_data(changeset)
   end

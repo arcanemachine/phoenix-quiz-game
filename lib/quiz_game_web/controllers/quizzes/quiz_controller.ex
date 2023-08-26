@@ -26,7 +26,7 @@ defmodule QuizGameWeb.Quizzes.QuizController do
     # if 'generate random math questions' checkbox is not checked, then set random math question
     # count to 0 (changeset will remove any other 'random math question'-related settings)
     quiz_params =
-      if Map.get(params, "checkbox-generate-random-math-questions") == "false",
+      if Map.get(params, "checkbox-show-random-math-question-options") == "false",
         do: Map.put(quiz_params, "math_random_question_count", "0"),
         else: quiz_params
 
@@ -67,7 +67,7 @@ defmodule QuizGameWeb.Quizzes.QuizController do
     # if 'generate random math questions' checkbox is not checked, then set random math question
     # count to 0 (changeset will remove any other 'random math question'-related settings)
     quiz_params =
-      if Map.get(params, "checkbox-generate-random-math-questions") == "false",
+      if Map.get(params, "checkbox-show-random-math-question-options") == "false",
         do: Map.put(quiz_params, "math_random_question_count", "0"),
         else: quiz_params
 
