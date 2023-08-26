@@ -53,8 +53,10 @@ defmodule QuizGame.Quizzes.Quiz do
 
   def changeset(%__MODULE__{} = quiz, attrs) do
     quiz
-    |> unsafe_changeset(attrs)
     |> cast(attrs, @safe_fields_required ++ @safe_fields_optional)
+    |> validate_required(@safe_fields_required)
+    |> validate_length(:name, max: name_length_max())
+    |> validate_subject()
   end
 
   @doc "A changeset that contains one or more fields that should not be modified by the user."
@@ -62,10 +64,9 @@ defmodule QuizGame.Quizzes.Quiz do
 
   def unsafe_changeset(%__MODULE__{} = quiz, attrs) do
     quiz
+    |> changeset(attrs)
     |> cast(attrs, @unsafe_fields_required ++ @safe_fields_required ++ @safe_fields_optional)
     |> validate_required(@unsafe_fields_required ++ @safe_fields_required)
-    |> validate_length(:name, max: name_length_max())
-    |> validate_subject()
     |> foreign_key_constraint(:user_id)
   end
 

@@ -46,15 +46,14 @@
 
 <.action_links>
   <.action_links_item>
-    <.link href={route(:quizzes, :take, quiz_id: @quiz.id)}>
-      Take this quiz
+    <.link href={route(:quizzes_cards, :index, quiz_id: @quiz.id)}>
+      View cards for this quiz
     </.link>
   </.action_links_item>
 
-  <.action_links_spacer />
   <.action_links_item>
-    <.link href={route(:quizzes_cards, :index, quiz_id: @quiz.id)}>
-      View cards for this quiz
+    <.link href={route(:quizzes, :take, quiz_id: @quiz.id)}>
+      Take this quiz
     </.link>
   </.action_links_item>
 
