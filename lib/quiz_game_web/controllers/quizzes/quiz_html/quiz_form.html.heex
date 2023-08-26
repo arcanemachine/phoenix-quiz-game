@@ -3,17 +3,32 @@
   for={@changeset}
   action={@action}
   data-subject={S.Changeset.get_changed_or_existing_value(@changeset, :subject)}
-  data-show-random-math-question-options={to_string(S.Changeset.get_changed_or_existing_value(@changeset, :math_random_question_count) != nil)}
+  data-show-random-math-question-options={
+    to_string(
+      S.Changeset.get_changed_or_existing_value(@changeset, :math_random_question_count) != nil
+    )
+  }
   x-data={"{
     showRandomMathQuestionOptions:
       $el.dataset.subject === 'math' && JSON.parse($el.dataset.showRandomMathQuestionOptions),
     subject: $el.dataset.subject,
+
+    mathRandomQuestionCheckboxWasChecked: undefined,
   }"}
   x-title="quiz-edit-form"
   x-init="() => {
     $watch('subject', val => {
-      // untoggle 'show random math question options' checkbox when subject is not math
-      if (val !== 'math') showRandomMathQuestionOptions = false;
+      // remember math checkbox status
+      mathRandomQuestionCheckboxWasChecked =
+        (subject === 'math' && showRandomMathQuestionOptions) ||
+        mathRandomQuestionCheckboxWasChecked;
+
+      if (val === 'math') {
+        // check the 'show random math question options' checkbox if it was previously checked
+        showRandomMathQuestionOptions = mathRandomQuestionCheckboxWasChecked;
+      } else {
+        // untoggle 'show random math question options' checkbox when subject is not math
+        showRandomMathQuestionOptions = false;
     });
   }"
 >
