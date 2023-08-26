@@ -831,23 +831,25 @@ defmodule QuizGameWeb.CoreComponents do
 
       <.list_show>
         <:item title="Name"><%= @user.name %></:item>
-        <:item title="Email" class="bg-red-500"><%= @user.email %></:item>
+        <:item title="Email" class_label="bg-red-500"><%= @user.email %></:item>
       </.list_show>
   """
   slot :item, required: true do
     attr :label, :string, required: true
-    attr :class, :string, doc: "custom styles for the item value"
+    attr :class_item, :string, doc: "custom styles for the item label"
+    attr :class_label, :string, doc: "custom styles for the item label"
+    attr :class_value, :string, doc: "custom styles for the item value"
     attr :gap, :string, doc: "adds a vertical gap above an item"
   end
 
   def list_show(assigns) do
     ~H"""
     <ul>
-      <li :for={item <- @item} class={"mt-#{Map.get(item, :gap, 2)}"}>
-        <span class="font-bold">
+      <li :for={item <- @item} class={["mt-#{Map.get(item, :gap, 2)}", item[:class_item]]}>
+        <span class={["font-bold", item[:class_label]]}>
           <%= item.label %>:
         </span>
-        <span class={["ps-1", item[:class]]}>
+        <span class={["ps-1", item[:class_value]]}>
           <%= render_slot(item) %>
         </span>
       </li>
