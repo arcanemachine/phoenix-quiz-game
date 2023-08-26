@@ -71,6 +71,7 @@ defmodule QuizGameWeb do
       # custom
       import QuizGameWeb.Support.Router
       import QuizGameWeb.Support.HTML
+      alias QuizGameWeb.Support, as: S
     end
   end
 

@@ -2,14 +2,19 @@
   :let={f}
   for={@changeset}
   action={@action}
+  data-subject={S.Changeset.get_changed_or_existing_value(@changeset, :subject)}
+  data-show-random-math-question-options={to_string(@changeset.data.math_random_question_count != 0)}
   x-data={"{
-    showRandomMathQuestionOptions: #{
-      Map.get(@changeset.changes, :subject, @changeset.data.subject) == :math &&
-        @changeset.data.math_random_question_count != 0
-    },
-    subject: '#{Map.get(@changeset.changes, :subject, @changeset.data.subject)}',
+    showRandomMathQuestionOptions:
+      $el.dataset.subject === 'math' && Boolean($el.dataset.showRandomMathQuestionOptions),
+    subject: $el.dataset.subject,
   }"}
   x-title="quiz-edit-form"
+  x-init="() => {
+    // remove redundant dataset attributes after their data has been parsed
+    $el.removeAttribute('data-subject');
+    $el.removeAttribute('data-show-random-math-question-options');
+  }"
 >
   <.input
     field={f[:name]}
@@ -72,7 +77,7 @@
         label="Minimum random value"
         help_text="The lowest value to use when generating random math questions"
         min={QuizGame.Quizzes.Quiz.math_random_question_value_min_min()}
-        max={QuizGame.Quizzes.Quiz.math_random_question_value_min_max()}
+        max={QuizGame.Quizzes.Quiz.math_random_question_value_max_max()}
         x-bind:required="subject === 'math' && showRandomMathQuestionOptions"
       />
       <.input
@@ -80,7 +85,7 @@
         type="number"
         label="Maximum random value"
         help_text="The highest value to use when generating random math questions"
-        min={QuizGame.Quizzes.Quiz.math_random_question_value_max_min()}
+        min={QuizGame.Quizzes.Quiz.math_random_question_value_min_min()}
         max={QuizGame.Quizzes.Quiz.math_random_question_value_max_max()}
         x-bind:required="subject === 'math' && showRandomMathQuestionOptions"
       />

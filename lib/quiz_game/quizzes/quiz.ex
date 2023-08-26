@@ -1,7 +1,10 @@
 defmodule QuizGame.Quizzes.Quiz do
   @moduledoc "The Quiz schema."
+
   use Ecto.Schema
+
   import Ecto.Changeset
+  alias QuizGameWeb.Support, as: S
 
   schema "quizzes" do
     # associations
@@ -34,9 +37,6 @@ defmodule QuizGame.Quizzes.Quiz do
   def math_random_question_count_max(), do: 500
 
   def math_random_question_value_min_min(), do: -999_999
-  def math_random_question_value_min_max(), do: 999_998
-
-  def math_random_question_value_max_min(), do: -999_999
   def math_random_question_value_max_max(), do: 999_999
 
   @unsafe_fields_required [:user_id]
@@ -70,33 +70,9 @@ defmodule QuizGame.Quizzes.Quiz do
     |> foreign_key_constraint(:user_id)
   end
 
-  @spec changeset_field_has_or_will_have_value(Ecto.Changeset.t(), atom(), any()) :: boolean()
-  def changeset_field_has_or_will_have_value(changeset, field, value) do
-    # field has expected value which will not be changed, or changes have expected value
-    (Map.get(changeset.data, field) == value && !Map.get(changeset.changes, field) != value) ||
-      Map.get(changeset.changes, field) == value
-  end
-
-  # @spec changeset_field_will_not_have_value(Ecto.Changeset.t(), atom(), any()) :: boolean()
-  # def changeset_field_will_not_have_value(changeset, field, value) do
-  #   # field has expected value which will be changed, or changes do not have expected value
-  #   (Map.get(changeset.data, field) == value && Map.get(changeset.changes, field) != value) ||
-  #     Map.get(changeset.changes, field) != value
-  # end
-
-  @spec changeset_get_changed_or_existing_value(Ecto.Changeset.t(), atom(), any()) :: any()
-  def changeset_get_changed_or_existing_value(changeset, field, default \\ nil) do
-    Map.get(changeset.changes, field) || Map.get(changeset.data, field) || default
-  end
-
-  @spec changeset_get_changed_or_existing_value!(Ecto.Changeset.t(), atom()) :: any()
-  def changeset_get_changed_or_existing_value!(changeset, field) do
-    Map.get(changeset.changes, field) || Map.fetch!(changeset.data, field)
-  end
-
   @spec validate_subject(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def validate_subject(changeset) do
-    if changeset_field_has_or_will_have_value(changeset, :subject, :math),
+    if S.Changeset.field_has_or_will_have_value(changeset, :subject, :math),
       do: changeset |> validate_subject_math(),
       else: changeset_remove_math_random_question_data(changeset)
   end
@@ -105,21 +81,27 @@ defmodule QuizGame.Quizzes.Quiz do
   @spec validate_subject_math(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def validate_subject_math(changeset) do
     changeset =
-      if changeset_get_changed_or_existing_value!(changeset, :math_random_question_count) != 0 do
+      if S.Changeset.get_changed_or_existing_value(changeset, :math_random_question_count) !=
+           0 do
         # quiz has randomly-generated questions. validate data related to them
         changeset
+        # random question count must be in the allowable range
         |> validate_number(:math_random_question_count,
           greater_than_or_equal_to: math_random_question_count_min(),
           less_than_or_equal_to: math_random_question_count_max()
         )
+        # minimum random value must be above the allowable minimum value
         |> validate_number(:math_random_question_value_min,
-          greater_than_or_equal_to: math_random_question_value_min_min(),
-          less_than:
-            changeset_get_changed_or_existing_value!(changeset, :math_random_question_value_max)
+          greater_than_or_equal_to: math_random_question_value_min_min()
         )
+        # maximum random value must be greater than the minimum value
         |> validate_number(:math_random_question_value_max,
           greater_than:
-            changeset_get_changed_or_existing_value!(changeset, :math_random_question_value_min),
+            S.Changeset.get_changed_or_existing_value(changeset, :math_random_question_value_min),
+          message: "must be greater than the minimum random value"
+        )
+        # maximum random value must be less than the allowable maximum value
+        |> validate_number(:math_random_question_value_max,
           less_than_or_equal_to: math_random_question_value_max_max()
         )
       else

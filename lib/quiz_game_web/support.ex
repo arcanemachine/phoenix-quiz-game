@@ -6,6 +6,49 @@ defmodule QuizGameWeb.Support.Atom do
   end
 end
 
+defmodule QuizGameWeb.Support.Changeset do
+  @moduledoc "This project's `Ecto.Changeset` helper functions."
+
+  @doc """
+    Check if a changeset will have a given value after it is validated.
+
+    ## Examples
+
+      iex> changeset_field_has_or_will_have_value(changeset, :field_name, "some value")
+      true
+
+      iex> changeset_field_has_or_will_have_value(changeset, :field_name, "nonexistent value")
+      false
+  """
+  @spec field_has_or_will_have_value(Ecto.Changeset.t(), atom(), any()) :: boolean()
+  def field_has_or_will_have_value(changeset, field, value) do
+    # field has expected value which will not be changed, or changes have expected value
+    (Map.get(changeset.data, field) == value && !Map.get(changeset.changes, field) != value) ||
+      Map.get(changeset.changes, field) == value
+  end
+
+  # @spec field_will_not_have_value(Ecto.Changeset.t(), atom(), any()) :: boolean()
+  # def field_will_not_have_value(changeset, field, value) do
+  #   # field has expected value which will be changed, or changes do not have expected value
+  #   (Map.get(changeset.data, field) == value && Map.get(changeset.changes, field) != value) ||
+  #     Map.get(changeset.changes, field) != value
+  # end
+
+  @doc """
+    Checks a changeset's changed and existing data for a given field, and returns the most
+    up-to-date value.
+
+    ## Examples
+
+      iex> get_changed_or_existing_value(changeset, :field_name)
+      "some value"
+  """
+  @spec get_changed_or_existing_value(Ecto.Changeset.t(), atom()) :: any()
+  def get_changed_or_existing_value(changeset, field) do
+    Map.get(changeset.changes, field) || Map.get(changeset.data, field)
+  end
+end
+
 defmodule QuizGameWeb.Support.Conn do
   @moduledoc "This project's `Plug.Conn` helper functions."
 
@@ -25,7 +68,6 @@ defmodule QuizGameWeb.Support.Conn do
       iex> text_response(conn, 401)
       iex> text_response(conn, 401, "You are not authorized to view this page.")
   """
-
   @spec text_response(conn, integer(), resp_body) :: any()
   def text_response(%Plug.Conn{} = conn, status, resp_body \\ nil) do
     resp_body = resp_body || Plug.Conn.Status.reason_phrase(status)
