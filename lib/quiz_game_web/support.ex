@@ -10,14 +10,17 @@ defmodule QuizGameWeb.Support.Changeset do
   @moduledoc "This project's `Ecto.Changeset` helper functions."
 
   @doc """
-    Check if a changeset will have a given value after it is validated.
+    Check if a changeset will have a given value after it has been validated.
+
+    This function checks both changed and unchanged data, and preferentially returns the value
+    in the changed data. Otherwise, it will return the existing data in the field.
 
     ## Examples
 
-      iex> changeset_field_will_have_value(changeset, :some_field, "some value")
+      iex> field_will_have_value(changeset, :some_field, "some value")
       true
 
-      iex> changeset_field_will_have_value(changeset, :some_field, "nonexistent value")
+      iex> field_will_have_value(changeset, :some_field, "nonexistent value")
       false
   """
   @spec field_will_have_value(Ecto.Changeset.t(), atom(), any()) :: boolean()
@@ -38,15 +41,13 @@ defmodule QuizGameWeb.Support.Changeset do
     Checks a changeset's changed and existing data for a given field, and returns the most
     up-to-date value.
 
-    Use the `:ignore` option to ignore a certain value in the changeset, e.g. the number 0.
-
     ## Examples
 
-      iex> get_changed_or_existing_value(changeset, :some_field)
-      "some value"
+      iex> get_changed_or_existing_value(changeset, :field_with_data_in_changes)
+      "changed value"
 
-      iex> get_changed_or_existing_value(changeset, :field_with_null_value)
-      nil
+      iex> get_changed_or_existing_value(changeset, :field_with_no_data_in_changes)
+      "data value"
   """
   @spec get_changed_or_existing_value(Ecto.Changeset.t(), atom()) :: any()
   def get_changed_or_existing_value(changeset, field) do
