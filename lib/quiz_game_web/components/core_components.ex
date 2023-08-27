@@ -196,8 +196,8 @@ defmodule QuizGameWeb.CoreComponents do
 
   def error(assigns) do
     ~H"""
-    <p class="flex items-center gap-3 text-sm font-semibold text-error phx-no-feedback:hidden">
-      <.icon name="hero-exclamation-circle-mini" class="h-5 w-5 flex-none" />
+    <p class="flex items-center gap-3 mb-1 text-sm font-semibold text-error phx-no-feedback:hidden">
+      <.icon name="hero-arrow-small-up" class="h-5 w-5 flex-none" />
       <%= render_slot(@inner_block) %>
     </p>
     """
@@ -674,6 +674,44 @@ defmodule QuizGameWeb.CoreComponents do
     """
   end
 
+  def input(%{type: "checkbox_multiple"} = assigns) do
+    # ensure this component is called with `multiple={true}`
+    if assigns[:multiple] != true,
+      do: raise("`checkbox_multiple` component must be instantiated using `multiple={true}`")
+
+    ~H"""
+    <div phx-feedback-for={@name} class="text-sm">
+      <.label for={@id}>
+        <%= @label %><%= (@label && @required && "*") || "" %>
+      </.label>
+      <div class="mt-1 w-full bg-white border border-base-content/40 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        <input type="hidden" name={@name} value="" />
+        <div :for={{label, value} <- @options} class="my-1">
+          <label
+            for={"#{@name}-#{value}"}
+            class="flex justify-start items-center max-w-content p-2 gap-2 label cursor-pointer"
+          >
+            <input
+              type="checkbox"
+              id={"#{@name}-#{value}"}
+              name={@name}
+              value={value}
+              checked={@value && value in @value}
+              class="checkbox"
+              {@rest}
+            />
+            <%= label %>
+          </label>
+        </div>
+      </div>
+      <label :if={@help_text} class="label pb-0">
+        <span class="label-text-alt"><%= @help_text %></span>
+      </label>
+      <.input_errors :if={@show_errors} errors={@errors} />
+    </div>
+    """
+  end
+
   def input(%{type: "hidden"} = assigns) do
     ~H"""
     <div phx-feedback-for={@name} data-component="input">
@@ -775,7 +813,7 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <div class="flex min-h-5 mt-2 px-2 show-empty-element">
       <div>
-        <.error :for={msg <- @errors}>Value <%= msg %></.error>
+        <.error :for={msg <- @errors}>This <%= msg %></.error>
       </div>
     </div>
     """
@@ -1096,7 +1134,7 @@ defmodule QuizGameWeb.CoreComponents do
           </label>
         <% end %>
 
-        <div :for={action <- @actions} class="flex flex-center flex-wrap w-full mx-auto">
+        <div :for={action <- @actions} class="flex flex-center flex-wrap w-full mt-2 mx-auto">
           <%= render_slot(action, f) %>
         </div>
 

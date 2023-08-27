@@ -17,17 +17,18 @@ defmodule QuizGameWeb.Support.Changeset do
 
     ## Examples
 
-      iex> field_will_have_value(changeset, :some_field, "some value")
+      iex> field_will_have_value?(changeset, :some_field, "some value")
       true
 
-      iex> field_will_have_value(changeset, :some_field, "nonexistent value")
+      iex> field_will_have_value?(changeset, :some_field, "nonexistent value")
       false
   """
-  @spec field_will_have_value(Ecto.Changeset.t(), atom(), any()) :: boolean()
-  def field_will_have_value(changeset, field, value) do
-    # field has expected value which will not be changed, or changes have expected value
-    (Map.get(changeset.data, field) == value && Map.get(changeset.changes, field) != value) ||
-      Map.get(changeset.changes, field) == value
+  @spec field_will_have_value?(Ecto.Changeset.t(), atom(), any()) :: boolean()
+  def field_will_have_value?(changeset, field, value) do
+    # changes have expected value, or field has expected value which will not be changed
+    Map.get(changeset.changes, field) == value ||
+      (Map.get(changeset.data, field) == value &&
+         Enum.member?([value, nil], Map.get(changeset.changes, field)))
   end
 
   # @spec field_will_not_have_value(Ecto.Changeset.t(), atom(), any()) :: boolean()
