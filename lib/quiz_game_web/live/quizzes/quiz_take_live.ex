@@ -29,13 +29,21 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   def mount(params, _session, socket) do
     quiz = _get_quiz_or_404(params)
 
-    {:ok,
-     socket
-     |> assign(
-       current_path: route(:quizzes, :take, Support.Map.params_to_keyword_list(params)),
-       quiz: quiz
-     )
-     |> _initialize_socket()}
+    # redirect if quiz does not have any cards or random math questions
+    if Enum.empty?(quiz.cards) && !quiz.math_random_question_count do
+      {:ok,
+       socket
+       |> put_flash(:error, "This quiz cannot be taken because it has no questions.")
+       |> redirect(to: route(:quizzes, :show, quiz_id: quiz.id))}
+    else
+      {:ok,
+       socket
+       |> assign(
+         current_path: route(:quizzes, :take, Support.Map.params_to_keyword_list(params)),
+         quiz: quiz
+       )
+       |> _initialize_socket()}
+    end
   end
 
   defp _get_progress_percentage_as_integer(assigns) do
