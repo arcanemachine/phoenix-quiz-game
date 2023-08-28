@@ -36,7 +36,12 @@
     required
     x-model="subject"
   />
-  <div class="p-4 bg-info/20 border-2 border-base-content rounded-xl" x-collapse x-show="subject === 'math'" x-cloak>
+  <div
+    class="p-4 bg-info/20 border-2 border-base-content rounded-xl"
+    x-collapse
+    x-show="subject === 'math'"
+    x-cloak
+  >
     <.input
       field={false}
       show_errors={false}

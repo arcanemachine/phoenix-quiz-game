@@ -26,7 +26,7 @@
   </:item>
   <:item label="Correct answer">
     <%= if @card.format == :multiple_choice do %>
-      <%= Map.get(@card, String.to_atom("choice_#{@card.correct_answer}")) %>
+      <%= Map.fetch(@card, String.to_existing_atom("choice_#{@card.correct_answer}")) %>
     <% else %>
       <%= @card.correct_answer %>
     <% end %>

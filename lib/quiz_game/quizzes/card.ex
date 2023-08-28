@@ -2,6 +2,7 @@ defmodule QuizGame.Quizzes.Card do
   @moduledoc "The Card schema."
   use Ecto.Schema
   import Ecto.Changeset
+  alias QuizGameWeb.Support, as: S
 
   schema "cards" do
     # associations
@@ -71,6 +72,7 @@ defmodule QuizGame.Quizzes.Card do
         changeset
         # all choice fields must be filled
         |> validate_required([:choice_1, :choice_2, :choice_3, :choice_4])
+
         # answer must match one of the given choices (1-4)
         |> validate_format(:correct_answer, ~r/^[1234]$/)
 

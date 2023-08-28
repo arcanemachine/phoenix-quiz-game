@@ -61,16 +61,16 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
 
         <div :if={@card_format == "multiple_choice"}>
           <.label>Answer Choices</.label>
-          <.input field={@form[:choice_1]} type="text" label="Choice 1" required />
-          <.input field={@form[:choice_2]} type="text" label="Choice 2" required />
-          <.input field={@form[:choice_3]} type="text" label="Choice 3" required />
-          <.input field={@form[:choice_4]} type="text" label="Choice 4" required />
+          <.input field={@form[:choice_1]} type="text" label="Choice #1" required />
+          <.input field={@form[:choice_2]} type="text" label="Choice #2" required />
+          <.input field={@form[:choice_3]} type="text" label="Choice #3" required />
+          <.input field={@form[:choice_4]} type="text" label="Choice #4" required />
 
           <.input
             field={@form[:correct_answer]}
             type="select"
             label="Correct answer"
-            options={[{"Choice #1", 0}, {"Choice #2", 1}, {"Choice #3", 2}, {"Choice #4", 3}]}
+            options={[{"Choice #1", 1}, {"Choice #2", 2}, {"Choice #3", 3}, {"Choice #4", 4}]}
             required
           />
         </div>
@@ -105,8 +105,9 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
   @impl Phoenix.LiveComponent
   def handle_event("change", %{"card" => card_params}, socket) do
     # if card format field value has changed, then reset the 'correct_answer' and 'choice' fields
+    require IEx; IEx.pry()
     card_params =
-      if socket.assigns.card_format != card_params["card_format"] do
+      if socket.assigns.card_format != String.to_existing_atom(card_params["card_format"]) do
         Map.merge(card_params, %{
           "correct_answer" => "",
           "choice_1" => "",
