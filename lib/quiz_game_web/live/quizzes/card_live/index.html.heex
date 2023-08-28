@@ -1,5 +1,15 @@
 <.crud_intro_text>
-  Click on a card to get more information about it.
+  <span
+    class="show-empty-element"
+    x-data="{ cardCount: document.querySelector('#list-cards').children.length }"
+  >
+    <span x-show="!cardCount" x-cloak>
+      No cards have been created for this quiz.
+    </span>
+    <span x-show="cardCount" x-cloak>
+      Click on a card to get more information about it.
+    </span>
+  </span>
 </.crud_intro_text>
 
 <ol class="list-index" id="list-cards" phx-update="stream">
