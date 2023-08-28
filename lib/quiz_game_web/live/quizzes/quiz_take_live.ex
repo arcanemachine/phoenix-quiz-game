@@ -77,7 +77,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
       end
 
     # check if quiz is completed
-    if assigns.current_card_index == _quiz_length_get(assigns.quiz) - 1 do
+    if assigns.current_card_index + 1 == _quiz_length_get(assigns.quiz) do
       # quiz is completed. update quiz_state
       {:noreply, socket |> assign(quiz_state: :completed)}
     else
@@ -204,6 +204,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   end
 
   defp _quiz_length_get(quiz) do
+    # add the number of cards to the number of random math questions
     length(quiz.cards) + quiz.math_random_question_count
   end
 
