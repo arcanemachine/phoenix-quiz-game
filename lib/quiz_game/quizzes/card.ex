@@ -37,9 +37,7 @@ defmodule QuizGame.Quizzes.Card do
   @safe_fields_optional [:choice_1, :choice_2, :choice_3, :choice_4]
 
   @doc "A changeset whose fields can be safely modified by the user."
-  def changeset(card \\ %__MODULE__{}, attrs \\ %{})
-
-  def changeset(%__MODULE__{} = card, attrs) do
+  def changeset(%__MODULE__{} = card, attrs \\ %{}) do
     card
     |> cast(attrs, @safe_fields_required ++ @safe_fields_optional)
     |> cast_card()
@@ -48,10 +46,9 @@ defmodule QuizGame.Quizzes.Card do
   end
 
   @doc "A changeset that contains one or more fields that should not be modified by the user."
-  def unsafe_changeset(card \\ %__MODULE__{}, attrs \\ %{})
-
   def unsafe_changeset(%__MODULE__{} = card, attrs) do
     card
+    |> changeset(attrs)
     |> cast(attrs, @unsafe_fields_required ++ @safe_fields_required ++ @safe_fields_optional)
     |> validate_required(@unsafe_fields_required ++ @safe_fields_required)
     |> foreign_key_constraint(:quiz_id)
@@ -60,11 +57,11 @@ defmodule QuizGame.Quizzes.Card do
   def cast_card(changeset) do
     case changeset.data.format do
       :multiple_choice ->
-        # clear all choices
-        changeset |> change(choice_1: "", choice_2: "", choice_3: "", choice_4: "")
+        changeset
 
       _ ->
-        changeset
+        # clear all choices
+        changeset |> change(choice_1: "", choice_2: "", choice_3: "", choice_4: "")
     end
   end
 
