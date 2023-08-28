@@ -3,7 +3,7 @@
     class="text-error"
     navigate={route(:quizzes, :show, quiz_id: @quiz.id)}
     confirm={
-      @quiz_state != :completed &&
+      @quiz_state == :in_progress &&
         "Are you sure you want to exit this quiz? You will lose all your progress!"
     }
   >
