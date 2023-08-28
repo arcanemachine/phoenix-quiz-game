@@ -23,13 +23,6 @@ defmodule QuizGame.Quizzes.Card do
 
     field :correct_answer, :string
 
-    # # attributes
-    # add :shuffle_questions, :boolean, null: false
-    # add :shuffle_answers, :boolean, null: false
-
-    # # computed
-    # field :index, :integer
-
     timestamps()
   end
 
@@ -56,7 +49,7 @@ defmodule QuizGame.Quizzes.Card do
   end
 
   def cast_card(changeset) do
-    case changeset.data.format do
+    case S.Changeset.get_changed_or_existing_value(changeset, :format) do
       :multiple_choice ->
         changeset
 
@@ -67,7 +60,18 @@ defmodule QuizGame.Quizzes.Card do
   end
 
   def validate_card(changeset) do
-    case changeset.data.format do
+    # if card will not be multiple choice, then clear the choice fields
+    changeset =
+      case S.Changeset.get_changed_or_existing_value(changeset, :format) do
+        :multiple_choice ->
+          changeset
+
+        _ ->
+          changeset |> change(%{choice_1: nil, choice_2: nil, choice_3: nil, choice_4: nil})
+      end
+
+    # perform validations based on the card's format
+    case S.Changeset.get_changed_or_existing_value(changeset, :format) do
       :multiple_choice ->
         changeset
         # all choice fields must be filled
@@ -87,8 +91,8 @@ defmodule QuizGame.Quizzes.Card do
         # correct_answer must be 'true' or 'false'
         changeset |> validate_format(:correct_answer, ~r/^true|false$/)
 
+      # new card
       nil ->
-        # new card
         changeset
     end
   end

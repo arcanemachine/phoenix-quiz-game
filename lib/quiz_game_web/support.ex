@@ -9,33 +9,26 @@ end
 defmodule QuizGameWeb.Support.Changeset do
   @moduledoc "This project's `Ecto.Changeset` helper functions."
 
-  @doc """
-    Check if a changeset will have a given value after it has been validated.
+  # @doc """
+  #   Check if a changeset will have a given value after it has been validated.
 
-    This function checks both changed and unchanged data, and preferentially returns the value
-    in the changed data. Otherwise, it will return the existing data in the field.
+  #   This function checks both changed and unchanged data, and preferentially returns the value
+  #   in the changed data. Otherwise, it will return the existing data in the field.
 
-    ## Examples
+  #   ## Examples
 
-      iex> field_will_have_value?(changeset, :some_field, "some value")
-      true
+  #     iex> field_will_have_value?(changeset, :some_field, "some value")
+  #     true
 
-      iex> field_will_have_value?(changeset, :some_field, "nonexistent value")
-      false
-  """
-  @spec field_will_have_value?(Ecto.Changeset.t(), atom(), any()) :: boolean()
-  def field_will_have_value?(changeset, field, value) do
-    # changes have expected value, or field has expected value which will not be changed
-    Map.get(changeset.changes, field) == value ||
-      (Map.get(changeset.data, field) == value &&
-         Enum.member?([value, nil], Map.get(changeset.changes, field)))
-  end
-
-  # @spec field_will_not_have_value(Ecto.Changeset.t(), atom(), any()) :: boolean()
-  # def field_will_not_have_value(changeset, field, value) do
-  #   # field has expected value which will be changed, or changes do not have expected value
-  #   (Map.get(changeset.data, field) == value && Map.get(changeset.changes, field) != value) ||
-  #     Map.get(changeset.changes, field) != value
+  #     iex> field_will_have_value?(changeset, :some_field, "nonexistent value")
+  #     false
+  # """
+  # @spec field_will_have_value?(Ecto.Changeset.t(), atom(), any()) :: boolean()
+  # def field_will_have_value?(changeset, field, value) do
+  #   # changes have expected value, or field has expected value which will not be changed
+  #   Map.get(changeset.changes, field) == value ||
+  #     (Map.get(changeset.data, field) == value &&
+  #        Enum.member?([value, nil], Map.get(changeset.changes, field)))
   # end
 
   @doc """

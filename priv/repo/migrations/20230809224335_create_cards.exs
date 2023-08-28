@@ -22,13 +22,6 @@ defmodule QuizGame.Repo.Migrations.CreateCards do
 
       add :correct_answer, :citext, null: false
 
-      # # attributes
-      # add :shuffle_questions, :boolean, default: false, null: false
-      # add :shuffle_choices, :boolean, default: false, null: false
-
-      # # computed
-      # add :index, :integer, null: false
-
       timestamps()
     end
 

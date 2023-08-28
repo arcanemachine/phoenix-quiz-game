@@ -1,0 +1,72 @@
+<div>
+  <div class="mb-4 text-xl font-bold">
+    <%= @title %>
+  </div>
+  <.crud_intro_text>
+    Use this form to manage card records in your database.
+  </.crud_intro_text>
+
+  <.simple_form
+    for={@form}
+    id="card-form"
+    phx-target={@myself}
+    phx-change="change"
+    phx-submit="submit"
+  >
+    <.input field={@form[:question]} type="text" label="Question" required />
+
+    <.input
+      field={@form[:format]}
+      type="select"
+      label="Format"
+      prompt="Choose a format"
+      options={
+        QuizGameWeb.Support.HTML.Form.select_options_get_from_schema_and_field(
+          QuizGame.Quizzes.Card,
+          :format
+        )
+      }
+      required
+      phx-debounce="250"
+    />
+
+    <div :if={@card_format == "multiple_choice"}>
+      <.label>Answer Choices</.label>
+      <.input field={@form[:choice_1]} type="text" label="Choice #1" required />
+      <.input field={@form[:choice_2]} type="text" label="Choice #2" required />
+      <.input field={@form[:choice_3]} type="text" label="Choice #3" required />
+      <.input field={@form[:choice_4]} type="text" label="Choice #4" required />
+
+      <.input
+        field={@form[:correct_answer]}
+        type="select"
+        label="Correct answer"
+        options={[{"Choice #1", 1}, {"Choice #2", 2}, {"Choice #3", 3}, {"Choice #4", 4}]}
+        required
+      />
+    </div>
+
+    <div :if={@card_format == "true_or_false"}>
+      <.input
+        field={@form[:correct_answer]}
+        type="select"
+        label="Correct answer"
+        prompt="Choose true or false"
+        options={[{"True", "true"}, {"False", "false"}]}
+        required
+      />
+    </div>
+
+    <div :if={@card_format == "text_entry"}>
+      <.input field={@form[:correct_answer]} type="text" label="Correct answer" required />
+    </div>
+
+    <div :if={@card_format == "number_entry"}>
+      <.input field={@form[:correct_answer]} type="number" label="Correct answer" required />
+    </div>
+
+    <:actions>
+      <.form_actions_default />
+    </:actions>
+  </.simple_form>
+</div>
