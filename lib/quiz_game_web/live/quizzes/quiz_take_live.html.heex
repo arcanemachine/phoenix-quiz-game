@@ -74,7 +74,7 @@
             </div>
 
             <:actions>
-              <.form_button type="submit" content="Begin the quiz" autofocus />
+              <.form_button type="submit" content="Begin the quiz" x-init="$el.focus()" />
             </:actions>
           </.simple_form>
         </div>
@@ -150,6 +150,20 @@
               />
             </div>
 
+            <div :if={@card.format == :random_math_question}>
+              <p class="-mt-8 mb-4">Enter the correct number:</p>
+              <.input
+                id="input-number-entry"
+                type="number"
+                name="user-answer"
+                value=""
+                step="0.01"
+                autocomplete="off"
+                required
+                x-init="$el.focus()"
+              />
+            </div>
+
             <div :if={@card.format == :text_entry}>
               <p class="-mt-8 mb-4">Enter the correct answer:</p>
               <.input
@@ -175,7 +189,7 @@
             </div>
 
             <:actions>
-              <div class="mt-8">
+              <div class="mt-4">
                 <.form_button_submit />
               </div>
             </:actions>
@@ -193,7 +207,7 @@
 
           <div>
             <span class="font-bold">Questions remaining:</span>
-            <%= length(@quiz.cards) - @current_card_index - 1 %>
+            <%= _get_quiz_length(@quiz) - @current_card_index - 1 %>
           </div>
 
           <div>
@@ -206,13 +220,13 @@
         </div>
       </div>
     <% :completed -> %>
-      <div id="quiz-state-completed" class="mt-6 card w-full bg-success/30 shadow-xl">
+      <div id="quiz-state-completed" class="mt-4 card w-full bg-success/30 shadow-xl">
         <div class="card-body text-center">
           <.modal_title title="Quiz Complete!" />
 
           <div class="-mt-4">
             <span class="font-bold">Your score:</span>
-            <%= @score %> / <%= length(@quiz.cards) %>
+            <%= @score %> / <%= _get_quiz_length(@quiz) %>
           </div>
 
           <div class="mt-4 text-xl font-bold">

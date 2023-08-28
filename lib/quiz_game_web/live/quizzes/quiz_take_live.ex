@@ -3,7 +3,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
 
   import Ecto.Query
 
-  alias QuizGame.Quizzes.Quiz
+  alias QuizGame.Quizzes.{Card, Quiz}
   alias QuizGameWeb.Support
 
   @impl Phoenix.LiveView
@@ -57,24 +57,8 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   # end
 
   def handle_event("submit-user-answer", params, %{assigns: assigns} = socket) do
-    ## Check the validity of the card and proceed to the next card (or finish the quiz).
-    card = assigns.card
-
-    # check if user answer is correct
-    {user_answer, correct_answer} =
-      case card.format do
-        :multiple_choice ->
-          # convert choice indices to actual answers
-          user_choice = _convert_user_answer_to_choice_atom(params["user-answer"])
-          user_answer = Map.get(card, user_choice)
-          correct_answer = Map.get(card, String.to_atom("choice_#{card.correct_answer}"))
-
-          # get correct answer
-          {user_answer, correct_answer}
-
-        _ ->
-          {String.downcase(params["user-answer"]), card.correct_answer}
-      end
+    user_answer = _get_user_answer(assigns.card, params)
+    correct_answer = _get_correct_answer(assigns.card)
 
     # check if answer was correct and dispatch the appropriate actions
     socket =
@@ -93,7 +77,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
       end
 
     # check if quiz is completed
-    if assigns.current_card_index == length(assigns.quiz.cards) - 1 do
+    if assigns.current_card_index == _get_quiz_length(assigns.quiz) - 1 do
       # quiz is completed. update quiz_state
       {:noreply, socket |> assign(quiz_state: :completed)}
     else
@@ -135,26 +119,68 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
     String.to_existing_atom("choice_#{choice_int}")
   end
 
+  @spec _get_correct_answer(Card) :: [integer() | String.t()]
+  defp _get_correct_answer(card) do
+    case card.format do
+      :multiple_choice ->
+        # convert choice index to actual answer
+        Map.get(card, String.to_existing_atom("choice_#{card.correct_answer}"))
+
+      :random_math_question ->
+        case card.operation do
+          :add -> card.first_value + card.second_value
+          :subtract -> card.first_value - card.second_value
+          :multiply -> card.first_value * card.second_value
+          :divide -> card.first_value / card.second_value
+        end
+
+      _ ->
+        card.correct_answer
+    end
+  end
+
   defp _get_next_card(quiz, current_card_index) do
     if quiz.math_random_question_count do
-      get_random_value = fn ->
+      # build random math question
+      first_value =
         Enum.random(quiz.math_random_question_value_min..quiz.math_random_question_value_max)
-      end
+
+      second_value =
+        Enum.random(quiz.math_random_question_value_min..quiz.math_random_question_value_max)
+
+      operation = Enum.random(quiz.math_random_question_operations)
+
+      # get string values so we can display the question to the user
+      operation_as_string =
+        case operation do
+          :add -> "+"
+          :subtract -> "-"
+          :multiply -> "×"
+          :divide -> "÷"
+        end
+
+      question_as_string = "#{first_value} #{operation_as_string} #{second_value} = ?"
 
       # generate card with random math question data
       %{
-        format: :math_random,
-        first_value: get_random_value.(),
-        second_value: get_random_value.(),
-        operation: Enum.random(quiz.math_random_question_operations)
+        format: :random_math_question,
+        question: question_as_string,
+        first_value: first_value,
+        second_value: second_value,
+        operation: operation
       }
     else
+      # get next card for the quiz
       quiz.cards |> Enum.at(current_card_index + 1)
     end
   end
 
   defp _get_progress_percentage_as_integer(assigns) do
-    (assigns.current_card_index / length(assigns.quiz.cards) * 100) |> round() |> trunc()
+    (assigns.current_card_index / _get_quiz_length(assigns.quiz) * 100) |> round() |> trunc()
+  end
+
+  defp _get_quiz_length(quiz) do
+    length(quiz.cards) + quiz.math_random_question_count
   end
 
   defp _get_quiz_or_404(params) do
@@ -164,6 +190,27 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
 
   defp _get_score_percentage_as_integer(assigns) do
     (assigns.score / (assigns.current_card_index + 1) * 100) |> round() |> trunc()
+  end
+
+  @spec _get_user_answer(Card, map()) :: [integer() | String.t()]
+  defp _get_user_answer(card, params) do
+    case card.format do
+      :multiple_choice ->
+        # convert choice index to actual answer
+        user_choice = _convert_user_answer_to_choice_atom(params["user-answer"])
+        user_answer = Map.get(card, user_choice)
+
+        user_answer
+
+      :random_math_question ->
+        String.to_integer(params["user-answer"])
+
+      :number_entry ->
+        String.to_integer(params["user-answer"])
+
+      _ ->
+        String.downcase(params["user-answer"])
+    end
   end
 
   defp _initialize_socket(socket) do

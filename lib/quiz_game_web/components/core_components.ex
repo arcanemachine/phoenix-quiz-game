@@ -1054,7 +1054,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   def modal_title(assigns) do
     ~H"""
-    <div class={["mb-4 text-xl font-bold", @class]}>
+    <div class={["my-4 text-xl font-bold", @class]}>
       <%= @title %>
     </div>
     """
