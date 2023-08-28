@@ -6,25 +6,6 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   alias QuizGame.Quizzes.Quiz
   alias QuizGameWeb.Support
 
-  defp _get_quiz_or_404(params) do
-    query = from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards]
-    Support.Repo.record_get_or_404(query)
-  end
-
-  defp _initialize_socket(socket) do
-    user = socket.assigns.current_user
-
-    socket
-    |> assign(
-      quiz: socket.assigns.quiz,
-      quiz_state: (user && :before_start) || :enter_display_name,
-      display_name: (user && user.display_name) || nil,
-      card: socket.assigns.quiz.cards |> Enum.at(0),
-      current_card_index: 0,
-      score: 0
-    )
-  end
-
   @impl Phoenix.LiveView
   def mount(params, _session, socket) do
     quiz = _get_quiz_or_404(params)
@@ -44,36 +25,6 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
        )
        |> _initialize_socket()}
     end
-  end
-
-  defp _get_progress_percentage_as_integer(assigns) do
-    (assigns.current_card_index / length(assigns.quiz.cards) * 100) |> round() |> trunc()
-  end
-
-  defp _get_score_percentage_as_integer(assigns) do
-    (assigns.score / (assigns.current_card_index + 1) * 100) |> round() |> trunc()
-  end
-
-  @doc """
-  Safely converts `user_answer` param to one of the 4 Card choice atoms.
-
-  If a bad value is detected, the answer is converted to 1.
-  """
-  @spec convert_user_answer_to_choice_atom(String.t()) ::
-          :choice_1 | :choice_2 | :choice_3 | :choice_4
-  def convert_user_answer_to_choice_atom(user_answer) do
-    # convert choice to integer
-    choice_int =
-      try do
-        String.to_integer(user_answer)
-      rescue
-        _ -> 1
-      end
-
-    # ensure value is in the range of 1-4
-    choice_int = if choice_int in 1..4, do: choice_int, else: 1
-
-    String.to_existing_atom("choice_#{choice_int}")
   end
 
   @impl Phoenix.LiveView
@@ -114,7 +65,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
       case card.format do
         :multiple_choice ->
           # convert choice indices to actual answers
-          user_choice = convert_user_answer_to_choice_atom(params["user-answer"])
+          user_choice = _convert_user_answer_to_choice_atom(params["user-answer"])
           user_answer = Map.get(card, user_choice)
           correct_answer = Map.get(card, String.to_atom("choice_#{card.correct_answer}"))
 
@@ -147,7 +98,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
       {:noreply, socket |> assign(quiz_state: :completed)}
     else
       # quiz is still in progress. get next card and increment current card index
-      next_card = assigns.quiz.cards |> Enum.at(assigns.current_card_index + 1)
+      next_card = _get_next_card(assigns.quiz, assigns.current_card_index)
 
       {:noreply,
        socket
@@ -160,5 +111,73 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
 
   def handle_event("reset-quiz", _params, socket) do
     {:noreply, _initialize_socket(socket)}
+  end
+
+  @doc """
+  Safely converts `user_answer` param to one of the 4 Card choice atoms.
+
+  If a bad value is detected, the answer is converted to 1.
+  """
+  @spec _convert_user_answer_to_choice_atom(String.t()) ::
+          :choice_1 | :choice_2 | :choice_3 | :choice_4
+  def _convert_user_answer_to_choice_atom(user_answer) do
+    # convert choice to integer
+    choice_int =
+      try do
+        String.to_integer(user_answer)
+      rescue
+        _ -> 1
+      end
+
+    # ensure value is in the range of 1-4
+    choice_int = if choice_int in 1..4, do: choice_int, else: 1
+
+    String.to_existing_atom("choice_#{choice_int}")
+  end
+
+  defp _get_next_card(quiz, current_card_index) do
+    if quiz.math_random_question_count do
+      get_random_value = fn ->
+        Enum.random(quiz.math_random_question_value_min..quiz.math_random_question_value_max)
+      end
+
+      # generate card with random math question data
+      %{
+        format: :math_random,
+        first_value: get_random_value.(),
+        second_value: get_random_value.(),
+        operation: Enum.random(quiz.math_random_question_operations)
+      }
+    else
+      quiz.cards |> Enum.at(current_card_index + 1)
+    end
+  end
+
+  defp _get_progress_percentage_as_integer(assigns) do
+    (assigns.current_card_index / length(assigns.quiz.cards) * 100) |> round() |> trunc()
+  end
+
+  defp _get_quiz_or_404(params) do
+    query = from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards]
+    Support.Repo.record_get_or_404(query)
+  end
+
+  defp _get_score_percentage_as_integer(assigns) do
+    (assigns.score / (assigns.current_card_index + 1) * 100) |> round() |> trunc()
+  end
+
+  defp _initialize_socket(socket) do
+    user = socket.assigns.current_user
+
+    socket
+    |> assign(
+      quiz: socket.assigns.quiz,
+      quiz_state: (user && :before_start) || :enter_display_name,
+      display_name: (user && user.display_name) || nil,
+      # card: socket.assigns.quiz.cards |> Enum.at(0),
+      card: _get_next_card(socket.assigns.quiz, 0),
+      current_card_index: 0,
+      score: 0
+    )
   end
 end

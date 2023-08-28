@@ -36,7 +36,7 @@
     required
     x-model="subject"
   />
-  <div class="p-4 bg-info/20 rounded-box" x-collapse x-show="subject === 'math'" x-cloak>
+  <div class="p-4 bg-info/20 border-2 border-base-content rounded-xl" x-collapse x-show="subject === 'math'" x-cloak>
     <.input
       field={false}
       show_errors={false}
@@ -51,7 +51,7 @@
       <div class="h-4 show-empty-element" />
       <.input
         field={f[:math_random_question_operations]}
-        type="checkbox_multiple"
+        type="checkbox-multiple"
         multiple={true}
         label="Operations"
         help_text="Select which operations should be used for random math questions"

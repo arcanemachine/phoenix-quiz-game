@@ -90,7 +90,7 @@
         id="quiz-state-in-progress"
         class="mt-4 card w-full bg-primary/20 shadow-xl"
         x-data
-        @keypress.window="(evt) => {
+        x-on:keypress.window="(evt) => {
            if (['1', '2', '3', '4'].includes(evt.key)) {
              // select 'multiple choice' radio element via keypress
              const multipleChoiceInputElt = document.querySelector(`[value='${evt.key}']`);

@@ -526,8 +526,9 @@ defmodule QuizGameWeb.CoreComponents do
 
   attr :type, :string,
     default: "text",
-    values: ~w(captcha checkbox color csrf-token date datetime-local email file hidden month
-               number password range radio search select tel text textarea time url week)
+    values: ~w(captcha checkbox checkbox-multiple color csrf-token date datetime-local email file
+               hidden month number password range radio search select tel text textarea time url
+               week)
 
   attr :field, :any,
     default: nil,
@@ -674,17 +675,17 @@ defmodule QuizGameWeb.CoreComponents do
     """
   end
 
-  def input(%{type: "checkbox_multiple"} = assigns) do
+  def input(%{type: "checkbox-multiple"} = assigns) do
     # ensure this component is called with `multiple={true}`
     if assigns[:multiple] != true,
-      do: raise("`checkbox_multiple` component must be instantiated using `multiple={true}`")
+      do: raise("`checkbox-multiple` component must be instantiated using `multiple={true}`")
 
     ~H"""
     <div phx-feedback-for={@name} class="text-sm">
       <.label for={@id}>
         <%= @label %><%= (@label && @required && "*") || "" %>
       </.label>
-      <div class="mt-1 w-full bg-white border border-base-content/40 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+      <div class="mt-1 w-full bg-white border border-base-content rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
         <input type="hidden" name={@name} value="" />
         <div :for={{label, value} <- @options} class="my-1">
           <label
