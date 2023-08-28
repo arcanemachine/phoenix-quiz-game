@@ -28,22 +28,6 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   end
 
   @impl Phoenix.LiveView
-  def handle_event("submit-display-name", %{"display-name" => display_name}, socket) do
-    if String.trim(display_name) != "" do
-      {:noreply, socket |> assign(display_name: display_name, quiz_state: :before_start)}
-    else
-      {:noreply, socket |> put_flash(:error, "You must enter a display name.")}
-    end
-  end
-
-  def handle_event("start-quiz", _params, socket) do
-    {:noreply,
-     socket
-     |> clear_flash()
-     |> put_flash(:info, "The quiz is now in progress. Good luck!")
-     |> assign(quiz_state: :in_progress)}
-  end
-
   # def handle_event("change-display-name", _params, socket) do
   #   socket = socket |> clear_flash()
 
@@ -55,6 +39,22 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   #     {:noreply, socket |> assign(:display_name, nil)}
   #   end
   # end
+
+  def handle_event("start-quiz", _params, socket) do
+    {:noreply,
+     socket
+     |> clear_flash()
+     |> put_flash(:info, "The quiz is now in progress. Good luck!")
+     |> assign(quiz_state: :in_progress)}
+  end
+
+  def handle_event("submit-display-name", %{"display-name" => display_name}, socket) do
+    if String.trim(display_name) != "" do
+      {:noreply, socket |> assign(display_name: display_name, quiz_state: :before_start)}
+    else
+      {:noreply, socket |> put_flash(:error, "You must enter a display name.")}
+    end
+  end
 
   def handle_event("submit-user-answer", params, %{assigns: assigns} = socket) do
     user_answer = _answer_user_get(assigns.card, params)
