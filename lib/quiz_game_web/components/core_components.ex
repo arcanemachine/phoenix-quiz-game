@@ -814,7 +814,7 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <div class="flex min-h-5 mt-2 px-2 show-empty-element">
       <div>
-        <.error :for={msg <- @errors}>This <%= msg %></.error>
+        <.error :for={msg <- @errors}>This value <%= msg %></.error>
       </div>
     </div>
     """

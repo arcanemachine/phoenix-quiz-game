@@ -27,7 +27,6 @@
         )
       }
       required
-      phx-debounce="250"
     />
 
     <div :if={@card_format == "multiple_choice"}>
@@ -41,6 +40,7 @@
         field={@form[:correct_answer]}
         type="select"
         label="Correct answer"
+        prompt="Select the correct answer"
         options={[{"Choice #1", 1}, {"Choice #2", 2}, {"Choice #3", 3}, {"Choice #4", 4}]}
         required
       />

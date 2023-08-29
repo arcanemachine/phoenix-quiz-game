@@ -77,7 +77,7 @@ defmodule QuizGame.Quizzes.Quiz do
 
     # if quiz does not have random math questions, then clear the fields related to random
     # math questions
-    if subject != :math || math_random_question_count == 0 do
+    if subject != :math || Enum.member?([nil, 0], math_random_question_count) do
       changeset
       |> change(
         math_random_question_count: nil,

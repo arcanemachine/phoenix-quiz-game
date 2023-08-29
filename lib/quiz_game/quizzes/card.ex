@@ -60,13 +60,13 @@ defmodule QuizGame.Quizzes.Card do
   end
 
   def validate_card(changeset) do
-    # if card will not be multiple choice, then clear the choice fields
     changeset =
       case S.Changeset.get_changed_or_existing_value(changeset, :format) do
         :multiple_choice ->
           changeset
 
         _ ->
+          # if card will not be multiple choice, then clear the choice fields
           changeset |> change(%{choice_1: nil, choice_2: nil, choice_3: nil, choice_4: nil})
       end
 
