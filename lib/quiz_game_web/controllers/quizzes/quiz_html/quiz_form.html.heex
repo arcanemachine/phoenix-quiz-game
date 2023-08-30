@@ -36,42 +36,43 @@
     required
     x-model="subject"
   />
-  <div x-collapse.duration.500ms x-show="subject === 'math'" x-cloak>
+  <div x-collapse x-show="subject === 'math'" x-cloak>
     <div class="p-4 bg-info/20 border border-base-content rounded-xl">
       <.input
         field={false}
         show_errors={false}
         type="checkbox"
-        x-bind:name="subject === 'math' && 'checkbox-show-random-math-question-options'"
+        name="show-random-math-question-options"
         label="Generate random math questions"
         help_text="Use randomly-generated math questions in the quiz (e.g. '5 + 7 = ?')"
         x-model="showRandomMathQuestionOptions"
       />
 
-      <div x-collapse.duration.500ms x-show="showRandomMathQuestionOptions">
+      <div x-collapse x-show="showRandomMathQuestionOptions">
         <div class="h-4 show-empty-element" />
+        <.input
+          field={f[:math_random_question_count]}
+          type="number"
+          label="Number of questions"
+          help_text="How many random questions should be in each quiz"
+          min="1"
+          max={QuizGame.Quizzes.Quiz.math_random_question_count_max()}
+          x-bind:required="subject === 'math' && showRandomMathQuestionOptions"
+          x-bind:disabled="!(subject === 'math' && showRandomMathQuestionOptions)"
+        />
         <.input
           field={f[:math_random_question_operations]}
           type="checkbox-multiple"
           multiple={true}
           label="Operations"
           help_text="Select which operations should be used for random math questions"
-          class="mt-12"
           options={
             QuizGameWeb.Support.HTML.Form.select_options_get_from_schema_and_field(
               QuizGame.Quizzes.Quiz,
               :math_random_question_operations
             )
           }
-          x-bind:min="showRandomMathQuestionOptions && '1' || '0'"
-        />
-        <.input
-          field={f[:math_random_question_count]}
-          type="number"
-          label="Number of questions"
-          help_text="How many random questions should be in each quiz"
-          max={QuizGame.Quizzes.Quiz.math_random_question_count_max()}
-          x-bind:required="subject === 'math' && showRandomMathQuestionOptions"
+          x-bind:disabled="!(subject === 'math' && showRandomMathQuestionOptions)"
         />
         <.input
           field={f[:math_random_question_value_min]}
@@ -81,6 +82,7 @@
           min={QuizGame.Quizzes.Quiz.math_random_question_value_min()}
           max={QuizGame.Quizzes.Quiz.math_random_question_value_max()}
           x-bind:required="subject === 'math' && showRandomMathQuestionOptions"
+          x-bind:disabled="!(subject === 'math' && showRandomMathQuestionOptions)"
         />
         <.input
           field={f[:math_random_question_value_max]}
@@ -90,6 +92,7 @@
           min={QuizGame.Quizzes.Quiz.math_random_question_value_min()}
           max={QuizGame.Quizzes.Quiz.math_random_question_value_max()}
           x-bind:required="subject === 'math' && showRandomMathQuestionOptions"
+          x-bind:disabled="!(subject === 'math' && showRandomMathQuestionOptions)"
         />
       </div>
     </div>

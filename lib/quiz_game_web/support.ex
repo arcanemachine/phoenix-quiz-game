@@ -45,7 +45,7 @@ defmodule QuizGameWeb.Support.Changeset do
   """
   @spec value_get_changed_or_existing(Ecto.Changeset.t(), atom()) :: any()
   def value_get_changed_or_existing(changeset, field) do
-    Map.get(changeset.changes, field) || Map.get(changeset.data, field)
+    Map.get(changeset.changes, field, Map.get(changeset.data, field))
   end
 end
 

@@ -70,10 +70,11 @@ defmodule QuizGame.Quizzes.Quiz do
 
   @spec cast_quiz(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def cast_quiz(changeset) do
-    subject = S.Changeset.value_get_changed_or_existing(changeset, :subject)
+    subject = S.Changeset.value_get_changed_or_existing(changeset, :subject) |> IO.inspect()
 
     math_random_question_count =
       S.Changeset.value_get_changed_or_existing(changeset, :math_random_question_count)
+      |> IO.inspect()
 
     # if quiz does not have random math questions, then clear the fields related to random
     # math questions

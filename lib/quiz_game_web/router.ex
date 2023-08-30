@@ -37,6 +37,7 @@ defmodule QuizGameWeb.Router do
 
       get "/new", QuizController, :new
       post "/", QuizController, :create
+      # post "/new", QuizController, :create
     end
 
     scope "/:quiz_id" do
