@@ -19,7 +19,7 @@ config :quiz_game, QuizGame.Repo,
 port = String.to_integer(System.get_env("PORT", "4000")) + 1
 
 config :quiz_game, QuizGameWeb.Endpoint,
-  http: [ip: {0, 0, 0, 0}, port: port],
+  http: [ip: {0, 0, 0, 0}, port: port, protocol_options: [idle_timeout: 5_000_000]],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
