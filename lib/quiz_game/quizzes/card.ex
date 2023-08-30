@@ -49,7 +49,7 @@ defmodule QuizGame.Quizzes.Card do
   end
 
   def cast_card(changeset) do
-    case S.Changeset.get_changed_or_existing_value(changeset, :format) do
+    case S.Changeset.value_get_changed_or_existing(changeset, :format) do
       :multiple_choice ->
         changeset
 
@@ -61,7 +61,7 @@ defmodule QuizGame.Quizzes.Card do
 
   def validate_card(changeset) do
     changeset =
-      case S.Changeset.get_changed_or_existing_value(changeset, :format) do
+      case S.Changeset.value_get_changed_or_existing(changeset, :format) do
         :multiple_choice ->
           changeset
 
@@ -71,7 +71,7 @@ defmodule QuizGame.Quizzes.Card do
       end
 
     # perform validations based on the card's format
-    case S.Changeset.get_changed_or_existing_value(changeset, :format) do
+    case S.Changeset.value_get_changed_or_existing(changeset, :format) do
       :multiple_choice ->
         changeset
         # all choice fields must be filled

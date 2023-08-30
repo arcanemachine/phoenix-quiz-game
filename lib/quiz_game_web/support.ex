@@ -37,14 +37,14 @@ defmodule QuizGameWeb.Support.Changeset do
 
     ## Examples
 
-      iex> get_changed_or_existing_value(changeset, :field_with_data_in_changes)
+      iex> value_get_changed_or_existing(changeset, :field_with_data_in_changes)
       "changed value"
 
-      iex> get_changed_or_existing_value(changeset, :field_with_no_data_in_changes)
+      iex> value_get_changed_or_existing(changeset, :field_with_no_data_in_changes)
       "data value"
   """
-  @spec get_changed_or_existing_value(Ecto.Changeset.t(), atom()) :: any()
-  def get_changed_or_existing_value(changeset, field) do
+  @spec value_get_changed_or_existing(Ecto.Changeset.t(), atom()) :: any()
+  def value_get_changed_or_existing(changeset, field) do
     Map.get(changeset.changes, field) || Map.get(changeset.data, field)
   end
 end
