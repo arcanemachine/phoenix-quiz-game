@@ -54,7 +54,7 @@
           field={f[:math_random_question_count]}
           type="number"
           label="Number of questions"
-          help_text="How many random questions should be in each quiz"
+          help_text="How many random math questions should be in each quiz"
           min="1"
           max={QuizGame.Quizzes.Quiz.math_random_question_count_max()}
           x-bind:required="subject === 'math' && showRandomMathQuestionOptions"
