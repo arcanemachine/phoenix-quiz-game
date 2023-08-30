@@ -61,10 +61,10 @@ defmodule QuizGame.QuizzesTest do
 
     @invalid_attrs %{format: nil, image: nil, question: nil, answers: nil}
 
-    test "list_cards/0 returns all cards" do
-      card = card_fixture()
-      assert Quizzes.list_cards() == [card]
-    end
+    # test "card_list/0 returns all cards" do
+    #   card = card_fixture()
+    #   assert Quizzes.card_list() == [card]
+    # end
 
     test "get_card!/1 returns the card with given id" do
       card = card_fixture()

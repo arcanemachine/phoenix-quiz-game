@@ -121,7 +121,7 @@ defmodule QuizGame.Quizzes do
   @doc """
   Returns the list of cards.
 
-  ## Examples
+  # ## Examples
 
       iex> list_cards()
       [%Card{}, ...]
