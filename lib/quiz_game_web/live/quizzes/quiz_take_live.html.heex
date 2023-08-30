@@ -82,12 +82,7 @@
     <% :in_progress -> %>
       <progress
         class="absolute h-4 progress w-full max-w-lg rounded-b-none transition duration-300 opacity-50"
-        value={
-           # get progress percentage as integer
-          (assigns.current_card_index / _get_quiz_length(assigns.quiz) * 100)
-          |> round()
-          |> trunc()
-        }
+        value={_get_progress_percentage_as_integer(assigns)}
         max="100"
       />
 
@@ -263,4 +258,11 @@
         </div>
       </div>
   <% end %>
+</div>
+
+<div class="mt-12">
+  <div class="text-xl font-bold">Users taking this quiz:</div>
+  <ul class="list">
+    <li><%= @current_user.display_name %> (You)</li>
+  </ul>
 </div>

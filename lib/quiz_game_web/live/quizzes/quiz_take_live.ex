@@ -3,14 +3,20 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
 
   import Ecto.Query
 
+  alias QuizGameWeb.Presence
   alias QuizGame.Quizzes.{Card, Quiz}
   alias QuizGameWeb.Support
+
+  @quiz_user_count_topic "quiz_user_count"
 
   @impl Phoenix.LiveView
   def mount(params, _session, socket) do
     # get quiz or 404
     query = from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards]
     quiz = Support.Repo.get_record_or_404(query)
+
+    # presence
+    _maybe_track_user(quiz, socket)
 
     # redirect if quiz does not have any cards or random math questions
     if Enum.empty?(quiz.cards) && !quiz.math_random_question_count do
@@ -25,22 +31,8 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
          current_path: route(:quizzes, :take, Support.Map.params_to_keyword_list(params)),
          quiz: quiz
        )
-       |> _socket_initialize()}
+       |> _initialize_socket()}
     end
-  end
-
-  defp _socket_initialize(socket) do
-    user = socket.assigns.current_user
-
-    socket
-    |> assign(
-      quiz: socket.assigns.quiz,
-      quiz_state: (user && :before_start) || :enter_display_name,
-      display_name: (user && user.display_name) || nil,
-      current_card_index: 0,
-      card: socket.assigns.quiz.cards |> Enum.at(0),
-      score: 0
-    )
   end
 
   @impl Phoenix.LiveView
@@ -104,7 +96,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   end
 
   def handle_event("reset-quiz", _params, socket) do
-    {:noreply, _socket_initialize(socket)}
+    {:noreply, _initialize_socket(socket)}
   end
 
   # answer
@@ -209,13 +201,42 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
     socket |> assign(card: card, current_card_index: next_card_index)
   end
 
+  # presence
+  defp _maybe_track_user(
+         quiz,
+         %{assigns: %{current_user: %{display_name: display_name}}} = socket
+       ) do
+    if connected?(socket) do
+      Presence.track_quiz_user(self(), quiz, display_name)
+    end
+  end
+
   # quiz
   defp _get_quiz_length(quiz) do
     # add the number of cards to the number of random math questions
     length(quiz.cards) + (quiz.math_random_question_count || 0)
   end
 
-  # score
+  # socket
+  defp _initialize_socket(socket) do
+    user = socket.assigns.current_user
+
+    socket
+    |> assign(
+      quiz: socket.assigns.quiz,
+      quiz_state: (user && :before_start) || :enter_display_name,
+      display_name: (user && user.display_name) || nil,
+      current_card_index: 0,
+      card: socket.assigns.quiz.cards |> Enum.at(0),
+      score: 0
+    )
+  end
+
+  # support
+  defp _get_progress_percentage_as_integer(assigns) do
+    (assigns.current_card_index / _get_quiz_length(assigns.quiz) * 100) |> round() |> trunc()
+  end
+
   defp _get_score_percentage_as_integer(assigns) do
     (assigns.score / (assigns.current_card_index + 1) * 100) |> round() |> trunc()
   end

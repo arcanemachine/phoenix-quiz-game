@@ -9,6 +9,7 @@ defmodule QuizGame.Application do
       QuizGame.Repo,
       {Phoenix.PubSub, name: QuizGame.PubSub},
       {Finch, name: QuizGame.Finch},
+      QuizGameWeb.Presence,
       QuizGameWeb.Endpoint
     ]
 
