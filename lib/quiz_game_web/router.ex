@@ -36,8 +36,7 @@ defmodule QuizGameWeb.Router do
       pipe_through [:require_authenticated_user]
 
       get "/new", QuizController, :new
-      post "/", QuizController, :create
-      # post "/new", QuizController, :create
+      post "/new", QuizController, :create
     end
 
     scope "/:quiz_id" do
@@ -55,8 +54,8 @@ defmodule QuizGameWeb.Router do
         pipe_through [:require_authenticated_user, :require_quiz_permissions]
 
         get "/edit", QuizController, :edit
-        put "/", QuizController, :update
-        patch "/", QuizController, :update
+        put "/edit", QuizController, :update
+        patch "/edit", QuizController, :update
         delete "/", QuizController, :delete
       end
 
