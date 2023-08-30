@@ -70,10 +70,10 @@ defmodule QuizGame.Quizzes.Quiz do
 
   @spec cast_quiz(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def cast_quiz(changeset) do
-    subject = S.Changeset.value_get_changed_or_existing(changeset, :subject)
+    subject = S.Changeset.get_changed_or_existing_value(changeset, :subject)
 
     math_random_question_count =
-      S.Changeset.value_get_changed_or_existing(changeset, :math_random_question_count)
+      S.Changeset.get_changed_or_existing_value(changeset, :math_random_question_count)
 
     # if quiz does not have random math questions, then clear the fields related to random
     # math questions
@@ -93,7 +93,7 @@ defmodule QuizGame.Quizzes.Quiz do
   @spec validate_quiz(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def validate_quiz(changeset) do
     # subject
-    if S.Changeset.value_get_changed_or_existing(changeset, :subject) == :math,
+    if S.Changeset.get_changed_or_existing_value(changeset, :subject) == :math,
       do: validate_subject_math(changeset),
       else: changeset
   end
@@ -101,7 +101,7 @@ defmodule QuizGame.Quizzes.Quiz do
   @doc "Validations for quizzes whose subject is 'math'."
   @spec validate_subject_math(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def validate_subject_math(changeset) do
-    if S.Changeset.value_get_changed_or_existing(changeset, :math_random_question_count) do
+    if S.Changeset.get_changed_or_existing_value(changeset, :math_random_question_count) do
       # quiz has randomly-generated math questions. validate data related to them
       changeset
       |> validate_required([
@@ -128,7 +128,7 @@ defmodule QuizGame.Quizzes.Quiz do
       # chosen maximum value must be greater than the chosen minimum value
       |> validate_number(:math_random_question_value_max,
         greater_than_or_equal_to:
-          S.Changeset.value_get_changed_or_existing(changeset, :math_random_question_value_min),
+          S.Changeset.get_changed_or_existing_value(changeset, :math_random_question_value_min),
         message: "cannot be less than the minimum random value"
       )
 

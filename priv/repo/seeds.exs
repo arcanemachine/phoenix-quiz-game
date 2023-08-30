@@ -30,7 +30,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
 
   # create generic quiz for user
   {:ok, generic_quiz} =
-    Quizzes.quiz_create(
+    Quizzes.create_quiz(
       %{
         user_id: user.id,
         name: "Example Quiz",
@@ -40,7 +40,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
     )
 
   # create example cards for generic quiz
-  Quizzes.card_create(
+  Quizzes.create_card(
     %{
       quiz_id: generic_quiz.id,
       format: :multiple_choice,
@@ -54,7 +54,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
     unsafe: true
   )
 
-  Quizzes.card_create(
+  Quizzes.create_card(
     %{
       quiz_id: generic_quiz.id,
       format: :true_or_false,
@@ -64,7 +64,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
     unsafe: true
   )
 
-  Quizzes.card_create(
+  Quizzes.create_card(
     %{
       quiz_id: generic_quiz.id,
       format: :text_entry,
@@ -74,7 +74,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
     unsafe: true
   )
 
-  Quizzes.card_create(
+  Quizzes.create_card(
     %{
       quiz_id: generic_quiz.id,
       format: :number_entry,
@@ -85,7 +85,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
   )
 
   # create math quiz for user
-  Quizzes.quiz_create(
+  Quizzes.create_quiz(
     %{
       user_id: user.id,
       name: "Math Quiz",
@@ -110,7 +110,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
 
   # create quiz for other user
   {:ok, other_quiz} =
-    Quizzes.quiz_create(
+    Quizzes.create_quiz(
       %{
         user_id: other_user.id,
         name: "Other Quiz",
@@ -120,7 +120,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
     )
 
   # create example card for other user's quiz
-  Quizzes.card_create(
+  Quizzes.create_card(
     %{
       quiz_id: other_quiz.id,
       format: :true_or_false,
@@ -132,7 +132,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
 
   # create quiz with no cards
   {:ok, _quiz_with_no_cards} =
-    Quizzes.quiz_create(
+    Quizzes.create_quiz(
       %{
         user_id: other_user.id,
         name: "Quiz With No Cards",

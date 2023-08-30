@@ -10,7 +10,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   def mount(params, _session, socket) do
     # get quiz or 404
     query = from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards]
-    quiz = Support.Repo.record_get_or_404(query)
+    quiz = Support.Repo.get_record_or_404(query)
 
     # redirect if quiz does not have any cards or random math questions
     if Enum.empty?(quiz.cards) && !quiz.math_random_question_count do

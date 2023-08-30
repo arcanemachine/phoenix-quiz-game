@@ -40,10 +40,10 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
   end
 
   def handle_event("submit", %{"card" => card_params}, socket) do
-    _card_save(socket, socket.assigns.action, card_params)
+    _save_card(socket, socket.assigns.action, card_params)
   end
 
-  defp _card_save(socket, :new, card_params) do
+  defp _save_card(socket, :new, card_params) do
     # associate new card with its quiz
     unsafe_card_params = Map.merge(card_params, %{"quiz_id" => socket.assigns.quiz.id})
 
@@ -61,7 +61,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
     end
   end
 
-  defp _card_save(socket, :edit, card_params) do
+  defp _save_card(socket, :edit, card_params) do
     case Quizzes.update_card(socket.assigns.card, card_params) do
       {:ok, card} ->
         notify_parent({:saved, card})

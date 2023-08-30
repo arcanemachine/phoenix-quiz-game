@@ -2,10 +2,10 @@
   :let={f}
   for={@changeset}
   action=""
-  data-subject={S.Changeset.value_get_changed_or_existing(@changeset, :subject)}
+  data-subject={S.Changeset.get_changed_or_existing_value(@changeset, :subject)}
   data-show-random-math-question-options={
     to_string(
-      S.Changeset.value_get_changed_or_existing(@changeset, :math_random_question_count) != nil
+      S.Changeset.get_changed_or_existing_value(@changeset, :math_random_question_count) != nil
     )
   }
   x-data="{
