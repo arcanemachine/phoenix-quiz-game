@@ -30,7 +30,7 @@ defmodule QuizGameWeb.Quizzes.QuizController do
         do: Map.put(quiz_params, "math_random_question_count", "0"),
         else: quiz_params
 
-    # (unsafe) associate new quiz with current user
+    # unsafe: associate new quiz with current user
     unsafe_quiz_params = quiz_params |> Map.put("user_id", conn.assigns.current_user.id)
 
     case Quizzes.create_quiz(unsafe_quiz_params, unsafe: true) do

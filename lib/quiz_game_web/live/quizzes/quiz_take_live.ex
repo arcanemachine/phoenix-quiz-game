@@ -7,16 +7,13 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   alias QuizGame.Quizzes.{Card, Quiz}
   alias QuizGameWeb.Support
 
-  @quiz_user_count_topic "quiz_user_count"
+  @presence_topic "quiz_presence"
 
   @impl Phoenix.LiveView
   def mount(params, _session, socket) do
     # get quiz or 404
     query = from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards]
     quiz = Support.Repo.get_record_or_404(query)
-
-    # presence
-    _maybe_track_user(quiz, socket)
 
     # redirect if quiz does not have any cards or random math questions
     if Enum.empty?(quiz.cards) && !quiz.math_random_question_count do
@@ -25,6 +22,8 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
        |> put_flash(:error, "This quiz cannot be taken because it has no cards.")
        |> redirect(to: route(:quizzes, :show, quiz_id: quiz.id))}
     else
+      _maybe_track_user(socket, quiz)
+
       {:ok,
        socket
        |> assign(
@@ -38,7 +37,11 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   @impl Phoenix.LiveView
   def handle_event("submit-display-name", %{"display-name" => display_name}, socket) do
     if String.trim(display_name) != "" do
-      {:noreply, socket |> assign(display_name: display_name, quiz_state: :before_start)}
+      {:noreply,
+       socket
+       |> assign(display_name: display_name, quiz_state: :before_start)}
+
+      # |> _maybe_track_user(socket.assigns.quiz)}
     else
       {:noreply, socket |> put_flash(:error, "You must enter a display name.")}
     end
@@ -202,12 +205,9 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
   end
 
   # presence
-  defp _maybe_track_user(
-         quiz,
-         %{assigns: %{current_user: %{display_name: display_name}}} = socket
-       ) do
-    if connected?(socket) do
-      Presence.track_quiz_user(self(), quiz, display_name)
+  defp _maybe_track_user(socket, quiz) do
+    if connected?(socket) && socket.assigns.current_user do
+      Presence.track_user(self(), @presence_topic, quiz.id, socket.assigns.current_user)
     end
   end
 

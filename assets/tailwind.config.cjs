@@ -45,8 +45,7 @@ module.exports = {
   },
   safelist: [
     "alert-(info|success|warning|error)",
-    "bg-(primary-secondary-accent-neutral-info-success-warning-error)",
-    "btn-(primary-secondary-accent-neutral-info-success-warning-error)",
+    "(bg|btn)-(primary-secondary-accent-neutral-info-success-warning-error)",
     "text-(primary-secondary-accent-neutral-info-success-warning-error)-content",
   ],
   plugins: [

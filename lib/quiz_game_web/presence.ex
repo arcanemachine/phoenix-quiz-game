@@ -1,31 +1,31 @@
 defmodule QuizGameWeb.Presence do
-  @moduledoc false
+  @moduledoc "Presence tracking for channels and processes."
 
   use Phoenix.Presence,
     otp_app: :quiz_game,
     pubsub_server: QuizGame.PubSub
 
-  alias QuizGameWeb.Presence
+  # @quiz_presence_topic "quiz_presence"
 
-  @quiz_user_count_topic "quiz_user_count"
-
-  def track_quiz_user(pid, quiz_id, display_name) do
-    Presence.track(pid, @quiz_user_count_topic, quiz_id, %{users: [%{display_name: display_name}]})
+  @spec track_user(pid(), String.t(), integer(), String.t()) :: {:error, any()} | {:ok, binary()}
+  def track_user(pid, topic, quiz_id, user) do
+    track(pid, topic, quiz_id, %{users: [user]})
   end
 
-  def list_quiz_users() do
-    Presence.list(@quiz_user_count_topic) |> Enum.map(&extract_users/1)
+  @spec list_users_for(String.t(), integer()) :: List.t()
+  def list_users_for(topic, quiz_id) do
+    users = list(topic)
+
+    users
+    |> Map.get(to_string(quiz_id), %{metas: []})
+    |> Map.get(:metas)
+    |> users_from_metas
   end
 
-  defp extract_quiz_users({display_name, %{metas: metas}}) do
-    {display_name, quiz_users_from_metas_list(metas)}
-  end
-
-  defp quiz_users_from_metas_list(metas_list) do
-    Enum.map(metas_list, &get_quiz_user_count_from_meta_map/1) |> List.flatten() |> Enum.uniq()
-  end
-
-  defp get_quiz_user_count_from_meta_map(meta_map) do
-    get_in(meta_map, [:users])
+  defp users_from_metas(metas) do
+    Enum.map(metas, &get_in(&1, [:users]))
+    |> List.flatten()
+    # |> Enum.map(&Map.get(&1, :email))
+    |> Enum.uniq()
   end
 end
