@@ -201,22 +201,6 @@ defmodule QuizGame.Quizzes do
     end
   end
 
-  # @doc """
-  # Updates a card.
-
-  # ## Examples
-
-  #     iex> update_card(changeset)
-  #     {:ok, %Card{}}
-
-  #     iex> update_card(invalid_changeset)
-  #     {:error, %Ecto.Changeset{}}
-
-  # """
-  # def update_card(changeset) do
-  #   changeset |> Repo.update()
-  # end
-
   @doc """
   Deletes a card.
 
@@ -244,5 +228,101 @@ defmodule QuizGame.Quizzes do
   """
   def change_card(%Card{} = card, attrs \\ %{}) do
     Card.changeset(card, attrs)
+  end
+
+  alias QuizGame.Quizzes.QuizRecord
+
+  @doc """
+  Returns the list of quiz_records.
+
+  ## Examples
+
+      iex> list_quiz_records()
+      [%QuizRecord{}, ...]
+
+  """
+  def list_quiz_records do
+    Repo.all(QuizRecord)
+  end
+
+  @doc """
+  Gets a single quiz_record.
+
+  Raises `Ecto.NoResultsError` if the Quiz record does not exist.
+
+  ## Examples
+
+      iex> get_quiz_record!(123)
+      %QuizRecord{}
+
+      iex> get_quiz_record!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_quiz_record!(id), do: Repo.get!(QuizRecord, id)
+
+  @doc """
+  Creates a quiz_record.
+
+  ## Examples
+
+      iex> create_quiz_record(%{field: value})
+      {:ok, %QuizRecord{}}
+
+      iex> create_quiz_record(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_quiz_record(attrs \\ %{}) do
+    %QuizRecord{}
+    |> QuizRecord.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a quiz_record.
+
+  ## Examples
+
+      iex> update_quiz_record(quiz_record, %{field: new_value})
+      {:ok, %QuizRecord{}}
+
+      iex> update_quiz_record(quiz_record, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_quiz_record(%QuizRecord{} = quiz_record, attrs) do
+    quiz_record
+    |> QuizRecord.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a quiz_record.
+
+  ## Examples
+
+      iex> delete_quiz_record(quiz_record)
+      {:ok, %QuizRecord{}}
+
+      iex> delete_quiz_record(quiz_record)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_quiz_record(%QuizRecord{} = quiz_record) do
+    Repo.delete(quiz_record)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking quiz_record changes.
+
+  ## Examples
+
+      iex> change_quiz_record(quiz_record)
+      %Ecto.Changeset{data: %QuizRecord{}}
+
+  """
+  def change_quiz_record(%QuizRecord{} = quiz_record, attrs \\ %{}) do
+    QuizRecord.changeset(quiz_record, attrs)
   end
 end

@@ -36,4 +36,20 @@ defmodule QuizGame.TestSupport.QuizzesFixtures do
 
     card
   end
+
+  @doc """
+  Generate a quiz_record.
+  """
+  def quiz_record_fixture(attrs \\ %{}) do
+    {:ok, quiz_record} =
+      attrs
+      |> Enum.into(%{
+        date: ~U[2023-08-31 02:31:00Z],
+        card_count: 42,
+        correct_answer_count: 42
+      })
+      |> QuizGame.Quizzes.create_quiz_record()
+
+    quiz_record
+  end
 end

@@ -1,5 +1,5 @@
 defmodule QuizGame.Quizzes.Card do
-  @moduledoc "The Card schema."
+  @moduledoc "The card schema."
   use Ecto.Schema
   import Ecto.Changeset
   alias QuizGameWeb.Support, as: S

@@ -124,4 +124,62 @@ defmodule QuizGame.QuizzesTest do
       assert %Ecto.Changeset{} = Quizzes.change_card(card)
     end
   end
+
+  describe "quiz_records" do
+    alias QuizGame.Quizzes.QuizRecord
+
+    import QuizGame.QuizzesFixtures
+
+    @invalid_attrs %{date: nil, card_count: nil, correct_answer_count: nil}
+
+    test "list_quiz_records/0 returns all quiz_records" do
+      quiz_record = quiz_record_fixture()
+      assert Quizzes.list_quiz_records() == [quiz_record]
+    end
+
+    test "get_quiz_record!/1 returns the quiz_record with given id" do
+      quiz_record = quiz_record_fixture()
+      assert Quizzes.get_quiz_record!(quiz_record.id) == quiz_record
+    end
+
+    test "create_quiz_record/1 with valid data creates a quiz_record" do
+      valid_attrs = %{date: ~U[2023-08-31 02:31:00Z], card_count: 42, correct_answer_count: 42}
+
+      assert {:ok, %QuizRecord{} = quiz_record} = Quizzes.create_quiz_record(valid_attrs)
+      assert quiz_record.date == ~U[2023-08-31 02:31:00Z]
+      assert quiz_record.card_count == 42
+      assert quiz_record.correct_answer_count == 42
+    end
+
+    test "create_quiz_record/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Quizzes.create_quiz_record(@invalid_attrs)
+    end
+
+    test "update_quiz_record/2 with valid data updates the quiz_record" do
+      quiz_record = quiz_record_fixture()
+      update_attrs = %{date: ~U[2023-09-01 02:31:00Z], card_count: 43, correct_answer_count: 43}
+
+      assert {:ok, %QuizRecord{} = quiz_record} = Quizzes.update_quiz_record(quiz_record, update_attrs)
+      assert quiz_record.date == ~U[2023-09-01 02:31:00Z]
+      assert quiz_record.card_count == 43
+      assert quiz_record.correct_answer_count == 43
+    end
+
+    test "update_quiz_record/2 with invalid data returns error changeset" do
+      quiz_record = quiz_record_fixture()
+      assert {:error, %Ecto.Changeset{}} = Quizzes.update_quiz_record(quiz_record, @invalid_attrs)
+      assert quiz_record == Quizzes.get_quiz_record!(quiz_record.id)
+    end
+
+    test "delete_quiz_record/1 deletes the quiz_record" do
+      quiz_record = quiz_record_fixture()
+      assert {:ok, %QuizRecord{}} = Quizzes.delete_quiz_record(quiz_record)
+      assert_raise Ecto.NoResultsError, fn -> Quizzes.get_quiz_record!(quiz_record.id) end
+    end
+
+    test "change_quiz_record/1 returns a quiz_record changeset" do
+      quiz_record = quiz_record_fixture()
+      assert %Ecto.Changeset{} = Quizzes.change_quiz_record(quiz_record)
+    end
+  end
 end

@@ -28,7 +28,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
       password: "password"
     })
 
-  # create generic quiz for user
+  # create generic quiz
   {:ok, generic_quiz} =
     Quizzes.create_quiz(
       %{
@@ -84,7 +84,22 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
     unsafe: true
   )
 
-  # create math quiz for user
+  # create quiz records for generic quiz
+  Quizzes.create_quiz_record(%{
+    quiz_id: generic_quiz.id,
+    user_id: user.id,
+    card_count: 4,
+    correct_answer_count: 3
+  })
+
+  Quizzes.create_quiz_record(%{
+    quiz_id: generic_quiz.id,
+    user_id: nil,
+    card_count: 4,
+    correct_answer_count: 4
+  })
+
+  # create math quiz
   Quizzes.create_quiz(
     %{
       user_id: user.id,

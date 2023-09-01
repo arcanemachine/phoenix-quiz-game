@@ -1,5 +1,5 @@
 defmodule QuizGame.Quizzes.Quiz do
-  @moduledoc "The Quiz schema."
+  @moduledoc "The quiz schema."
   use Ecto.Schema
   import Ecto.Changeset
   alias QuizGameWeb.Support, as: S
@@ -7,7 +7,6 @@ defmodule QuizGame.Quizzes.Quiz do
   schema "quizzes" do
     # associations
     belongs_to :user, QuizGame.Users.User
-    has_many :cards, QuizGame.Quizzes.Card
 
     # data
     field :name, :string

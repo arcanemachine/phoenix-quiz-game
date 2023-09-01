@@ -1,5 +1,5 @@
 defmodule QuizGame.Users.User do
-  @moduledoc "The User context."
+  @moduledoc "The user context."
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -11,9 +11,6 @@ defmodule QuizGame.Users.User do
   def password_length_max(), do: 72
 
   schema "users" do
-    # associations
-    has_many :quizzes, QuizGame.Quizzes.Quiz
-
     # data
     field :username, :string
     field :display_name, :string
