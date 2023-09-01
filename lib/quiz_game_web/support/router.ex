@@ -111,13 +111,20 @@ defmodule QuizGameWeb.Support.Router do
   @doc """
   Converts params to a query string.
 
+  `params` may be any enumerable supported by `URI.encode_query/1` (e.g. keyword list, map).
+
+  If `params` is empty, an empty string will be returned.
+
   ## Examples
 
       iex> query_string(hello: "world")
       "?hello=world"
+
+      iex> query_string(%{"hello" => "world"})
+      "?hello=world"
   """
-  @spec query_string(keyword()) :: String.t()
+  @spec query_string(Enum.t()) :: String.t()
   def query_string(params) do
-    "?#{URI.encode_query(params)}"
+    if Enum.empty?(params), do: "", else: "?#{URI.encode_query(params)}"
   end
 end
