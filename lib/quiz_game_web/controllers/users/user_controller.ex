@@ -4,7 +4,7 @@ defmodule QuizGameWeb.UserController do
   import Ecto.Query
 
   alias QuizGame.{Repo, Users}
-  alias QuizGame.Quizzes.{Quiz, QuizRecord}
+  alias QuizGame.Quizzes.{Quiz, Record}
   alias QuizGameWeb.UserAuth
 
   # user
@@ -38,15 +38,15 @@ defmodule QuizGameWeb.UserController do
     render(conn, :quizzes_index, page_title: "Your Quizzes", quizzes: quizzes)
   end
 
-  def quiz_records_index(conn, _params) do
+  def records_index(conn, _params) do
     query =
-      from q in QuizRecord, where: q.user_id == ^conn.assigns.current_user.id, preload: :quiz
+      from q in Record, where: q.user_id == ^conn.assigns.current_user.id, preload: :quiz
 
-    quiz_records = Repo.all(query)
+    records = Repo.all(query)
 
-    render(conn, :quiz_records_index,
+    render(conn, :records_index,
       page_title: "Your Quiz Records",
-      quiz_records: quiz_records
+      records: records
     )
   end
 end

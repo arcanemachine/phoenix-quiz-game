@@ -13,7 +13,7 @@ defmodule QuizGame.Users.User do
   schema "users" do
     # associations
     has_many :quizzes, QuizGame.Quizzes.Quiz
-    has_many :quiz_records, QuizGame.Quizzes.QuizRecord
+    has_many :records, QuizGame.Quizzes.Record
 
     # data
     field :username, :string

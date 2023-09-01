@@ -8,7 +8,7 @@ defmodule QuizGame.Quizzes.Quiz do
     # associations
     belongs_to :user, QuizGame.Users.User
     has_many :cards, QuizGame.Quizzes.Card
-    has_many :quiz_records, QuizGame.Quizzes.QuizRecord
+    has_many :records, QuizGame.Quizzes.Record
 
     # data
     field :name, :string

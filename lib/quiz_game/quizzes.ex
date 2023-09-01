@@ -230,99 +230,99 @@ defmodule QuizGame.Quizzes do
     Card.changeset(card, attrs)
   end
 
-  alias QuizGame.Quizzes.QuizRecord
+  alias QuizGame.Quizzes.Record
 
   @doc """
-  Returns the list of quiz_records.
+  Returns the list of records.
 
   ## Examples
 
-      iex> list_quiz_records()
-      [%QuizRecord{}, ...]
+      iex> list_records()
+      [%Record{}, ...]
 
   """
-  def list_quiz_records do
-    Repo.all(QuizRecord)
+  def list_records do
+    Repo.all(Record)
   end
 
   @doc """
-  Gets a single quiz_record.
+  Gets a single record.
 
   Raises `Ecto.NoResultsError` if the Quiz record does not exist.
 
   ## Examples
 
-      iex> get_quiz_record!(123)
-      %QuizRecord{}
+      iex> get_record!(123)
+      %Record{}
 
-      iex> get_quiz_record!(456)
+      iex> get_record!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_quiz_record!(id), do: Repo.get!(QuizRecord, id)
+  def get_record!(id), do: Repo.get!(Record, id)
 
   @doc """
-  Creates a quiz_record.
+  Creates a record.
 
   ## Examples
 
-      iex> create_quiz_record(%{field: value})
-      {:ok, %QuizRecord{}}
+      iex> create_record(%{field: value})
+      {:ok, %Record{}}
 
-      iex> create_quiz_record(%{field: bad_value})
+      iex> create_record(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_quiz_record(attrs \\ %{}) do
-    %QuizRecord{}
-    |> QuizRecord.changeset(attrs)
+  def create_record(attrs \\ %{}) do
+    %Record{}
+    |> Record.changeset(attrs)
     |> Repo.insert()
   end
 
   @doc """
-  Updates a quiz_record.
+  Updates a record.
 
   ## Examples
 
-      iex> update_quiz_record(quiz_record, %{field: new_value})
-      {:ok, %QuizRecord{}}
+      iex> update_record(record, %{field: new_value})
+      {:ok, %Record{}}
 
-      iex> update_quiz_record(quiz_record, %{field: bad_value})
+      iex> update_record(record, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_quiz_record(%QuizRecord{} = quiz_record, attrs) do
-    quiz_record
-    |> QuizRecord.changeset(attrs)
+  def update_record(%Record{} = record, attrs) do
+    record
+    |> Record.changeset(attrs)
     |> Repo.update()
   end
 
   @doc """
-  Deletes a quiz_record.
+  Deletes a record.
 
   ## Examples
 
-      iex> delete_quiz_record(quiz_record)
-      {:ok, %QuizRecord{}}
+      iex> delete_record(record)
+      {:ok, %Record{}}
 
-      iex> delete_quiz_record(quiz_record)
+      iex> delete_record(record)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_quiz_record(%QuizRecord{} = quiz_record) do
-    Repo.delete(quiz_record)
+  def delete_record(%Record{} = record) do
+    Repo.delete(record)
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking quiz_record changes.
+  Returns an `%Ecto.Changeset{}` for tracking record changes.
 
   ## Examples
 
-      iex> change_quiz_record(quiz_record)
-      %Ecto.Changeset{data: %QuizRecord{}}
+      iex> change_record(record)
+      %Ecto.Changeset{data: %Record{}}
 
   """
-  def change_quiz_record(%QuizRecord{} = quiz_record, attrs \\ %{}) do
-    QuizRecord.changeset(quiz_record, attrs)
+  def change_record(%Record{} = record, attrs \\ %{}) do
+    Record.changeset(record, attrs)
   end
 end

@@ -1,9 +1,9 @@
-defmodule QuizGame.Quizzes.QuizRecord do
-  @moduledoc "The quiz_record schema."
+defmodule QuizGame.Quizzes.Record do
+  @moduledoc "The record schema."
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "quiz_records" do
+  schema "records" do
     # associations
     belongs_to :user, QuizGame.Users.User
     belongs_to :quiz, QuizGame.Quizzes.Quiz
@@ -18,8 +18,8 @@ defmodule QuizGame.Quizzes.QuizRecord do
   @fields [:user_id, :quiz_id, :card_count, :correct_answer_count]
 
   @doc false
-  def changeset(quiz_record, attrs) do
-    quiz_record
+  def changeset(record, attrs) do
+    record
     |> cast(attrs, @fields)
     |> validate_required(@fields)
     |> foreign_key_constraint(:user_id)
