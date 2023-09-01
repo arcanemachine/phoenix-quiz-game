@@ -1,0 +1,34 @@
+<div :if={Enum.empty?(@quiz_records)} class="text-center italic">
+  You have not taken any quizzes.
+</div>
+
+<ul class="list-index">
+  <li :for={quiz_record <- @quiz_records}>
+    <a href={route(:quizzes, :show, quiz_id: quiz_record.quiz.id)}>
+      <%= quiz_record.quiz.name %>
+    </a>
+    <ul class="list">
+      <li
+        data-completed-on={quiz_record.inserted_at}
+        x-data="{
+          completedOn: new Date($el.dataset.completedOn + 'Z').toLocaleString()
+        }"
+      >
+        <b>Completed on:</b> <span x-text="completedOn" />
+      </li>
+      <li>
+        <b>Score:</b>
+        <%= quiz_record.correct_answer_count %> out of <%= quiz_record.card_count %>
+        (<%= (quiz_record.correct_answer_count / quiz_record.card_count) * 100 |> round() |> trunc() %>%)
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<.action_links>
+  <.action_links_item kind="back">
+    <.link href={route(:users, :show)}>
+      Return to your profile
+    </.link>
+  </.action_links_item>
+</.action_links>

@@ -159,7 +159,9 @@ defmodule QuizGame.QuizzesTest do
       quiz_record = quiz_record_fixture()
       update_attrs = %{date: ~U[2023-09-01 02:31:00Z], card_count: 43, correct_answer_count: 43}
 
-      assert {:ok, %QuizRecord{} = quiz_record} = Quizzes.update_quiz_record(quiz_record, update_attrs)
+      assert {:ok, %QuizRecord{} = quiz_record} =
+               Quizzes.update_quiz_record(quiz_record, update_attrs)
+
       assert quiz_record.date == ~U[2023-09-01 02:31:00Z]
       assert quiz_record.card_count == 43
       assert quiz_record.correct_answer_count == 43

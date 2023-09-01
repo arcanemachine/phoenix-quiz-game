@@ -86,7 +86,7 @@ defmodule QuizGameWeb.Router do
 
     get "/", UserController, :show
     get "/quizzes", UserController, :quizzes_index
-    get "/quizzes/taken", UserController, :quizzes_index_taken
+    get "/quizzes/records", UserController, :quiz_records_index
 
     scope "/edit" do
       get "/", UserController, :settings

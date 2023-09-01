@@ -170,23 +170,31 @@
 
   .list {
     margin-bottom: 2rem;
-    padding-left: 2rem;
+    padding-left: 1.5rem;
     list-style-type: "- ";
   }
 
-  .list > * {
+  .list > *:first-child {
     margin-top: 0.5rem;
+  }
+
+  .list > *:not(:first-child) {
+    margin-top: 0.25rem;
   }
 
   .list-index {
     margin-bottom: 2rem;
     padding-left: 2rem;
-    font-size: 1.25rem;
+    font-size: 1.25em;
     list-style-type: "- ";
   }
 
+  .list-index ul {
+    font-size: 0.8em;
+  }
+
   .list-index > *:not(:first-child) {
-    margin-top: 0.5rem;
+    margin-top: 0.5em;
   }
 
   .template-center {
