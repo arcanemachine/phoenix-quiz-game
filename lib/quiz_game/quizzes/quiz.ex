@@ -7,6 +7,8 @@ defmodule QuizGame.Quizzes.Quiz do
   schema "quizzes" do
     # associations
     belongs_to :user, QuizGame.Users.User
+    has_many :cards, QuizGame.Quizzes.Card
+    has_many :quiz_records, QuizGame.Quizzes.QuizRecord
 
     # data
     field :name, :string

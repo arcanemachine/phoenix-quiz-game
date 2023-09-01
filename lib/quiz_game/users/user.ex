@@ -11,6 +11,10 @@ defmodule QuizGame.Users.User do
   def password_length_max(), do: 72
 
   schema "users" do
+    # associations
+    has_many :quizzes, QuizGame.Quizzes.Quiz
+    has_many :quiz_records, QuizGame.Quizzes.QuizRecord
+
     # data
     field :username, :string
     field :display_name, :string
