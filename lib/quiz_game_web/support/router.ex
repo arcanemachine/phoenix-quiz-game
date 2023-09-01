@@ -36,10 +36,10 @@ defmodule QuizGameWeb.Support.Router do
   """
 
   @spec route(context, atom(), keyword()) :: String.t()
-  def route(context, action, opts)
+  def route(context, action, params)
 
   @spec route(:base, base_action, keyword()) :: String.t()
-  def route(:base, action, _opts) do
+  def route(:base, action, _params) do
     case action do
       :root -> ~p"/"
       :contact_us -> ~p"/contact-us"
@@ -48,41 +48,63 @@ defmodule QuizGameWeb.Support.Router do
     end
   end
 
-  def route(:quizzes, action, opts) do
+  def route(:quizzes, action, params) do
     case action do
       :index -> ~p"/quizzes"
       :new -> ~p"/quizzes/new"
       :create -> ~p"/quizzes"
-      :edit -> ~p"/quizzes/#{opts[:quiz_id]}/edit"
-      n when n in [:show, :update, :delete] -> ~p"/quizzes/#{opts[:quiz_id]}"
-      :take -> ~p"/quizzes/#{opts[:quiz_id]}/take"
+      :edit -> ~p"/quizzes/#{params[:quiz_id]}/edit"
+      n when n in [:show, :update, :delete] -> ~p"/quizzes/#{params[:quiz_id]}"
+      :take -> ~p"/quizzes/#{params[:quiz_id]}/take"
     end
   end
 
-  def route(:quizzes_cards, action, opts) do
+  def route(:quizzes_cards, action, params) do
     case action do
       :index ->
-        ~p"/quizzes/#{opts[:quiz_id]}/cards"
+        ~p"/quizzes/#{params[:quiz_id]}/cards"
 
       :new ->
-        ~p"/quizzes/#{opts[:quiz_id]}/cards/new"
+        ~p"/quizzes/#{params[:quiz_id]}/cards/new"
 
       :create ->
-        ~p"/quizzes/#{opts[:quiz_id]}/cards"
+        ~p"/quizzes/#{params[:quiz_id]}/cards"
 
       :show ->
-        ~p"/quizzes/#{opts[:quiz_id]}/cards/#{opts[:card_id]}"
+        ~p"/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}"
 
       :edit ->
-        ~p"/quizzes/#{opts[:quiz_id]}/cards/#{opts[:card_id]}/edit"
+        ~p"/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}/edit"
 
       n when n in [:show, :update, :delete] ->
-        ~p"/quizzes/#{opts[:quiz_id]}/cards/#{opts[:card_id]}"
+        ~p"/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}"
+    end
+  end
+
+  def route(:quizzes_cards, action, params) do
+    case action do
+      :index ->
+        ~p"/quizzes/#{params[:quiz_id]}/cards"
+
+      :new ->
+        ~p"/quizzes/#{params[:quiz_id]}/cards/new"
+
+      :create ->
+        ~p"/quizzes/#{params[:quiz_id]}/cards"
+
+      :show ->
+        ~p"/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}"
+
+      :edit ->
+        ~p"/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}/edit"
+
+      n when n in [:show, :update, :delete] ->
+        ~p"/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}"
     end
   end
 
   # credo:disable-for-next-line
-  def route(:users, action, opts) do
+  def route(:users, action, params) do
     case action do
       # auth
       :register -> ~p"/users/register"
@@ -90,15 +112,15 @@ defmodule QuizGameWeb.Support.Router do
       :logout_confirm -> ~p"/users/logout"
       :logout -> ~p"/users/logout"
       :reset_password_solicit -> ~p"/users/reset/password"
-      :reset_password_confirm -> ~p"/users/reset/password/#{opts[:token]}"
+      :reset_password_confirm -> ~p"/users/reset/password/#{params[:token]}"
       :verify_email_solicit -> ~p"/users/verify/email"
-      :verify_email_confirm -> ~p"/users/verify/email/#{opts[:token]}"
+      :verify_email_confirm -> ~p"/users/verify/email/#{params[:token]}"
       # crud
       :show -> ~p"/users/me"
       :settings -> ~p"/users/me/edit"
       :update_display_name -> ~p"/users/me/edit/display-name"
       :update_email_solicit -> ~p"/users/me/edit/email"
-      :update_email_confirm -> ~p"/users/me/edit/email/#{opts[:token]}"
+      :update_email_confirm -> ~p"/users/me/edit/email/#{params[:token]}"
       :update_password -> ~p"/users/me/edit/password"
       :delete_confirm -> ~p"/users/me/delete"
       :delete -> ~p"/users/me/delete"
