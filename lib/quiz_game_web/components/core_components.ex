@@ -1105,7 +1105,7 @@ defmodule QuizGameWeb.CoreComponents do
       as={@as}
       {@rest}
       class={[
-        "w-full max-w-md mt-4 mx-auto transition-colors duration-300 rounded-lg",
+        "w-full max-w-sm mt-4 mx-auto transition-colors duration-300 rounded-lg",
         @has_errors && "bg-red-200",
         @class
       ]}
