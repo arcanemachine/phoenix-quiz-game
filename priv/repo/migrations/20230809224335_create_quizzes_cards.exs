@@ -1,4 +1,4 @@
-defmodule QuizGame.Repo.Migrations.CreateCards do
+defmodule QuizGame.Repo.Migrations.CreateQuizzesCards do
   @moduledoc false
   use Ecto.Migration
 
