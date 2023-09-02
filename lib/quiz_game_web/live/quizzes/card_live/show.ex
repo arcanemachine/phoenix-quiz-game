@@ -12,7 +12,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
         where: c.quiz_id == ^params["quiz_id"] and c.id == ^params["card_id"],
         preload: [:quiz]
 
-    QuizGameWeb.Support.Repo.get_record_or_404(query)
+    QuizGame.Repo.one!(query)
   end
 
   @impl Phoenix.LiveView

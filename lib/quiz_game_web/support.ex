@@ -95,27 +95,3 @@ defmodule QuizGameWeb.Support.Map do
     params |> Enum.map(fn {k, v} -> {String.to_existing_atom(k), v} end)
   end
 end
-
-defmodule QuizGameWeb.Support.Repo do
-  @moduledoc "This project's `Ecto.Repo` helper functions."
-
-  @doc """
-    If a given query returns a record, then return it. Otherwise, raise an exception that returns
-    a 404 response.
-
-    ## Examples
-
-      iex> get_record_or_404(query)
-      %User{}
-
-      iex> get_record_or_404(empty_query)
-      ** (Ecto.NoResultsError)
-  """
-  def get_record_or_404(query) do
-    if record = QuizGame.Repo.one!(query) do
-      record
-    else
-      raise Ecto.NoResultsError, queryable: query
-    end
-  end
-end

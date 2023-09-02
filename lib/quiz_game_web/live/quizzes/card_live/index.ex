@@ -1,11 +1,14 @@
 defmodule QuizGameWeb.Quizzes.CardLive.Index do
   use QuizGameWeb, :live_view
+
   import Ecto.Query
+
   alias QuizGame.Quizzes.{Card, Quiz}
+  alias QuizGame.Repo
 
   defp _get_quiz_or_404(params) do
     query = from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards]
-    QuizGameWeb.Support.Repo.get_record_or_404(query)
+    Repo.one!(query)
   end
 
   @impl Phoenix.LiveView

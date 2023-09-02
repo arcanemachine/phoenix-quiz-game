@@ -1,8 +1,8 @@
-<div :if={Enum.empty?(@quiz.records)} class="text-center italic">
+<div :if={Enum.empty?(@records)} class="text-center italic">
   No records exist for this quiz.
 </div>
 
-<ul :for={record <- @quiz.records} class="list">
+<ul :for={record <- @records} class="list">
   <li>
     <b>Taken by:</b> <%= record.display_name %>
     <%= if @current_user && @quiz.user_id == @current_user.id do %>

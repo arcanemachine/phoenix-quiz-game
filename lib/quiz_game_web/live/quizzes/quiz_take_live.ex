@@ -3,17 +3,15 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
 
   import Ecto.Query
 
-  alias QuizGameWeb.Presence
   alias QuizGame.Quizzes.{Card, Quiz}
-  alias QuizGameWeb.Support
+  alias QuizGame.Repo
+  alias QuizGameWeb.{Presence, Support}
 
   @presence_topic "quiz_presence"
 
   @impl Phoenix.LiveView
   def mount(params, _session, socket) do
-    # get quiz or 404
-    query = from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards]
-    quiz = Support.Repo.get_record_or_404(query)
+    quiz = Repo.one!(from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards])
 
     # redirect if quiz does not have any cards or random math questions
     if Enum.empty?(quiz.cards) && !quiz.math_random_question_count do
