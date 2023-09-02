@@ -90,7 +90,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
     user_id: user.id,
     display_name: user.display_name,
     card_count: 4,
-    correct_answer_count: 3
+    score: 3
   })
 
   Quizzes.create_record(%{
@@ -98,7 +98,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
     user_id: nil,
     display_name: "Anonymous Seed User",
     card_count: 4,
-    correct_answer_count: 4
+    score: 4
   })
 
   # create math quiz

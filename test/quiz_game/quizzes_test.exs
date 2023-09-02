@@ -130,7 +130,7 @@ defmodule QuizGame.QuizzesTest do
 
     import QuizGame.QuizzesFixtures
 
-    @invalid_attrs %{date: nil, card_count: nil, correct_answer_count: nil}
+    @invalid_attrs %{date: nil, card_count: nil, score: nil}
 
     test "list_records/0 returns all records" do
       record = record_fixture()
@@ -143,12 +143,12 @@ defmodule QuizGame.QuizzesTest do
     end
 
     test "create_record/1 with valid data creates a record" do
-      valid_attrs = %{date: ~U[2023-08-31 02:31:00Z], card_count: 42, correct_answer_count: 42}
+      valid_attrs = %{date: ~U[2023-08-31 02:31:00Z], card_count: 42, score: 42}
 
       assert {:ok, %Record{} = record} = Quizzes.create_record(valid_attrs)
       assert record.date == ~U[2023-08-31 02:31:00Z]
       assert record.card_count == 42
-      assert record.correct_answer_count == 42
+      assert record.score == 42
     end
 
     test "create_record/1 with invalid data returns error changeset" do
@@ -157,14 +157,14 @@ defmodule QuizGame.QuizzesTest do
 
     test "update_record/2 with valid data updates the record" do
       record = record_fixture()
-      update_attrs = %{date: ~U[2023-09-01 02:31:00Z], card_count: 43, correct_answer_count: 43}
+      update_attrs = %{date: ~U[2023-09-01 02:31:00Z], card_count: 43, score: 43}
 
       assert {:ok, %Record{} = record} =
                Quizzes.update_record(record, update_attrs)
 
       assert record.date == ~U[2023-09-01 02:31:00Z]
       assert record.card_count == 43
-      assert record.correct_answer_count == 43
+      assert record.score == 43
     end
 
     test "update_record/2 with invalid data returns error changeset" do

@@ -19,9 +19,9 @@
     <li>
       <b>Score:</b>
       <span>
-        <%= record.correct_answer_count %> out of <%= record.card_count %>
+        <%= record.score %> out of <%= record.card_count %>
       </span>
-      (<%= (record.correct_answer_count / record.card_count * 100) |> round() |> trunc() %>%)
+      (<%= (record.score / record.card_count * 100) |> round() |> trunc() %>%)
     </li>
   </ul>
 </ul>

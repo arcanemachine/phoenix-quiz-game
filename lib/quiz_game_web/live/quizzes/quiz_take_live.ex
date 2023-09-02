@@ -97,7 +97,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
         user_id: (assigns.current_user && assigns.current_user.id) || nil,
         display_name: assigns.display_name,
         card_count: length(assigns.quiz.cards),
-        correct_answer_count: assigns.score
+        score: assigns.score
       })
 
       {:noreply, socket |> assign(quiz_state: :completed)}
@@ -107,9 +107,9 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
     end
   end
 
-  def handle_event("reset-quiz", _params, socket) do
-    {:noreply, _initialize_socket(socket)}
-  end
+  # def handle_event("reset-quiz", _params, socket) do
+  #   {:noreply, _initialize_socket(socket)}
+  # end
 
   # answer
   @spec _get_correct_answer(Card) :: [integer() | String.t()]

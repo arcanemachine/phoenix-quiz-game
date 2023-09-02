@@ -11,7 +11,7 @@ defmodule QuizGame.Repo.Migrations.CreateQuizzesRecords do
       # data
       add :display_name, :string, null: false
       add :card_count, :integer, null: false
-      add :correct_answer_count, :integer, null: false
+      add :score, :integer, null: false
 
       timestamps()
     end

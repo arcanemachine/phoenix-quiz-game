@@ -11,12 +11,12 @@ defmodule QuizGame.Quizzes.Record do
     # data
     field :display_name, :string
     field :card_count, :integer
-    field :correct_answer_count, :integer
+    field :score, :integer
 
     timestamps()
   end
 
-  @fields [:user_id, :quiz_id, :display_name, :card_count, :correct_answer_count]
+  @fields [:user_id, :quiz_id, :display_name, :card_count, :score]
 
   @doc false
   def changeset(record, attrs) do

@@ -46,7 +46,7 @@ defmodule QuizGame.TestSupport.QuizzesFixtures do
       |> Enum.into(%{
         date: ~U[2023-08-31 02:31:00Z],
         card_count: 42,
-        correct_answer_count: 42
+        score: 42
       })
       |> QuizGame.Quizzes.create_record()
 
