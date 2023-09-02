@@ -49,7 +49,8 @@ defmodule QuizGame.MixProject do
       {:dialyxir, "~> 1.3", only: [:dev], runtime: false},
       {:hcaptcha, "~> 0.0.1"},
       {:phoenix_view, "~> 2.0.2"},
-      {:kaffy, "~> 0.9.2"}
+      {:kaffy, "~> 0.9.2"},
+      {:oban, "~> 2.15"}
     ]
   end
 

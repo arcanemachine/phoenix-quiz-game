@@ -10,7 +10,8 @@ defmodule QuizGame.Application do
       {Phoenix.PubSub, name: QuizGame.PubSub},
       {Finch, name: QuizGame.Finch},
       QuizGameWeb.Presence,
-      QuizGameWeb.Endpoint
+      QuizGameWeb.Endpoint,
+      {Oban, Application.fetch_env!(:quiz_game, Oban)}
     ]
 
     opts = [strategy: :one_for_one, name: QuizGame.Supervisor]

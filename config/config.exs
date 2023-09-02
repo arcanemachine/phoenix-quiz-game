@@ -45,6 +45,11 @@ config :logger, :console,
 # mailer
 config :quiz_game, QuizGame.Mailer, adapter: Swoosh.Adapters.Local
 
+config :quiz_game, Oban,
+  repo: QuizGame.Repo,
+  plugins: [Oban.Plugins.Pruner],
+  queues: [default: 10]
+
 # tailwind
 config :tailwind,
   version: "3.3.3",

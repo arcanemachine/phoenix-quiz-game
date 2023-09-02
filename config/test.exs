@@ -32,6 +32,9 @@ config :quiz_game, QuizGame.Mailer, adapter: Swoosh.Adapters.Test
 # logger - only print warnings and errors
 config :logger, level: :warning
 
+# oban
+config :quiz_game, Oban, testing: :inline
+
 # phoenix - initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
 
