@@ -55,15 +55,10 @@
   </.action_links_item>
 
   <%= if @current_user && @current_user.id == @quiz.user_id do %>
-    <.spacer />
     <.action_links_sublist>
       <:title>
         <div class="flex items-center gap-2">
           Manage this quiz
-          <.icon
-            name="hero-lock-closed"
-            tooltip="These actions are only available to the quiz owner."
-          />
         </div>
       </:title>
       <.action_links_item>
@@ -84,7 +79,7 @@
     </.action_links_sublist>
   <% end %>
 
-  <.action_links_spacer />
+  <.spacer />
   <.action_links_item kind="back">
     <.link href={route(:quizzes, :index)}>
       Return to quiz list

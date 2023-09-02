@@ -101,7 +101,7 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
           Login to an existing account
         </.link>
       </.action_links_item>
-      <.action_links_spacer />
+      <.spacer />
       <.action_links_item>
         <.link href={route(:users, :reset_password_solicit)}>
           Forgot your password?

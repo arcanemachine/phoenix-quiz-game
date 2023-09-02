@@ -30,28 +30,15 @@ defmodule QuizGameWeb.CoreComponents do
 
   def action_links(assigns) do
     ~H"""
-    <section class={["mt-8", @class]} style="font-size: 1.25em">
+    <section class={["mt-8", @class]}>
       <div :if={@title} class="font-bold text-2xl">
         <%= @title %>
       </div>
-      <ul class="mt-2 ml-8 [&>*]:mt-2 text-xl">
+      <ul class="mt-2 ml-8 [&>*]:mt-2 text-lg">
         <%= render_slot(@inner_block) %>
       </ul>
     </section>
     """
-  end
-
-  @doc """
-  A spacer that separates action links categories.
-
-  This component is meant to be used as a child of the component `<.action_links>`.
-
-  ## Example
-
-      <.action_links_spacer />
-  """
-  def action_links_spacer(assigns) do
-    ~H|<div class="h-1 w-0" />|
   end
 
   @doc """
@@ -111,7 +98,7 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <li class="ps-2 font-bold list-dash">
       <%= render_slot(@title) %>
-      <ul class="ps-2 list" style="font-size: 0.8em">
+      <ul class="ps-2 list" style="font-size: 1rem">
         <%= render_slot(@inner_block) %>
       </ul>
     </li>
@@ -1216,13 +1203,19 @@ defmodule QuizGameWeb.CoreComponents do
 
   ## Examples
 
+      <.spacer />
       <.spacer height="4" />
   """
   attr :height, :string, default: "0", doc: "the height of the spacer (e.g. 1 -> 0.25rem)"
   attr :width, :string, default: "0", doc: "the width of the spacer (e.g. 2 -> 0.5rem)"
 
   def spacer(assigns) do
-    ~H|<div name="spacer" class={"show-empty-element h-#{@height} w-#{@width}"} />|
+    ~H"""
+    <div style={"height: #{String.to_integer(@height) * 0.25}rem;
+                 width: #{String.to_integer(@width) * 0.25}rem"}>
+      &nbsp;
+    </div>
+    """
   end
 
   @doc ~S"""

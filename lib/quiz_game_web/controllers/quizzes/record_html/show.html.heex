@@ -61,7 +61,7 @@
   </.action_links_item>
 
   <%= if @current_user && @current_user.id == @quiz.user_id do %>
-    <.action_links_spacer />
+    <.spacer />
     <.action_links_item>
       <.link href={route(:quizzes_records, :index, quiz_id: @quiz.id)}>
         View records for this quiz
@@ -74,7 +74,7 @@
     </.action_links_item>
   <% end %>
 
-  <.action_links_spacer />
+  <.spacer />
   <.action_links_item kind="back">
     <.link href={route(:quizzes, :index)}>
       Return to quiz list
