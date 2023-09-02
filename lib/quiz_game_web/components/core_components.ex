@@ -146,8 +146,8 @@ defmodule QuizGameWeb.CoreComponents do
 
   def back(assigns) do
     ~H"""
-    <div class={@class}>
-      <.link navigate={@navigate} data-confirm={@confirm}>
+    <div class={["-mt-2 mb-4", @class]}>
+      <.link class="p-2" navigate={@navigate} data-confirm={@confirm}>
         <.icon name="hero-arrow-left-solid" class="h-4 w-4" /><%= render_slot(@inner_block) %>
       </.link>
     </div>
@@ -491,6 +491,25 @@ defmodule QuizGameWeb.CoreComponents do
   def icon(%{name: "hero-" <> _} = assigns) do
     ~H"""
     <span class={[@name, @class]} />
+    """
+  end
+
+  @doc """
+  Renders a lock icon with a tooltip.
+
+  Used to indicate that access to a given page is restricted. Use the `message` param to
+  indicate the manner in which the page is restricted
+
+  ## Examples
+
+      <.icon_lock message="This page can only be viewed by an administrator." />
+  """
+  attr :message, :string, required: true
+  attr :class, :string, default: nil
+
+  def icon_lock(%{name: "hero-lock-closed" <> _} = assigns) do
+    ~H"""
+    <span class={[@name, @class]} x-tooltip={"{ content: `#{@message}` }"} />
     """
   end
 

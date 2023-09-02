@@ -14,7 +14,6 @@ defmodule QuizGameWeb.UsersLive.UserUpdateDisplayNameLive do
       |> assign(
         page_title: "Change Display Name",
         form: to_form(changeset),
-        # next_url: QuizGameWeb.Support.Router.get_next_url(params, route(:users, :show))
         success_url: Map.get(params, "next", route(:users, :show))
       )
 

@@ -158,6 +158,10 @@
     opacity: 0.8;
   }
 
+  .card-body {
+    padding: 1rem;
+  }
+
   .dropdown-content {
     border: 2px solid hsl(var(--nc));
   }

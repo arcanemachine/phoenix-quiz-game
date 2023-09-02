@@ -66,7 +66,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
     {:noreply,
      socket
      |> clear_flash()
-     |> put_flash(:info, "The quiz is now in progress. Good luck!")
+     |> put_flash(:info, "The quiz has started. Good luck!")
      |> assign(quiz_state: :in_progress)}
   end
 

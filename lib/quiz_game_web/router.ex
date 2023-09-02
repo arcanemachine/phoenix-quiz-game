@@ -61,6 +61,8 @@ defmodule QuizGameWeb.Router do
 
       # cards
       scope "/cards" do
+        pipe_through [:require_authenticated_user, :require_quiz_permissions]
+
         live "/", CardLive.Index, :index
 
         live_session :quizzes_cards_login_required,

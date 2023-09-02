@@ -1,30 +1,27 @@
-<div class="mb-4">
-  <.back
-    class="text-error"
-    navigate={route(:quizzes, :show, quiz_id: @quiz.id)}
-    confirm={
-      @quiz_state == :in_progress &&
-        "Are you sure you want to exit this quiz? You will lose all your progress!"
-    }
-  >
-    Exit this quiz
-  </.back>
-</div>
+<.back
+  navigate={route(:quizzes, :show, quiz_id: @quiz.id)}
+  confirm={
+    @quiz_state == :in_progress &&
+      "Are you sure you want to exit this quiz? You will lose all your progress!"
+  }
+>
+  Exit this quiz
+</.back>
 
 <div class="w-full max-w-lg mx-auto">
   <%= case @quiz_state do %>
     <% :enter_display_name -> %>
       <%!-- get display_name via user input --%>
-      <div id="quiz-state-init-no-display-name" class="mt-6 card w-full bg-primary/20 shadow-xl">
+      <div id="quiz-state-init-no-display-name" class="card w-full bg-primary/20 shadow-xl">
         <div class="card-body text-center">
-          <.modal_title title="Your Name" />
+          <.modal_title title="Enter Your Name" />
           <.simple_form for={%{}} class="max-w-xs mx-auto" phx-submit="submit-display-name">
             <div>
-              <p class="-mt-4 mb-4">Enter your name:</p>
               <.input
                 type="text"
                 name="display-name"
                 value=""
+                placeholder="Your name"
                 autocomplete="off"
                 required
                 x-init="$el.focus()"
@@ -58,28 +55,33 @@
         </div>
       </div>
     <% :before_start -> %>
-      <div id="quiz-state-init-has-display-name" class="mt-6 card w-full bg-primary/20 shadow-xl">
+      <div id="quiz-state-init-has-display-name" class="card w-full bg-primary/20 shadow-xl">
         <div class="card-body text-center">
           <.simple_form for={%{}} class="max-w-sm mx-auto" phx-submit="start-quiz">
             <p class="-mt-4">
               You are about to begin the following quiz:
             </p>
 
-            <div class="my-6 text-xl font-bold">
+            <div class="mt-4 text-xl font-bold">
               <%= @quiz.name %>
             </div>
 
             <div class="divider" />
 
-            <div class="my-6">
+            <div>
               Your display name is '<%= @display_name %>'.
-              (<button type="button" class="fake-link" phx-click="change-display-name">Change</button>)
+
+              <div class="mt-2">
+                <button type="button" class="fake-link" phx-click="change-display-name">
+                  Change display name
+                </button>
+              </div>
             </div>
 
             <div class="divider" />
 
-            <div class="my-6">
-              To begin the quiz, click the button below:
+            <div>
+              Click the button below to begin:
             </div>
 
             <:actions>
@@ -89,15 +91,13 @@
         </div>
       </div>
     <% :in_progress -> %>
-      <progress
-        class="absolute h-4 progress w-full max-w-lg rounded-b-none transition duration-300 opacity-50"
-        value={_get_progress_percentage_as_integer(assigns)}
-        max="100"
-      />
+
+      <%!-- # scroll to top of page for each new question (improves UX on small screens) --%>
+      <span id={"el-#{@current_card_index}"} x-init="document.documentElement.scrollTop = 0" />
 
       <div
         id="quiz-state-in-progress"
-        class="mt-4 card w-full bg-primary/20 shadow-xl"
+        class="card w-full max-w bg-primary/20 shadow-xl"
         x-data
         x-on:keypress.window="(evt) => {
            if (['1', '2', '3', '4'].includes(evt.key)) {
@@ -204,11 +204,7 @@
             </:actions>
           </.simple_form>
 
-          <div>
-            <span class="font-bold">Questions remaining:</span>
-            <%= _get_quiz_length(@quiz) - @current_card_index - 1 %>
-          </div>
-
+          <%!-- bottom stuff --%>
           <div>
             <span class="font-bold">Your score:</span>
             <%= @score %> / <%= @current_card_index %>
@@ -216,10 +212,23 @@
               (<%= Float.round(@score / @current_card_index * 100, 1) %>%)
             <% end %>
           </div>
+
+          <div>
+            <span class="font-bold">Questions remaining:</span>
+            <%= _get_quiz_length(@quiz) - @current_card_index - 1 %>
+          </div>
+
+          <progress
+            class="inline h-4 my-2 mx-auto progress progress-primary w-full transition duration-300
+                   opacity-50"
+            value={_get_progress_percentage_as_integer(assigns)}
+            max="100"
+          />
+
         </div>
       </div>
     <% :completed -> %>
-      <div id="quiz-state-completed" class="mt-4 card w-full bg-success/30 shadow-xl">
+      <div id="quiz-state-completed" class="card w-full bg-success/30 shadow-xl">
         <div class="card-body text-center">
           <.modal_title title="Quiz Complete!" />
 
