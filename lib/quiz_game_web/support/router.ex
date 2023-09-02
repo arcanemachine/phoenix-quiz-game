@@ -1,6 +1,5 @@
 defmodule QuizGameWeb.Support.Router do
   @moduledoc "This project's router helpers."
-  use QuizGameWeb, :verified_routes
 
   @typedoc "The contexts available for route matching."
   @type context :: :base | :quizzes | :users
@@ -41,65 +40,53 @@ defmodule QuizGameWeb.Support.Router do
   @spec route(:base, base_action, keyword()) :: String.t()
   def route(:base, action, _params) do
     case action do
-      :root -> ~p"/"
-      :contact_us -> ~p"/contact-us"
-      :privacy_policy -> ~p"/privacy-policy"
-      :terms_of_use -> ~p"/terms-of-use"
+      :root -> "/"
+      :contact_us -> "/contact-us"
+      :privacy_policy -> "/privacy-policy"
+      :terms_of_use -> "/terms-of-use"
     end
   end
 
   def route(:quizzes, action, params) do
     case action do
-      :index -> ~p"/quizzes"
-      :new -> ~p"/quizzes/new"
-      :create -> ~p"/quizzes"
-      :edit -> ~p"/quizzes/#{params[:quiz_id]}/edit"
-      n when n in [:show, :update, :delete] -> ~p"/quizzes/#{params[:quiz_id]}"
-      :take -> ~p"/quizzes/#{params[:quiz_id]}/take"
+      :index -> "/quizzes"
+      :new -> "/quizzes/new"
+      :create -> "/quizzes"
+      :edit -> "/quizzes/#{params[:quiz_id]}/edit"
+      n when n in [:show, :update, :delete] -> "/quizzes/#{params[:quiz_id]}"
+      :take -> "/quizzes/#{params[:quiz_id]}/take"
     end
   end
 
   def route(:quizzes_cards, action, params) do
     case action do
       :index ->
-        ~p"/quizzes/#{params[:quiz_id]}/cards"
+        "/quizzes/#{params[:quiz_id]}/cards"
 
       :new ->
-        ~p"/quizzes/#{params[:quiz_id]}/cards/new"
+        "/quizzes/#{params[:quiz_id]}/cards/new"
 
       :create ->
-        ~p"/quizzes/#{params[:quiz_id]}/cards"
+        "/quizzes/#{params[:quiz_id]}/cards"
 
       :show ->
-        ~p"/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}"
+        "/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}"
 
       :edit ->
-        ~p"/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}/edit"
+        "/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}/edit"
 
       n when n in [:show, :update, :delete] ->
-        ~p"/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}"
+        "/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}"
     end
   end
 
-  def route(:quizzes_cards, action, params) do
+  def route(:quizzes_records, action, params) do
     case action do
       :index ->
-        ~p"/quizzes/#{params[:quiz_id]}/cards"
-
-      :new ->
-        ~p"/quizzes/#{params[:quiz_id]}/cards/new"
-
-      :create ->
-        ~p"/quizzes/#{params[:quiz_id]}/cards"
+        "/quizzes/#{params[:quiz_id]}/records"
 
       :show ->
-        ~p"/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}"
-
-      :edit ->
-        ~p"/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}/edit"
-
-      n when n in [:show, :update, :delete] ->
-        ~p"/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}"
+        "/quizzes/#{params[:quiz_id]}/records/#{params[:record_id]}"
     end
   end
 
@@ -107,26 +94,26 @@ defmodule QuizGameWeb.Support.Router do
   def route(:users, action, params) do
     case action do
       # auth
-      :register -> ~p"/users/register"
-      :login -> ~p"/users/login"
-      :logout_confirm -> ~p"/users/logout"
-      :logout -> ~p"/users/logout"
-      :reset_password_solicit -> ~p"/users/reset/password"
-      :reset_password_confirm -> ~p"/users/reset/password/#{params[:token]}"
-      :verify_email_solicit -> ~p"/users/verify/email"
-      :verify_email_confirm -> ~p"/users/verify/email/#{params[:token]}"
+      :register -> "/users/register"
+      :login -> "/users/login"
+      :logout_confirm -> "/users/logout"
+      :logout -> "/users/logout"
+      :reset_password_solicit -> "/users/reset/password"
+      :reset_password_confirm -> "/users/reset/password/#{params[:token]}"
+      :verify_email_solicit -> "/users/verify/email"
+      :verify_email_confirm -> "/users/verify/email/#{params[:token]}"
       # crud
-      :show -> ~p"/users/me"
-      :settings -> ~p"/users/me/edit"
-      :update_display_name -> ~p"/users/me/edit/display-name"
-      :update_email_solicit -> ~p"/users/me/edit/email"
-      :update_email_confirm -> ~p"/users/me/edit/email/#{params[:token]}"
-      :update_password -> ~p"/users/me/edit/password"
-      :delete_confirm -> ~p"/users/me/delete"
-      :delete -> ~p"/users/me/delete"
+      :show -> "/users/me"
+      :settings -> "/users/me/edit"
+      :update_display_name -> "/users/me/edit/display-name"
+      :update_email_solicit -> "/users/me/edit/email"
+      :update_email_confirm -> "/users/me/edit/email/#{params[:token]}"
+      :update_password -> "/users/me/edit/password"
+      :delete_confirm -> "/users/me/delete"
+      :delete -> "/users/me/delete"
       # quizzes
-      :quizzes_index -> ~p"/users/me/quizzes"
-      :records_index -> ~p"/users/me/quizzes/records"
+      :quizzes_index -> "/users/me/quizzes"
+      :records_index -> "/users/me/quizzes/records"
     end
   end
 

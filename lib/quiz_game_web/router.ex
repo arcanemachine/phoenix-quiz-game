@@ -77,6 +77,14 @@ defmodule QuizGameWeb.Router do
           end
         end
       end
+
+      # records
+      scope "/records" do
+        pipe_through [:require_authenticated_user, :require_quiz_permissions]
+
+        get "/", RecordController, :index
+        put "/:record_id", RecordController, :show
+      end
     end
   end
 

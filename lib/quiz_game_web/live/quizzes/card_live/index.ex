@@ -22,11 +22,11 @@ defmodule QuizGameWeb.Quizzes.CardLive.Index do
     {:noreply,
      socket
      |> apply_action(socket.assigns.live_action, params)
-     |> assign(%{
+     |> assign(
        quiz: quiz,
        page_title: "Card List",
-       page_subtitle: socket.assigns.quiz.name
-     })}
+       page_subtitle: quiz.name
+     )}
   end
 
   defp apply_action(socket, :index, _params) do

@@ -1,0 +1,34 @@
+<div :if={Enum.empty?(@quiz.records)} class="text-center italic">
+  No records exist for this quiz.
+</div>
+
+<ul :for={record <- @quiz.records} class="list">
+  <li
+    data-completed-on={record.inserted_at}
+    x-data="{
+      completedOn: new Date($el.dataset.completedOn + 'Z').toLocaleString()
+    }"
+  >
+    <b>Completed on:</b> <span x-text="completedOn" />
+  </li>
+  <li>
+    <b>Score:</b>
+    <span>
+      <%= record.correct_answer_count %> out of <%= record.card_count %>
+    </span>
+    (<%= (record.correct_answer_count / record.card_count * 100) |> round() |> trunc() %>%)
+  </li>
+</ul>
+
+<.action_links>
+  <.action_links_item kind="back">
+    <.link href={route(:quizzes, :show, quiz_id: @quiz.id)}>
+      Return to quiz
+    </.link>
+  </.action_links_item>
+  <.action_links_item kind="back-2">
+    <.link href={route(:base, :root)}>
+      Return to homepage
+    </.link>
+  </.action_links_item>
+</.action_links>
