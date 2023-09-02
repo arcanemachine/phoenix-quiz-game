@@ -7,6 +7,12 @@
     <b>Taken by:</b> <%= record.display_name %>
     <%= if record.user_id == @current_user.id do %>
       <b>(You)</b>
+    <% else %>
+      <%= if record.user do %>
+        (username: <i><%= record.user.username %></i>)
+      <% else %>
+        (<i>unauthenticated</i>)
+      <% end %>
     <% end %>
   </li>
   <ul class="list">
