@@ -65,9 +65,9 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
      |> assign(quiz_state: :in_progress)}
   end
 
-  def handle_event("submit-user-answer", params, %{assigns: assigns} = socket) do
-    user_answer = _get_user_answer(assigns.card, params)
-    correct_answer = _get_correct_answer(assigns.card)
+  def handle_event("submit-user-answer", params, socket) do
+    user_answer = _get_user_answer(socket.assigns.card, params)
+    correct_answer = _get_correct_answer(socket.assigns.card)
 
     # check if answer was correct and dispatch the appropriate actions
     socket =
@@ -77,7 +77,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
         |> clear_flash()
         |> put_flash(:success, "Correct!")
         # increment score
-        |> assign(score: assigns.score + 1)
+        |> assign(score: socket.assigns.score + 1)
       else
         socket
         # show failure message
@@ -86,16 +86,17 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
       end
 
     # check if quiz is completed
-    quiz_is_completed = assigns.current_card_index == _get_quiz_length(assigns.quiz) - 1
+    quiz_is_completed =
+      socket.assigns.current_card_index == _get_quiz_length(socket.assigns.quiz) - 1
 
     if quiz_is_completed do
       # create quiz record
       QuizGame.Quizzes.create_record(%{
-        quiz_id: assigns.quiz.id,
-        user_id: (assigns.current_user && assigns.current_user.id) || nil,
-        display_name: assigns.display_name,
-        card_count: length(assigns.quiz.cards),
-        score: assigns.score
+        quiz_id: socket.assigns.quiz.id,
+        user_id: (socket.assigns.current_user && socket.assigns.current_user.id) || nil,
+        display_name: socket.assigns.display_name,
+        card_count: length(socket.assigns.quiz.cards),
+        score: socket.assigns.score
       })
 
       {:noreply, socket |> assign(quiz_state: :completed)}
