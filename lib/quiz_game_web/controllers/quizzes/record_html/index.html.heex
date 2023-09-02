@@ -2,6 +2,10 @@
   No records exist for this quiz.
 </div>
 
+<div :if={!Enum.empty?(@records)} class="text-center italic">
+  All records will be deleted after 24 hours.
+</div>
+
 <ul :for={record <- @records} class="list">
   <li>
     <b>Taken by:</b> <%= record.display_name %>

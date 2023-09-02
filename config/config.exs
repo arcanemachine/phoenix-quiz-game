@@ -47,7 +47,13 @@ config :quiz_game, QuizGame.Mailer, adapter: Swoosh.Adapters.Local
 
 config :quiz_game, Oban,
   repo: QuizGame.Repo,
-  plugins: [Oban.Plugins.Pruner],
+  plugins: [
+    Oban.Plugins.Pruner,
+    {Oban.Plugins.Cron,
+     crontab: [
+       {"@hourly", QuizGame.Workers.DeleteOldRecords}
+     ]}
+  ],
   queues: [default: 10]
 
 # tailwind
