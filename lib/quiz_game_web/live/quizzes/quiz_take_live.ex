@@ -45,17 +45,22 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
     end
   end
 
-  # def handle_event("change-display-name", _params, socket) do
-  #   socket = socket |> clear_flash()
+  def handle_event("change-display-name", _params, socket) do
+    socket = socket |> clear_flash()
 
-  #   if socket.assigns.current_user do
-  #     {:noreply,
-  #      socket
-  #      |> put_flash(:warning, "To change your display name, you must update your user profile.")}
-  #   else
-  #     {:noreply, socket |> assign(:display_name, nil)}
-  #   end
-  # end
+    if socket.assigns.current_user do
+      {:noreply,
+       socket
+       |> redirect(
+         # redirect to user display name update form, and return to this page when finished
+         to:
+           route(:users, :update_display_name) <>
+             query_string(next: route(:quizzes, :take, quiz_id: socket.assigns.quiz.id))
+       )}
+    else
+      {:noreply, socket |> assign(display_name: nil, quiz_state: :enter_display_name)}
+    end
+  end
 
   def handle_event("start-quiz", _params, socket) do
     {:noreply,

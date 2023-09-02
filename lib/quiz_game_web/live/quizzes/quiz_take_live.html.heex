@@ -65,12 +65,21 @@
               You are about to begin the following quiz:
             </p>
 
-            <div class="mt-6 text-xl font-bold">
+            <div class="my-6 text-xl font-bold">
               <%= @quiz.name %>
             </div>
 
+            <div class="divider" />
+
             <div class="my-6">
-              Click the button, when you are ready to begin:
+              Your display name is '<%= @display_name %>'.
+              (<button type="button" class="fake-link" phx-click="change-display-name">Change</button>)
+            </div>
+
+            <div class="divider" />
+
+            <div class="my-6">
+              To begin the quiz, click the button below:
             </div>
 
             <:actions>
@@ -194,16 +203,6 @@
               </div>
             </:actions>
           </.simple_form>
-
-          <div :if={!@current_user}>
-            <span class="font-bold">Your display name:</span>
-            <%= @display_name %>
-            <%!--
-              <button class="text-primary font-bold" phx-click="change-display-name">
-                (Change)
-              </button>
-            --%>
-          </div>
 
           <div>
             <span class="font-bold">Questions remaining:</span>

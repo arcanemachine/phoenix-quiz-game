@@ -14,6 +14,26 @@ defmodule QuizGameWeb.Support.Router do
   @type live_crud_action :: :index | :show | :new | :edit
 
   @doc """
+  Converts params to a query string.
+
+  `params` may be any enumerable supported by `URI.encode_query/1` (e.g. keyword list, map).
+
+  If `params` is empty, an empty string will be returned.
+
+  ## Examples
+
+      iex> query_string(hello: "world")
+      "?hello=world"
+
+      iex> query_string(%{"hello" => "world"})
+      "?hello=world"
+  """
+  @spec query_string(Enum.t()) :: String.t()
+  def query_string(params) do
+    if Enum.empty?(params), do: "", else: "?#{URI.encode_query(params)}"
+  end
+
+  @doc """
   Match against a route with no URL parameters.
 
   ## Examples
@@ -115,25 +135,5 @@ defmodule QuizGameWeb.Support.Router do
       :quizzes_index -> "/users/me/quizzes"
       :records_index -> "/users/me/quizzes/records"
     end
-  end
-
-  @doc """
-  Converts params to a query string.
-
-  `params` may be any enumerable supported by `URI.encode_query/1` (e.g. keyword list, map).
-
-  If `params` is empty, an empty string will be returned.
-
-  ## Examples
-
-      iex> query_string(hello: "world")
-      "?hello=world"
-
-      iex> query_string(%{"hello" => "world"})
-      "?hello=world"
-  """
-  @spec query_string(Enum.t()) :: String.t()
-  def query_string(params) do
-    if Enum.empty?(params), do: "", else: "?#{URI.encode_query(params)}"
   end
 end

@@ -5,13 +5,18 @@ defmodule QuizGameWeb.UsersLive.UserUpdateDisplayNameLive do
   alias QuizGame.Users.User
 
   @impl Phoenix.LiveView
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
     user = socket.assigns.current_user
     changeset = Users.change_user_display_name(user, user.display_name)
 
     socket =
       socket
-      |> assign(page_title: "Change Display Name", form: to_form(changeset))
+      |> assign(
+        page_title: "Change Display Name",
+        form: to_form(changeset),
+        # next_url: QuizGameWeb.Support.Router.get_next_url(params, route(:users, :show))
+        success_url: Map.get(params, "next", route(:users, :show))
+      )
 
     {:ok, socket}
   end
@@ -33,7 +38,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateDisplayNameLive do
         required
       />
       <:actions>
-        <.form_button_cancel url={route(:users, :settings)} />
+        <.form_button_cancel />
         <.form_button_submit />
       </:actions>
     </.simple_form>
@@ -59,7 +64,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateDisplayNameLive do
         {:noreply,
          socket
          |> put_flash(:success, "Display name updated successfully")
-         |> redirect(to: route(:users, :show))}
+         |> redirect(to: socket.assigns.success_url)}
 
       {:error, changeset} ->
         {:noreply, assign(socket, password_form: to_form(changeset))}

@@ -57,9 +57,4 @@ defmodule QuizGameWeb.UserSessionController do
     |> put_flash(:success, "Logged out successfully")
     |> UserAuth.logout_user()
   end
-
-  def redirect_to_url_param_next() do
-    quote do
-    end
-  end
 end
