@@ -72,7 +72,7 @@ defmodule QuizGameWeb.Support.Router do
       :index -> "/quizzes"
       :new -> "/quizzes/new"
       :create -> "/quizzes"
-      :edit -> "/quizzes/#{params[:quiz_id]}/edit"
+      :edit -> "/quizzes/#{params[:quiz_id]}/update"
       n when n in [:show, :update, :delete] -> "/quizzes/#{params[:quiz_id]}"
       :take -> "/quizzes/#{params[:quiz_id]}/take"
     end
@@ -93,7 +93,7 @@ defmodule QuizGameWeb.Support.Router do
         "/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}"
 
       :edit ->
-        "/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}/edit"
+        "/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}/update"
 
       n when n in [:show, :update, :delete] ->
         "/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}"
@@ -124,11 +124,11 @@ defmodule QuizGameWeb.Support.Router do
       :verify_email_confirm -> "/users/verify/email/#{params[:token]}"
       # crud
       :show -> "/users/me"
-      :settings -> "/users/me/edit"
-      :update_display_name -> "/users/me/edit/display-name"
-      :update_email_solicit -> "/users/me/edit/email"
-      :update_email_confirm -> "/users/me/edit/email/#{params[:token]}"
-      :update_password -> "/users/me/edit/password"
+      :settings -> "/users/me/update"
+      :update_display_name -> "/users/me/update/display-name"
+      :update_email_solicit -> "/users/me/update/email"
+      :update_email_confirm -> "/users/me/update/email/#{params[:token]}"
+      :update_password -> "/users/me/update/password"
       :delete_confirm -> "/users/me/delete"
       :delete -> "/users/me/delete"
       # quizzes

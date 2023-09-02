@@ -53,9 +53,9 @@ defmodule QuizGameWeb.Router do
       scope "/" do
         pipe_through [:require_authenticated_user, :require_quiz_permissions]
 
-        get "/edit", QuizController, :edit
-        put "/edit", QuizController, :update
-        patch "/edit", QuizController, :update
+        get "/update", QuizController, :edit
+        put "/update", QuizController, :update
+        patch "/update", QuizController, :update
         delete "/", QuizController, :delete
       end
 
@@ -73,7 +73,7 @@ defmodule QuizGameWeb.Router do
 
           live_session :quizzes_id_cards_login_required,
             on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
-            live "/edit", CardLive.Show, :edit
+            live "/update", CardLive.Show, :edit
           end
         end
       end
@@ -96,7 +96,7 @@ defmodule QuizGameWeb.Router do
     get "/quizzes", UserController, :quizzes_index
     get "/quizzes/records", UserController, :records_index
 
-    scope "/edit" do
+    scope "/update" do
       get "/", UserController, :settings
 
       live_session :login_required,
