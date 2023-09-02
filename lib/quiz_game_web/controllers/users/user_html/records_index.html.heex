@@ -10,19 +10,16 @@
     <ul class="list">
       <li
         data-completed-on={record.inserted_at}
-        x-data="{
-          completedOn: new Date($el.dataset.completedOn + 'Z').toLocaleString()
-        }"
+        x-data="{ completedOn: new Date($el.dataset.completedOn + 'Z').toLocaleString() }"
       >
         <b>Completed on:</b> <span x-text="completedOn" />
       </li>
       <li>
         <b>Score:</b>
-        <%= record.correct_answer_count %> out of <%= record.card_count %> (<%= (record.correct_answer_count /
-                                                                                   record.card_count *
-                                                                                   100)
-        |> round()
-        |> trunc() %>%)
+        <span>
+          <%= record.correct_answer_count %> out of <%= record.card_count %>
+        </span>
+        (<%= (record.correct_answer_count / record.card_count * 100) |> round() |> trunc() %>%)
       </li>
     </ul>
   </li>

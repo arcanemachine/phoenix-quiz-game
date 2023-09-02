@@ -88,6 +88,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
   Quizzes.create_record(%{
     quiz_id: generic_quiz.id,
     user_id: user.id,
+    display_name: user.display_name,
     card_count: 4,
     correct_answer_count: 3
   })
@@ -95,6 +96,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
   Quizzes.create_record(%{
     quiz_id: generic_quiz.id,
     user_id: nil,
+    display_name: "Anonymous Seed User",
     card_count: 4,
     correct_answer_count: 4
   })

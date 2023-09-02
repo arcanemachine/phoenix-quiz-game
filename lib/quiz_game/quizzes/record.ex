@@ -9,13 +9,14 @@ defmodule QuizGame.Quizzes.Record do
     belongs_to :quiz, QuizGame.Quizzes.Quiz
 
     # data
+    field :display_name, :string
     field :card_count, :integer
     field :correct_answer_count, :integer
 
     timestamps()
   end
 
-  @fields [:user_id, :quiz_id, :card_count, :correct_answer_count]
+  @fields [:user_id, :quiz_id, :display_name, :card_count, :correct_answer_count]
 
   @doc false
   def changeset(record, attrs) do

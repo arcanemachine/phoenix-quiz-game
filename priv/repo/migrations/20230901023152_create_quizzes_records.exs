@@ -9,6 +9,7 @@ defmodule QuizGame.Repo.Migrations.CreateQuizzesRecords do
       add :user_id, references(:users, on_delete: :delete_all)
 
       # data
+      add :display_name, :string, null: false
       add :card_count, :integer, null: false
       add :correct_answer_count, :integer, null: false
 
