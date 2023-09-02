@@ -246,8 +246,7 @@ defmodule QuizGameWeb.CoreComponents do
           <.icon :if={@kind == :warning} name="hero-exclamation-circle-mini" class="h-7 w-7" />
           <.icon :if={@kind == :error} name="hero-exclamation-triangle-mini" class="h-7 w-7" />
         </div>
-        <p class="grow flex justify-center px-4 font-semibold text-center cursor-pointer
-                  select-none">
+        <p class="grow flex justify-center px-4 font-semibold text-center select-none">
           <%= msg %>
         </p>
         <button class="block group" aria-label={gettext("close")}>
@@ -1054,7 +1053,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   def modal_title(assigns) do
     ~H"""
-    <div class={["my-4 text-xl font-bold", @class]}>
+    <div class={["mt-2 mb-4 text-xl font-bold", @class]}>
       <%= @title %>
     </div>
     """
