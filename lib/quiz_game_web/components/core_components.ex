@@ -9,7 +9,9 @@ defmodule QuizGameWeb.CoreComponents do
   alias Phoenix.LiveView.JS
 
   @doc """
-  Renders a list of links. Used at the bottom of a page to display relevant actions.
+  Renders a list of links.
+
+  Used at the bottom of a page to display relevant actions.
 
   ## Example
 
@@ -28,11 +30,11 @@ defmodule QuizGameWeb.CoreComponents do
 
   def action_links(assigns) do
     ~H"""
-    <section class={["mt-8", @class]}>
-      <div :if={@title} class="text-2xl font-bold">
+    <section class={["mt-8", @class]} style="font-size: 1.25em">
+      <div :if={@title} class="font-bold text-2xl">
         <%= @title %>
       </div>
-      <ul class="mt-2 ml-8 [&>*:first-child]:mt-4 [&>*:not(:first-child)]:mt-2">
+      <ul class="mt-2 ml-8 [&>*]:mt-2 text-xl">
         <%= render_slot(@inner_block) %>
       </ul>
     </section>
@@ -49,7 +51,7 @@ defmodule QuizGameWeb.CoreComponents do
       <.action_links_spacer />
   """
   def action_links_spacer(assigns) do
-    ~H|<div class="h-2 w-0" />|
+    ~H|<div class="h-1 w-0" />|
   end
 
   @doc """
@@ -73,8 +75,45 @@ defmodule QuizGameWeb.CoreComponents do
 
   def action_links_item(assigns) do
     ~H"""
-    <li class={["mt-2 pl-2 text-lg", (@kind && "list-kind-#{@kind}") || "list-dash", @class]}>
-      <%= render_slot(@inner_block) %>
+    <li class={["mt-2 pl-2", (@kind && "list-kind-#{@kind}") || "list-dash", @class]}>
+      <span>
+        <%= render_slot(@inner_block) %>
+      </span>
+    </li>
+    """
+  end
+
+  @doc """
+  An action links sub-list.
+
+  This component is meant to be used as a child of the component `<.action_links>`.
+
+  ## Example
+
+      <.action_links>
+        <.action_links_sublist>
+          <:title>
+            Action Links Sub-List
+          </:title>
+          <.action_links_item>
+            <.link href={"/"}>
+              Hello world!
+            </.link>
+          </.action_links_item>
+        </.action_links_sublist>
+      </.action_links>
+  """
+
+  slot :title, required: true
+  slot :inner_block, required: true
+
+  def action_links_sublist(assigns) do
+    ~H"""
+    <li class="ps-2 font-bold list-dash">
+      <%= render_slot(@title) %>
+      <ul class="ps-2 list" style="font-size: 0.8em">
+        <%= render_slot(@inner_block) %>
+      </ul>
     </li>
     """
   end
@@ -487,31 +526,32 @@ defmodule QuizGameWeb.CoreComponents do
   """
   attr :name, :string, required: true
   attr :class, :string, default: nil
+  attr :tooltip, :string, default: nil
 
   def icon(%{name: "hero-" <> _} = assigns) do
     ~H"""
-    <span class={[@name, @class]} />
+    <span class={[@name, @class]} x-data={@tooltip && ""} x-tooltip={@tooltip} />
     """
   end
 
-  @doc """
-  Renders a lock icon with a tooltip.
+  # @doc """
+  # Renders a lock icon with a tooltip.
 
-  Used to indicate that access to a given page is restricted. Use the `message` param to
-  indicate the manner in which the page is restricted
+  # Used to indicate that access to a given page is restricted. Use the `message` param to
+  # indicate the manner in which the page is restricted
 
-  ## Examples
+  # ## Examples
 
-      <.icon_lock message="This page can only be viewed by an administrator." />
-  """
-  attr :message, :string, required: true
-  attr :class, :string, default: nil
+  #     <.icon_lock message="This page can only be viewed by an administrator." />
+  # """
+  # attr :message, :string, required: true
+  # attr :class, :string, default: nil
 
-  def icon_lock(%{name: "hero-lock-closed" <> _} = assigns) do
-    ~H"""
-    <span class={[@name, @class]} x-tooltip={"{ content: `#{@message}` }"} />
-    """
-  end
+  # def icon_lock(%{name: "hero-lock-closed" <> _} = assigns) do
+  #   ~H"""
+  #   <span class={[@name, @class]} x-tooltip={"{ content: `#{@message}` }"} />
+  #   """
+  # end
 
   @doc """
   Renders an input with label and error messages.
@@ -1182,7 +1222,7 @@ defmodule QuizGameWeb.CoreComponents do
   attr :width, :string, default: "0", doc: "the width of the spacer (e.g. 2 -> 0.5rem)"
 
   def spacer(assigns) do
-    ~H|<div name="spacer" class={"show-empty-element h-#{@height} w-#{@width}"}>hello</div>|
+    ~H|<div name="spacer" class={"show-empty-element h-#{@height} w-#{@width}"} />|
   end
 
   @doc ~S"""
