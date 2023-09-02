@@ -5,7 +5,7 @@
 <ul :for={record <- @records} class="list">
   <li>
     <b>Taken by:</b> <%= record.display_name %>
-    <%= if @current_user && @quiz.user_id == @current_user.id do %>
+    <%= if record.user_id == @current_user.id do %>
       <b>(You)</b>
     <% end %>
   </li>

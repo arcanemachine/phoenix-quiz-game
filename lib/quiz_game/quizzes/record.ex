@@ -16,13 +16,14 @@ defmodule QuizGame.Quizzes.Record do
     timestamps()
   end
 
-  @fields [:user_id, :quiz_id, :display_name, :card_count, :score]
+  @required_fields [:quiz_id, :display_name, :card_count, :score]
+  @optional_fields [:user_id]
 
   @doc false
   def changeset(record, attrs) do
     record
-    |> cast(attrs, @fields)
-    |> validate_required(@fields)
+    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
     |> foreign_key_constraint(:user_id)
     |> foreign_key_constraint(:quiz_id)
   end

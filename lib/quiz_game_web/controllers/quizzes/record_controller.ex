@@ -11,7 +11,7 @@ defmodule QuizGameWeb.Quizzes.RecordController do
     records = Repo.all(from r in Record, where: r.quiz_id == ^params["quiz_id"], preload: [:user])
 
     render(conn, :index,
-      page_title: "Record List",
+      page_title: "Quiz Records",
       page_subtitle: quiz.name,
       quiz: quiz,
       records: records
