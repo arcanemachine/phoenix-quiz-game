@@ -91,6 +91,15 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
     quiz_is_completed = assigns.current_card_index == _get_quiz_length(assigns.quiz) - 1
 
     if quiz_is_completed do
+      # create quiz record
+      QuizGame.Quizzes.create_record(%{
+        quiz_id: assigns.quiz.id,
+        user_id: (assigns.current_user && assigns.current_user.id) || nil,
+        display_name: assigns.display_name,
+        card_count: length(assigns.quiz.cards),
+        correct_answer_count: assigns.score
+      })
+
       {:noreply, socket |> assign(quiz_state: :completed)}
     else
       # get next card and increment current card index

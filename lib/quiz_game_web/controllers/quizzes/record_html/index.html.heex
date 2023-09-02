@@ -5,6 +5,9 @@
 <ul :for={record <- @quiz.records} class="list">
   <li>
     <b>Taken by:</b> <%= record.display_name %>
+    <%= if @current_user && @quiz.user_id == @current_user.id do %>
+      <b>(You)</b>
+    <% end %>
   </li>
   <ul class="list">
     <li
