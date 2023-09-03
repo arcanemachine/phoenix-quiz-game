@@ -69,7 +69,7 @@
             <div class="divider" />
 
             <div>
-              Your display name is '<%= @display_name %>'.
+              Your display name is <i><%= @display_name %></i>.
               <div class="mt-2">
                 <button type="button" class="fake-link" phx-click="change-display-name">
                   Change display name
@@ -234,22 +234,30 @@
             <%= @score %> / <%= _get_quiz_length(@quiz) %>
           </div>
 
-          <div class="mt-4 mb-8 text-xl font-bold">
-            <div class="mt-6">
-              You got <%= _get_score_percentage_as_integer(assigns) %>%!
-            </div>
-            <div class="mt-4">
-              <%= case _get_score_percentage_as_integer(assigns) do %>
-                <% p when p == 100 -> %>
-                  A perfect score! 😎
-                <% p when p in 80..99 -> %>
-                  Good work!
-                <% p when p in 50..79 -> %>
-                  Not bad!
-                <% _ -> %>
-                  Keep trying!
-              <% end %>
-            </div>
+          <div class="mt-6 text-xl font-bold">
+            You got <%= _get_score_percentage_as_integer(assigns) %>%!
+          </div>
+
+          <div>
+            <%= case _get_score_percentage_as_integer(assigns) do %>
+              <% p when p == 100 -> %>
+                A perfect score! 😎
+              <% p when p in 80..99 -> %>
+                Good work!
+              <% p when p in 50..79 -> %>
+                Not bad!
+              <% _ -> %>
+                Keep trying!
+            <% end %>
+          </div>
+
+          <div class="flex mt-6 mx-auto">
+            <.form_button_cancel
+              content="Exit the quiz"
+              url={route(:users, :records_index)}
+              class="w-36"
+            />
+            <.form_button type="button" content="Play again" class="w-36" phx-click="reset-quiz" />
           </div>
         </div>
       </div>

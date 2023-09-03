@@ -111,9 +111,9 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLive do
     end
   end
 
-  # def handle_event("reset-quiz", _params, socket) do
-  #   {:noreply, _initialize_socket(socket)}
-  # end
+  def handle_event("reset-quiz", _params, socket) do
+    {:noreply, _initialize_socket(socket)}
+  end
 
   # answer
   @spec _get_correct_answer(Card) :: [integer() | String.t()]
