@@ -19,7 +19,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
   def mount(params, _session, socket) do
     card = _get_card_or_404(params)
 
-    {:ok, socket |> assign(:card, card)}
+    {:ok, socket |> assign(card: card)}
   end
 
   @impl Phoenix.LiveView
@@ -28,17 +28,17 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
     card = socket.assigns[:card] || _get_card_or_404(params)
 
     {:noreply,
-     assign(socket, %{
+     assign(socket,
        page_title: "Card Info",
        page_subtitle: card.quiz.name,
        card: card
-     })}
+     )}
   end
 
   @impl Phoenix.LiveView
   def handle_info({QuizGameWeb.Quizzes.CardLive.FormComponent, {:saved, card}}, socket) do
     # update the saved card after saving the form
-    {:noreply, assign(socket, :card, card)}
+    {:noreply, socket |> assign(card: card)}
   end
 
   @impl Phoenix.LiveView

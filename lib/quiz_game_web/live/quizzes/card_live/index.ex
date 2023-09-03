@@ -15,7 +15,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Index do
   def mount(params, _session, socket) do
     quiz = _get_quiz_or_404(params)
 
-    {:ok, socket |> assign(:quiz, quiz) |> stream(:cards, quiz.cards)}
+    {:ok, socket |> assign(quiz: quiz) |> stream(:cards, quiz.cards)}
   end
 
   @impl Phoenix.LiveView

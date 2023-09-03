@@ -6,7 +6,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
   defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
 
   defp assign_form(socket, %Ecto.Changeset{} = changeset) do
-    assign(socket, :form, to_form(changeset))
+    socket |> assign(form: to_form(changeset))
   end
 
   @impl Phoenix.LiveComponent
@@ -28,7 +28,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
   @impl Phoenix.LiveComponent
   def handle_event("change", %{"card" => card_params}, socket) do
     # update `card_format` so we can conditionally render format-specific fields (i.e. choices)
-    socket = socket |> assign(%{card_format: card_params["format"]})
+    socket = socket |> assign(card_format: card_params["format"])
 
     # validate the changeset
     changeset =
