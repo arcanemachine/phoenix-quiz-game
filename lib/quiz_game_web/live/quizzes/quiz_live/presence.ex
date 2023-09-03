@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Quizzes.QuizPresenceLive do
+defmodule QuizGameWeb.Quizzes.QuizLive.Presence do
   use QuizGameWeb, :live_component
   alias QuizGameWeb.Presence
 

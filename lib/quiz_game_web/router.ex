@@ -47,7 +47,7 @@ defmodule QuizGameWeb.Router do
 
       live_session :quiz_take,
         on_mount: [{QuizGameWeb.UserAuth, :mount_current_user}] do
-        live "/take", QuizTakeLive
+        live "/take", QuizLive.Take
       end
 
       scope "/" do
@@ -57,11 +57,6 @@ defmodule QuizGameWeb.Router do
         put "/update", QuizController, :update
         patch "/update", QuizController, :update
         delete "/", QuizController, :delete
-
-        live_session :quizzes_login_required_quiz_permission_required,
-          on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
-          live "/live", QuizLive.Show, :show
-        end
       end
 
       # cards
