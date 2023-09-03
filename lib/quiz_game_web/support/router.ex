@@ -75,6 +75,7 @@ defmodule QuizGameWeb.Support.Router do
       :edit -> "/quizzes/#{params[:quiz_id]}/update"
       n when n in [:show, :update, :delete] -> "/quizzes/#{params[:quiz_id]}"
       :take -> "/quizzes/#{params[:quiz_id]}/take"
+      :live_show -> "/quizzes/#{params[:quiz_id]}/live"
     end
   end
 
