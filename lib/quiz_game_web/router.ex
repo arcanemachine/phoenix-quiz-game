@@ -57,6 +57,11 @@ defmodule QuizGameWeb.Router do
         put "/update", QuizController, :update
         patch "/update", QuizController, :update
         delete "/", QuizController, :delete
+
+        live_session :quizzes_login_required_quiz_permission_required,
+          on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
+          live "/stats", QuizLive.Stats, :stats
+        end
       end
 
       # cards

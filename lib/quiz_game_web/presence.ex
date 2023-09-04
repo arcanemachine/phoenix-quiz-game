@@ -5,13 +5,13 @@ defmodule QuizGameWeb.Presence do
     otp_app: :quiz_game,
     pubsub_server: QuizGame.PubSub
 
-  # @quiz_presence_topic "quiz_presence"
-
-  @spec track_user(pid(), String.t(), integer(), String.t()) :: {:error, any()} | {:ok, binary()}
+  @spec track_user(pid(), String.t(), integer(), QuizGame.Users.User) ::
+          {:error, any()} | {:ok, binary()}
   def track_user(pid, topic, quiz_id, user) do
     track(pid, topic, quiz_id, %{users: [user]})
   end
 
+  @doc "Lists all users being tracked via Presence for a given topic."
   @spec list_users_for(String.t(), integer()) :: List.t()
   def list_users_for(topic, quiz_id) do
     users = list(topic)

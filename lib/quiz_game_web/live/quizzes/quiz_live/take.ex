@@ -9,112 +9,6 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
 
   @presence_topic "quiz_presence"
 
-  @impl Phoenix.LiveView
-  def mount(params, _session, socket) do
-    quiz = Repo.one!(from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards])
-
-    # redirect if quiz does not have any cards or random math questions
-    if Enum.empty?(quiz.cards) && !quiz.math_random_question_count do
-      {:ok,
-       socket
-       |> put_flash(:error, "This quiz cannot be taken because it has no cards.")
-       |> redirect(to: route(:quizzes, :show, quiz_id: quiz.id))}
-    else
-      _maybe_track_user(socket, quiz)
-
-      {:ok,
-       socket
-       |> assign(
-         current_path: route(:quizzes, :take, Support.Map.params_to_keyword_list(params)),
-         quiz: quiz
-       )
-       |> _initialize_socket()}
-    end
-  end
-
-  @impl Phoenix.LiveView
-  def handle_event("submit-display-name", %{"display-name" => display_name}, socket) do
-    if String.trim(display_name) != "" do
-      {:noreply,
-       socket
-       |> assign(display_name: display_name, quiz_state: :before_start)}
-
-      # |> _maybe_track_user(socket.assigns.quiz)}
-    else
-      {:noreply, socket |> put_flash(:error, "You must enter a display name.")}
-    end
-  end
-
-  def handle_event("change-display-name", _params, socket) do
-    socket = socket |> clear_flash()
-
-    if socket.assigns.current_user do
-      {:noreply,
-       socket
-       |> redirect(
-         # redirect to user display name update form, and return to this page when finished
-         to:
-           route(:users, :update_display_name) <>
-             query_string(next: route(:quizzes, :take, quiz_id: socket.assigns.quiz.id))
-       )}
-    else
-      {:noreply, socket |> assign(display_name: nil, quiz_state: :enter_display_name)}
-    end
-  end
-
-  def handle_event("start-quiz", _params, socket) do
-    {:noreply,
-     socket
-     |> clear_flash()
-     |> put_flash(:info, "The quiz has started. Good luck!")
-     |> assign(quiz_state: :in_progress)}
-  end
-
-  def handle_event("submit-user-answer", params, socket) do
-    user_answer = _get_user_answer(socket.assigns.card, params)
-    correct_answer = _get_correct_answer(socket.assigns.card)
-
-    # check if answer was correct and dispatch the appropriate actions
-    socket =
-      if user_answer == correct_answer do
-        socket
-        # show success message
-        |> clear_flash()
-        |> put_flash(:success, "Correct!")
-        # increment score
-        |> assign(score: socket.assigns.score + 1)
-      else
-        socket
-        # show failure message
-        |> clear_flash()
-        |> put_flash(:error, "Incorrect! The correct answer is '#{correct_answer}'.")
-      end
-
-    # check if quiz is completed
-    quiz_is_completed =
-      socket.assigns.current_card_index == _get_quiz_length(socket.assigns.quiz) - 1
-
-    if quiz_is_completed do
-      # create quiz record
-      QuizGame.Quizzes.create_record(%{
-        quiz_id: socket.assigns.quiz.id,
-        user_id: (socket.assigns.current_user && socket.assigns.current_user.id) || nil,
-        display_name: socket.assigns.display_name,
-        card_count: length(socket.assigns.quiz.cards),
-        score: socket.assigns.score
-      })
-
-      {:noreply, socket |> assign(quiz_state: :completed)}
-    else
-      # get next card and increment current card index
-      {:noreply, socket |> _assign_next_card_and_index()}
-    end
-  end
-
-  def handle_event("reset-quiz", _params, socket) do
-    {:noreply, _initialize_socket(socket)}
-  end
-
   # answer
   @spec _get_correct_answer(Card) :: [integer() | String.t()]
   defp _get_correct_answer(card) do
@@ -252,5 +146,114 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
 
   defp _get_score_percentage_as_integer(assigns) do
     (assigns.score / (assigns.current_card_index + 1) * 100) |> round() |> trunc()
+  end
+
+  @impl Phoenix.LiveView
+  def mount(params, _session, socket) do
+    quiz = Repo.one!(from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards])
+
+    # redirect if quiz does not have any cards or random math questions
+    if Enum.empty?(quiz.cards) && !quiz.math_random_question_count do
+      {:ok,
+       socket
+       |> put_flash(:error, "This quiz cannot be taken because it has no cards.")
+       |> redirect(to: route(:quizzes, :show, quiz_id: quiz.id))}
+    else
+      # if the user is authenticated, we will begin presence tracking them now. otherwise,
+      # we will wait until they have chosen a name
+      _maybe_track_user(socket, quiz)
+
+      {:ok,
+       socket
+       |> assign(
+         current_path: route(:quizzes, :take, Support.Map.params_to_keyword_list(params)),
+         quiz: quiz
+       )
+       |> _initialize_socket()}
+    end
+  end
+
+  @impl Phoenix.LiveView
+  def handle_event("submit-display-name", %{"display-name" => display_name}, socket) do
+    if String.trim(display_name) != "" do
+      # # now that the anonymous user has a name, we can track them via presence
+      # _maybe_track_user(socket.assigns.quiz)}
+
+      {:noreply,
+       socket
+       |> assign(display_name: display_name, quiz_state: :before_start)}
+    else
+      {:noreply, socket |> put_flash(:error, "You must enter a display name.")}
+    end
+  end
+
+  def handle_event("change-display-name", _params, socket) do
+    socket = socket |> clear_flash()
+
+    if socket.assigns.current_user do
+      {:noreply,
+       socket
+       |> redirect(
+         # redirect to user display name update form, and return to this page when finished
+         to:
+           route(:users, :update_display_name) <>
+             query_string(next: route(:quizzes, :take, quiz_id: socket.assigns.quiz.id))
+       )}
+    else
+      {:noreply, socket |> assign(display_name: nil, quiz_state: :enter_display_name)}
+    end
+  end
+
+  def handle_event("start-quiz", _params, socket) do
+    {:noreply,
+     socket
+     |> clear_flash()
+     |> put_flash(:info, "The quiz has started. Good luck!")
+     |> assign(quiz_state: :in_progress)}
+  end
+
+  def handle_event("submit-user-answer", params, socket) do
+    user_answer = _get_user_answer(socket.assigns.card, params)
+    correct_answer = _get_correct_answer(socket.assigns.card)
+
+    # check if answer was correct and dispatch the appropriate actions
+    socket =
+      if user_answer == correct_answer do
+        socket
+        # show success message
+        |> clear_flash()
+        |> put_flash(:success, "Correct!")
+        # increment score
+        |> assign(score: socket.assigns.score + 1)
+      else
+        socket
+        # show failure message
+        |> clear_flash()
+        |> put_flash(:error, "Incorrect! The correct answer is '#{correct_answer}'.")
+      end
+
+    # check if quiz is completed
+    quiz_is_completed =
+      socket.assigns.current_card_index == _get_quiz_length(socket.assigns.quiz) - 1
+
+    if quiz_is_completed do
+      # create quiz record
+      QuizGame.Quizzes.create_record(%{
+        quiz_id: socket.assigns.quiz.id,
+        user_id: (socket.assigns.current_user && socket.assigns.current_user.id) || nil,
+        display_name: socket.assigns.display_name,
+        card_count: length(socket.assigns.quiz.cards),
+        score: socket.assigns.score
+      })
+
+      {:noreply, socket |> assign(quiz_state: :completed)}
+    else
+      # get next card and increment current card index
+      {:noreply, socket |> _assign_next_card_and_index()}
+    end
+  end
+
+  def handle_event("reset-quiz", _params, socket) do
+    {:noreply, _initialize_socket(socket)}
   end
 end
