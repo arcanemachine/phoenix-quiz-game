@@ -24,11 +24,11 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
 
   @impl true
   def handle_params(params, _url, socket) do
-    # get card
     card = socket.assigns[:card] || _get_card_or_404(params)
 
     {:noreply,
-     assign(socket,
+     socket
+     |> assign(
        page_title: "Card Info",
        page_subtitle: card.quiz.name,
        card: card

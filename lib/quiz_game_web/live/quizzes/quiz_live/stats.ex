@@ -15,9 +15,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Stats do
 
   @impl true
   def mount(params, _session, socket) do
-    if connected?(socket) do
-      Endpoint.subscribe(@presence_topic)
-    end
+    if connected?(socket), do: Endpoint.subscribe(@presence_topic)
 
     quiz = _get_quiz_or_404(params)
 
@@ -26,6 +24,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Stats do
      |> assign(
        page_title: "Quiz Live Stats",
        page_subtitle: quiz.name,
+       connected: connected?(socket),
        quiz: quiz,
        users: Presence.list_users_for(@presence_topic, quiz.id)
      )}
@@ -43,15 +42,28 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Stats do
     <div class="mt-12">
       <div class="text-xl font-bold">Users taking this quiz:</div>
       <ul class="list">
-        <%= if Enum.empty?(@users) do %>
+        <%= if @connected && Enum.empty?(@users) do %>
           <li class="italic">There are no users currently taking this quiz.</li>
         <% else %>
           <%= for user <- @users do %>
-            <li><%= user.username %></li>
+            <li>
+              <%= user.display_name %> (username: <i><%= user.username %></i>)
+              <%= if user.id == @current_user.id do %>
+                <b>(You)</b>
+              <% end %>
+            </li>
           <% end %>
         <% end %>
       </ul>
     </div>
+
+    <.action_links class="mt-12">
+      <.action_links_item kind="back">
+        <.link href={route(:quizzes, :show, quiz_id: @quiz.id)}>
+          Return to quiz
+        </.link>
+      </.action_links_item>
+    </.action_links>
     """
   end
 end
