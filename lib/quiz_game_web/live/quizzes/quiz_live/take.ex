@@ -7,19 +7,16 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
   alias QuizGame.Repo
   alias QuizGameWeb.{Presence, Support}
 
-  @presence_topic "quiz_presence"
+  @typedoc "The possible states that can exist during a quiz."
+  @type quiz_state :: [:enter_display_name | :before_start | :in_progress | :completed]
 
-  defmodule PresenceData do
-    defstruct user: nil,
-              display_name: nil,
-              quiz_state: :before_start,
-              score: 0,
-              current_card_index: 0
-  end
+  @presence_topic "quiz_presence"
 
   @impl true
   def mount(params, _session, socket) do
     quiz = Repo.one!(from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards])
+
+    if connected?(socket), do: _track_user_presence(socket, quiz)
 
     # redirect if quiz does not have any cards or random math questions
     if Enum.empty?(quiz.cards) && !quiz.math_random_question_count do
@@ -28,10 +25,6 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
        |> put_flash(:error, "This quiz cannot be taken because it has no cards.")
        |> redirect(to: route(:quizzes, :show, quiz_id: quiz.id))}
     else
-      # if the user is authenticated, then begin presence tracking. otherwise,
-      # we will wait until they have chosen a name
-      _maybe_track_user(socket, quiz)
-
       {:ok,
        socket
        |> assign(
@@ -40,6 +33,33 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
        )
        |> _initialize_socket()}
     end
+  end
+
+  defp _initialize_socket(socket) do
+    user = socket.assigns.current_user
+    quiz_state = if user, do: :before_start, else: :enter_display_name
+
+    socket
+    |> assign(
+      quiz: socket.assigns.quiz,
+      quiz_state: quiz_state,
+      display_name: (user && user.display_name) || nil,
+      current_card_index: 0,
+      card: socket.assigns.quiz.cards |> Enum.at(0),
+      score: 0
+    )
+  end
+
+  defp _track_user_presence(socket, quiz) do
+    presence_data = %Presence.QuizData{
+      user: socket.assigns[:current_user],
+      display_name: socket.assigns[:display_name],
+      quiz_state: socket.assigns[:quiz_state],
+      score: socket.assigns[:score],
+      current_card_index: socket.assigns[:current_card_index]
+    }
+
+    Presence.track_data(self(), @presence_topic, quiz.id, presence_data)
   end
 
   @impl true
@@ -228,33 +248,10 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
     socket |> assign(card: card, current_card_index: next_card_index)
   end
 
-  # presence
-  defp _maybe_track_user(socket, quiz) do
-    if connected?(socket) && socket.assigns.current_user do
-      Presence.track_user(self(), @presence_topic, quiz.id, socket.assigns.current_user)
-    end
-  end
-
   # quiz
   defp _get_quiz_length(quiz) do
     # add the number of cards to the number of random math questions
     length(quiz.cards) + (quiz.math_random_question_count || 0)
-  end
-
-  # socket
-  defp _initialize_socket(socket) do
-    user = socket.assigns.current_user
-    quiz_state = (user && :before_start) || :enter_display_name
-
-    socket
-    |> assign(
-      quiz: socket.assigns.quiz,
-      quiz_state: quiz_state,
-      display_name: (user && user.display_name) || nil,
-      current_card_index: 0,
-      card: socket.assigns.quiz.cards |> Enum.at(0),
-      score: 0
-    )
   end
 
   # support

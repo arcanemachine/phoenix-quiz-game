@@ -95,3 +95,35 @@ defmodule QuizGameWeb.Support.Map do
     params |> Enum.map(fn {k, v} -> {String.to_existing_atom(k), v} end)
   end
 end
+
+defmodule QuizGameWeb.Support.String do
+  @moduledoc "This project's `String` helper functions."
+
+  @doc """
+  Pluralizes a value based on the length of the given inputs.
+
+  Optionally use custom values for pluralized name. Defaults to `val` + 's'.
+
+  ## Examples
+
+      iex> pluralize("word", 1)
+      "word"
+
+      iex> pluralize("word", 2)
+      "words"
+
+      iex> pluralize("cherry", 2, "cherries")
+      "cherries"
+  """
+  def pluralize(word, count, plural_word \\ nil) do
+    if count == 1 do
+      word
+    else
+      if plural_word do
+        plural_word
+      else
+        word <> "s"
+      end
+    end
+  end
+end

@@ -5,25 +5,34 @@ defmodule QuizGameWeb.Presence do
     otp_app: :quiz_game,
     pubsub_server: QuizGame.PubSub
 
-  @spec track_user(pid(), String.t(), integer(), QuizGame.Users.User) ::
-          {:error, any()} | {:ok, binary()}
-  def track_user(pid, topic, quiz_id, user) do
-    track(pid, topic, quiz_id, %{users: [user]})
+  defmodule QuizData do
+    @moduledoc false
+    defstruct user: nil,
+              display_name: nil,
+              quiz_state: :before_start,
+              score: 0,
+              current_card_index: 0
   end
 
-  @doc "Lists all users being tracked via Presence for a given topic."
-  @spec list_users_for(String.t(), integer()) :: List.t()
-  def list_users_for(topic, quiz_id) do
-    users = list(topic)
+  @spec track_data(pid(), String.t(), integer(), any()) ::
+          {:error, any()} | {:ok, binary()}
+  def track_data(pid, topic, quiz_id, %QuizData{} = data) do
+    track(pid, topic, quiz_id, %{data: [data]})
+  end
 
-    users
+  @doc "Lists all data being tracked via Presence for a given topic."
+  @spec list_data_for(String.t(), integer()) :: List.t()
+  def list_data_for(topic, quiz_id) do
+    data = list(topic)
+
+    data
     |> Map.get(to_string(quiz_id), %{metas: []})
     |> Map.get(:metas)
-    |> users_from_metas
+    |> data_from_metas
   end
 
-  defp users_from_metas(metas) do
-    Enum.map(metas, &get_in(&1, [:users]))
+  defp data_from_metas(metas) do
+    Enum.map(metas, &get_in(&1, [:data]))
     |> List.flatten()
     # |> Enum.map(&Map.get(&1, :email))
     |> Enum.uniq()

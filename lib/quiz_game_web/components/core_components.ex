@@ -17,7 +17,7 @@ defmodule QuizGameWeb.CoreComponents do
 
       <.action_links>
         <.action_links_item kind="back">
-          <.link href={~p"/"}>
+          <.link href={"/"}>
             Return to homepage
           </.link>
         </.action_links_item>
@@ -49,7 +49,7 @@ defmodule QuizGameWeb.CoreComponents do
   ## Example
 
       <.action_links_item kind="back" class="text-xl">
-        <.link navigate={~p"/"}>
+        <.link navigate={"/"}>
           Return to homepage
         </.link>
       </.action_links_item>
@@ -160,7 +160,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   ## Examples
 
-      <.back navigate={~p"/posts"} class="mt-8" confirm={"Are you sure?"}>
+      <.back navigate={"/posts"} class="mt-8" confirm={"Are you sure?"}>
         Back to posts
       </.back>
   """
@@ -377,7 +377,7 @@ defmodule QuizGameWeb.CoreComponents do
   ## Examples
 
       <.form_button_cancel />
-      <.form_button_cancel content="Go back" url={~p"/"} />
+      <.form_button_cancel content="Go back" url={"/"} />
   """
   attr :type, :string, default: "button"
   attr :content, :string, default: "Cancel"
@@ -973,7 +973,7 @@ defmodule QuizGameWeb.CoreComponents do
   JS commands may be passed to the `:on_cancel` and `on_confirm` attributes
   for the caller to react to each button press, for example:
 
-      <.modal id="confirm" on_confirm={JS.push("delete")} on_cancel={JS.navigate(~p"/posts")}>
+      <.modal id="confirm" on_confirm={JS.push("delete")} on_cancel={JS.navigate("/posts")}>
         Are you sure you?
         <:confirm>OK</:confirm>
         <:cancel>Cancel</:cancel>
