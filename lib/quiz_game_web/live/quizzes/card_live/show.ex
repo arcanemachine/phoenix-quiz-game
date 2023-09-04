@@ -15,14 +15,14 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
     QuizGame.Repo.one!(query)
   end
 
-  @impl Phoenix.LiveView
+  @impl true
   def mount(params, _session, socket) do
     card = _get_card_or_404(params)
 
     {:ok, socket |> assign(card: card)}
   end
 
-  @impl Phoenix.LiveView
+  @impl true
   def handle_params(params, _url, socket) do
     # get card
     card = socket.assigns[:card] || _get_card_or_404(params)
@@ -35,13 +35,13 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
      )}
   end
 
-  @impl Phoenix.LiveView
+  @impl true
   def handle_info({QuizGameWeb.Quizzes.CardLive.FormComponent, {:saved, card}}, socket) do
     # update the saved card after saving the form
     {:noreply, socket |> assign(card: card)}
   end
 
-  @impl Phoenix.LiveView
+  @impl true
   def handle_event("delete", _params, socket) do
     # delete the card and redirect to the card list
     socket =
@@ -66,7 +66,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
     {:noreply, socket}
   end
 
-  # @impl Phoenix.LiveView
+  # @impl true
   # def handle_event("delete", %{"card_id" => card_id}, socket) do
   #   card = Quizzes.get_card!(card_id)
   #   {:ok, _} = Quizzes.delete_card(card)

@@ -4,7 +4,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
   alias QuizGame.Users
   alias QuizGame.Users.User
 
-  @impl Phoenix.LiveView
+  @impl true
   def mount(%{"token" => token}, _session, socket) do
     socket =
       case Users.update_user_email(socket.assigns.current_user, token) do
@@ -40,7 +40,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
     {:ok, socket}
   end
 
-  @impl Phoenix.LiveView
+  @impl true
   def render(assigns) do
     ~H"""
     <.crud_intro_text>
@@ -75,7 +75,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
     """
   end
 
-  @impl Phoenix.LiveView
+  @impl true
   def handle_event("validate", params, socket) do
     %{"current_password" => password, "user" => %{"email" => email} = user_params} = params
 

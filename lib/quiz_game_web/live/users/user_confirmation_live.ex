@@ -2,7 +2,7 @@ defmodule QuizGameWeb.UsersLive.UserConfirmationLive do
   use QuizGameWeb, :live_view
   alias QuizGame.Users
 
-  @impl Phoenix.LiveView
+  @impl true
   def mount(%{"token" => token}, _session, socket) do
     form = to_form(%{"token" => token}, as: "user")
 
@@ -10,7 +10,7 @@ defmodule QuizGameWeb.UsersLive.UserConfirmationLive do
      temporary_assigns: [form: nil]}
   end
 
-  @impl Phoenix.LiveView
+  @impl true
   def render(%{live_action: :edit} = assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
@@ -28,7 +28,7 @@ defmodule QuizGameWeb.UsersLive.UserConfirmationLive do
     """
   end
 
-  @impl Phoenix.LiveView
+  @impl true
   def handle_event("confirm_account", %{"user" => %{"token" => token}}, socket) do
     # to avoid a leaked token giving the user access to the account, do not log the user in after
     # confirming their email

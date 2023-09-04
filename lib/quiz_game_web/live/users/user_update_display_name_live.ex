@@ -4,7 +4,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateDisplayNameLive do
   alias QuizGame.Users
   alias QuizGame.Users.User
 
-  @impl Phoenix.LiveView
+  @impl true
   def mount(params, _session, socket) do
     user = socket.assigns.current_user
     changeset = Users.change_user_display_name(user, user.display_name)
@@ -20,7 +20,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateDisplayNameLive do
     {:ok, socket}
   end
 
-  @impl Phoenix.LiveView
+  @impl true
   def render(assigns) do
     ~H"""
     <.crud_intro_text>
@@ -44,7 +44,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateDisplayNameLive do
     """
   end
 
-  @impl Phoenix.LiveView
+  @impl true
   def handle_event("validate", params, socket) do
     form =
       socket.assigns.current_user

@@ -148,7 +148,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
     (assigns.score / (assigns.current_card_index + 1) * 100) |> round() |> trunc()
   end
 
-  @impl Phoenix.LiveView
+  @impl true
   def mount(params, _session, socket) do
     quiz = Repo.one!(from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards])
 
@@ -173,7 +173,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
     end
   end
 
-  @impl Phoenix.LiveView
+  @impl true
   def handle_event("submit-display-name", %{"display-name" => display_name}, socket) do
     if String.trim(display_name) != "" do
       # # now that the anonymous user has a name, we can track them via presence

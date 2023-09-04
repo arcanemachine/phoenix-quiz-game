@@ -11,14 +11,14 @@ defmodule QuizGameWeb.Quizzes.CardLive.Index do
     Repo.one!(query)
   end
 
-  @impl Phoenix.LiveView
+  @impl true
   def mount(params, _session, socket) do
     quiz = _get_quiz_or_404(params)
 
     {:ok, socket |> assign(quiz: quiz) |> stream(:cards, quiz.cards)}
   end
 
-  @impl Phoenix.LiveView
+  @impl true
   def handle_params(params, _url, socket) do
     quiz = socket.assigns[:quiz] || _get_quiz_or_404(params)
 
@@ -49,12 +49,12 @@ defmodule QuizGameWeb.Quizzes.CardLive.Index do
   #   |> assign(:card, Quizzes.get_card!(card_id))
   # end
 
-  @impl Phoenix.LiveView
+  @impl true
   def handle_info({QuizGameWeb.Quizzes.CardLive.FormComponent, {:saved, card}}, socket) do
     {:noreply, stream_insert(socket, :cards, card)}
   end
 
-  # @impl Phoenix.LiveView
+  # @impl true
   # def handle_event("delete", %{"card_id" => card_id}, socket) do
   #   card = Quizzes.get_card!(card_id)
   #   {:ok, _} = Quizzes.delete_card(card)

@@ -4,12 +4,12 @@ defmodule QuizGameWeb.UsersLive.UserForgotPasswordLive do
   alias QuizGame.Users
   alias QuizGame.Users.User
 
-  @impl Phoenix.LiveView
+  @impl true
   def mount(_params, _session, socket) do
     {:ok, assign(socket, page_title: "Reset Your Password", form: to_form(%{}, as: "user"))}
   end
 
-  @impl Phoenix.LiveView
+  @impl true
   def render(assigns) do
     ~H"""
     <.crud_intro_text>
@@ -33,7 +33,7 @@ defmodule QuizGameWeb.UsersLive.UserForgotPasswordLive do
     """
   end
 
-  @impl Phoenix.LiveView
+  @impl true
   def handle_event("send_email", %{"user" => %{"email" => email}} = form_params, socket) do
     if QuizGameWeb.Support.HTML.Form.captcha_valid?(form_params) do
       if user = Users.get_user_by_email(email) do

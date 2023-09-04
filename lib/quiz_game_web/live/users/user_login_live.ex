@@ -2,7 +2,7 @@ defmodule QuizGameWeb.UsersLive.UserLoginLive do
   use QuizGameWeb, :live_view
   alias QuizGame.Users.User
 
-  @impl Phoenix.LiveView
+  @impl true
   def mount(params, _session, socket) do
     email = live_flash(socket.assigns.flash, :email)
     form = to_form(%{"email" => email}, as: "user")
@@ -11,7 +11,7 @@ defmodule QuizGameWeb.UsersLive.UserLoginLive do
      temporary_assigns: [form: form]}
   end
 
-  @impl Phoenix.LiveView
+  @impl true
   def render(assigns) do
     ~H"""
     <.crud_intro_text>
