@@ -58,7 +58,7 @@ defmodule QuizGameWeb do
 
       # components
       import QuizGameWeb.CoreComponents
-      import QuizGameWeb.BaseComponents
+      import QuizGameWeb.Components.Base
 
       # i18n
       import QuizGameWeb.Gettext
