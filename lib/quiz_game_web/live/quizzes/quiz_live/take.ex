@@ -2,6 +2,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
   use QuizGameWeb, :live_view
 
   import Ecto.Query
+  import QuizGameWeb.Components.Quizzes
 
   alias QuizGame.Quizzes.{Card, Quiz}
   alias QuizGame.Repo
@@ -26,10 +27,12 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
       socket =
         socket
         |> assign(
+          page_title: "Take Quiz",
+          page_subtitle: quiz.name,
           current_path: route(:quizzes, :take, Support.Map.params_to_keyword_list(params)),
           quiz: quiz
         )
-        |> _initialize_socket()
+        |> _set_initial_socket()
 
       if connected?(socket), do: _track_user_presence(socket)
 
@@ -37,7 +40,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
     end
   end
 
-  defp _initialize_socket(socket) do
+  defp _set_initial_socket(socket) do
     user = socket.assigns.current_user
     quiz_state = if user, do: :before_start, else: :enter_display_name
 
@@ -66,6 +69,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
     %Presence.QuizData{
       user: socket.assigns[:current_user],
       display_name: socket.assigns[:display_name],
+      quiz_length: _get_quiz_length(socket.assigns.quiz),
       quiz_state: socket.assigns[:quiz_state],
       score: socket.assigns[:score],
       current_card_index: socket.assigns[:current_card_index]
@@ -150,7 +154,13 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
         score: socket.assigns.score
       })
 
-      socket = socket |> assign(quiz_state: :completed)
+      socket =
+        socket
+        |> assign(
+          quiz_state: :completed,
+          # increment card index so that quiz stats progress tracker will be correct
+          current_card_index: socket.assigns.current_card_index + 1
+        )
 
       _update_user_presence(socket)
       {:noreply, socket}
@@ -164,7 +174,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
   end
 
   def handle_event("reset-quiz", _params, socket) do
-    socket = _initialize_socket(socket)
+    socket = _set_initial_socket(socket)
 
     _update_user_presence(socket)
     {:noreply, socket}
@@ -279,11 +289,17 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
   end
 
   # support
-  defp _get_progress_percentage_as_integer(assigns) do
-    (assigns.current_card_index / _get_quiz_length(assigns.quiz) * 100) |> round() |> trunc()
+  def get_total_percent_correct_as_integer(score, quiz_length) do
+    (score / quiz_length * 100) |> round() |> trunc()
   end
 
-  defp _get_score_percentage_as_integer(assigns) do
-    (assigns.score / (assigns.current_card_index + 1) * 100) |> round() |> trunc()
+  def get_percent_completed_as_integer(current_card_index, quiz_length) do
+    (current_card_index / quiz_length * 100) |> round() |> trunc()
+  end
+
+  def get_score_percent_as_integer(score, current_card_index) do
+    if current_card_index == 0,
+      do: 0,
+      else: (score / current_card_index * 100) |> round() |> trunc()
   end
 end

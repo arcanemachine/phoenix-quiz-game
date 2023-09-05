@@ -9,6 +9,7 @@ defmodule QuizGameWeb.Presence do
     @moduledoc false
     defstruct user: nil,
               display_name: nil,
+              quiz_length: 0,
               quiz_state: :before_start,
               score: 0,
               current_card_index: 0

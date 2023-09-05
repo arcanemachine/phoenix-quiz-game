@@ -207,20 +207,20 @@
             <span class="font-bold">Your score:</span>
             <%= @score %> / <%= @current_card_index %>
             <%= if @current_card_index > 0 do %>
-              (<%= Float.round(@score / @current_card_index * 100, 1) %>%)
+              (<%= get_score_percent_as_integer(@score, @current_card_index) %>%)
             <% end %>
           </div>
 
           <div>
-            <span class="font-bold">Questions remaining:</span>
-            <%= _get_quiz_length(@quiz) - @current_card_index - 1 %>
+            <span class="font-bold">Questions completed:</span>
+            <%= @current_card_index %> out of <%= _get_quiz_length(@quiz) %>
           </div>
 
-          <progress
-            class="inline h-4 my-2 mx-auto progress progress-primary w-full transition
-                   duration-300 opacity-50"
-            value={_get_progress_percentage_as_integer(assigns)}
-            max="100"
+          <.quiz_progress
+            percent_completed={
+              get_percent_completed_as_integer(@current_card_index, _get_quiz_length(@quiz))
+            }
+            percent_correct={get_total_percent_correct_as_integer(@score, _get_quiz_length(@quiz))}
           />
         </div>
       </div>
@@ -231,15 +231,15 @@
 
           <div class="-mt-4">
             <span class="font-bold">Your score:</span>
-            <%= @score %> / <%= _get_quiz_length(@quiz) %>
+            <%= @score %> out of <%= _get_quiz_length(@quiz) %>
           </div>
 
           <div class="mt-6 text-xl font-bold">
-            You got <%= _get_score_percentage_as_integer(assigns) %>%!
+            You got <%= get_score_percent_as_integer(@score, @current_card_index) %>%!
           </div>
 
           <div>
-            <%= case _get_score_percentage_as_integer(assigns) do %>
+            <%= case get_score_percent_as_integer(@score, @current_card_index) do %>
               <% p when p == 100 -> %>
                 A perfect score! 😎
               <% p when p in 80..99 -> %>
