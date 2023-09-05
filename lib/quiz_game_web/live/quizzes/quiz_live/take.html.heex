@@ -215,13 +215,6 @@
             <span class="font-bold">Questions completed:</span>
             <%= @current_card_index %> out of <%= _get_quiz_length(@quiz) %>
           </div>
-
-          <.quiz_progress
-            percent_completed={
-              get_percent_completed_as_integer(@current_card_index, _get_quiz_length(@quiz))
-            }
-            percent_correct={get_total_percent_correct_as_integer(@score, _get_quiz_length(@quiz))}
-          />
         </div>
       </div>
     <% :completed -> %>
@@ -262,4 +255,5 @@
         </div>
       </div>
   <% end %>
+
 </div>

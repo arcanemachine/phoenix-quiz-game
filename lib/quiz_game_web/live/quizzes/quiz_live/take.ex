@@ -67,12 +67,12 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
 
   defp _get_presence_data(socket) do
     %Presence.QuizData{
-      user: socket.assigns[:current_user],
-      display_name: socket.assigns[:display_name],
+      user: socket.assigns.current_user,
+      display_name: socket.assigns.display_name,
       quiz_length: _get_quiz_length(socket.assigns.quiz),
-      quiz_state: socket.assigns[:quiz_state],
-      score: socket.assigns[:score],
-      current_card_index: socket.assigns[:current_card_index]
+      quiz_state: socket.assigns.quiz_state,
+      score: socket.assigns.score,
+      current_card_index: socket.assigns.current_card_index
     }
   end
 

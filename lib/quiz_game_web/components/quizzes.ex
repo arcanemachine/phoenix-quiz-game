@@ -20,7 +20,7 @@ defmodule QuizGameWeb.Components.Quizzes do
 
   def quiz_progress(assigns) do
     ~H"""
-    <div class="my-1 relative w-full">
+    <div class="relative w-full">
       <div
         class={[
           "absolute left-0 right-0 bg-error show-empty-element rounded-l-md
@@ -39,7 +39,7 @@ defmodule QuizGameWeb.Components.Quizzes do
       />
 
       <%!-- background container element --%>
-      <div class="w-full bg-secondary/75 rounded-md show-empty-element" />
+      <div class="w-full bg-slate-500 rounded-md show-empty-element" />
     </div>
     """
   end
