@@ -20,6 +20,12 @@ defmodule QuizGameWeb.Presence do
     track(pid, topic, quiz_id, %{data: [data]})
   end
 
+  @spec update_data(pid(), String.t(), integer(), any()) ::
+          {:error, any()} | {:ok, binary()}
+  def update_data(pid, topic, quiz_id, %QuizData{} = data) do
+    update(pid, topic, quiz_id, %{data: [data]})
+  end
+
   @doc "Lists all data being tracked via Presence for a given topic."
   @spec list_data_for(String.t(), integer()) :: List.t()
   def list_data_for(topic, quiz_id) do

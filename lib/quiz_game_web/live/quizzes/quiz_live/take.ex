@@ -16,8 +16,6 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
   def mount(params, _session, socket) do
     quiz = Repo.one!(from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards])
 
-    if connected?(socket), do: _track_user_presence(socket, quiz)
-
     # redirect if quiz does not have any cards or random math questions
     if Enum.empty?(quiz.cards) && !quiz.math_random_question_count do
       {:ok,
@@ -25,13 +23,17 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
        |> put_flash(:error, "This quiz cannot be taken because it has no cards.")
        |> redirect(to: route(:quizzes, :show, quiz_id: quiz.id))}
     else
-      {:ok,
-       socket
-       |> assign(
-         current_path: route(:quizzes, :take, Support.Map.params_to_keyword_list(params)),
-         quiz: quiz
-       )
-       |> _initialize_socket()}
+      socket =
+        socket
+        |> assign(
+          current_path: route(:quizzes, :take, Support.Map.params_to_keyword_list(params)),
+          quiz: quiz
+        )
+        |> _initialize_socket()
+
+      if connected?(socket), do: _track_user_presence(socket)
+
+      {:ok, socket}
     end
   end
 
@@ -50,27 +52,34 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
     )
   end
 
-  defp _track_user_presence(socket, quiz) do
-    presence_data = %Presence.QuizData{
+  defp _track_user_presence(socket) do
+    presence_data = _get_presence_data(socket)
+    Presence.track_data(self(), @presence_topic, socket.assigns.quiz.id, presence_data)
+  end
+
+  defp _update_user_presence(socket) do
+    presence_data = _get_presence_data(socket)
+    Presence.update_data(self(), @presence_topic, socket.assigns.quiz.id, presence_data)
+  end
+
+  defp _get_presence_data(socket) do
+    %Presence.QuizData{
       user: socket.assigns[:current_user],
       display_name: socket.assigns[:display_name],
       quiz_state: socket.assigns[:quiz_state],
       score: socket.assigns[:score],
       current_card_index: socket.assigns[:current_card_index]
     }
-
-    Presence.track_data(self(), @presence_topic, quiz.id, presence_data)
   end
 
   @impl true
   def handle_event("submit-display-name", %{"display-name" => display_name}, socket) do
     if String.trim(display_name) != "" do
-      # # now that the anonymous user has a name, we can track them via presence
-      # _maybe_track_user(socket.assigns.quiz)}
+      # update user's display name
+      socket = socket |> assign(display_name: display_name, quiz_state: :before_start)
 
-      {:noreply,
-       socket
-       |> assign(display_name: display_name, quiz_state: :before_start)}
+      _update_user_presence(socket)
+      {:noreply, socket}
     else
       {:noreply, socket |> put_flash(:error, "You must enter a display name.")}
     end
@@ -89,16 +98,22 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
              query_string(next: route(:quizzes, :take, quiz_id: socket.assigns.quiz.id))
        )}
     else
-      {:noreply, socket |> assign(display_name: nil, quiz_state: :enter_display_name)}
+      socket = socket |> assign(display_name: nil, quiz_state: :enter_display_name)
+
+      _update_user_presence(socket)
+      {:noreply, socket}
     end
   end
 
   def handle_event("start-quiz", _params, socket) do
-    {:noreply,
-     socket
-     |> clear_flash()
-     |> put_flash(:info, "The quiz has started. Good luck!")
-     |> assign(quiz_state: :in_progress)}
+    socket =
+      socket
+      |> clear_flash()
+      |> put_flash(:info, "The quiz has started. Good luck!")
+      |> assign(quiz_state: :in_progress)
+
+    _update_user_presence(socket)
+    {:noreply, socket}
   end
 
   def handle_event("submit-user-answer", params, socket) do
@@ -135,15 +150,24 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
         score: socket.assigns.score
       })
 
-      {:noreply, socket |> assign(quiz_state: :completed)}
+      socket = socket |> assign(quiz_state: :completed)
+
+      _update_user_presence(socket)
+      {:noreply, socket}
     else
       # get next card and increment current card index
-      {:noreply, socket |> _assign_next_card_and_index()}
+      socket = socket |> _assign_next_card_and_index()
+
+      _update_user_presence(socket)
+      {:noreply, socket}
     end
   end
 
   def handle_event("reset-quiz", _params, socket) do
-    {:noreply, _initialize_socket(socket)}
+    socket = _initialize_socket(socket)
+
+    _update_user_presence(socket)
+    {:noreply, socket}
   end
 
   # answer
