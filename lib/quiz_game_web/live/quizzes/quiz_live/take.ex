@@ -2,7 +2,6 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
   use QuizGameWeb, :live_view
 
   import Ecto.Query
-  import QuizGameWeb.Components.Quizzes
 
   alias QuizGame.Quizzes.{Card, Quiz}
   alias QuizGame.Repo
