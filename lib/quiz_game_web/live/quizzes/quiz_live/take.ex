@@ -134,9 +134,9 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
         |> assign(score: socket.assigns.score + 1)
       else
         socket
-        # show failure message
         |> clear_flash()
-        |> put_flash(:error, "Incorrect! The correct answer is '#{correct_answer}'.")
+        # |> put_flash(:error, "Incorrect! The correct answer is '#{correct_answer}'.")
+        |> put_flash(:error, "Incorrect!")
       end
 
     # check if quiz is completed
