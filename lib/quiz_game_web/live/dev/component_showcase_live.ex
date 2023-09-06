@@ -34,15 +34,15 @@ defmodule QuizGameWeb.DevLive.ComponentShowcaseLive do
   end
 
   # support
-  defp _form_build_empty() do
+  defp form_build_empty() do
     to_form(FormData.changeset(%FormData{}, %{}))
   end
 
-  defp _form_has_errors?(form) do
+  defp form_has_errors?(form) do
     !Enum.empty?(form.errors)
   end
 
-  defp _form_validate(params) do
+  defp form_validate(params) do
     %FormData{}
     |> FormData.changeset(params)
     # |> Ecto.Changeset.validate_required(Map.keys(FormData.types()))
@@ -54,12 +54,12 @@ defmodule QuizGameWeb.DevLive.ComponentShowcaseLive do
   end
 
   # lifecycle
-  @impl true
+  @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     {:ok,
      socket
      |> assign(
-       form: _form_build_empty(),
+       form: form_build_empty(),
        form_has_errors: false,
        page_title: @page_title,
        table_rows: [
@@ -70,7 +70,7 @@ defmodule QuizGameWeb.DevLive.ComponentShowcaseLive do
      )}
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_event("flash-info-show", _params, socket) do
     {:noreply, socket |> put_flash(:info, "Info flash message")}
   end
@@ -98,11 +98,11 @@ defmodule QuizGameWeb.DevLive.ComponentShowcaseLive do
   end
 
   def handle_event("form-reset", _params, socket) do
-    {:noreply, assign(socket, form: _form_build_empty())}
+    {:noreply, assign(socket, form: form_build_empty())}
   end
 
   def handle_event("form-submit", %{"form_data" => form_data} = params, socket) do
-    form = _form_validate(form_data)
+    form = form_validate(form_data)
 
     if Enum.empty?(form.errors) do
       if QuizGameWeb.Support.HTML.Form.captcha_valid?(params) do
@@ -111,7 +111,7 @@ defmodule QuizGameWeb.DevLive.ComponentShowcaseLive do
          socket
          |> push_event("toast-show-success", %{content: "Form submitted successfully"})
          |> push_event("captcha-reset", %{})
-         |> assign(form: form, form_has_errors: _form_has_errors?(form))}
+         |> assign(form: form, form_has_errors: form_has_errors?(form))}
       else
         # captcha is not valid
         {:noreply,
@@ -119,15 +119,15 @@ defmodule QuizGameWeb.DevLive.ComponentShowcaseLive do
          |> push_event("toast-show-error", %{
            content: "You must complete the human test at the bottom of the form."
          })
-         |> assign(form: form, form_has_errors: _form_has_errors?(form))}
+         |> assign(form: form, form_has_errors: form_has_errors?(form))}
       end
     else
-      {:noreply, assign(socket, form: form, form_has_errors: _form_has_errors?(form))}
+      {:noreply, assign(socket, form: form, form_has_errors: form_has_errors?(form))}
     end
   end
 
   def handle_event("form-validate" = _event, %{"form_data" => form_data}, socket) do
-    form = _form_validate(form_data)
+    form = form_validate(form_data)
 
     {:noreply, assign(socket, form: form)}
   end
