@@ -6,8 +6,8 @@
   Quiz records are deleted after 24 hours.
 </div>
 
-<ul :for={record <- @records} class="list">
-  <li>
+<ul class="mt-4 list [&>*:not(:first-child)]:mt-6">
+  <li :for={record <- @records}>
     <b>Taken by:</b> <%= record.display_name %>
     <%= if record.user_id == @current_user.id do %>
       <b>(You)</b>
@@ -18,22 +18,22 @@
         (<i>unauthenticated</i>)
       <% end %>
     <% end %>
+    <ul class="list">
+      <li
+        data-completed-on={record.inserted_at}
+        x-data="{ completedOn: new Date($el.dataset.completedOn + 'Z').toLocaleString() }"
+      >
+        <b>Completed on:</b> <span x-text="completedOn" />
+      </li>
+      <li>
+        <b>Score:</b>
+        <span>
+          <%= record.score %> out of <%= record.card_count %>
+        </span>
+        (<%= (record.score / record.card_count * 100) |> round() |> trunc() %>%)
+      </li>
+    </ul>
   </li>
-  <ul class="list">
-    <li
-      data-completed-on={record.inserted_at}
-      x-data="{ completedOn: new Date($el.dataset.completedOn + 'Z').toLocaleString() }"
-    >
-      <b>Completed on:</b> <span x-text="completedOn" />
-    </li>
-    <li>
-      <b>Score:</b>
-      <span>
-        <%= record.score %> out of <%= record.card_count %>
-      </span>
-      (<%= (record.score / record.card_count * 100) |> round() |> trunc() %>%)
-    </li>
-  </ul>
 </ul>
 
 <.action_links>
