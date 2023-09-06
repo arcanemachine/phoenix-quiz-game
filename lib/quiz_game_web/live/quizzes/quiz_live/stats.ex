@@ -39,108 +39,33 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Stats do
 
     if !connected?(socket) do
       socket
-      |> push_event("update", %{})
       |> assign(
-        presence_data: []
-        # presence_users_not_yet_started: [],
-        # presence_users_in_progress: [],
-        # presence_users_completed: []
+        presence_users_not_yet_started: [],
+        presence_users_in_progress: [],
+        presence_users_completed: []
       )
     else
       socket
       |> push_event("update-quiz-presence", %{})
       |> assign(
-        presence_data: presence_data
-        # presence_users_not_yet_started:
-        #   _get_presence_users_by_quiz_state(presence_data, :enter_display_name) ++
-        #     _get_presence_users_by_quiz_state(presence_data, :before_start),
-        # presence_users_in_progress:
-        #   _get_presence_users_by_quiz_state(presence_data, :in_progress),
-        # presence_users_completed: _get_presence_users_by_quiz_state(presence_data, :completed)
+        presence_users_not_yet_started:
+          _get_presence_users_by_quiz_state(presence_data, :enter_display_name) ++
+            _get_presence_users_by_quiz_state(presence_data, :before_start),
+        presence_users_in_progress:
+          _get_presence_users_by_quiz_state(presence_data, :in_progress),
+        presence_users_completed: _get_presence_users_by_quiz_state(presence_data, :completed)
       )
     end
   end
 
-  # defp _get_presence_users_by_quiz_state(presence_data, quiz_state) do
-  #   Enum.filter(presence_data, fn data -> data.quiz_state == quiz_state end)
-  # end
+  defp _get_presence_users_by_quiz_state(presence_data, quiz_state) do
+    Enum.filter(presence_data, fn data -> data.quiz_state == quiz_state end)
+  end
 
   @impl true
   def handle_info(%{event: "presence_diff"}, socket) do
     {:noreply, socket |> _assign_presence_data()}
   end
-
-  # @impl true
-  # def render2(assigns) do
-  #   ~H"""
-  #   <div class="text-center">
-  #     <div class="min-h-[10rem]">
-  #       <div class="text-xl font-bold">
-  #         Users in the quiz lobby (<%= length(@presence_users_not_yet_started) %>)
-  #       </div>
-  #       <div class="mt-1 text-center">
-  #         <%= if !@connected do %>
-  #           <div class="italic">No users are preparing to take this quiz.</div>
-  #         <% else %>
-  #           <%= if Enum.empty?(@presence_users_not_yet_started) do %>
-  #             <div class="italic">No users are preparing to take this quiz.</div>
-  #           <% else %>
-  #             <div class="flex flex-wrap">
-  #               <%= for data <- @presence_users_not_yet_started do %>
-  #                 <._user_detail_card data={data} current_user={@current_user} />
-  #               <% end %>
-  #             </div>
-  #           <% end %>
-  #         <% end %>
-  #       </div>
-  #     </div>
-  #     <div class="min-h-[10rem]">
-  #       <div class="mt-12 text-xl font-bold">
-  #         Users taking this quiz (<%= length(@presence_users_in_progress) %>)
-  #       </div>
-  #       <div class="mt-1 text-center">
-  #         <%= if !@connected do %>
-  #           <div class="italic">No users are taking this quiz.</div>
-  #         <% else %>
-  #           <%= if Enum.empty?(@presence_users_in_progress) do %>
-  #             <div class="italic">No users are taking this quiz.</div>
-  #           <% else %>
-  #             <div class="flex flex-wrap">
-  #               <%= for data <- @presence_users_in_progress do %>
-  #                 <._user_detail_card data={data} current_user={@current_user} />
-  #               <% end %>
-  #             </div>
-  #           <% end %>
-  #         <% end %>
-  #       </div>
-  #     </div>
-  #     <div class="min-h-[10rem]">
-  #       <div class="mt-12 text-xl font-bold">
-  #         Recently-completed users (<%= length(@presence_users_completed) %>)
-  #       </div>
-  #       <div class="mt-1 text-center">
-  #         <%= if !@connected || Enum.empty?(@presence_users_completed) do %>
-  #           <div class="italic">No users have recently completed this quiz.</div>
-  #         <% else %>
-  #           <div class="flex flex-wrap gap-4">
-  #             <%= for data <- @presence_users_completed do %>
-  #               <._user_detail_card data={data} current_user={@current_user} />
-  #             <% end %>
-  #           </div>
-  #         <% end %>
-  #       </div>
-  #     </div>
-  #   </div>
-
-  #   <.action_links class="mt-12">
-  #     <.action_links_item kind="back">
-  #       <.link href={route(:quizzes, :show, quiz_id: @quiz.id)}>
-  #         Return to quiz
-  #       </.link>
-  #     </.action_links_item>
-  #   </.action_links>
-  #   """
-  # end
 
   @impl true
   def render(assigns) do
@@ -148,41 +73,58 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Stats do
     <div class="text-center">
       <div class="min-h-[10rem]">
         <div class="text-xl font-bold">
-          Users in the quiz lobby (<%= length(@presence_data) %>)
+          Users in the quiz lobby (<%= length(@presence_users_not_yet_started) %>)
         </div>
         <div class="mt-1 text-center">
-          <div class="flex flex-wrap">
-            <%= for data <- @presence_data do %>
-              <._user_detail_card
-                data={data}
-                show={"#{data.quiz_state in [:enter_display_name, :before_start]}"}
-              />
+          <%= if !@connected do %>
+            <div class="italic">No users are preparing to take this quiz.</div>
+          <% else %>
+            <%= if Enum.empty?(@presence_users_not_yet_started) do %>
+              <div class="italic">No users are preparing to take this quiz.</div>
+            <% else %>
+              <div class="flex flex-wrap">
+                <%= for data <- @presence_users_not_yet_started do %>
+                  <._user_detail_card data={data} />
+                <% end %>
+              </div>
             <% end %>
-          </div>
+          <% end %>
         </div>
       </div>
       <div class="min-h-[10rem]">
         <div class="mt-12 text-xl font-bold">
-          Users taking this quiz (<%= length(@presence_data) %>)
+          Users taking this quiz (<%= length(@presence_users_in_progress) %>)
         </div>
         <div class="mt-1 text-center">
-          <div class="flex flex-wrap">
-            <%= for data <- @presence_data do %>
-              <._user_detail_card data={data} show={"#{data.quiz_state == :in_progress}"} />
+          <%= if !@connected do %>
+            <div class="italic">No users are taking this quiz.</div>
+          <% else %>
+            <%= if Enum.empty?(@presence_users_in_progress) do %>
+              <div class="italic">No users are taking this quiz.</div>
+            <% else %>
+              <div class="flex flex-wrap">
+                <%= for data <- @presence_users_in_progress do %>
+                  <._user_detail_card data={data} />
+                <% end %>
+              </div>
             <% end %>
-          </div>
+          <% end %>
         </div>
       </div>
       <div class="min-h-[10rem]">
         <div class="mt-12 text-xl font-bold">
-          Recently-completed users (<%= length(@presence_data) %>)
+          Recently-completed users (<%= length(@presence_users_completed) %>)
         </div>
         <div class="mt-1 text-center">
-          <div class="flex flex-wrap gap-4">
-            <%= for data <- @presence_data do %>
-              <._user_detail_card data={data} show={"#{data.quiz_state == :completed}"} />
-            <% end %>
-          </div>
+          <%= if !@connected || Enum.empty?(@presence_users_completed) do %>
+            <div class="italic">No users have recently completed this quiz.</div>
+          <% else %>
+            <div class="flex flex-wrap gap-4">
+              <%= for data <- @presence_users_completed do %>
+                <._user_detail_card data={data} />
+              <% end %>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>
@@ -198,20 +140,17 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Stats do
   end
 
   attr :data, :any, required: true
-  attr :show, :string, required: true
 
   defp _user_detail_card(assigns) do
     ~H"""
     <div
       class="mt-2 mx-auto px-2 card w-full max-w-md bg-secondary/10 border border-secondary/5
              shadow-lg shadow-secondary/10"
-      data-show={@show}
       x-data="{ show: false }"
       x-title="user-detail-card"
       x-collapse.duration.500ms
-      x-show="show && $el.dataset.show === 'true'"
-      x-init="$nextTick(() => { show = true }"
-      x-on:phx:update-quiz-presence.window="show = $el.dataset.show === 'true'"
+      x-show="show"
+      x-init="$nextTick(() => { show = true; })"
     >
       <div class="card-body">
         <%!-- name --%>

@@ -40,44 +40,19 @@ let csrfToken = document
 let liveSocket = new LiveSocket("/live", Socket, {
   dom: {
     onBeforeElUpdated(from, to) {
-      // // do not update 'data-js' attributes
-      // for (const attr of from.attributes) {
-      //   if (attr.name.startsWith("data-js-")) {
-      //     to.setAttribute(attr.name, attr.value);
-      //   }
-      // }
-
+      // enable Alpine.js support
       if (from._x_dataStack) {
         window.Alpine.clone(from, to);
       }
+
+      // do not update 'data-js' attributes
+      for (const attr of from.attributes) {
+        if (attr.name.startsWith("data-js-")) {
+          to.setAttribute(attr.name, attr.value);
+        }
+      }
     },
   },
-  // dom: {
-  //   onBeforeElUpdated(from, to) {
-  //     // for (const attr of from.attributes) {
-  //     //   if (attr.name.startsWith("data-js-")) {
-  //     //     to.setAttribute(attr.name, attr.value);
-  //     //   }
-  //     // }
-
-  //     const liveSocketInitializeAlpine = (from, to) => {
-  //       if (!Alpine || !from || !to) return;
-
-  //       for (let index = 0; index < to.children.length; index++) {
-  //         const from2 = from.children[index];
-  //         const to2 = to.children[index];
-
-  //         if (from2 instanceof HTMLElement && to2 instanceof HTMLElement) {
-  //           liveSocketInitializeAlpine.call(from2, to2);
-  //         }
-  //       }
-
-  //       if (from._x_dataStack) Alpine.clone(from, to);
-  //     };
-
-  //     liveSocketInitializeAlpine(from, to);
-  //   },
-  // },
   params: { _csrf_token: csrfToken },
 });
 
