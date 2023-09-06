@@ -5,6 +5,27 @@ import tippy from "tippy.js";
 import helpers from "js/helpers";
 
 /* data */
+function collapseIn() {
+  /**
+   * A component that uses a collapse-in effect when created to minimize jerky
+   * transitions as elements are added to the page.
+   */
+
+  return {
+    show: false,
+
+    init() {
+      this.$root.setAttribute("x-bind", "collapseIn");
+    },
+
+    collapseIn: {
+      ["x-collapse.duration.500ms"]: "",
+      ["x-show"]: "show",
+      ["x-init"]: "$nextTick(() => { show = true; })",
+    },
+  } as AlpineComponent;
+}
+
 function simpleForm() {
   /**
    * If a form has been modified and the user is attempting to exit the page,
@@ -146,6 +167,10 @@ function themeSelect() {
 }
 
 export const data = [
+  {
+    name: "collapseIn",
+    data: collapseIn,
+  },
   {
     name: "simpleForm",
     data: simpleForm,

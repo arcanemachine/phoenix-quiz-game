@@ -35,7 +35,9 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Stats do
   end
 
   def _assign_presence_data(socket) do
-    presence_data = Presence.list_data_for(@presence_topic, socket.assigns.quiz.id)
+    presence_data =
+      Presence.list_data_for(@presence_topic, socket.assigns.quiz.id)
+      |> Enum.sort(&(&1.display_name < &2.display_name))
 
     if !connected?(socket) do
       socket
@@ -76,18 +78,14 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Stats do
           Users in the quiz lobby (<%= length(@presence_users_not_yet_started) %>)
         </div>
         <div class="mt-1 text-center">
-          <%= if !@connected do %>
+          <%= if !@connected || Enum.empty?(@presence_users_not_yet_started) do %>
             <div class="italic">No users are preparing to take this quiz.</div>
           <% else %>
-            <%= if Enum.empty?(@presence_users_not_yet_started) do %>
-              <div class="italic">No users are preparing to take this quiz.</div>
-            <% else %>
-              <div class="flex flex-wrap">
-                <%= for data <- @presence_users_not_yet_started do %>
-                  <._user_detail_card data={data} />
-                <% end %>
-              </div>
-            <% end %>
+            <div class="flex flex-wrap">
+              <%= for data <- @presence_users_not_yet_started do %>
+                <._user_detail_card data={data} />
+              <% end %>
+            </div>
           <% end %>
         </div>
       </div>
@@ -96,24 +94,20 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Stats do
           Users taking this quiz (<%= length(@presence_users_in_progress) %>)
         </div>
         <div class="mt-1 text-center">
-          <%= if !@connected do %>
+          <%= if !@connected || Enum.empty?(@presence_users_in_progress) do %>
             <div class="italic">No users are taking this quiz.</div>
           <% else %>
-            <%= if Enum.empty?(@presence_users_in_progress) do %>
-              <div class="italic">No users are taking this quiz.</div>
-            <% else %>
-              <div class="flex flex-wrap">
-                <%= for data <- @presence_users_in_progress do %>
-                  <._user_detail_card data={data} />
-                <% end %>
-              </div>
-            <% end %>
+            <div class="flex flex-wrap">
+              <%= for data <- @presence_users_in_progress do %>
+                <._user_detail_card data={data} />
+              <% end %>
+            </div>
           <% end %>
         </div>
       </div>
       <div class="min-h-[10rem]">
         <div class="mt-12 text-xl font-bold">
-          Recently-completed users (<%= length(@presence_users_completed) %>)
+          Users recently completed (<%= length(@presence_users_completed) %>)
         </div>
         <div class="mt-1 text-center">
           <%= if !@connected || Enum.empty?(@presence_users_completed) do %>
@@ -146,11 +140,8 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Stats do
     <div
       class="mt-2 mx-auto px-2 card w-full max-w-md bg-secondary/10 border border-secondary/5
              shadow-lg shadow-secondary/10"
-      x-data="{ show: false }"
       x-title="user-detail-card"
-      x-collapse.duration.500ms
-      x-show="show"
-      x-init="$nextTick(() => { show = true; })"
+      x-data="collapseIn"
     >
       <div class="card-body">
         <%!-- name --%>
