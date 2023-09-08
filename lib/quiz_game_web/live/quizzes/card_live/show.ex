@@ -29,7 +29,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
     {:noreply,
      socket
      |> assign(
-       page_title: "Card Info",
+       page_title: "Question Info",
        page_subtitle: card.quiz.name,
        card: card
      )}
@@ -48,7 +48,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
       case Quizzes.delete_card(socket.assigns.card) do
         {:ok, _} ->
           socket
-          |> put_flash(:success, "Card deleted successfully")
+          |> put_flash(:success, "Question deleted successfully")
           |> push_navigate(
             to: route(:quizzes_cards, :index, quiz_id: socket.assigns.card.quiz_id),
             replace: true
@@ -56,7 +56,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
 
         {:error, _} ->
           socket
-          |> put_flash(:error, "Could not delete the card. Has it already been deleted?")
+          |> put_flash(:error, "Could not delete the question. Has it already been deleted?")
           |> push_navigate(
             to: route(:quizzes_cards, :index, quiz_id: socket.assigns.card.quiz_id),
             replace: true

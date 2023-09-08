@@ -53,7 +53,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
 
         {:noreply,
          socket
-         |> put_flash(:success, "Card created successfully")
+         |> put_flash(:success, "Question created successfully")
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = error_changeset} ->
@@ -68,7 +68,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.FormComponent do
 
         {:noreply,
          socket
-         |> put_flash(:success, "Card updated successfully")
+         |> put_flash(:success, "Question updated successfully")
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->

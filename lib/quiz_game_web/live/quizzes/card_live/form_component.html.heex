@@ -3,7 +3,11 @@
     <%= @title %>
   </div>
   <.crud_intro_text>
-    Use this form to manage card records in your database.
+    <%= if @action == :new do %>
+      Fill out the form to create a question for this quiz.
+    <%= else %>
+      Fill out the form to edit this question.
+    <% end %>
   </.crud_intro_text>
 
   <.simple_form

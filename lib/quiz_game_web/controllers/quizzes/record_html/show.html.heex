@@ -15,7 +15,7 @@
   <:item label="Subject">
     <%= QuizGameWeb.Support.Atom.to_human_friendly_string(@quiz.subject) %>
   </:item>
-  <:item label="Number of cards" class_item="mt-6">
+  <:item label="Number of questions" class_item="mt-6">
     <%= QuizGame.Quizzes.quiz_card_count(@quiz) %>
   </:item>
   <:item :if={@quiz.subject == :math} label="Has random math questions?">
@@ -50,7 +50,7 @@
 <.action_links>
   <.action_links_item>
     <.link href={route(:quizzes_cards, :index, quiz_id: @quiz.id)}>
-      View cards for this quiz
+      View questions for this quiz
     </.link>
   </.action_links_item>
 

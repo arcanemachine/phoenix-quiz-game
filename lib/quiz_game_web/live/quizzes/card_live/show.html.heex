@@ -43,15 +43,15 @@
     <.link
       phx-click="delete"
       class="!text-error"
-      data-confirm="Are you sure you want to delete this card?"
+      data-confirm="Are you sure you want to delete this question?"
     >
-      Delete this card
+      Delete this question
     </.link>
   </.action_links_item>
   <.spacer />
   <.action_links_item kind="back">
     <.link patch={route(:quizzes_cards, :index, quiz_id: @card.quiz.id)}>
-      Return to card list
+      Return to question list
     </.link>
   </.action_links_item>
   <.action_links_item kind="back-2">
@@ -70,7 +70,7 @@
   <.live_component
     module={QuizGameWeb.Quizzes.CardLive.FormComponent}
     id={@card.id}
-    title="Edit Card"
+    title="Edit Question"
     action={@live_action}
     card={@card}
     patch={route(:quizzes_cards, :show, quiz_id: @card.quiz.id, card_id: @card.id)}

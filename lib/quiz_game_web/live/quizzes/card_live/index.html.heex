@@ -4,7 +4,7 @@
       This quiz is configured to use randomly-generated math questions.
     </p>
     <p class="mt-4">
-      To use cards for this quiz, you must disable randomly-generated math questions.
+      To use custom questions for this quiz, you must disable randomly-generated math questions.
     </p>
   </div>
   <div class="mt-4">
@@ -20,10 +20,10 @@
     x-data="{ cardCount: document.querySelector('#list-cards').children.length }"
   >
     <span x-show="!cardCount" x-cloak>
-      No cards have been created for this quiz.
+      No questions have been created for this quiz.
     </span>
     <span x-show="cardCount" x-cloak>
-      Click on a card to get more information about it.
+      Click on a question to get more information about it.
     </span>
   </span>
 </.crud_intro_text>
@@ -39,7 +39,7 @@
 <.action_links>
   <.action_links_item kind="create">
     <.link patch={route(:quizzes_cards, :new, quiz_id: @quiz.id)}>
-      Create new card
+      Create new question
     </.link>
   </.action_links_item>
   <.action_links_item kind="back">

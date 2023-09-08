@@ -27,7 +27,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Index do
      |> apply_action(socket.assigns.live_action, params)
      |> assign(
        quiz: quiz,
-       page_title: "Card List",
+       page_title: "Question List",
        page_subtitle: quiz.name
      )}
   end
