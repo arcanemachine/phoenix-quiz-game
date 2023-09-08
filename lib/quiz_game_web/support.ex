@@ -79,6 +79,18 @@ defmodule QuizGameWeb.Support.Conn do
   end
 end
 
+defmodule QuizGameWeb.Support.Exceptions.HttpResponse do
+  @moduledoc "Returns a HTTP response."
+  defexception [:plug_status, :message]
+
+  def exception(opts) do
+    %__MODULE__{
+      plug_status: opts[:plug_status],
+      message: opts[:message] || Plug.Conn.Status.reason_phrase(opts[:plug_status])
+    }
+  end
+end
+
 defmodule QuizGameWeb.Support.Map do
   @moduledoc "This project's `Map` helper functions."
 
@@ -115,6 +127,8 @@ defmodule QuizGameWeb.Support.String do
       iex> pluralize("cherry", 2, "cherries")
       "cherries"
   """
+  @spec pluralize(String.t(), integer(), String.t() | nil) :: String.t()
+
   def pluralize(word, count, plural_word \\ nil) do
     if count == 1 do
       word
@@ -125,5 +139,17 @@ defmodule QuizGameWeb.Support.String do
         word <> "s"
       end
     end
+  end
+
+  @doc """
+  Capitalizes the first letter of each word in a string.
+
+  ## Examples
+
+      iex> titlecase("hello world")
+      "Hello World"
+  """
+  def titlecase(val) do
+    String.split(val, " ") |> Enum.map_join(" ", fn word -> String.capitalize(word) end)
   end
 end

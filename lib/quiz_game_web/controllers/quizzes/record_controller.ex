@@ -6,9 +6,9 @@ defmodule QuizGameWeb.Quizzes.RecordController do
   alias QuizGame.Quizzes.{Quiz, Record}
   alias QuizGame.Repo
 
-  def index(conn, params) do
-    quiz = Repo.one!(from q in Quiz, where: q.id == ^params["quiz_id"])
-    records = Repo.all(from r in Record, where: r.quiz_id == ^params["quiz_id"], preload: [:user])
+  def index(conn, %{"quiz_id" => quiz_id} = _params) do
+    quiz = Repo.one!(from q in Quiz, where: q.id == ^quiz_id)
+    records = Repo.all(from r in Record, where: r.quiz_id == ^quiz_id, preload: [:user])
 
     render(conn, :index,
       page_title: "Quiz Records",

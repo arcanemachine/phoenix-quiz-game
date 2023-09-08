@@ -31,6 +31,7 @@ defmodule QuizGameWeb.Router do
     pipe_through [:browser]
 
     get "/", QuizController, :index
+    get "/subjects/:subject", QuizController, :index_subject
 
     scope "/" do
       pipe_through [:require_authenticated_user]

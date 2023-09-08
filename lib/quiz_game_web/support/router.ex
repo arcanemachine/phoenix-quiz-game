@@ -70,6 +70,7 @@ defmodule QuizGameWeb.Support.Router do
   def route(:quizzes, action, params) do
     case action do
       :index -> "/quizzes"
+      :index_subject -> "/quizzes/subjects/#{Keyword.fetch!(params, :subject)}"
       :new -> "/quizzes/new"
       :create -> "/quizzes"
       :edit -> "/quizzes/#{params[:quiz_id]}/update"

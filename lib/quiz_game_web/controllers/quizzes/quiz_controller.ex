@@ -1,16 +1,37 @@
 defmodule QuizGameWeb.Quizzes.QuizController do
   use QuizGameWeb, :controller
 
+  import Ecto.Query
   import QuizGameWeb.Support.Router, only: [route: 2, route: 3]
 
-  alias QuizGame.Quizzes
+  alias QuizGame.{Quizzes, Repo}
   alias QuizGame.Quizzes.Quiz
+  alias QuizGameWeb.Support, as: S
 
   def index(conn, _params) do
     quizzes = Quizzes.list_quizzes()
 
     render(conn, :index,
       page_title: "Quiz List",
+      quizzes: quizzes
+    )
+  end
+
+  def index_subject(conn, %{"subject" => subject} = _params) do
+    subject_as_atom =
+      try do
+        String.to_existing_atom(subject |> String.replace("-", "_"))
+      rescue
+        # credo:disable-for-next-line
+        _ in ArgumentError -> raise S.Exceptions.HttpResponse, plug_status: 404
+      end
+
+    quizzes = Repo.all(from q in Quiz, where: q.subject == ^subject_as_atom)
+    pretty_subject = String.replace(subject, "-", " ")
+
+    render(conn, :index_subject,
+      page_title: "'#{pretty_subject |> S.String.titlecase()}' Quizzes",
+      pretty_subject: pretty_subject,
       quizzes: quizzes
     )
   end

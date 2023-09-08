@@ -10,8 +10,11 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
 
     socket =
       socket
-      |> assign(page_title: "Register New Account")
-      |> assign(trigger_submit: false, check_errors: false)
+      |> assign(
+        page_title: "Register New Account",
+        trigger_submit: false,
+        check_errors: false
+      )
       |> assign_form(changeset)
 
     {:ok, socket, temporary_assigns: [form: nil]}

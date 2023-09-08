@@ -12,7 +12,7 @@ defmodule QuizGame.Quizzes.Quiz do
 
     # data
     field :name, :string
-    field :subject, Ecto.Enum, values: [:math, :language, :science, :social_studies, :other]
+    field :subject, Ecto.Enum, values: [:language, :math, :science, :social_studies, :other]
 
     field :math_random_question_count, :integer
 
