@@ -26,7 +26,9 @@ defmodule QuizGameWeb.Quizzes.QuizController do
         _ in ArgumentError -> raise S.Exceptions.HttpResponse, plug_status: 404
       end
 
-    quizzes = Repo.all(from q in Quiz, where: q.subject == ^subject_as_atom)
+    quizzes =
+      Repo.all(from q in Quiz, where: q.subject == ^subject_as_atom, order_by: [{:asc, :name}])
+
     pretty_subject = String.replace(subject, "-", " ")
 
     render(conn, :index_subject,
