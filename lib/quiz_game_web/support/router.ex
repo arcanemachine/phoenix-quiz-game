@@ -74,7 +74,7 @@ defmodule QuizGameWeb.Support.Router do
       :new -> "/quizzes/new"
       :create -> "/quizzes"
       :edit -> "/quizzes/#{params[:quiz_id]}/update"
-      n when n in [:show, :update, :delete] -> "/quizzes/#{params[:quiz_id]}"
+      n when n in [:show, :update, :delete] -> "/quizzes/#{Keyword.fetch!(params, :quiz_id)}"
       :take -> "/quizzes/#{params[:quiz_id]}/take"
       :stats -> "/quizzes/#{params[:quiz_id]}/stats"
     end
@@ -92,13 +92,13 @@ defmodule QuizGameWeb.Support.Router do
         "/quizzes/#{params[:quiz_id]}/cards"
 
       :show ->
-        "/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}"
+        "/quizzes/#{params[:quiz_id]}/cards/#{Keyword.fetch!(params, :card_id)}"
 
       :edit ->
-        "/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}/update"
+        "/quizzes/#{params[:quiz_id]}/cards/#{Keyword.fetch!(params, :card_id)}/update"
 
       n when n in [:show, :update, :delete] ->
-        "/quizzes/#{params[:quiz_id]}/cards/#{params[:card_id]}"
+        "/quizzes/#{params[:quiz_id]}/cards/#{Keyword.fetch!(params, :card_id)}"
     end
   end
 
@@ -121,15 +121,15 @@ defmodule QuizGameWeb.Support.Router do
       :logout_confirm -> "/users/logout"
       :logout -> "/users/logout"
       :reset_password_solicit -> "/users/reset/password"
-      :reset_password_confirm -> "/users/reset/password/#{params[:token]}"
+      :reset_password_confirm -> "/users/reset/password/#{Keyword.fetch!(params, :token)}"
       :verify_email_solicit -> "/users/verify/email"
-      :verify_email_confirm -> "/users/verify/email/#{params[:token]}"
+      :verify_email_confirm -> "/users/verify/email/#{Keyword.fetch!(params, :token)}"
       # crud
       :show -> "/users/me"
       :settings -> "/users/me/update"
       :update_display_name -> "/users/me/update/display-name"
       :update_email_solicit -> "/users/me/update/email"
-      :update_email_confirm -> "/users/me/update/email/#{params[:token]}"
+      :update_email_confirm -> "/users/me/update/email/#{Keyword.fetch!(params, :token)}"
       :update_password -> "/users/me/update/password"
       :delete_confirm -> "/users/me/delete"
       :delete -> "/users/me/delete"
