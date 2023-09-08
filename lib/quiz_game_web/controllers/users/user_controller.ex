@@ -40,7 +40,10 @@ defmodule QuizGameWeb.UserController do
 
   def records_index(conn, _params) do
     query =
-      from q in Record, where: q.user_id == ^conn.assigns.current_user.id, preload: :quiz
+      from q in Record,
+        where: q.user_id == ^conn.assigns.current_user.id,
+        order_by: [{:desc, :inserted_at}],
+        preload: :quiz
 
     records = Repo.all(query)
 

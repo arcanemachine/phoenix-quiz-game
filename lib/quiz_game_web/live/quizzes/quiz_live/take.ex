@@ -31,7 +31,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
           current_path: route(:quizzes, :take, Support.Map.params_to_keyword_list(params)),
           quiz: quiz
         )
-        |> _set_initial_socket()
+        |> _set_initial_assigns()
 
       if connected?(socket), do: _track_user_presence(socket)
 
@@ -39,7 +39,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
     end
   end
 
-  defp _set_initial_socket(socket) do
+  defp _set_initial_assigns(socket) do
     user = socket.assigns.current_user
     quiz_state = if user, do: :before_start, else: :enter_display_name
 
@@ -49,7 +49,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
       quiz_state: quiz_state,
       display_name: (user && user.display_name) || nil,
       current_card_index: 0,
-      card: socket.assigns.quiz.cards |> Enum.at(0),
+      card: _get_next_card(socket.assigns.quiz, 0),
       score: 0
     )
   end
@@ -135,8 +135,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
       else
         socket
         |> clear_flash()
-        # |> put_flash(:error, "Incorrect! The correct answer is '#{correct_answer}'.")
-        |> put_flash(:error, "Incorrect!")
+        |> put_flash(:error, "Incorrect! The correct answer is '#{correct_answer}'.")
       end
 
     # check if quiz is completed
@@ -149,7 +148,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
         quiz_id: socket.assigns.quiz.id,
         user_id: (socket.assigns.current_user && socket.assigns.current_user.id) || nil,
         display_name: socket.assigns.display_name,
-        card_count: length(socket.assigns.quiz.cards),
+        card_count: _get_quiz_length(socket.assigns.quiz),
         score: socket.assigns.score
       })
 
@@ -173,7 +172,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
   end
 
   def handle_event("reset-quiz", _params, socket) do
-    socket = _set_initial_socket(socket)
+    socket = _set_initial_assigns(socket)
 
     _update_user_presence(socket)
     {:noreply, socket}
@@ -243,42 +242,46 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
   defp _assign_next_card_and_index(socket) do
     quiz = socket.assigns.quiz
     next_card_index = socket.assigns.current_card_index + 1
+    next_card = _get_next_card(quiz, next_card_index)
 
-    card =
-      if quiz.math_random_question_count do
-        min = quiz.math_random_question_value_min
-        max = quiz.math_random_question_value_max
+    socket |> assign(card: next_card, current_card_index: next_card_index)
+  end
 
-        # build random math question
-        first_value = Enum.random(min..max)
-        second_value = Enum.random(min..max)
-        operation = Enum.random(quiz.math_random_question_operations)
+  # card
+  defp _get_next_card(quiz, card_index) do
+    if quiz.math_random_question_count,
+      do: _build_card_as_random_math_question(quiz),
+      else: quiz.cards |> Enum.at(card_index)
+  end
 
-        # get string values so we can display the question to the user
-        operation_as_string =
-          case operation do
-            :add -> "+"
-            :subtract -> "-"
-            :multiply -> "×"
-            :divide -> "÷"
-          end
+  defp _build_card_as_random_math_question(quiz) do
+    min = quiz.math_random_question_value_min
+    max = quiz.math_random_question_value_max
 
-        question_as_string = "#{first_value} #{operation_as_string} #{second_value} = ?"
+    # build random math question
+    first_value = Enum.random(min..max)
+    second_value = Enum.random(min..max)
+    operation = Enum.random(quiz.math_random_question_operations)
 
-        # return card-like map containing random math question data
-        %{
-          format: :random_math_question,
-          question: question_as_string,
-          first_value: first_value,
-          second_value: second_value,
-          operation: operation
-        }
-      else
-        # get next card for the quiz
-        quiz.cards |> Enum.at(next_card_index)
+    # get string values so we can display the question to the user
+    operation_as_string =
+      case operation do
+        :add -> "+"
+        :subtract -> "-"
+        :multiply -> "×"
+        :divide -> "÷"
       end
 
-    socket |> assign(card: card, current_card_index: next_card_index)
+    question_as_string = "#{first_value} #{operation_as_string} #{second_value} = ?"
+
+    # return card-like map containing random math question data
+    %{
+      format: :random_math_question,
+      question: question_as_string,
+      first_value: first_value,
+      second_value: second_value,
+      operation: operation
+    }
   end
 
   # quiz
