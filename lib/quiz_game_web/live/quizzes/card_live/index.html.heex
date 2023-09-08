@@ -1,3 +1,19 @@
+<.alert kind="warning" :if={@quiz.math_random_question_count} class="text-center font-bold">
+  <div class="text-center">
+    <p>
+      This quiz is configured to use randomly-generated math questions.
+    </p>
+    <p class="mt-4">
+      To use cards for this quiz, you must disable randomly-generated math questions.
+    </p>
+  </div>
+  <div class="mt-4">
+    <a href={route(:quizzes, :edit, quiz_id: @quiz.id) <> query_string(next: route(:quizzes_cards, :index, quiz_id: @quiz.id))}>
+      Edit this quiz
+    </a>
+  </div>
+</.alert>
+
 <.crud_intro_text>
   <span
     class="show-empty-element"

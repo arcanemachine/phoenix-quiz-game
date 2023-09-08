@@ -129,7 +129,7 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <div
       class={[
-        "max-w-lg mx-auto mb-8 alert alert-#{@kind} bg-#{@kind} text-#{@kind}-content",
+        "w-full max-w-lg mx-auto mb-8 alert alert-#{@kind} bg-#{@kind} text-#{@kind}-content",
         @class
       ]}
       {@rest}

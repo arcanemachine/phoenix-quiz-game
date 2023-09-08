@@ -36,7 +36,7 @@
     required
     x-model="subject"
   />
-  <div x-collapse x-show="subject === 'math'" x-cloak>
+  <div x-collapse.duration.500ms x-show="subject === 'math'" x-cloak>
     <div class="p-4 bg-info/20 border border-base-content rounded-xl">
       <.input
         field={false}
@@ -44,7 +44,7 @@
         type="checkbox"
         name="show-random-math-question-options"
         label="Generate random math questions"
-        help_text="Use randomly-generated math questions in the quiz (e.g. '5 + 7 = ?')"
+        help_text="Instead of creating custom cards, use randomly-generated math questions in the quiz. (e.g. '5 + 7 = ?')"
         x-model="showRandomMathQuestionOptions"
       />
 

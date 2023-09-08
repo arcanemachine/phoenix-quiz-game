@@ -6,16 +6,16 @@ defmodule QuizGameWeb.Quizzes.CardLive.Index do
   alias QuizGame.Quizzes.{Card, Quiz}
   alias QuizGame.Repo
 
-  defp _get_quiz_or_404(params) do
-    query = from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards]
-    Repo.one!(query)
-  end
-
   @impl true
-  def mount(params, _session, socket) do
+  def mount(params, session, socket) do
     quiz = _get_quiz_or_404(params)
 
     {:ok, socket |> assign(quiz: quiz) |> stream(:cards, quiz.cards)}
+  end
+
+  defp _get_quiz_or_404(params) do
+    query = from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards]
+    Repo.one!(query)
   end
 
   @impl true

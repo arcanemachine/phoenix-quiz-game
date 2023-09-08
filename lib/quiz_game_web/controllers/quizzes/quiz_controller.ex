@@ -73,9 +73,11 @@ defmodule QuizGameWeb.Quizzes.QuizController do
 
     case Quizzes.update_quiz(quiz, quiz_params) do
       {:ok, quiz} ->
+        success_url = Map.get(params, "next") || route(:quizzes, :show, quiz_id: quiz.id)
+
         conn
         |> put_flash(:success, "Quiz updated successfully")
-        |> redirect(to: route(:quizzes, :show, quiz_id: quiz.id))
+        |> redirect(to: success_url)
 
       {:error, %Ecto.Changeset{} = error_changeset} ->
         render(conn, :edit,
