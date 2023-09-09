@@ -97,8 +97,10 @@ defmodule QuizGameWeb.CoreComponents do
   def action_links_sublist(assigns) do
     ~H"""
     <li class="ps-2 font-bold list-dash">
-      <%= render_slot(@title) %>
-      <ul class="ps-2 list" style="font-size: 1rem">
+      <span class="cursor-default">
+        <%= render_slot(@title) %>
+      </span>
+      <ul class="ps-4 list" style="font-size: 1rem">
         <%= render_slot(@inner_block) %>
       </ul>
     </li>
