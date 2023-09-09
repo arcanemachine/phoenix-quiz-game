@@ -1,9 +1,16 @@
-<section class="template-center">
-  <.action_links title={false} class="mx-auto text-center">
-    <.action_links_item class="pr-8 !list-none !text-2xl">
-      <.link href={route(:quizzes, :index)}>
+<div class="hero min-h-[70vh]">
+  <div class="hero-content text-center">
+    <div class="max-w-md">
+      <h1 class="text-5xl font-bold"><%= Application.get_env(:quiz_game, :project_name) %></h1>
+      <p class="text-xl pt-6">
+        Make quizzes, take quizzes, manage quiz sessions, and keep track of the results.
+      </p>
+      <p class="text-xl pt-6">
+        Great for teachers and students.
+      </p>
+      <.link href={route(:quizzes, :index)} class="mt-6 btn btn-primary">
         View Quizzes
       </.link>
-    </.action_links_item>
-  </.action_links>
-</section>
+    </div>
+  </div>
+</div>
