@@ -2,15 +2,22 @@
   <div class="hero-content text-center">
     <div class="max-w-md">
       <h1 class="text-5xl font-bold"><%= Application.get_env(:quiz_game, :project_name) %></h1>
-      <p class="text-xl pt-6">
-        Make quizzes, take quizzes, manage quiz sessions, and keep track of the results.
-      </p>
-      <p class="text-xl pt-6">
-        Great for teachers and students.
-      </p>
-      <.link href={route(:quizzes, :index)} class="mt-6 btn btn-primary">
-        View Quizzes
-      </.link>
+      <section class="text-lg [&>*]:mt-8">
+        <p>
+          Make quizzes, take quizzes, manage quiz sessions, and keep track of the results.
+        </p>
+        <p>
+          Make quizzes with customized questions, or generate random math questions for practice (e.g. '2 + 3 = ?')
+        </p>
+        <p>
+          Great for teachers who want to make quizzes for their students. Allows you to keep track of who is taking the quiz at a given time, and allows both quiz makers and quiz takers to keep track of the results of the quiz.
+        </p>
+        <div>
+          <.link href={route(:quizzes, :index)} class="btn btn-primary">
+            View Quizzes
+          </.link>
+        </div>
+      </section>
     </div>
   </div>
 </div>
