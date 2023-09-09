@@ -19,7 +19,7 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
 
     token =
       extract_user_token(fn url ->
-        Users.deliver_user_password_reset_instructions(user, url)
+        Users.deliver_password_reset_instructions(user, url)
       end)
 
     %{token: token, user: user}

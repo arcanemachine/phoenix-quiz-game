@@ -101,14 +101,21 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
       html_after_submit =
         lv
         |> element("#registration_form")
-        |> render_submit(%{user: %{"username" => "", "email" => ""}})
+        |> render_submit(%{user: %{"username" => "", "display_name" => "", "email" => ""}})
 
       # still on same page due to form error(s)
       assert html_has_title(html_after_submit, "Register New Account")
 
       # form has expected error message(s)
-      assert html_form_field_has_error_message(html_after_submit, "user[username]", "blank")
-      assert html_form_field_has_error_message(html_after_submit, "user[email]", "blank")
+      assert html_form_field_has_error_message(html_after_submit, "user[username]", "required")
+
+      assert html_form_field_has_error_message(
+               html_after_submit,
+               "user[display_name]",
+               "required"
+             )
+
+      assert html_form_field_has_error_message(html_after_submit, "user[email]", "required")
     end
 
     test "renders expected errors on 'submit' event if username has already been taken", %{

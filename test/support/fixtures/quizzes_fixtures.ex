@@ -1,31 +1,43 @@
 defmodule QuizGame.TestSupport.QuizzesFixtures do
   @moduledoc "Test helpers for creating entities via the `QuizGame.Quizzes` context."
+  import QuizGame.TestSupport.UsersFixtures
   alias QuizGame.Quizzes
 
   @doc "Generate a quiz."
   def quiz_fixture(attrs \\ %{}) do
+    # maybe generate user
+    user_id = attrs[:user_id] || user_fixture().id
+
     {:ok, quiz} =
       attrs
       |> Enum.into(%{
-        name: "some name"
+        user_id: user_id,
+        name: "some name",
+        subject: :other
       })
-      |> Quizzes.create_quiz()
+      |> Quizzes.create_quiz(unsafe: true)
 
     quiz
   end
 
   @doc "Generate a card."
   def card_fixture(attrs \\ %{}) do
+    # maybe generate quiz and user
+    user_id = attrs[:user_id] || user_fixture().id
+    quiz_id = attrs[:quiz_id] || quiz_fixture(user_id: user_id).id
+
     # create card
     {:ok, card} =
       attrs
       |> Enum.into(%{
-        format: :multiple_choice,
-        image: "some image",
+        user_id: user_id,
+        quiz_id: quiz_id,
+        format: :true_or_false,
+        # image: nil,
         question: "some question",
-        answers: ["option1", "option2"]
+        correct_answer: "true"
       })
-      |> Quizzes.create_card()
+      |> Quizzes.create_card(unsafe: true)
 
     card
   end

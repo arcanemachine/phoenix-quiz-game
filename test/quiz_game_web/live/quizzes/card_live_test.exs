@@ -5,6 +5,7 @@ defmodule QuizGameWeb.Quizzes.CardLiveTest do
 
   import Phoenix.LiveViewTest
   import QuizGame.TestSupport.QuizzesFixtures
+  import QuizGame.TestSupport.UsersFixtures
 
   @create_attrs %{
     format: :multiple_choice,
@@ -21,8 +22,9 @@ defmodule QuizGameWeb.Quizzes.CardLiveTest do
   @invalid_attrs %{format: nil, image: nil, question: nil, answers: []}
 
   setup do
+    user = user_fixture()
     quiz = quiz_fixture()
-    card = card_fixture(quiz_id: quiz.id)
+    card = card_fixture(user_id: user.id, quiz_id: quiz.id)
     %{card: card}
   end
 
@@ -32,15 +34,15 @@ defmodule QuizGameWeb.Quizzes.CardLiveTest do
     test "lists all cards", %{conn: conn, card: card} do
       {:ok, _index_live, html} = live(conn, ~p"/quizzes/cards")
 
-      assert html =~ "Listing Cards"
+      assert html =~ "Listing Questions"
       assert html =~ card.image
     end
 
     test "saves new card", %{conn: conn} do
       {:ok, index_live, _html} = live(conn, ~p"/quizzes/cards")
 
-      assert index_live |> element("a", "New Card") |> render_click() =~
-               "New Card"
+      assert index_live |> element("a", "New Question") |> render_click() =~
+               "New Question"
 
       assert_patch(index_live, ~p"/quizzes/cards/new")
 
@@ -56,7 +58,7 @@ defmodule QuizGameWeb.Quizzes.CardLiveTest do
       # assert_patch(index_live, route(:quizzes_cards, :index, quiz_id: quiz.id))
 
       html = render(index_live)
-      assert html =~ "Card created successfully"
+      assert html =~ "Question created successfully"
       assert html =~ "some image"
     end
 
@@ -64,7 +66,7 @@ defmodule QuizGameWeb.Quizzes.CardLiveTest do
       {:ok, index_live, _html} = live(conn, ~p"/quizzes/cards")
 
       assert index_live |> element("#cards-#{card.id} a", "Edit") |> render_click() =~
-               "Edit Card"
+               "Edit Question"
 
       assert_patch(index_live, ~p"/quizzes/cards/#{card}/edit")
 
@@ -79,7 +81,7 @@ defmodule QuizGameWeb.Quizzes.CardLiveTest do
       assert_patch(index_live, ~p"/quizzes/cards")
 
       html = render(index_live)
-      assert html =~ "Card updated successfully"
+      assert html =~ "Question updated successfully"
       assert html =~ "some updated image"
     end
 
@@ -97,15 +99,15 @@ defmodule QuizGameWeb.Quizzes.CardLiveTest do
     test "displays card", %{conn: conn, card: card} do
       {:ok, _show_live, html} = live(conn, ~p"/quizzes/cards/#{card}")
 
-      assert html =~ "Show Card"
-      assert html =~ card.image
+      assert html =~ "Question Info"
+      # assert html =~ card.image
     end
 
     test "updates card within modal", %{conn: conn, card: card} do
       {:ok, show_live, _html} = live(conn, ~p"/quizzes/cards/#{card}")
 
       assert show_live |> element("a", "Edit") |> render_click() =~
-               "Edit Card"
+               "Edit Question"
 
       assert_patch(show_live, ~p"/quizzes/cards/#{card}/show/edit")
 

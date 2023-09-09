@@ -30,7 +30,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdatePasswordLive do
     <.simple_form
       for={@password_form}
       id="password_form"
-      action={route(:users, :login) <> query_string(action: "password_updated")}
+      action={route(:users, :login) <> query_string(_action: "password_updated")}
       method="post"
       phx-change="validate"
       phx-submit="password_update"
