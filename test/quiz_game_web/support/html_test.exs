@@ -1,7 +1,7 @@
-defmodule QuizGameWeb.SupportTest do
+defmodule QuizGameWeb.Test.Support.HTML.FormTest do
   @moduledoc false
   use ExUnit.Case
-  import QuizGameWeb.Support
+  import QuizGameWeb.Support.HTML.Form, only: [captcha_valid?: 1]
 
   @test_site_key "10000000-ffff-ffff-ffff-000000000001"
   @test_secret_key "0x0000000000000000000000000000000000000000"
@@ -12,7 +12,7 @@ defmodule QuizGameWeb.SupportTest do
   # REFACTOR: move into proper submodule
   describe "captcha_valid?/1" do
     setup do
-      # set temporary values for hcaptcha environment variables
+      # set temporary values for hcaptcha environment variables so that the captcha will work
       Application.put_env(:hcaptcha, :public_key, @test_site_key)
       Application.put_env(:hcaptcha, :secret, @test_secret_key)
 
@@ -23,18 +23,18 @@ defmodule QuizGameWeb.SupportTest do
     end
 
     test "returns true if captcha is valid" do
-      assert form_captcha_valid?(@valid_form_params)
+      assert captcha_valid?(@valid_form_params)
     end
 
     test "returns false if captcha is not valid" do
-      refute form_captcha_valid?(@invalid_form_params)
+      refute captcha_valid?(@invalid_form_params)
     end
 
     test "returns true if captcha is not enabled" do
       # disable hcaptcha
       Application.put_env(:hcaptcha, :public_key, false)
 
-      assert form_captcha_valid?(@valid_form_params)
+      assert captcha_valid?(@valid_form_params)
     end
   end
 end

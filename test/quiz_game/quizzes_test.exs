@@ -128,7 +128,7 @@ defmodule QuizGame.QuizzesTest do
   describe "records" do
     alias QuizGame.Quizzes.Record
 
-    import QuizGame.QuizzesFixtures
+    import QuizGame.TestSupport.QuizzesFixtures
 
     @invalid_attrs %{date: nil, card_count: nil, score: nil}
 

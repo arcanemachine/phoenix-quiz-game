@@ -1,13 +1,8 @@
 defmodule QuizGame.TestSupport.QuizzesFixtures do
-  @moduledoc """
-  This module defines test helpers for creating entities via the `QuizGame.Quizzes` context.
-  """
-
+  @moduledoc "Test helpers for creating entities via the `QuizGame.Quizzes` context."
   alias QuizGame.Quizzes
 
-  @doc """
-  Generate a quiz.
-  """
+  @doc "Generate a quiz."
   def quiz_fixture(attrs \\ %{}) do
     {:ok, quiz} =
       attrs
@@ -19,9 +14,7 @@ defmodule QuizGame.TestSupport.QuizzesFixtures do
     quiz
   end
 
-  @doc """
-  Generate a card.
-  """
+  @doc "Generate a card."
   def card_fixture(attrs \\ %{}) do
     # create card
     {:ok, card} =
@@ -37,9 +30,7 @@ defmodule QuizGame.TestSupport.QuizzesFixtures do
     card
   end
 
-  @doc """
-  Generate a record.
-  """
+  @doc "Generate a quiz record."
   def record_fixture(attrs \\ %{}) do
     {:ok, record} =
       attrs

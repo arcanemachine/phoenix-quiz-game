@@ -10,7 +10,7 @@ defmodule QuizGameWeb.UserForgotPasswordLiveTest do
   alias QuizGame.Users
   alias QuizGame.Repo
 
-  @test_url_path route(:users, :reset_password)
+  @test_url_path route(:users, :reset_password_solicit)
 
   describe "UserForgotPasswordLive page" do
     test "renders expected markup", %{conn: conn} do
