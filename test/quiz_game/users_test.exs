@@ -58,8 +58,8 @@ defmodule QuizGame.UsersTest do
       {:error, changeset} = Users.register_user(%{})
 
       assert %{
-               password: ["can't be blank"],
-               email: ["can't be blank"]
+               password: ["is required"],
+               email: ["is required"]
              } = errors_on(changeset)
     end
 

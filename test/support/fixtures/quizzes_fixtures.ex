@@ -32,10 +32,10 @@ defmodule QuizGame.TestSupport.QuizzesFixtures do
       |> Enum.into(%{
         user_id: user_id,
         quiz_id: quiz_id,
-        format: :true_or_false,
+        format: :text_entry,
         # image: nil,
         question: "some question",
-        correct_answer: "true"
+        correct_answer: "some correct answer"
       })
       |> Quizzes.create_card(unsafe: true)
 

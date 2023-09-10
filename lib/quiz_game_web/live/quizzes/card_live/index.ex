@@ -39,7 +39,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Index do
   defp apply_action(socket, :new, _params) do
     assign(socket, %{
       card: %Card{},
-      modal_title: "New Card"
+      modal_title: "New Question"
     })
   end
 

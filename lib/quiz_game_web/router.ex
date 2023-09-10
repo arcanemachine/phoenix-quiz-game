@@ -74,15 +74,9 @@ defmodule QuizGameWeb.Router do
         live_session :quizzes_cards_login_required,
           on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
           live "/new", CardLive.Index, :new
-        end
 
-        scope "/:card_id" do
-          live "/", CardLive.Show, :show
-
-          live_session :quizzes_id_cards_login_required,
-            on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
-            live "/update", CardLive.Show, :edit
-          end
+          live "/:card_id", CardLive.Show, :show
+          live "/:card_id/update", CardLive.Show, :edit
         end
       end
 

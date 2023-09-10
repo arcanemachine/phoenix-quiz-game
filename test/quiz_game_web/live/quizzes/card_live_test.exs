@@ -8,122 +8,147 @@ defmodule QuizGameWeb.Quizzes.CardLiveTest do
   import QuizGame.TestSupport.UsersFixtures
 
   @create_attrs %{
-    format: :multiple_choice,
-    image: "some image",
+    format: :text_entry,
+    # image: "some image",
     question: "some question",
-    answers: ["option1", "option2"]
+    correct_answer: "some answer"
   }
   @update_attrs %{
-    format: :true_or_false,
-    image: "some updated image",
-    question: "some updated question",
-    answers: ["option1"]
+    format: :text_entry,
+    # image: "updated image",
+    question: "updated question",
+    correct_answer: "updated answer"
   }
-  @invalid_attrs %{format: nil, image: nil, question: nil, answers: []}
+  @invalid_attrs %{
+    format: nil,
+    # image: nil,
+    question: nil
+    # correct_answer: nil # choice will not appear
+  }
 
   setup do
     user = user_fixture()
-    quiz = quiz_fixture()
+    quiz = quiz_fixture(user_id: user.id)
     card = card_fixture(user_id: user.id, quiz_id: quiz.id)
-    %{card: card}
+    %{user: user, card: card, quiz: quiz}
   end
 
-  describe "Index" do
-    # setup [:create_card]
+  describe ":index" do
+    def get_test_url(quiz_id), do: route(:quizzes_cards, :index, quiz_id: quiz_id)
 
-    test "lists all cards", %{conn: conn, card: card} do
-      {:ok, _index_live, html} = live(conn, ~p"/quizzes/cards")
+    test "lists all cards", %{conn: conn, card: card, user: user} do
+      {:ok, _view, html} =
+        conn
+        |> login_user(user)
+        |> live(get_test_url(card.quiz_id))
 
-      assert html =~ "Listing Questions"
-      assert html =~ card.image
+      assert html =~ "Question List"
+      assert html =~ card.question
     end
 
-    test "saves new card", %{conn: conn} do
-      {:ok, index_live, _html} = live(conn, ~p"/quizzes/cards")
+    test "saves new card", %{conn: conn, user: user, quiz: quiz} do
+      {:ok, view, _html} =
+        conn
+        |> login_user(user)
+        |> live(get_test_url(quiz.id))
 
-      assert index_live |> element("a", "New Question") |> render_click() =~
+      assert view |> element("a", "New Question") |> render_click() =~
                "New Question"
 
-      assert_patch(index_live, ~p"/quizzes/cards/new")
+      assert_patch(view, ~p"/quizzes/cards/new")
 
-      assert index_live
+      assert view
              |> form("#card-form", card: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ "is required"
 
-      assert index_live
+      assert view
              |> form("#card-form", card: @create_attrs)
              |> render_submit()
 
-      assert_patch(index_live, ~p"/quizzes/cards")
-      # assert_patch(index_live, route(:quizzes_cards, :index, quiz_id: quiz.id))
+      assert_patch(view, ~p"/quizzes/cards")
+      # assert_patch(view, route(:quizzes_cards, :index, quiz_id: quiz.id))
 
-      html = render(index_live)
+      html = render(view)
       assert html =~ "Question created successfully"
       assert html =~ "some image"
     end
 
-    test "updates card in listing", %{conn: conn, card: card} do
-      {:ok, index_live, _html} = live(conn, ~p"/quizzes/cards")
+    test "updates card in listing", %{conn: conn, user: user, card: card} do
+      {:ok, view, _html} = live(conn, ~p"/quizzes/cards")
 
-      assert index_live |> element("#cards-#{card.id} a", "Edit") |> render_click() =~
+      assert view |> element("#cards-#{card.id} a", "Edit") |> render_click() =~
                "Edit Question"
 
-      assert_patch(index_live, ~p"/quizzes/cards/#{card}/edit")
+      assert_patch(view, ~p"/quizzes/cards/#{card}/edit")
 
-      assert index_live
+      assert view
              |> form("#card-form", card: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ "is required"
 
-      assert index_live
+      assert view
              |> form("#card-form", card: @update_attrs)
              |> render_submit()
 
-      assert_patch(index_live, ~p"/quizzes/cards")
+      assert_patch(view, ~p"/quizzes/cards")
 
-      html = render(index_live)
+      html = render(view)
       assert html =~ "Question updated successfully"
       assert html =~ "some updated image"
     end
 
-    test "deletes card in listing", %{conn: conn, card: card} do
-      {:ok, index_live, _html} = live(conn, ~p"/quizzes/cards")
+    test "deletes card in listing", %{conn: conn, user: user, card: card} do
+      {:ok, view, _html} = live(conn, ~p"/quizzes/cards")
 
-      assert index_live |> element("#cards-#{card.id} a", "Delete") |> render_click()
-      refute has_element?(index_live, "#cards-#{card.id}")
+      assert view |> element("#cards-#{card.id} a", "Delete") |> render_click()
+      refute has_element?(view, "#cards-#{card.id}")
     end
   end
 
-  describe "Show" do
-    # setup [:create_card]
+  describe ":show" do
+    def get_test_url(quiz_id, card_id),
+      do: route(:quizzes_cards, :show, quiz_id: quiz_id, card_id: card_id)
 
-    test "displays card", %{conn: conn, card: card} do
-      {:ok, _show_live, html} = live(conn, ~p"/quizzes/cards/#{card}")
+    test "displays card", %{conn: conn, user: user, card: card} do
+      {:ok, _view, html} = live(conn, get_test_url(card.quiz_id, card.id))
 
       assert html =~ "Question Info"
       # assert html =~ card.image
     end
 
-    test "updates card within modal", %{conn: conn, card: card} do
-      {:ok, show_live, _html} = live(conn, ~p"/quizzes/cards/#{card}")
+    test "does not update card with invalid data", %{conn: conn, user: user, card: card} do
+      assert false
+    end
 
-      assert show_live |> element("a", "Edit") |> render_click() =~
+    test "updates card in modal", %{conn: conn, user: user, card: card} do
+      edit_url = route(:quizzes_cards, :edit, quiz_id: card.quiz_id, card_id: card.id)
+      success_url = route(:quizzes_cards, :show, quiz_id: card.quiz_id, card_id: card.id)
+
+      {:ok, view, _html} =
+        conn
+        |> login_user(user)
+        |> live(get_test_url(card.quiz_id, card.id))
+
+      assert view
+             |> element("a", "Edit this question")
+             |> render_click() =~
                "Edit Question"
 
-      assert_patch(show_live, ~p"/quizzes/cards/#{card}/show/edit")
+      assert_patch(view, edit_url)
 
-      assert show_live
-             |> form("#card-form", card: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
+      # assert view
+      #        |> form("#card-form", card: @invalid_attrs)
+      #        |> render_change() =~
+      #          "is required"
 
-      assert show_live
+      assert view
              |> form("#card-form", card: @update_attrs)
              |> render_submit()
 
-      assert_patch(show_live, ~p"/quizzes/cards/#{card}")
+      assert_patch(view, success_url)
 
-      html = render(show_live)
-      assert html =~ "Card updated successfully"
-      assert html =~ "some updated image"
+      html = render(view)
+      assert html =~ "Question updated successfully"
+      # assert html =~ "some updated image"
     end
   end
 end

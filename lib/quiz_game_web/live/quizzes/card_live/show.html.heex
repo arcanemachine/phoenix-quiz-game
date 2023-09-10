@@ -35,8 +35,8 @@
 
 <.action_links>
   <.action_links_item kind="edit">
-    <.link navigate={route(:quizzes_cards, :edit, quiz_id: @card.quiz.id, card_id: @card.id)}>
-      Edit this card
+    <.link patch={route(:quizzes_cards, :edit, quiz_id: @card.quiz.id, card_id: @card.id)}>
+      Edit this question
     </.link>
   </.action_links_item>
   <.action_links_item kind="delete">
