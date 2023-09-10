@@ -61,6 +61,12 @@ Tests can be run in a non-random order by setting the seed to 0.
 Use the '--trace' flag to increase the timeout when debugging.
 
   - e.g. 'mix test --trace'
+
+## Abort on failed test
+
+Use the '--max-failures' flag to abort the test after a given number of failures.
+
+  - e.g. 'mix test --max-failures 1'
 "
   exit 0
 fi
@@ -78,7 +84,7 @@ MIX_ENV="test" mix ecto.reset >/dev/null
 if [ "$?" = 0 ]; then
   echo "Test database reset successfully."
 else
-  echo "\033[91mAn error occurred while attempting to reset the test database.\033[39m"
+  printf "\033[91mAn error occurred while attempting to reset the test database.\033[39m\n"
 fi
 
 # run the tests
