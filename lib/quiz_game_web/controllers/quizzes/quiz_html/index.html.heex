@@ -15,13 +15,11 @@
       >
         <i>No 'Language' quizzes have been created.</i>
       </li>
-      <li
-        :for={
-          quiz <-
-            Enum.filter(@quizzes, fn quiz -> quiz.subject == :language end)
-            |> Enum.slice(0..4)
-        }
-      >
+      <li :for={
+        quiz <-
+          Enum.filter(@quizzes, fn quiz -> quiz.subject == :language end)
+          |> Enum.slice(0..4)
+      }>
         <a href={route(:quizzes, :show, quiz_id: quiz.id)}>
           <%= quiz.name %>
         </a>
@@ -41,13 +39,11 @@
       >
         <i>No 'Math' quizzes have been created.</i>
       </li>
-      <li
-        :for={
-          quiz <-
-            Enum.filter(@quizzes, fn quiz -> quiz.subject == :math end)
-            |> Enum.slice(0..4)
-        }
-      >
+      <li :for={
+        quiz <-
+          Enum.filter(@quizzes, fn quiz -> quiz.subject == :math end)
+          |> Enum.slice(0..4)
+      }>
         <a href={route(:quizzes, :show, quiz_id: quiz.id)}>
           <%= quiz.name %>
         </a>
@@ -67,13 +63,11 @@
       >
         <i>No 'Science' quizzes have been created.</i>
       </li>
-      <li
-        :for={
-          quiz <-
-            Enum.filter(@quizzes, fn quiz -> quiz.subject == :science end)
-            |> Enum.slice(0..4)
-        }
-      >
+      <li :for={
+        quiz <-
+          Enum.filter(@quizzes, fn quiz -> quiz.subject == :science end)
+          |> Enum.slice(0..4)
+      }>
         <a href={route(:quizzes, :show, quiz_id: quiz.id)}>
           <%= quiz.name %>
         </a>
@@ -93,13 +87,11 @@
       >
         <i>No 'Social Studies' quizzes have been created.</i>
       </li>
-      <li
-        :for={
-          quiz <-
-            Enum.filter(@quizzes, fn quiz -> quiz.subject == :social_studies end)
-            |> Enum.slice(0..4)
-        }
-      >
+      <li :for={
+        quiz <-
+          Enum.filter(@quizzes, fn quiz -> quiz.subject == :social_studies end)
+          |> Enum.slice(0..4)
+      }>
         <a href={route(:quizzes, :show, quiz_id: quiz.id)}>
           <%= quiz.name %>
         </a>
@@ -119,13 +111,11 @@
       >
         <i>No 'Other' quizzes have been created.</i>
       </li>
-      <li
-        :for={
-          quiz <-
-            Enum.filter(@quizzes, fn quiz -> quiz.subject == :other end)
-            |> Enum.slice(0..4)
-        }
-      >
+      <li :for={
+        quiz <-
+          Enum.filter(@quizzes, fn quiz -> quiz.subject == :other end)
+          |> Enum.slice(0..4)
+      }>
         <a href={route(:quizzes, :show, quiz_id: quiz.id)}>
           <%= quiz.name %>
         </a>
