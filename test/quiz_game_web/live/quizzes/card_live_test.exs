@@ -96,23 +96,6 @@ defmodule QuizGameWeb.Quizzes.CardLiveTest do
       # assert html =~ card.image
     end
 
-    test "deletes expected card", %{conn: conn, user: user, card: card} do
-      {:ok, view, _html} =
-        conn |> login_user(user) |> live(get_show_url(card.quiz_id, card.id))
-
-      # delete expected record
-      view |> element("[data-test-id='delete-card']") |> render_click()
-
-      # redirects to expected route
-      view |> assert_redirected(get_index_url(card.quiz_id))
-
-      # template does not contain expected content after redirect
-      {:ok, _view, html_after_redirect} =
-        conn |> login_user(user) |> live(get_index_url(card.quiz_id))
-
-      refute html_after_redirect =~ card.question
-    end
-
     test "updates expected card", %{conn: conn, user: user, card: card} do
       {:ok, view, _html} =
         conn
@@ -148,5 +131,25 @@ defmodule QuizGameWeb.Quizzes.CardLiveTest do
       assert html =~ "Question updated successfully"
       # assert html =~ "some updated image"
     end
+  end
+
+  test "deletes expected card", %{conn: conn, user: user, card: card} do
+    {:ok, view, _html} =
+      conn |> login_user(user) |> live(get_show_url(card.quiz_id, card.id))
+
+    # delete expected record
+    view |> element("[data-test-id='delete-card']") |> render_click()
+
+    # redirects to expected route
+    view
+    |> assert_redirected(
+      get_index_url(card.quiz_id) <> query_string(%{"delete-question-success" => "1"})
+    )
+
+    # template does not contain expected content after redirect
+    {:ok, _view, html_after_redirect} =
+      conn |> login_user(user) |> live(get_index_url(card.quiz_id))
+
+    refute html_after_redirect =~ card.question
   end
 end

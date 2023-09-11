@@ -200,7 +200,7 @@ defmodule QuizGame.UsersTest do
     end
   end
 
-  describe "deliver_user_email_update_instructions/3" do
+  describe "deliver_email_update_instructions/3" do
     setup do
       %{user: user_fixture()}
     end
@@ -208,7 +208,7 @@ defmodule QuizGame.UsersTest do
     test "sends token through notification", %{user: user} do
       token =
         extract_user_token(fn url ->
-          Users.deliver_user_email_update_instructions(user, "current@example.com", url)
+          Users.deliver_email_update_instructions(user, "current@example.com", url)
         end)
 
       {:ok, token} = Base.url_decode64(token, padding: false)
@@ -226,7 +226,7 @@ defmodule QuizGame.UsersTest do
 
       token =
         extract_user_token(fn url ->
-          Users.deliver_user_email_update_instructions(%{user | email: email}, user.email, url)
+          Users.deliver_email_update_instructions(%{user | email: email}, user.email, url)
         end)
 
       %{user: user, token: token, email: email}
@@ -443,7 +443,7 @@ defmodule QuizGame.UsersTest do
     end
   end
 
-  describe "deliver_user_password_reset_instructions/2" do
+  describe "deliver_email_update_instructions/2" do
     setup do
       %{user: user_fixture()}
     end
@@ -451,7 +451,7 @@ defmodule QuizGame.UsersTest do
     test "sends token through notification", %{user: user} do
       token =
         extract_user_token(fn url ->
-          Users.deliver_user_password_reset_instructions(user, url)
+          Users.deliver_email_update_instructions(user, url)
         end)
 
       {:ok, token} = Base.url_decode64(token, padding: false)
@@ -468,7 +468,7 @@ defmodule QuizGame.UsersTest do
 
       token =
         extract_user_token(fn url ->
-          Users.deliver_user_password_reset_instructions(user, url)
+          Users.deliver_email_update_instructions(user, url)
         end)
 
       %{user: user, token: token}

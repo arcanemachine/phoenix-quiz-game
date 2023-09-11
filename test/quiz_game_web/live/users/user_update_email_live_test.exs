@@ -125,7 +125,7 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
 
       token =
         extract_user_token(fn url ->
-          Users.deliver_user_email_update_instructions(%{user | email: email}, user.email, url)
+          Users.deliver_email_update_instructions(%{user | email: email}, user.email, url)
         end)
 
       %{conn: login_user(conn, user), token: token, email: email, user: user}

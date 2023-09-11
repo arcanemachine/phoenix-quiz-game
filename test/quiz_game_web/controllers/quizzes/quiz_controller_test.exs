@@ -14,7 +14,7 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
   @name_length_max Quiz.name_length_max()
 
   # setup
-  defp create_quiz(_) do
+  defp create_quiz(_context) do
     quiz = quiz_fixture()
     %{quiz: quiz}
   end

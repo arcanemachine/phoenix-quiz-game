@@ -52,7 +52,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
           |> push_redirect(
             to:
               route(:quizzes_cards, :index, quiz_id: socket.assigns.card.quiz_id) <>
-                query_string(%{"card-delete-success" => 1}),
+                query_string(%{"delete-question-success" => "1"}),
             replace: true
           )
 
@@ -62,7 +62,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
           |> push_redirect(
             to:
               route(:quizzes_cards, :index, quiz_id: socket.assigns.card.quiz_id) <>
-                query_string(%{"card-delete-error" => 1}),
+                query_string(%{"delete-question-error" => "1"}),
             replace: true
           )
       end

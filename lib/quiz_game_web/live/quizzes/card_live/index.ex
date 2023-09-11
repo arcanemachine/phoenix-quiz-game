@@ -26,12 +26,12 @@ defmodule QuizGameWeb.Quizzes.CardLive.Index do
     # query string
     socket =
       cond do
-        params["card-delete-success"] == "1" ->
+        params["delete-question-success"] == "1" ->
           socket
           |> put_flash(:success, "Question deleted successfully")
           |> redirect(to: URI.parse(url).path)
 
-        params["card-delete-error"] == "1" ->
+        params["delete-question-error"] == "1" ->
           socket
           |> put_flash(:success, "Could not delete the question. Has it already been deleted?")
           |> redirect(to: URI.parse(url).path)
