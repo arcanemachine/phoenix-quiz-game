@@ -48,7 +48,7 @@ defmodule QuizGame.TestSupport.GenericTests do
   Use this function if the route under test does not have any dynamic parameters (e.g. record
   ID) in the URL.
   """
-  defmacro test_redirects_unauthenticated_user_to_login_route(url, http_method) do
+  defmacro test_redirects_unauthenticated_user_to_login_route(url, http_method \\ "GET") do
     quote do
       test "redirects unauthenticated user to login route: #{unquote(http_method)}", %{conn: conn} do
         redirects_unauthenticated_user_to_login_route(conn, unquote(url), unquote(http_method))
@@ -65,7 +65,7 @@ defmodule QuizGame.TestSupport.GenericTests do
   parameters, such as an record ID), then you probably just want to use the complementary
   macro instead.
   """
-  def redirects_unauthenticated_user_to_login_route(conn, url, http_method) do
+  def redirects_unauthenticated_user_to_login_route(conn, url, http_method \\ "GET") do
     # ensure user is unauthenticated
     conn = logout_user(conn)
 

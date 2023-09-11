@@ -31,7 +31,7 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
 
     @quizzes_new_url route(:quizzes, :new)
 
-    test_redirects_unauthenticated_user_to_login_route(@quizzes_new_url, "GET")
+    test_redirects_unauthenticated_user_to_login_route(@quizzes_new_url)
 
     test "renders expected template", %{conn: conn} do
       resp_conn = get(conn, @quizzes_new_url)
@@ -137,7 +137,7 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
 
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
       quizzes_edit_url = route(:quizzes, :edit, quiz_id: quiz.id)
-      redirects_unauthenticated_user_to_login_route(conn, quizzes_edit_url, "GET")
+      redirects_unauthenticated_user_to_login_route(conn, quizzes_edit_url)
     end
 
     test "renders object update form", %{conn: conn, user: user, quiz: quiz} do

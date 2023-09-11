@@ -67,6 +67,7 @@ defmodule QuizGameWeb.Support.Router do
     end
   end
 
+  # credo:disable-for-next-line
   def route(:quizzes, action, params) do
     case action do
       :index -> "/quizzes"
