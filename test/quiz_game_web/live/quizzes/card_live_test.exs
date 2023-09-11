@@ -134,6 +134,9 @@ defmodule QuizGameWeb.Quizzes.CardLiveTest do
   end
 
   test "deletes expected card", %{conn: conn, user: user, card: card} do
+    success_url =
+      _get_index_url(card.quiz_id) <> query_string(%{"delete-question-success" => "1"})
+
     {:ok, view, _html} =
       conn |> login_user(user) |> live(_get_show_url(card.quiz_id, card.id))
 
@@ -141,13 +144,14 @@ defmodule QuizGameWeb.Quizzes.CardLiveTest do
     view |> element("[data-test-id='delete-card']") |> render_click()
 
     # redirects to expected route
-    view
-    |> assert_redirected(
-      _get_index_url(card.quiz_id) <> query_string(%{"delete-question-success" => "1"})
-    )
+    view |> assert_redirected(success_url)
+
+    # view contains expected flash message after redirect
+    redirect_resp_conn = conn |> login_user(user) |> get(success_url)
+    assert redirect_resp_conn.assigns.flash == %{"success" => "Question deleted successfully"}
 
     # template does not contain expected content after redirect
-    {:ok, _view, html_after_redirect} =
+    {:ok, view, html_after_redirect} =
       conn |> login_user(user) |> live(_get_index_url(card.quiz_id))
 
     refute html_after_redirect =~ card.question
