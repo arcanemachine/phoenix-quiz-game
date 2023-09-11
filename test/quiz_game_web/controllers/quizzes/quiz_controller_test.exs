@@ -13,8 +13,7 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
 
   @name_length_max Quiz.name_length_max()
 
-  # setup
-  defp create_quiz(_context) do
+  defp _create_quiz(_context) do
     user = user_fixture()
     quiz = quiz_fixture(user_id: user.id)
     %{user: user, quiz: quiz}
@@ -47,7 +46,7 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
 
     test_redirects_unauthenticated_user_to_login_route(route(:quizzes, :create), "POST")
 
-    test "creates expected record", %{conn: conn} do
+    test "creates expected object", %{conn: conn} do
       resp_conn = post(conn, @quizzes_create_url, quiz: @valid_attrs)
 
       # redirects to expected route
@@ -55,10 +54,10 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
       assert redirected_to(resp_conn) == route(:quizzes, :show, quiz_id: quiz_id)
 
       # redirected response renders expected template
-      record_detail_url = route(:quizzes, :show, quiz_id: quiz_id)
-      resp_conn_2 = get(resp_conn, record_detail_url)
+      quiz_show_url = route(:quizzes, :show, quiz_id: quiz_id)
+      resp_conn_2 = get(resp_conn, quiz_show_url)
 
-      # template contains new record content
+      # template now contains new object content
       assert html_response(resp_conn_2, 200) |> html_has_content(@valid_attrs[:name])
     end
 
@@ -119,7 +118,7 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
   end
 
   describe "quizzes :show" do
-    setup [:create_quiz]
+    setup [:_create_quiz]
 
     test "permits unauthenticated user", %{conn: conn, quiz: quiz} do
       resp_conn = get(conn, route(:quizzes, :show, quiz_id: quiz.id))
@@ -134,14 +133,14 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
   end
 
   describe "quizzes :edit" do
-    setup [:register_and_login_user, :create_quiz]
+    setup [:register_and_login_user, :_create_quiz]
 
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
       quizzes_edit_url = route(:quizzes, :edit, quiz_id: quiz.id)
       redirects_unauthenticated_user_to_login_route(conn, quizzes_edit_url, "GET")
     end
 
-    test "renders record update form", %{conn: conn, user: user, quiz: quiz} do
+    test "renders object update form", %{conn: conn, user: user, quiz: quiz} do
       quizzes_edit_url = route(:quizzes, :edit, quiz_id: quiz.id)
 
       # login as quiz creator
@@ -153,14 +152,14 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
   end
 
   describe "quizzes :update" do
-    setup [:register_and_login_user, :create_quiz]
+    setup [:register_and_login_user, :_create_quiz]
 
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
       quizzes_update_url = route(:quizzes, :update, quiz_id: quiz.id)
       redirects_unauthenticated_user_to_login_route(conn, quizzes_update_url, "PUT")
     end
 
-    test "updates expected record", %{conn: conn, user: user, quiz: quiz} do
+    test "updates expected object", %{conn: conn, user: user, quiz: quiz} do
       quizzes_update_url = route(:quizzes, :update, quiz_id: quiz.id)
 
       # login as quiz creator
@@ -168,12 +167,12 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
 
       resp_conn = put(conn, quizzes_update_url, quiz: @valid_attrs_update)
 
-      # redirects to record detail
-      record_detail_url = route(:quizzes, :show, quiz_id: quiz.id)
-      assert redirected_to(resp_conn) == record_detail_url
+      # redirects to quiz detail
+      quiz_show_url = route(:quizzes, :show, quiz_id: quiz.id)
+      assert redirected_to(resp_conn) == quiz_show_url
 
       # redirect renders expected template
-      resp_conn_2 = resp_conn |> get(record_detail_url)
+      resp_conn_2 = resp_conn |> get(quiz_show_url)
       assert html_has_title(resp_conn_2.resp_body, "Quiz Info")
       assert html_response(resp_conn_2, 200) |> html_has_content(@valid_attrs_update[:name])
     end
@@ -214,14 +213,14 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
   end
 
   describe "quizzes :delete" do
-    setup [:register_and_login_user, :create_quiz]
+    setup [:register_and_login_user, :_create_quiz]
 
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
       quizzes_delete_url = route(:quizzes, :delete, quiz_id: quiz.id)
       redirects_unauthenticated_user_to_login_route(conn, quizzes_delete_url, "DELETE")
     end
 
-    test "deletes expected record", %{conn: conn, user: user, quiz: quiz} do
+    test "deletes expected object", %{conn: conn, user: user, quiz: quiz} do
       quizzes_delete_url = route(:quizzes, :show, quiz_id: quiz.id)
 
       # login as quiz creator
@@ -229,10 +228,10 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
 
       resp_conn = delete(conn, route(:quizzes, :delete, quiz_id: quiz.id))
 
-      # redirects to record index
+      # redirects to object index
       assert redirected_to(resp_conn) == route(:quizzes, :index)
 
-      # expected record has been deleted
+      # expected object has been deleted
       assert_error_sent 404, fn -> get(resp_conn, quizzes_delete_url) end
     end
   end
