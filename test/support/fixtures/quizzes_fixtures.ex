@@ -44,10 +44,16 @@ defmodule QuizGame.TestSupport.QuizzesFixtures do
 
   @doc "Generate a quiz record."
   def record_fixture(attrs \\ %{}) do
+    # maybe generate quiz and user
+    user_id = attrs[:user_id] || user_fixture().id
+    quiz_id = attrs[:quiz_id] || quiz_fixture(user_id: user_id).id
+
     {:ok, record} =
       attrs
       |> Enum.into(%{
-        date: ~U[2023-08-31 02:31:00Z],
+        user_id: user_id,
+        quiz_id: quiz_id,
+        display_name: "some name",
         card_count: 42,
         score: 42
       })

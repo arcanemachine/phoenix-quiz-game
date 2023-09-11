@@ -1,7 +1,7 @@
 defmodule QuizGame.QuizzesTest do
   @moduledoc false
   use QuizGame.DataCase
-  import QuizGame.TestSupport.QuizzesFixtures
+  import QuizGame.TestSupport.{QuizzesFixtures, UsersFixtures}
   alias QuizGame.Quizzes
 
   describe "quizzes" do
@@ -20,22 +20,22 @@ defmodule QuizGame.QuizzesTest do
     end
 
     test "create_quiz/1 with valid data creates a quiz" do
-      valid_attrs = %{name: "some name"}
+      valid_attrs = %{user_id: user_fixture().id, name: "some name", subject: "other"}
 
-      assert {:ok, %Quiz{} = quiz} = Quizzes.create_quiz(valid_attrs)
+      assert {:ok, %Quiz{} = quiz} = Quizzes.create_quiz(valid_attrs, unsafe: true)
       assert quiz.name == "some name"
     end
 
     test "create_quiz/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Quizzes.create_quiz(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Quizzes.create_quiz(@invalid_attrs, unsafe: true)
     end
 
     test "update_quiz/2 with valid data updates the quiz" do
       quiz = quiz_fixture()
-      update_attrs = %{name: "some updated name"}
+      update_attrs = %{name: "updated name"}
 
       assert {:ok, %Quiz{} = quiz} = Quizzes.update_quiz(quiz, update_attrs)
-      assert quiz.name == "some updated name"
+      assert quiz.name == "updated name"
     end
 
     test "update_quiz/2 with invalid data returns error changeset" do
@@ -59,7 +59,7 @@ defmodule QuizGame.QuizzesTest do
   describe "cards" do
     alias QuizGame.Quizzes.Card
 
-    @invalid_attrs %{format: nil, image: nil, question: nil, answers: nil}
+    @invalid_attrs %{format: nil, question: nil, answers: nil}
 
     # test "card_list/0 returns all cards" do
     #   card = card_fixture()
@@ -72,39 +72,45 @@ defmodule QuizGame.QuizzesTest do
     end
 
     test "create_card/1 with valid data creates a card" do
+      user = user_fixture()
+      quiz = quiz_fixture(user_id: user.id)
+
       valid_attrs = %{
-        format: :multiple_choice,
-        image: "some image",
+        user_id: user.id,
+        quiz_id: quiz.id,
+        format: :text_entry,
+        # image: "some image",
         question: "some question",
-        answers: ["option1", "option2"]
+        correct_answer: "some answer"
       }
 
-      assert {:ok, %Card{} = card} = Quizzes.create_card(valid_attrs)
-      assert card.format == :multiple_choice
-      assert card.image == "some image"
+      assert {:ok, %Card{} = card} = Quizzes.create_card(valid_attrs, unsafe: true)
+      assert card.quiz_id == quiz.id
+      assert card.format == :text_entry
+      # assert card.image == "some image"
       assert card.question == "some question"
-      assert card.answers == ["option1", "option2"]
+      assert card.correct_answer == "some answer"
     end
 
     test "create_card/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Quizzes.create_card(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Quizzes.create_card(@invalid_attrs, unsafe: true)
     end
 
     test "update_card/2 with valid data updates the card" do
       card = card_fixture()
 
       update_attrs = %{
-        format: :true_or_false,
-        image: "some updated image",
-        question: "some updated question",
-        answers: ["option1"]
+        format: :text_entry,
+        # image: "updated image",
+        question: "updated question",
+        correct_answer: "updated answer"
       }
 
       assert {:ok, %Card{} = card} = Quizzes.update_card(card, update_attrs)
-      assert card.format == :true_or_false
-      assert card.image == "some updated image"
-      assert card.question == "some updated question"
-      assert card.answers == ["option1"]
+      assert card.format == :text_entry
+      # assert card.image == "updated image"
+      assert card.question == "updated question"
+      assert card.correct_answer == "updated answer"
     end
 
     test "update_card/2 with invalid data returns error changeset" do
@@ -143,10 +149,12 @@ defmodule QuizGame.QuizzesTest do
     end
 
     test "create_record/1 with valid data creates a record" do
-      valid_attrs = %{date: ~U[2023-08-31 02:31:00Z], card_count: 42, score: 42}
+      quiz = quiz_fixture()
+      valid_attrs = %{quiz_id: quiz.id, display_name: "some name", card_count: 42, score: 42}
 
       assert {:ok, %Record{} = record} = Quizzes.create_record(valid_attrs)
-      assert record.date == ~U[2023-08-31 02:31:00Z]
+      assert record.quiz_id == quiz.id
+      assert record.display_name == "some name"
       assert record.card_count == 42
       assert record.score == 42
     end
@@ -157,12 +165,11 @@ defmodule QuizGame.QuizzesTest do
 
     test "update_record/2 with valid data updates the record" do
       record = record_fixture()
-      update_attrs = %{date: ~U[2023-09-01 02:31:00Z], card_count: 43, score: 43}
+      update_attrs = %{display_name: "updated name", card_count: 43, score: 43}
 
       assert {:ok, %Record{} = record} =
                Quizzes.update_record(record, update_attrs)
 
-      assert record.date == ~U[2023-09-01 02:31:00Z]
       assert record.card_count == 43
       assert record.score == 43
     end

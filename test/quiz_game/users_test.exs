@@ -58,8 +58,10 @@ defmodule QuizGame.UsersTest do
       {:error, changeset} = Users.register_user(%{})
 
       assert %{
-               password: ["is required"],
-               email: ["is required"]
+               email: ["can't be blank"],
+               password: ["can't be blank"],
+               display_name: ["can't be blank"],
+               username: ["can't be blank"]
              } = errors_on(changeset)
     end
 
@@ -102,7 +104,7 @@ defmodule QuizGame.UsersTest do
   describe "change_user_registration/2" do
     test "returns a changeset" do
       assert %Ecto.Changeset{} = changeset = Users.change_user_registration(%User{})
-      assert changeset.required == [:password, :email, :username]
+      assert changeset.required == [:password, :email, :display_name, :username]
     end
 
     test "allows fields to be set" do
