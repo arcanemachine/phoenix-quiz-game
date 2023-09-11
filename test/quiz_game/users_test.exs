@@ -453,14 +453,14 @@ defmodule QuizGame.UsersTest do
     test "sends token through notification", %{user: user} do
       token =
         extract_user_token(fn url ->
-          Users.deliver_email_update_instructions(user, url)
+          Users.deliver_email_update_instructions(user, "current@example.com", url)
         end)
 
       {:ok, token} = Base.url_decode64(token, padding: false)
       assert user_token = Repo.get_by(UserToken, token: :crypto.hash(:sha256, token))
       assert user_token.user_id == user.id
       assert user_token.sent_to == user.email
-      assert user_token.context == "password_reset"
+      assert user_token.context == "change:current@example.com"
     end
   end
 
@@ -470,7 +470,7 @@ defmodule QuizGame.UsersTest do
 
       token =
         extract_user_token(fn url ->
-          Users.deliver_email_update_instructions(user, url)
+          Users.deliver_password_reset_instructions(user, url)
         end)
 
       %{user: user, token: token}
