@@ -2,9 +2,11 @@
   No records exist for this quiz.
 </div>
 
-<div :if={!Enum.empty?(@records)} class="text-center italic">
-  Quiz records are deleted after 24 hours.
-</div>
+<%!--
+  <div :if={!Enum.empty?(@records)} class="text-center italic">
+    Quiz records are deleted after 24 hours.
+  </div>
+--%>
 
 <ul class="mt-4 list [&>*:not(:first-child)]:mt-6">
   <li :for={record <- @records}>
