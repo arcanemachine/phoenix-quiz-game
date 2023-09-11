@@ -11,7 +11,8 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
 
   @password_length_min QuizGame.Users.User.password_length_min()
 
-  def test_url_path(opts), do: route(:users, :reset_password_confirm, token: opts[:token])
+  def get_reset_password_confirm_url(opts),
+    do: route(:users, :reset_password_confirm, token: opts[:token])
 
   setup do
     # create user and token
@@ -27,13 +28,13 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
 
   describe "UserResetPasswordLive page" do
     test "renders expected markup", %{conn: conn, token: token} do
-      {:ok, _lv, html} = live(conn, test_url_path(token: token))
+      {:ok, _lv, html} = live(conn, get_reset_password_confirm_url(token: token))
       assert html_has_title(html, "Set New Password")
     end
 
     test "returns expected redirect when password reset token is invalid", %{conn: conn} do
       {:error, {:redirect, redirect_resp_conn}} =
-        live(conn, test_url_path(token: "invalid_token"))
+        live(conn, get_reset_password_confirm_url(token: "invalid_token"))
 
       # redirect contains expected values
       assert redirect_resp_conn == %{
@@ -47,7 +48,7 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
 
   describe "UserResetPasswordLive form" do
     test "resets password once when form data is valid", %{conn: conn, token: token, user: user} do
-      {:ok, lv, _html} = live(conn, test_url_path(token: token))
+      {:ok, lv, _html} = live(conn, get_reset_password_confirm_url(token: token))
 
       # submit the form and follow the redirect
       {:ok, conn} =
@@ -69,7 +70,8 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
       assert Users.get_user_by_email_and_password(user.email, "new valid password")
 
       # password reset link is now expired (request now redirects to expected route)
-      {:error, {:redirect, redirect_resp_conn}} = live(conn, test_url_path(token: token))
+      {:error, {:redirect, redirect_resp_conn}} =
+        live(conn, get_reset_password_confirm_url(token: token))
 
       assert redirect_resp_conn == %{
                flash: %{
@@ -83,7 +85,7 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
       conn: conn,
       token: token
     } do
-      {:ok, lv, _html} = live(conn, test_url_path(token: token))
+      {:ok, lv, _html} = live(conn, get_reset_password_confirm_url(token: token))
 
       # submit the form
       html_after_change =

@@ -7,11 +7,11 @@ defmodule QuizGameWeb.UserLoginLiveTest do
   import QuizGameWeb.Support.Router
   import QuizGame.TestSupport.{Assertions, UsersFixtures}
 
-  @test_url_path route(:users, :login)
+  @login_url route(:users, :login)
 
   describe "UserLoginLive page" do
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, @test_url_path)
+      {:ok, _lv, html} = live(conn, @login_url)
 
       assert html_has_title(html, "Login")
 
@@ -30,7 +30,7 @@ defmodule QuizGameWeb.UserLoginLiveTest do
       result =
         conn
         |> login_user(user_fixture())
-        |> live(@test_url_path)
+        |> live(@login_url)
         |> follow_redirect(conn, route(:users, :show))
 
       assert {:ok, _conn} = result
@@ -43,7 +43,7 @@ defmodule QuizGameWeb.UserLoginLiveTest do
       user = user_fixture(%{password: password})
 
       # make initial request
-      {:ok, lv, _html} = live(conn, @test_url_path)
+      {:ok, lv, _html} = live(conn, @login_url)
 
       # submit form data
       form_data = [user: %{email: user.email, password: password, remember_me: true}]
@@ -57,7 +57,7 @@ defmodule QuizGameWeb.UserLoginLiveTest do
     test "redirects to expected page with expected message if there are no valid credentials", %{
       conn: conn
     } do
-      {:ok, lv, _html} = live(conn, @test_url_path)
+      {:ok, lv, _html} = live(conn, @login_url)
 
       # submit the form and follow the redirect
       form_data = [
@@ -71,7 +71,7 @@ defmodule QuizGameWeb.UserLoginLiveTest do
       assert Phoenix.Flash.get(resp_conn.assigns.flash, :error) == "Invalid email or password"
 
       # response redirects to expected route
-      assert redirected_to(resp_conn) == @test_url_path
+      assert redirected_to(resp_conn) == @login_url
     end
   end
 

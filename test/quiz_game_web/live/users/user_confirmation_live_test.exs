@@ -10,7 +10,8 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
   alias QuizGame.Users
   alias QuizGame.Repo
 
-  def test_url_path(opts), do: route(:users, :verify_email_confirm, token: opts[:token])
+  def get_verify_email_confirm_url(opts),
+    do: route(:users, :verify_email_confirm, token: opts[:token])
 
   setup do
     %{user: user_fixture()}
@@ -18,7 +19,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
 
   describe "UserConfirmationLive page" do
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, test_url_path(token: "some_token"))
+      {:ok, _lv, html} = live(conn, get_verify_email_confirm_url(token: "some_token"))
       assert html_has_title(html, "Confirm Your Email")
     end
   end
@@ -30,10 +31,10 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
           Users.deliver_email_verify_instructions(user, url)
         end)
 
-      test_url_path = test_url_path(token: token)
+      verify_email_confirm_url = get_verify_email_confirm_url(token: token)
 
       # make initial request
-      {:ok, lv, _html} = live(conn, test_url_path)
+      {:ok, lv, _html} = live(conn, verify_email_confirm_url)
 
       # submit the form and follow the redirect
       {:ok, resp_conn} =
@@ -55,7 +56,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
       assert Repo.all(Users.UserToken) == []
 
       ## does not confirm email more than once - with unauthenticated user
-      {:ok, lv, _html} = live(conn, test_url_path)
+      {:ok, lv, _html} = live(conn, verify_email_confirm_url)
 
       # submit the form
       {:ok, resp_conn_2} =
@@ -71,7 +72,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
              )
 
       ## does not confirm email more than once - with authenticated user
-      {:ok, lv, _html} = build_conn() |> login_user(user) |> live(test_url_path)
+      {:ok, lv, _html} = build_conn() |> login_user(user) |> live(verify_email_confirm_url)
 
       # submit the form and follow the redirect
       {:ok, resp_conn_3} =
@@ -90,7 +91,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
 
     test "does not confirm email address if token is invalid", %{conn: conn, user: user} do
       # make request
-      {:ok, lv, _html} = live(conn, test_url_path(token: "invalid_token"))
+      {:ok, lv, _html} = live(conn, get_verify_email_confirm_url(token: "invalid_token"))
 
       # submit the form and follow the redirect
       {:ok, resp_conn} =

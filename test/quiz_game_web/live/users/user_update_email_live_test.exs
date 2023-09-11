@@ -9,17 +9,17 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
 
   alias QuizGame.Users
 
-  @test_url_path_update route(:users, :update_email_solicit)
+  @update_email_solicit_url route(:users, :update_email_solicit)
 
   def test_url_path_confirm(opts) do
     route(:users, :update_email_confirm, token: opts[:token])
   end
 
   describe "UserUpdateEmailLive page" do
-    test_redirects_unauthenticated_user_to_login_route(@test_url_path_update, "GET")
+    test_redirects_unauthenticated_user_to_login_route(@update_email_solicit_url, "GET")
 
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = conn |> login_user(user_fixture()) |> live(@test_url_path_update)
+      {:ok, _lv, html} = conn |> login_user(user_fixture()) |> live(@update_email_solicit_url)
       assert html_has_title(html, "Update Email")
     end
   end
@@ -37,7 +37,7 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
       new_email = unique_user_email()
 
       # make initial request
-      {:ok, lv, _html} = live(conn, @test_url_path_update)
+      {:ok, lv, _html} = live(conn, @update_email_solicit_url)
 
       # submit the form
       html_after_submit =
@@ -61,7 +61,7 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
     end
 
     test "renders expected errors on 'change' event when form data is invalid", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @test_url_path_update)
+      {:ok, lv, _html} = live(conn, @update_email_solicit_url)
 
       # change the form
       html_after_change =
@@ -88,7 +88,7 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
       conn: conn,
       user: user
     } do
-      {:ok, lv, _html} = live(conn, @test_url_path_update)
+      {:ok, lv, _html} = live(conn, @update_email_solicit_url)
 
       # submit the form
       html_after_submit =

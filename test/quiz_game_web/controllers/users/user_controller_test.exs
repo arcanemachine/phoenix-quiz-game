@@ -16,20 +16,20 @@ defmodule QuizGameWeb.UserControllerTest do
   end
 
   describe "users :delete_confirm" do
-    @test_url_path route(:users, :delete_confirm)
+    @user_delete_url route(:users, :delete_confirm)
 
-    test_redirects_unauthenticated_user_to_login_route(@test_url_path, "GET")
+    test_redirects_unauthenticated_user_to_login_route(@user_delete_url, "GET")
 
     test "renders expected template", %{conn: conn, user: user} do
-      resp_conn = conn |> login_user(user) |> get(@test_url_path)
+      resp_conn = conn |> login_user(user) |> get(@user_delete_url)
       assert html_has_title(resp_conn.resp_body, "Delete Your Account")
     end
   end
 
   describe "users :delete" do
-    @test_url_path route(:users, :delete_confirm)
+    @user_delete_url route(:users, :delete_confirm)
 
-    test_redirects_unauthenticated_user_to_login_route(@test_url_path, "POST")
+    test_redirects_unauthenticated_user_to_login_route(@user_delete_url, "POST")
 
     test "deletes expected user", %{conn: conn, user: user} do
       # get initial record count before deletion
@@ -37,7 +37,7 @@ defmodule QuizGameWeb.UserControllerTest do
       initial_record_count = get_user_count.()
 
       # make request
-      resp_conn = conn |> login_user(user) |> post(@test_url_path)
+      resp_conn = conn |> login_user(user) |> post(@user_delete_url)
 
       # response contains expected flash message
       assert conn_has_flash_message(

@@ -9,16 +9,16 @@ defmodule QuizGameWeb.UserUpdatePasswordLiveTest do
 
   alias QuizGame.Users
 
-  @test_url_path route(:users, :update_password)
+  @update_password_url route(:users, :update_password)
   @password_length_min QuizGame.Users.User.password_length_min()
 
   describe "UserUpdatePasswordLive page" do
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = conn |> login_user(user_fixture()) |> live(@test_url_path)
+      {:ok, _lv, html} = conn |> login_user(user_fixture()) |> live(@update_password_url)
       assert html_has_title(html, "Update Password")
     end
 
-    test_redirects_unauthenticated_user_to_login_route(@test_url_path, "GET")
+    test_redirects_unauthenticated_user_to_login_route(@update_password_url, "GET")
   end
 
   describe "UserUpdatePasswordLive form" do
@@ -34,7 +34,7 @@ defmodule QuizGameWeb.UserUpdatePasswordLiveTest do
       updated_password = valid_user_password()
 
       # make initial request
-      {:ok, lv, _html} = live(conn, @test_url_path)
+      {:ok, lv, _html} = live(conn, @update_password_url)
 
       # build form data
       form_data = %{
@@ -65,7 +65,7 @@ defmodule QuizGameWeb.UserUpdatePasswordLiveTest do
     end
 
     test "renders expected errors on 'change' event when form data is invalid", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @test_url_path)
+      {:ok, lv, _html} = live(conn, @update_password_url)
 
       html_after_change =
         lv
@@ -96,7 +96,7 @@ defmodule QuizGameWeb.UserUpdatePasswordLiveTest do
     end
 
     test "renders expected errors on 'submit' event when form data is invalid", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @test_url_path)
+      {:ok, lv, _html} = live(conn, @update_password_url)
 
       # submit the form
       html_after_submit =
@@ -133,7 +133,7 @@ defmodule QuizGameWeb.UserUpdatePasswordLiveTest do
     conn = build_conn()
 
     # make request
-    {:error, {:redirect, redirect_resp_conn}} = live(conn, @test_url_path)
+    {:error, {:redirect, redirect_resp_conn}} = live(conn, @update_password_url)
 
     # response redirects to expected route
     assert redirect_resp_conn == %{

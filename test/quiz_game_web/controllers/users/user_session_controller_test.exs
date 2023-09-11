@@ -11,11 +11,11 @@ defmodule QuizGameWeb.UserSessionControllerTest do
   end
 
   describe "users:create POST" do
-    @test_url_path route(:users, :login)
+    @login_url route(:users, :login)
 
     test "logs the user in", %{conn: conn, user: user} do
       conn =
-        post(conn, @test_url_path, %{
+        post(conn, @login_url, %{
           "user" => %{"email" => user.email, "password" => valid_user_password()}
         })
 
@@ -34,7 +34,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
 
     test "logs the user in with session persistence", %{conn: conn, user: user} do
       conn =
-        post(conn, @test_url_path, %{
+        post(conn, @login_url, %{
           "user" => %{
             "email" => user.email,
             "password" => valid_user_password(),
@@ -54,7 +54,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
         conn
         # add redirect data to session
         |> init_test_session(user_return_to: "/test-url")
-        |> post(@test_url_path, %{
+        |> post(@login_url, %{
           "user" => %{
             "email" => user.email,
             "password" => valid_user_password()
@@ -71,7 +71,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
     test "automatically logs in the user after registration", %{conn: conn, user: user} do
       conn =
         conn
-        |> post(@test_url_path, %{
+        |> post(@login_url, %{
           "_action" => "registered",
           "user" => %{
             "email" => user.email,
@@ -89,7 +89,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
     test "logs in automatically after updating the user's password", %{conn: conn, user: user} do
       conn =
         conn
-        |> post(@test_url_path, %{
+        |> post(@login_url, %{
           "_action" => "password_updated",
           "user" => %{
             "email" => user.email,
@@ -106,12 +106,12 @@ defmodule QuizGameWeb.UserSessionControllerTest do
 
     test "redirects to login page when form submitted with invalid credentials", %{conn: conn} do
       conn =
-        post(conn, @test_url_path, %{
+        post(conn, @login_url, %{
           "user" => %{"email" => "invalid@email.com", "password" => "invalid_password"}
         })
 
       # response redirects to expected route
-      assert redirected_to(conn) == @test_url_path
+      assert redirected_to(conn) == @login_url
 
       # response contains expected flash message
       assert Phoenix.Flash.get(conn.assigns.flash, :error) == "Invalid email or password"
@@ -119,19 +119,19 @@ defmodule QuizGameWeb.UserSessionControllerTest do
   end
 
   describe "users:show GET" do
-    @test_url_path route(:users, :show)
+    @users_show_url route(:users, :show)
 
     test "renders expected template", %{conn: conn, user: user} do
-      resp_conn = conn |> login_user(user) |> get(@test_url_path)
+      resp_conn = conn |> login_user(user) |> get(@users_show_url)
       assert resp_conn |> html_response(200) |> html_has_title("Your Profile")
     end
   end
 
   describe "users:logout DELETE" do
-    @test_url_path route(:users, :logout)
+    @users_show_url route(:users, :logout)
 
     test "logs the user out", %{conn: conn, user: user} do
-      conn = conn |> login_user(user) |> post(@test_url_path)
+      conn = conn |> login_user(user) |> post(@users_show_url)
 
       # response redirects to expected route
       assert redirected_to(conn) == ~p"/"
@@ -144,7 +144,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
     end
 
     test "succeeds even if the user is not logged in", %{conn: conn} do
-      conn = post(conn, @test_url_path)
+      conn = post(conn, @users_show_url)
 
       # response redirects to expected route
       assert redirected_to(conn) == ~p"/"

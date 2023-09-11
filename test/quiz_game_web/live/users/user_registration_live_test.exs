@@ -7,12 +7,12 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
   import QuizGameWeb.Support.Router
   import QuizGame.TestSupport.{Assertions, UsersFixtures}
 
-  @test_url_path route(:users, :register)
+  @register_url route(:users, :register)
   @password_length_min QuizGame.Users.User.password_length_min()
 
   describe "UserRegistrationLive page" do
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, @test_url_path)
+      {:ok, _lv, html} = live(conn, @register_url)
       assert html_has_title(html, "Register New Account")
     end
 
@@ -20,7 +20,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
       result =
         conn
         |> login_user(user_fixture())
-        |> live(@test_url_path)
+        |> live(@register_url)
         |> follow_redirect(conn, route(:users, :show))
 
       assert {:ok, _conn} = result
@@ -32,7 +32,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
       valid_attrs = valid_user_attributes()
 
       # make initial request
-      {:ok, lv, html} = live(conn, @test_url_path)
+      {:ok, lv, html} = live(conn, @register_url)
 
       # sanity check: response does not contain markup that should only visible to an
       # authenticated user
@@ -65,7 +65,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
     end
 
     test "renders expected errors on 'change' event when form data is invalid", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @test_url_path)
+      {:ok, lv, _html} = live(conn, @register_url)
 
       html_after_change =
         lv
@@ -95,7 +95,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
     end
 
     test "renders expected errors on 'submit' event with blank form fields", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @test_url_path)
+      {:ok, lv, _html} = live(conn, @register_url)
 
       # submit the form
       html_after_submit =
@@ -123,7 +123,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
     } do
       user = user_fixture()
 
-      {:ok, lv, _html} = live(conn, @test_url_path)
+      {:ok, lv, _html} = live(conn, @register_url)
 
       html_after_submit =
         lv
@@ -143,7 +143,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
     } do
       user = user_fixture()
 
-      {:ok, lv, _html} = live(conn, @test_url_path)
+      {:ok, lv, _html} = live(conn, @register_url)
 
       html_after_submit =
         lv

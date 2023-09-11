@@ -30,12 +30,12 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
   describe "quizzes :new" do
     setup [:register_and_login_user]
 
-    @test_url_path route(:quizzes, :new)
+    @quizzes_new_url route(:quizzes, :new)
 
-    test_redirects_unauthenticated_user_to_login_route(@test_url_path, "GET")
+    test_redirects_unauthenticated_user_to_login_route(@quizzes_new_url, "GET")
 
     test "renders expected template", %{conn: conn} do
-      resp_conn = get(conn, @test_url_path)
+      resp_conn = get(conn, @quizzes_new_url)
       assert html_has_title(resp_conn.resp_body, "Create Quiz")
     end
   end
@@ -43,12 +43,12 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
   describe "quizzes :create" do
     setup [:register_and_login_user]
 
-    @test_url_path route(:quizzes, :create)
+    @quizzes_create_url route(:quizzes, :create)
 
     test_redirects_unauthenticated_user_to_login_route(route(:quizzes, :create), "POST")
 
     test "creates expected record", %{conn: conn} do
-      resp_conn = post(conn, @test_url_path, quiz: @valid_attrs)
+      resp_conn = post(conn, @quizzes_create_url, quiz: @valid_attrs)
 
       # redirects to expected route
       assert %{quiz_id: quiz_id} = redirected_params(resp_conn)
@@ -64,7 +64,7 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn} do
       ## name - blank
-      resp_conn_name_blank = post(conn, @test_url_path, quiz: %{@valid_attrs | name: ""})
+      resp_conn_name_blank = post(conn, @quizzes_create_url, quiz: %{@valid_attrs | name: ""})
 
       # form has expected error message(s)
       assert html_form_has_errors(resp_conn_name_blank.resp_body)
@@ -79,7 +79,7 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
       too_long_name = String.duplicate("x", @name_length_max + 1)
 
       resp_conn_name_too_long =
-        post(conn, @test_url_path, quiz: %{@valid_attrs | name: too_long_name})
+        post(conn, @quizzes_create_url, quiz: %{@valid_attrs | name: too_long_name})
 
       # form has expected error message(s)
       assert html_form_has_errors(resp_conn_name_too_long.resp_body)
@@ -91,7 +91,8 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
              )
 
       ## subject - blank
-      resp_conn_subject_blank = post(conn, @test_url_path, quiz: %{@valid_attrs | subject: ""})
+      resp_conn_subject_blank =
+        post(conn, @quizzes_create_url, quiz: %{@valid_attrs | subject: ""})
 
       # form has expected error message(s)
       assert html_form_has_errors(resp_conn_subject_blank.resp_body)
@@ -104,7 +105,7 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
 
       ## subject - invalid choice
       resp_conn_subject_choice_invalid =
-        post(conn, @test_url_path, quiz: %{@valid_attrs | subject: "invalid-subject"})
+        post(conn, @quizzes_create_url, quiz: %{@valid_attrs | subject: "invalid-subject"})
 
       # form has expected error message(s)
       assert html_form_has_errors(resp_conn_subject_choice_invalid.resp_body)
@@ -136,17 +137,17 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
     setup [:register_and_login_user, :create_quiz]
 
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
-      test_url_path = route(:quizzes, :edit, quiz_id: quiz.id)
-      redirects_unauthenticated_user_to_login_route(conn, test_url_path, "GET")
+      quizzes_edit_url = route(:quizzes, :edit, quiz_id: quiz.id)
+      redirects_unauthenticated_user_to_login_route(conn, quizzes_edit_url, "GET")
     end
 
     test "renders record update form", %{conn: conn, user: user, quiz: quiz} do
-      test_url_path = route(:quizzes, :edit, quiz_id: quiz.id)
+      quizzes_edit_url = route(:quizzes, :edit, quiz_id: quiz.id)
 
       # login as quiz creator
       conn = login_user(conn, user)
 
-      resp_conn = get(conn, test_url_path)
+      resp_conn = get(conn, quizzes_edit_url)
       assert html_has_title(resp_conn.resp_body, "Edit Quiz")
     end
   end
@@ -155,17 +156,17 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
     setup [:register_and_login_user, :create_quiz]
 
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
-      test_url_path = route(:quizzes, :update, quiz_id: quiz.id)
-      redirects_unauthenticated_user_to_login_route(conn, test_url_path, "PUT")
+      quizzes_update_url = route(:quizzes, :update, quiz_id: quiz.id)
+      redirects_unauthenticated_user_to_login_route(conn, quizzes_update_url, "PUT")
     end
 
     test "updates expected record", %{conn: conn, user: user, quiz: quiz} do
-      test_url_path = route(:quizzes, :update, quiz_id: quiz.id)
+      quizzes_update_url = route(:quizzes, :update, quiz_id: quiz.id)
 
       # login as quiz creator
       conn = login_user(conn, user)
 
-      resp_conn = put(conn, test_url_path, quiz: @valid_attrs_update)
+      resp_conn = put(conn, quizzes_update_url, quiz: @valid_attrs_update)
 
       # redirects to record detail
       record_detail_url = route(:quizzes, :show, quiz_id: quiz.id)
@@ -178,13 +179,13 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, user: user, quiz: quiz} do
-      test_url_path = route(:quizzes, :update, quiz_id: quiz.id)
+      quizzes_update_url = route(:quizzes, :update, quiz_id: quiz.id)
 
       # login as quiz creator
       conn = login_user(conn, user)
 
       ## name - blank
-      resp_conn_name_blank = put(conn, test_url_path, quiz: %{@valid_attrs | name: ""})
+      resp_conn_name_blank = put(conn, quizzes_update_url, quiz: %{@valid_attrs | name: ""})
 
       # form has expected error message(s)
       assert html_form_has_errors(resp_conn_name_blank.resp_body)
@@ -199,7 +200,7 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
       too_long_name = String.duplicate("i", @name_length_max + 1)
 
       resp_conn_name_too_long =
-        put(conn, test_url_path, quiz: %{@valid_attrs | name: too_long_name})
+        put(conn, quizzes_update_url, quiz: %{@valid_attrs | name: too_long_name})
 
       # form has expected error message(s)
       assert html_form_has_errors(resp_conn_name_too_long.resp_body)
@@ -216,12 +217,12 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
     setup [:register_and_login_user, :create_quiz]
 
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
-      test_url_path = route(:quizzes, :delete, quiz_id: quiz.id)
-      redirects_unauthenticated_user_to_login_route(conn, test_url_path, "DELETE")
+      quizzes_delete_url = route(:quizzes, :delete, quiz_id: quiz.id)
+      redirects_unauthenticated_user_to_login_route(conn, quizzes_delete_url, "DELETE")
     end
 
     test "deletes expected record", %{conn: conn, user: user, quiz: quiz} do
-      test_url_path = route(:quizzes, :show, quiz_id: quiz.id)
+      quizzes_delete_url = route(:quizzes, :show, quiz_id: quiz.id)
 
       # login as quiz creator
       conn = login_user(conn, user)
@@ -232,7 +233,7 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
       assert redirected_to(resp_conn) == route(:quizzes, :index)
 
       # expected record has been deleted
-      assert_error_sent 404, fn -> get(resp_conn, test_url_path) end
+      assert_error_sent 404, fn -> get(resp_conn, quizzes_delete_url) end
     end
   end
 end

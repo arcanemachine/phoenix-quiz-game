@@ -9,7 +9,7 @@ defmodule QuizGameWeb.UserConfirmationInstructionsLiveTest do
 
   alias QuizGame.{Repo, Users}
 
-  @test_url_path route(:users, :verify_email_solicit)
+  @verify_email_solicit_url route(:users, :verify_email_solicit)
 
   setup do
     %{user: user_fixture()}
@@ -17,14 +17,14 @@ defmodule QuizGameWeb.UserConfirmationInstructionsLiveTest do
 
   describe "UserConfirmationInstructionsLive page" do
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, @test_url_path)
+      {:ok, _lv, html} = live(conn, @verify_email_solicit_url)
       assert html_has_title(html, "Resend Confirmation Email")
     end
   end
 
   describe "UserConfirmationInstructionsLive form" do
     test "sends a new confirmation token when form data is valid", %{conn: conn, user: user} do
-      {:ok, lv, _html} = live(conn, @test_url_path)
+      {:ok, lv, _html} = live(conn, @verify_email_solicit_url)
 
       # submit the form and follow the redirect
       {:ok, resp_conn} =
@@ -48,7 +48,7 @@ defmodule QuizGameWeb.UserConfirmationInstructionsLiveTest do
       Repo.update!(Users.User.confirm_changeset(user))
 
       # make initial request
-      {:ok, lv, _html} = live(conn, @test_url_path)
+      {:ok, lv, _html} = live(conn, @verify_email_solicit_url)
 
       # submit the form and follow the redirect
       {:ok, resp_conn} =
@@ -65,7 +65,7 @@ defmodule QuizGameWeb.UserConfirmationInstructionsLiveTest do
     end
 
     test "sends email but no token if email is invalid", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @test_url_path)
+      {:ok, lv, _html} = live(conn, @verify_email_solicit_url)
 
       # submit the form and follow the redirect
       {:ok, resp_conn} =

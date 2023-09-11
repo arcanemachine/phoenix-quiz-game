@@ -9,18 +9,18 @@ defmodule QuizGameWeb.ContactUsLiveTest do
   import QuizGame.TestSupport.Assertions
   import QuizGameWeb.Support.Router
 
-  @test_url_path route(:base, :contact_us)
+  @contact_us_url route(:base, :contact_us)
 
   describe "ContactUsLive page" do
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, @test_url_path)
+      {:ok, _lv, html} = live(conn, @contact_us_url)
       assert html_has_title(html, "Contact Us")
     end
   end
 
   describe "ContactUsLive form" do
     test "sends contact email when form data is valid", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @test_url_path)
+      {:ok, lv, _html} = live(conn, @contact_us_url)
 
       # build form data
       form_data = %{
