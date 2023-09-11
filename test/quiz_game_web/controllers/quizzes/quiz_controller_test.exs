@@ -3,20 +3,21 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
 
   use QuizGameWeb.ConnCase
 
-  import QuizGame.TestSupport.{Assertions, GenericTests, QuizzesFixtures}
+  import QuizGame.TestSupport.{Assertions, GenericTests, QuizzesFixtures, UsersFixtures}
   import QuizGameWeb.Support.Router, only: [route: 2, route: 3]
 
   alias QuizGame.Quizzes.Quiz
 
-  @valid_attrs %{name: "some_name"}
-  @valid_attrs_update %{name: "updated_name"}
+  @valid_attrs %{name: "some_name", subject: "other"}
+  @valid_attrs_update %{name: "updated_name", subject: "other"}
 
   @name_length_max Quiz.name_length_max()
 
   # setup
   defp create_quiz(_context) do
-    quiz = quiz_fixture()
-    %{quiz: quiz}
+    user = user_fixture()
+    quiz = quiz_fixture(user_id: user.id)
+    %{user: user, quiz: quiz}
   end
 
   describe "quizzes :index" do
@@ -71,11 +72,11 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
       assert html_form_field_has_error_message(
                resp_conn_name_blank.resp_body,
                "quiz[name]",
-               "blank"
+               "required"
              )
 
       ## name - too long
-      too_long_name = String.duplicate("i", @name_length_max + 1)
+      too_long_name = String.duplicate("x", @name_length_max + 1)
 
       resp_conn_name_too_long =
         post(conn, @test_url_path, quiz: %{@valid_attrs | name: too_long_name})
@@ -87,6 +88,31 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
                resp_conn_name_too_long.resp_body,
                "quiz[name]",
                "should be at most #{@name_length_max} character(s)"
+             )
+
+      ## subject - blank
+      resp_conn_subject_blank = post(conn, @test_url_path, quiz: %{@valid_attrs | subject: ""})
+
+      # form has expected error message(s)
+      assert html_form_has_errors(resp_conn_subject_blank.resp_body)
+
+      assert html_form_field_has_error_message(
+               resp_conn_subject_blank.resp_body,
+               "quiz[subject]",
+               "required"
+             )
+
+      ## subject - invalid choice
+      resp_conn_subject_choice_invalid =
+        post(conn, @test_url_path, quiz: %{@valid_attrs | subject: "invalid-subject"})
+
+      # form has expected error message(s)
+      assert html_form_has_errors(resp_conn_subject_choice_invalid.resp_body)
+
+      assert html_form_field_has_error_message(
+               resp_conn_subject_choice_invalid.resp_body,
+               "quiz[subject]",
+               "invalid"
              )
     end
   end
@@ -114,8 +140,12 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
       redirects_unauthenticated_user_to_login_route(conn, test_url_path, "GET")
     end
 
-    test "renders record update form", %{conn: conn, quiz: quiz} do
+    test "renders record update form", %{conn: conn, user: user, quiz: quiz} do
       test_url_path = route(:quizzes, :edit, quiz_id: quiz.id)
+
+      # login as quiz creator
+      conn = login_user(conn, user)
+
       resp_conn = get(conn, test_url_path)
       assert html_has_title(resp_conn.resp_body, "Edit Quiz")
     end
@@ -129,8 +159,12 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
       redirects_unauthenticated_user_to_login_route(conn, test_url_path, "PUT")
     end
 
-    test "updates expected record", %{conn: conn, quiz: quiz} do
+    test "updates expected record", %{conn: conn, user: user, quiz: quiz} do
       test_url_path = route(:quizzes, :update, quiz_id: quiz.id)
+
+      # login as quiz creator
+      conn = login_user(conn, user)
+
       resp_conn = put(conn, test_url_path, quiz: @valid_attrs_update)
 
       # redirects to record detail
@@ -143,8 +177,11 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
       assert html_response(resp_conn_2, 200) |> html_has_content(@valid_attrs_update[:name])
     end
 
-    test "renders errors when data is invalid", %{conn: conn, quiz: quiz} do
+    test "renders errors when data is invalid", %{conn: conn, user: user, quiz: quiz} do
       test_url_path = route(:quizzes, :update, quiz_id: quiz.id)
+
+      # login as quiz creator
+      conn = login_user(conn, user)
 
       ## name - blank
       resp_conn_name_blank = put(conn, test_url_path, quiz: %{@valid_attrs | name: ""})
@@ -155,7 +192,7 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
       assert html_form_field_has_error_message(
                resp_conn_name_blank.resp_body,
                "quiz[name]",
-               "blank"
+               "required"
              )
 
       ## name - too long
@@ -183,8 +220,12 @@ defmodule QuizGameWeb.Quizzes.QuizControllerTest do
       redirects_unauthenticated_user_to_login_route(conn, test_url_path, "DELETE")
     end
 
-    test "deletes expected record", %{conn: conn, quiz: quiz} do
+    test "deletes expected record", %{conn: conn, user: user, quiz: quiz} do
       test_url_path = route(:quizzes, :show, quiz_id: quiz.id)
+
+      # login as quiz creator
+      conn = login_user(conn, user)
+
       resp_conn = delete(conn, route(:quizzes, :delete, quiz_id: quiz.id))
 
       # redirects to record index

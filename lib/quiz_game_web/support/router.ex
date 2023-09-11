@@ -73,42 +73,43 @@ defmodule QuizGameWeb.Support.Router do
       :index_subject -> "/quizzes/subjects/#{Keyword.fetch!(params, :subject)}"
       :new -> "/quizzes/new"
       :create -> "/quizzes/new"
-      :edit -> "/quizzes/#{params[:quiz_id]}/update"
-      n when n in [:show, :update, :delete] -> "/quizzes/#{Keyword.fetch!(params, :quiz_id)}"
-      :take -> "/quizzes/#{params[:quiz_id]}/take"
-      :stats -> "/quizzes/#{params[:quiz_id]}/stats"
+      :edit -> "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/update"
+      :update -> "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/update"
+      n when n in [:show, :delete] -> "/quizzes/#{Keyword.fetch!(params, :quiz_id)}"
+      :take -> "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/take"
+      :stats -> "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/stats"
     end
   end
 
   def route(:quizzes_cards, action, params) do
     case action do
       :index ->
-        "/quizzes/#{params[:quiz_id]}/cards"
+        "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards"
 
       :new ->
-        "/quizzes/#{params[:quiz_id]}/cards/new"
+        "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/new"
 
       :create ->
-        "/quizzes/#{params[:quiz_id]}/cards"
+        "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards"
 
       :show ->
-        "/quizzes/#{params[:quiz_id]}/cards/#{Keyword.fetch!(params, :card_id)}"
+        "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/#{Keyword.fetch!(params, :card_id)}"
 
       :edit ->
-        "/quizzes/#{params[:quiz_id]}/cards/#{Keyword.fetch!(params, :card_id)}/update"
+        "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/#{Keyword.fetch!(params, :card_id)}/update"
 
       n when n in [:show, :update, :delete] ->
-        "/quizzes/#{params[:quiz_id]}/cards/#{Keyword.fetch!(params, :card_id)}"
+        "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/#{Keyword.fetch!(params, :card_id)}"
     end
   end
 
   def route(:quizzes_records, action, params) do
     case action do
       :index ->
-        "/quizzes/#{params[:quiz_id]}/records"
+        "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/records"
 
       :show ->
-        "/quizzes/#{params[:quiz_id]}/records/#{params[:record_id]}"
+        "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/records/#{Keyword.fetch!(params, :record_id)}"
     end
   end
 
