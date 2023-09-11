@@ -19,17 +19,34 @@ defmodule QuizGameWeb.Quizzes.CardLive.Index do
   end
 
   @impl true
-  def handle_params(params, _url, socket) do
+  def handle_params(params, url, socket) do
     quiz = socket.assigns[:quiz] || _get_quiz_or_404(params)
 
-    {:noreply,
-     socket
-     |> apply_action(socket.assigns.live_action, params)
-     |> assign(
-       quiz: quiz,
-       page_title: "Question List",
-       page_subtitle: quiz.name
-     )}
+    # if card deletion params present, show flash message and redirect to current path without
+    # query string
+    socket =
+      cond do
+        params["card-delete-success"] == "1" ->
+          socket
+          |> put_flash(:success, "Question deleted successfully")
+          |> redirect(to: URI.parse(url).path)
+
+        params["card-delete-error"] == "1" ->
+          socket
+          |> put_flash(:success, "Could not delete the question. Has it already been deleted?")
+          |> redirect(to: URI.parse(url).path)
+
+        true ->
+          socket
+          |> apply_action(socket.assigns.live_action, params)
+          |> assign(
+            quiz: quiz,
+            page_title: "Question List",
+            page_subtitle: quiz.name
+          )
+      end
+
+    {:noreply, socket}
   end
 
   defp apply_action(socket, :index, _params) do

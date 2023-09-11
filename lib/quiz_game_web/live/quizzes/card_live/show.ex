@@ -48,17 +48,21 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
       case Quizzes.delete_card(socket.assigns.card) do
         {:ok, _} ->
           socket
-          |> put_flash(:success, "Question deleted successfully")
-          |> push_navigate(
-            to: route(:quizzes_cards, :index, quiz_id: socket.assigns.card.quiz_id),
+          # |> put_flash(:success, "Question deleted successfully")
+          |> push_redirect(
+            to:
+              route(:quizzes_cards, :index, quiz_id: socket.assigns.card.quiz_id) <>
+                query_string(%{"card-delete-success" => 1}),
             replace: true
           )
 
         {:error, _} ->
           socket
-          |> put_flash(:error, "Could not delete the question. Has it already been deleted?")
-          |> push_navigate(
-            to: route(:quizzes_cards, :index, quiz_id: socket.assigns.card.quiz_id),
+          # |> put_flash(:error, "Could not delete the question. Has it already been deleted?")
+          |> push_redirect(
+            to:
+              route(:quizzes_cards, :index, quiz_id: socket.assigns.card.quiz_id) <>
+                query_string(%{"card-delete-error" => 1}),
             replace: true
           )
       end
