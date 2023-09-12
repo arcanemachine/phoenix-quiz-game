@@ -4,7 +4,10 @@ defmodule QuizGameWeb.Quizzes.CardLiveTest do
   use QuizGameWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import QuizGame.TestSupport.{GenericTests, QuizzesFixtures, UsersFixtures}
+  import QuizGame.TestSupport.{Assertions, GenericTests, QuizzesFixtures, UsersFixtures}
+
+  alias QuizGame.Quizzes.Card
+  alias QuizGameWeb.Support, as: S
 
   @create_attrs %{
     question: "some question",
@@ -215,6 +218,152 @@ defmodule QuizGameWeb.Quizzes.CardLiveTest do
              |> login_user(other_user)
              |> get(_get_card_show_url(card.quiz_id, card.id))
              |> Map.get(:status) == 403
+    end
+  end
+
+  describe "form component" do
+    test "if :format is blank, then the form only displays the :question and :format fields ", %{
+      conn: conn,
+      user: user,
+      quiz: quiz
+    } do
+      {:ok, _view, html} = conn |> login_user(user) |> live(_get_card_new_url(quiz.id))
+
+      # form should display expected result by default, so we can make our assertions immediately
+      # after the HTML has rendered
+
+      # markup contains default fields (:question and :format)
+      assert html_has_element(html, ~s|input[name="card[question]"]|)
+      assert html_has_element(html, ~s|select[name="card[format]"]|)
+
+      # markup does not contain any other fields
+      assert html |> Floki.find("div[phx-feedback-for]") |> length() == 2
+    end
+
+    test "shows :correct_answer field if :format is not blank", %{
+      conn: conn,
+      user: user,
+      quiz: quiz
+    } do
+      {:ok, view, html} = conn |> login_user(user) |> live(_get_card_new_url(quiz.id))
+
+      # sanity check: expected field(s) are not visible
+      refute html_has_element(html, ~s|input[name="card[correct_answer]"]|)
+
+      # randomly select a valid :format option
+      format_value = Enum.random(S.Ecto.get_enum_field_options(Card, :format))
+
+      # assign a non-blank value for :format
+      changed_html =
+        view |> form("#card-form", card: %{"format" => format_value}) |> render_change()
+
+      # expected field(s) are now visible (check for element type based on the value of the
+      # randomly-generated format)
+      cond do
+        format_value in [:multiple_choice, :true_or_false] ->
+          assert(html_has_element(changed_html, ~s|select[name="card[correct_answer]"]|))
+
+        format_value in [:number_entry, :text_entry] ->
+          assert(html_has_element(changed_html, ~s|input[name="card[correct_answer]"]|))
+      end
+    end
+
+    test "if :format is :multiple_choice, then :choice_X fields are visible", %{
+      conn: conn,
+      user: user,
+      quiz: quiz
+    } do
+      {:ok, view, html} = conn |> login_user(user) |> live(_get_card_new_url(quiz.id))
+
+      # sanity check: expected field(s) are not visible
+      refute html_has_element(html, ~s|input[name="card[choice_1]"]|)
+      refute html_has_element(html, ~s|input[name="card[choice_2]"]|)
+      refute html_has_element(html, ~s|input[name="card[choice_3]"]|)
+      refute html_has_element(html, ~s|input[name="card[choice_4]"]|)
+      refute html_has_element(html, ~s|select[name="card[correct_answer]"]|)
+
+      # assign expected value for :format
+      changed_html =
+        view |> form("#card-form", card: %{"format" => "multiple_choice"}) |> render_change()
+
+      # expected field(s) are now visible
+      assert html_has_element(changed_html, ~s|input[name="card[choice_1]"]|)
+      assert html_has_element(changed_html, ~s|input[name="card[choice_2]"]|)
+      assert html_has_element(changed_html, ~s|input[name="card[choice_3]"]|)
+      assert html_has_element(changed_html, ~s|input[name="card[choice_4]"]|)
+      assert html_has_element(changed_html, ~s|select[name="card[correct_answer]"]|)
+    end
+
+    test "if :format is :multiple_choice, then :correct_answer field type is 'text'", %{
+      conn: conn,
+      user: user,
+      quiz: quiz
+    } do
+      {:ok, view, html} = conn |> login_user(user) |> live(_get_card_new_url(quiz.id))
+
+      # sanity check: expected field(s) are not visible
+      refute html_has_element(html, ~s|select[name="card[correct_answer]"]|)
+
+      # assign expected value for :format
+      changed_html =
+        view |> form("#card-form", card: %{"format" => "number_entry"}) |> render_change()
+
+      # expected field(s) are now visible
+      assert html_has_element(changed_html, ~s|input[type="number"][name="card[correct_answer]"]|)
+    end
+
+    test "if :format is :number_entry, then :correct_answer field type is 'number'", %{
+      conn: conn,
+      user: user,
+      quiz: quiz
+    } do
+      {:ok, view, html} = conn |> login_user(user) |> live(_get_card_new_url(quiz.id))
+
+      # sanity check: expected field(s) are not visible
+      refute html_has_element(html, ~s|select[name="card[correct_answer]"]|)
+
+      # assign expected value for :format
+      changed_html =
+        view |> form("#card-form", card: %{"format" => "text_entry"}) |> render_change()
+
+      # expected field(s) are now visible
+      assert html_has_element(changed_html, ~s|input[type="text"][name="card[correct_answer]"]|)
+    end
+
+    test "if :format is :true_or_false, then :correct_answer field type is 'select'", %{
+      conn: conn,
+      user: user,
+      quiz: quiz
+    } do
+      {:ok, view, html} = conn |> login_user(user) |> live(_get_card_new_url(quiz.id))
+
+      # sanity check: expected field(s) are not visible
+      refute html_has_element(html, ~s|select[name="card[correct_answer]"]|)
+
+      # assign expected value for :format
+      changed_html =
+        view |> form("#card-form", card: %{"format" => "true_or_false"}) |> render_change()
+
+      # expected field(s) are now visible
+      assert html_has_element(changed_html, ~s|select[name="card[correct_answer]"]|)
+    end
+
+    test "if :format is :text_entry, then :correct_answer field type is 'text'", %{
+      conn: conn,
+      user: user,
+      quiz: quiz
+    } do
+      {:ok, view, html} = conn |> login_user(user) |> live(_get_card_new_url(quiz.id))
+
+      # sanity check: expected field(s) are not visible
+      refute html_has_element(html, ~s|select[name="card[correct_answer]"]|)
+
+      # assign expected value for :format
+      changed_html =
+        view |> form("#card-form", card: %{"format" => "text_entry"}) |> render_change()
+
+      # expected field(s) are now visible
+      assert html_has_element(changed_html, ~s|input[type="text"][name="card[correct_answer]"]|)
     end
   end
 end

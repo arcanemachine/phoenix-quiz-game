@@ -43,6 +43,12 @@ defmodule QuizGame.TestSupport.Assertions do
     html |> Floki.find(":fl-contains('#{content}')") |> (Enum.empty?() |> Kernel.not())
   end
 
+  @doc "Check to see if an HTML string contains a given element."
+  @spec html_has_element(String.t(), String.t()) :: boolean()
+  def html_has_element(html, selector) do
+    html |> Floki.find(selector) |> (Enum.empty?() |> Kernel.not())
+  end
+
   @doc "Check if a specific HTML element has a given flash message."
   @spec html_has_flash_message(String.t(), flash_kind, String.t()) :: boolean()
   def html_has_flash_message(html, kind, message) do

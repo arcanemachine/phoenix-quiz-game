@@ -15,6 +15,7 @@ config :quiz_game, QuizGame.Repo,
   password: "postgres",
   hostname: "localhost",
   database: database_name <> System.get_env("MIX_TEST_PARTITION", ""),
+  ownership_timeout: 600_000,
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
 

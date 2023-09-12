@@ -57,6 +57,23 @@ defmodule QuizGameWeb.Support.Conn do
   end
 end
 
+defmodule QuizGameWeb.Support.Ecto do
+  @moduledoc "This project's `Ecto`-related helper functions."
+
+  @doc """
+    Returns a list of options for a given `Ecto.Enum` field.
+
+    ## Examples
+
+      iex> get_enum_field_options(Card, :format)
+      [:multiple_choice, :number_entry, :text_entry, :true_or_false]
+  """
+  @spec get_enum_field_options(module(), atom()) :: list()
+  def get_enum_field_options(module, field) do
+    Ecto.Enum.mappings(module, field) |> Keyword.keys()
+  end
+end
+
 defmodule QuizGameWeb.Support.Exceptions.HttpResponse do
   @moduledoc "Returns a HTTP response."
   defexception [:plug_status, :message]
