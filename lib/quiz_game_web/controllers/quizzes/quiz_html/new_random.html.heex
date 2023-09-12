@@ -1,0 +1,84 @@
+<.alert_form_errors :if={@changeset.action} />
+
+<.crud_intro_text>
+  <p>
+    Create your random quiz by filling out the form below.
+  </p>
+  <p>
+    <b>NOTE:</b> These generated quizzes will not be saved in your quiz history.
+  </p>
+</.crud_intro_text>
+
+<script>
+  <%= raw(File.read!("lib/quiz_game_web/controllers/quizzes/quiz_html/new_random.js")) %>
+</script>
+
+<form class="mt-8 max-w-md mx-auto" x-data="randomQuizForm" x-on:submit.prevent="handleSubmit">
+  <.input
+    field={false}
+    name="count"
+    type="number"
+    label="Number of questions"
+    id="quiz-random-form-count"
+    help_text="How many random math questions should be in each quiz"
+    value="10"
+    min="1"
+    max="250"
+    required
+    x-model="count"
+  />
+  <.input
+    field={false}
+    name="operations"
+    type="checkbox-multiple"
+    multiple={true}
+    label="Operations"
+    id="quiz-random-form-operations"
+    help_text="Select which operations should be used for random math questions"
+    required
+    options={
+      QuizGameWeb.Support.HTML.Form.select_options_get_from_schema_and_field(
+        QuizGame.Quizzes.Quiz,
+        :math_random_question_operations
+      )
+    }
+    x-init="if ($el.value == 'add') $el.setAttribute('checked', '')"
+  />
+  <.input
+    field={false}
+    name="min"
+    type="number"
+    label="Minimum random value"
+    id="quiz-random-form-min"
+    help_text="The lowest value to use when generating random math questions"
+    value="1"
+    min="-999999"
+    max="999999"
+    required
+  />
+  <.input
+    field={false}
+    name="max"
+    type="number"
+    label="Maximum random value"
+    id="quiz-random-form-max"
+    help_text="The highest value to use when generating random math questions"
+    value="10"
+    min="-999999"
+    max="999999"
+    required
+    x-model="max"
+  />
+
+  <div class="flex flex-center">
+    <.form_actions_default />
+  </div>
+</form>
+
+<.action_links>
+  <.action_links_item kind="back">
+    <.link href={~p"/"}>
+      Return to homepage
+    </.link>
+  </.action_links_item>
+</.action_links>

@@ -45,6 +45,13 @@ defmodule QuizGameWeb.Quizzes.QuizController do
     )
   end
 
+  def new_random(conn, _params) do
+    render(conn, :new_random,
+      page_title: "Create Random Quiz",
+      changeset: Quizzes.change_quiz(%Quiz{})
+    )
+  end
+
   def create(conn, %{"quiz" => quiz_params} = params) do
     # if 'generate random math questions' checkbox is not checked, then set random math question
     # count to 0 (changeset will remove any other 'random math question'-related settings)

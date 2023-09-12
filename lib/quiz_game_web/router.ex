@@ -38,6 +38,7 @@ defmodule QuizGameWeb.Router do
 
       get "/new", QuizController, :new
       post "/new", QuizController, :create
+      get "/new/random", QuizController, :new_random
     end
 
     scope "/:quiz_id" do

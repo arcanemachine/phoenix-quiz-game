@@ -14,28 +14,55 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
 
   @impl true
   def mount(params, _session, socket) do
-    quiz = Repo.one!(from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards])
+    if connected?(socket), do: _track_user_presence(socket)
 
-    # redirect if quiz does not have any cards or random math questions
-    if Enum.empty?(quiz.cards) && !quiz.math_random_question_count do
-      {:ok,
-       socket
-       |> put_flash(:error, "This quiz cannot be taken because it has no cards.")
-       |> redirect(to: route(:quizzes, :show, quiz_id: quiz.id))}
-    else
-      socket =
-        socket
-        |> assign(
-          page_title: "Take Quiz",
-          page_subtitle: quiz.name,
-          current_path: route(:quizzes, :take, Support.Map.params_to_keyword_list(params)),
-          quiz: quiz
-        )
-        |> _set_initial_assigns()
+    # build or fetch our quiz
+    quiz =
+      if params["quiz_id"] == "0",
+        do: _build_generated_quiz(params),
+        else: Repo.one!(from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards])
 
-      if connected?(socket), do: _track_user_presence(socket)
+    socket =
+      cond do
+        # generated quiz is invalid
+        quiz == :invalid_generated_quiz ->
+          socket
+          |> put_flash(:error, "Invalid generated quiz. Please try again.")
+          |> redirect(to: route(:quizzes, :new_random))
 
-      {:ok, socket}
+        # quiz does not have any cards or random math questions.
+        Enum.empty?(quiz.cards) && !quiz.math_random_question_count ->
+          # redirect and notify user
+          socket
+          |> put_flash(:error, "This quiz cannot be taken because it has no cards.")
+          |> redirect(to: route(:quizzes, :show, quiz_id: quiz.id))
+
+        # happy path
+        true ->
+          socket
+          |> assign(
+            page_title: "Take Quiz",
+            page_subtitle: quiz.name,
+            current_path: route(:quizzes, :take, Support.Map.params_to_keyword_list(params)),
+            quiz: quiz
+          )
+          |> _set_initial_assigns()
+      end
+
+    {:ok, socket}
+  end
+
+  defp _build_generated_quiz(params) do
+    try do
+      count = String.to_integer(params["count"])
+      deleteme = String.to_integer("deleteme")
+      # %Quiz{
+      #   name: nil,
+      #   subject: :math,
+      # }
+    rescue
+      # _ in ArgumentError -> raise S.Exceptions.HttpResponse, plug_status: 404
+      _ -> :invalid_generated_quiz
     end
   end
 
