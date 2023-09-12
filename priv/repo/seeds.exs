@@ -57,9 +57,9 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
   Quizzes.create_card(
     %{
       quiz_id: generic_quiz.id,
-      format: :true_or_false,
-      question: "2 is larger than 1",
-      correct_answer: "true"
+      format: :number_entry,
+      question: "What is 1 + 1?",
+      correct_answer: "2"
     },
     unsafe: true
   )
@@ -77,9 +77,9 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
   Quizzes.create_card(
     %{
       quiz_id: generic_quiz.id,
-      format: :number_entry,
-      question: "What is 1 + 1?",
-      correct_answer: "2"
+      format: :true_or_false,
+      question: "2 is larger than 1",
+      correct_answer: "true"
     },
     unsafe: true
   )

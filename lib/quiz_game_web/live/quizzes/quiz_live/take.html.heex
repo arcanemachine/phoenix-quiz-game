@@ -12,7 +12,11 @@
   <%= case @quiz_state do %>
     <% :enter_display_name -> %>
       <%!-- get display_name via user input --%>
-      <div id="quiz-state-init-no-display-name" class="card w-full bg-primary/20 shadow-xl">
+      <div
+        id="quiz-state-enter-display-name"
+        class="card w-full bg-primary/20 shadow-xl"
+        data-test-id="quiz-state-enter-display-name"
+      >
         <div class="card-body text-center">
           <.modal_title title="Enter Your Name" />
           <.simple_form for={%{}} class="max-w-xs mx-auto" phx-submit="submit-display-name">
@@ -55,11 +59,11 @@
         </div>
       </div>
     <% :before_start -> %>
-      <div id="quiz-state-init-has-display-name" class="card w-full bg-primary/20 shadow-xl">
+      <div id="quiz-state-before-start" class="card w-full bg-primary/20 shadow-xl">
         <div class="card-body text-center">
           <.simple_form for={%{}} class="max-w-sm mx-auto" phx-submit="start-quiz">
             <p class="-mt-4">
-              You are about to begin the following quiz:
+              You are about to start the following quiz:
             </p>
 
             <div class="mt-4 text-xl font-bold">
@@ -69,7 +73,7 @@
             <div class="divider" />
 
             <div>
-              Your display name is <i><%= @display_name %></i>.
+              Your display name is <i data-test-id="user-display-name"><%= @display_name %></i>.
               <div class="mt-2">
                 <button type="button" class="fake-link" phx-click="change-display-name">
                   Change display name
@@ -84,13 +88,13 @@
             </div>
 
             <:actions>
-              <.form_button type="submit" content="Begin the quiz" x-init="$el.focus()" />
+              <.form_button type="submit" content="Start the quiz" x-init="$el.focus()" />
             </:actions>
           </.simple_form>
         </div>
       </div>
     <% :in_progress -> %>
-      <%!-- # scroll to top of page for each new question (improves UX on small screens) --%>
+      <%!-- scroll to top of page for each new question (improves UX on small screens) --%>
       <span id={"el-#{@current_card_index}"} x-init="document.documentElement.scrollTop = 0" />
 
       <div
@@ -116,12 +120,7 @@
       >
         <div class="card-body text-center">
           <.modal_title title={@card.question} />
-          <.simple_form
-            for={%{}}
-            id="form_quiz_take"
-            class="max-w-xs mx-auto"
-            phx-submit="submit-user-answer"
-          >
+          <.simple_form for={%{}} class="max-w-xs mx-auto" phx-submit="submit-user-answer">
             <div :if={@card.format == :multiple_choice}>
               <p class="-mt-8 mb-4">Select your answer:</p>
               <div class="mt-4 text-xl">
@@ -205,26 +204,35 @@
           <%!-- bottom stuff --%>
           <div>
             <span class="font-bold">Your score:</span>
-            <%= @score %> / <%= @current_card_index %>
+            <span data-test-id="in-progress-score"><%= @score %></span>
+            / <span data-test-id="current-card-index"><%= @current_card_index %></span>
             <%= if @current_card_index > 0 do %>
-              (<%= get_score_percent_as_integer(@score, @current_card_index) %>%)
+              <span data-test-id="score-percent">
+                (<%= get_score_percent_as_integer(@score, @current_card_index) %>%)
+              </span>
             <% end %>
           </div>
 
           <div>
             <span class="font-bold">Questions completed:</span>
-            <%= @current_card_index %> out of <%= _get_quiz_length(@quiz) %>
+            <%= @current_card_index %> out of
+            <span data-test-id="quiz-length"><%= _get_quiz_length(@quiz) %></span>
           </div>
         </div>
       </div>
     <% :completed -> %>
-      <div id="quiz-state-completed" class="card w-full bg-success/30 shadow-xl">
+      <div
+        id="quiz-state-completed"
+        class="card w-full bg-success/30 shadow-xl"
+        id="quiz-state-completed"
+      >
         <div class="card-body text-center">
           <.modal_title title="Quiz Complete!" />
 
           <div class="-mt-4">
             <span class="font-bold">Your score:</span>
-            <%= @score %> out of <%= _get_quiz_length(@quiz) %>
+            <span data-test-id="completed-score"><%= @score %></span>
+            out of <%= _get_quiz_length(@quiz) %>
           </div>
 
           <div class="mt-6 text-xl font-bold">
