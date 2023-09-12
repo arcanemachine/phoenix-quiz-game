@@ -1,5 +1,5 @@
 defmodule QuizGameWeb.Support.Atom do
-  @moduledoc "This project's `Atom` helper functions."
+  @moduledoc "This project's `Atom`-related helper functions."
 
   def to_human_friendly_string(atom) do
     Atom.to_string(atom) |> String.replace("_", " ") |> String.capitalize()
@@ -7,29 +7,7 @@ defmodule QuizGameWeb.Support.Atom do
 end
 
 defmodule QuizGameWeb.Support.Changeset do
-  @moduledoc "This project's `Ecto.Changeset` helper functions."
-
-  # @doc """
-  #   Check if a changeset will have a given value after it has been validated.
-
-  #   This function checks both changed and unchanged data, and preferentially returns the value
-  #   in the changed data. Otherwise, it will return the existing data in the field.
-
-  #   ## Examples
-
-  #     iex> field_will_have_value?(changeset, :some_field, "some value")
-  #     true
-
-  #     iex> field_will_have_value?(changeset, :some_field, "nonexistent value")
-  #     false
-  # """
-  # @spec field_will_have_value?(Ecto.Changeset.t(), atom(), any()) :: boolean()
-  # def field_will_have_value?(changeset, field, value) do
-  #   # changes have expected value, or field has expected value which will not be changed
-  #   Map.get(changeset.changes, field) == value ||
-  #     (Map.get(changeset.data, field) == value &&
-  #        Enum.member?([value, nil], Map.get(changeset.changes, field)))
-  # end
+  @moduledoc "This project's `Ecto.Changeset`-related helper functions."
 
   @doc """
     Checks a changeset's changed and existing data for a given field, and returns the most
@@ -50,7 +28,7 @@ defmodule QuizGameWeb.Support.Changeset do
 end
 
 defmodule QuizGameWeb.Support.Conn do
-  @moduledoc "This project's `Plug.Conn` helper functions."
+  @moduledoc "This project's `Plug.Conn`-related helper functions."
 
   import Plug.Conn
   import Phoenix.Controller
@@ -92,7 +70,7 @@ defmodule QuizGameWeb.Support.Exceptions.HttpResponse do
 end
 
 defmodule QuizGameWeb.Support.Map do
-  @moduledoc "This project's `Map` helper functions."
+  @moduledoc "This project's `Map`-related helper functions."
 
   @doc """
   Convert URL params to a keyword list.
@@ -109,7 +87,7 @@ defmodule QuizGameWeb.Support.Map do
 end
 
 defmodule QuizGameWeb.Support.String do
-  @moduledoc "This project's `String` helper functions."
+  @moduledoc "This project's `String`-related helper functions."
 
   @doc """
   Pluralizes a value based on the length of the given inputs.

@@ -1,5 +1,5 @@
 defmodule QuizGameWeb.Support.HTML do
-  @moduledoc "This project's HTML helpers."
+  @moduledoc "This project's HTML-related helper functions."
 
   import Phoenix.HTML
 
