@@ -35,8 +35,8 @@ defmodule QuizGame.Quizzes.Quiz do
 
   def math_random_question_count_min(), do: 0
   def math_random_question_count_max(), do: 500
-  def math_random_question_value_min(), do: -999_999
-  def math_random_question_value_max(), do: 999_999
+  def math_random_question_value_min(), do: -999
+  def math_random_question_value_max(), do: 999
 
   @unsafe_fields_required [:user_id]
   @safe_fields_required [:name, :subject]
