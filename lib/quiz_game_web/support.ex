@@ -94,6 +94,68 @@ defmodule QuizGameWeb.Support.Exceptions.HttpResponse do
   end
 end
 
+defmodule QuizGameWeb.Support.Integer do
+  @moduledoc "This project's `Integer`-related helper functions."
+
+  @spec is_prime?(integer()) :: boolean()
+  # def is_prime?(n) when n < 0, do: is_prime?(-n)
+  def is_prime?(n) when n == 1, do: false
+  def is_prime?(n) when n in [0, 1, 2, 3], do: true
+
+  def is_prime?(x) do
+    start_lim = div(x, 2)
+
+    Enum.reduce(2..start_lim, {true, start_lim}, fn fac, {is_prime, upper_limit} ->
+      cond do
+        !is_prime ->
+          {false, fac}
+
+        fac > upper_limit ->
+          {is_prime, upper_limit}
+
+        true ->
+          is_prime = rem(x, fac) != 0
+          upper_limit = (is_prime && div(x, fac + 1)) || fac
+          {is_prime, upper_limit}
+      end
+    end)
+    |> elem(0)
+  end
+end
+
+defmodule QuizGameWeb.Support.Math do
+  @moduledoc "This project's math-related helper functions."
+
+  def generate_divisible_pair(min, max, first_value \\ nil) do
+    ## validation
+    # ensure that 'min' is not larger than max
+    if min > max, do: raise(ArgumentError, message: "'min' cannot be larger than 'max'")
+
+    ## main
+    # get or generate first number
+    first_value = first_value || get_non_zero_value_from_range(min..max)
+
+    # create a list of numbers which are divisors of the first number (do not check zero)
+    divisors =
+      Enum.filter(min..first_value, fn n ->
+        n != 0 && rem(first_value, n) == 0
+      end)
+
+    # randomly pick the second number from the list of available divisors
+    second_value = if Enum.empty?(divisors), do: first_value, else: Enum.random(divisors)
+
+    {first_value, second_value}
+  end
+
+  def get_non_zero_value_from_range(range) do
+    result = Enum.random(range)
+
+    if result != 0,
+      do: result,
+      else: get_non_zero_value_from_range(range)
+  end
+end
+
 defmodule QuizGameWeb.Support.Map do
   @moduledoc "This project's `Map`-related helper functions."
 

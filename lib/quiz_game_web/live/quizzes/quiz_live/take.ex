@@ -268,7 +268,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
           :add -> card.first_value + card.second_value
           :subtract -> card.first_value - card.second_value
           :multiply -> card.first_value * card.second_value
-          :divide -> card.first_value / card.second_value
+          :divide -> div(card.first_value, card.second_value)
         end
 
       _ ->
@@ -296,21 +296,18 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
       String.to_existing_atom("choice_#{choice_int}")
     end
 
-    case card.format do
-      :multiple_choice ->
+    cond do
+      card.format == :multiple_choice ->
         # convert choice index to actual answer
         user_choice = get_choice_atom_from_user_answer.(params["user-answer"])
         user_answer = Map.get(card, user_choice)
 
         user_answer
 
-      :random_math_question ->
-        String.to_integer(params["user-answer"])
+      card.format in [:number_entry, :random_math_question] ->
+        Float.parse(params["user-answer"]) |> elem(0) |> trunc()
 
-      :number_entry ->
-        params["user-answer"]
-
-      _ ->
+      true ->
         String.downcase(params["user-answer"])
     end
   end
@@ -332,6 +329,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
   end
 
   defp _build_card_as_random_math_question(quiz) do
+    operation = Enum.random(quiz.math_random_question_operations)
     min = quiz.math_random_question_value_min
     max = quiz.math_random_question_value_max
 
@@ -342,7 +340,12 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
         else: Enum.random(min..max)
 
     second_value = Enum.random(min..max)
-    operation = Enum.random(quiz.math_random_question_operations)
+
+    # for division, call a custom function so we can avoid fractional numbers
+    {first_value, second_value} =
+      if operation == :divide,
+        do: S.Math.generate_divisible_pair(min, max, quiz.math_random_question_left_constant),
+        else: {first_value, second_value}
 
     # get string values so we can display the question to the user
     operation_as_string =
