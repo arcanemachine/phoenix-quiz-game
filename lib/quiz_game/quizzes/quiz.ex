@@ -21,6 +21,7 @@ defmodule QuizGame.Quizzes.Quiz do
 
     field :math_random_question_value_min, :integer
     field :math_random_question_value_max, :integer
+    field :math_random_question_left_constant, :integer
 
     timestamps()
   end

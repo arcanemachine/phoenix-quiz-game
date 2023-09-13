@@ -747,7 +747,8 @@ defmodule QuizGameWeb.CoreComponents do
         <div :for={{label, value} <- @options} class="my-1">
           <label
             for={"#{@name}-#{value}"}
-            class="flex justify-start items-center gap-2 max-w-content p-2 label cursor-pointer text-black"
+            class="flex justify-start items-center gap-2 max-w-content p-2 label cursor-pointer
+                   text-black"
           >
             <input
               type="checkbox"

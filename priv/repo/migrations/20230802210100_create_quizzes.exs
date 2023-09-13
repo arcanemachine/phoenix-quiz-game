@@ -17,6 +17,7 @@ defmodule QuizGame.Repo.Migrations.CreateQuizzes do
       add :math_random_question_operations, {:array, :math_random_operation}
       add :math_random_question_value_min, :integer
       add :math_random_question_value_max, :integer
+      add :math_random_question_left_constant, :integer
 
       # # attributes
       # add :is_shuffled, :boolean, default: false

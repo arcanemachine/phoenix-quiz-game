@@ -75,7 +75,15 @@ defmodule QuizGameWeb.Support.Ecto do
 end
 
 defmodule QuizGameWeb.Support.Exceptions.HttpResponse do
-  @moduledoc "Returns a HTTP response."
+  @moduledoc """
+  Returns a HTTP response.
+
+  Useful for returning a response before the end of a function, especially for error responses.
+
+  ## Examples
+
+      iex> raise HttpResponse, plug_status: 404
+  """
   defexception [:plug_status, :message]
 
   def exception(opts) do
@@ -99,7 +107,15 @@ defmodule QuizGameWeb.Support.Map do
   """
   @spec params_to_keyword_list(map()) :: keyword()
   def params_to_keyword_list(params) do
-    params |> Enum.map(fn {k, v} -> {String.to_existing_atom(k), v} end)
+    params
+    |> Enum.map(fn {k, v} ->
+      try do
+        {String.to_existing_atom(k), v}
+      rescue
+        # credo:disable-for-next-line
+        _ in ArgumentError -> raise QuizGameWeb.Support.Exceptions.HttpResponse, plug_status: 404
+      end
+    end)
   end
 end
 

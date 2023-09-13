@@ -66,12 +66,16 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
   defp _build_generated_quiz(params) do
     try do
       count = String.to_integer(params["count"])
-      min = String.to_integer(params["min"])
-      max = String.to_integer(params["max"])
 
       operations =
         String.split(params["operations"], ",")
         |> Enum.map(fn o -> String.to_existing_atom(o) end)
+
+      min = String.to_integer(params["min"])
+      max = String.to_integer(params["max"])
+
+      left_constant =
+        (params["left_constant"] && String.to_integer(params["left_constant"])) || nil
 
       # validations
       cond do
@@ -99,6 +103,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
         math_random_question_operations: operations,
         math_random_question_value_min: min,
         math_random_question_value_max: max,
+        math_random_question_left_constant: left_constant,
         cards: []
       }
     rescue
@@ -331,7 +336,11 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
     max = quiz.math_random_question_value_max
 
     # build random math question
-    first_value = Enum.random(min..max)
+    first_value =
+      if quiz.math_random_question_left_constant,
+        do: quiz.math_random_question_left_constant,
+        else: Enum.random(min..max)
+
     second_value = Enum.random(min..max)
     operation = Enum.random(quiz.math_random_question_operations)
 
