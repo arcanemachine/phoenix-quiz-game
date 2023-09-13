@@ -1,5 +1,10 @@
 <.back
-  navigate={route(:quizzes, :show, quiz_id: @quiz.id)}
+  navigate={
+    case @live_action do
+      :take -> route(:quizzes, :show, quiz_id: @quiz.id)
+      :take_random -> route(:quizzes, :new_random)
+    end
+  }
   confirm={
     @quiz_state == :in_progress &&
       "Are you sure you want to exit this quiz? You will lose all your progress!"
@@ -70,18 +75,20 @@
               <%= @quiz.name %>
             </div>
 
-            <div class="divider" />
+            <section :if={@quiz.id != 0}>
+              <div class="divider" />
 
-            <div>
-              Your display name is <i data-test-id="user-display-name"><%= @display_name %></i>.
-              <div class="mt-2">
-                <button type="button" class="fake-link" phx-click="change-display-name">
-                  Change display name
-                </button>
+              <div>
+                Your display name is <i data-test-id="user-display-name"><%= @display_name %></i>.
+                <div class="mt-2">
+                  <button type="button" class="fake-link" phx-click="change-display-name">
+                    Change display name
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <div class="divider" />
+              <div class="divider" />
+            </section>
 
             <div>
               Click the button below to begin:
@@ -258,7 +265,13 @@
               url={route(:users, :records_index)}
               class="w-36"
             />
-            <.form_button type="button" content="Play again" class="w-36" phx-click="reset-quiz" />
+            <.form_button
+              type="button"
+              content="Play again"
+              class="w-36"
+              phx-click="reset-quiz"
+              x-init="$el.focus()"
+            />
           </div>
         </div>
       </div>

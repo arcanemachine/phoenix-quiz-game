@@ -166,7 +166,7 @@ defmodule QuizGameWeb.CoreComponents do
         Back to posts
       </.back>
   """
-  attr :navigate, :any, required: true
+  attr :navigate, :any, default: nil
   attr :class, :string, default: nil
   attr :confirm, :string, default: nil
 
@@ -175,7 +175,15 @@ defmodule QuizGameWeb.CoreComponents do
   def back(assigns) do
     ~H"""
     <div class={["-mt-2 mb-4", @class]}>
-      <.link class="p-2" navigate={@navigate} data-confirm={@confirm}>
+      <.link
+        class="p-2"
+        navigate={@navigate}
+        data-confirm={@confirm}
+        x-data={!@navigate && ""}
+        x-on:click={
+          !@navigate && "$el.dataset.confirm && confirm($el.dataset.confirm) && history.go(-1)"
+        }
+      >
         <.icon name="hero-arrow-left-solid" class="h-4 w-4" /><%= render_slot(@inner_block) %>
       </.link>
     </div>

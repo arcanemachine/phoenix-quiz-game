@@ -14,20 +14,22 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
 
   @impl true
   def mount(params, _session, socket) do
-    if connected?(socket), do: _track_user_presence(socket)
-
-    # build or fetch our quiz
+    # fetch or build quiz
     quiz =
-      if params["quiz_id"] == "0",
-        do: _build_generated_quiz(params),
-        else: Repo.one!(from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards])
+      case socket.assigns.live_action do
+        :take ->
+          Repo.one!(from q in Quiz, where: q.id == ^params["quiz_id"], preload: [:cards])
+
+        :take_random ->
+          _build_generated_quiz(params)
+      end
 
     socket =
       cond do
         # generated quiz is invalid
         quiz == :invalid_generated_quiz ->
           socket
-          |> put_flash(:error, "Invalid generated quiz. Please try again.")
+          |> put_flash(:warning, "Re-select your quiz options to continue.")
           |> redirect(to: route(:quizzes, :new_random))
 
         # quiz does not have any cards or random math questions.
@@ -37,46 +39,89 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
           |> put_flash(:error, "This quiz cannot be taken because it has no cards.")
           |> redirect(to: route(:quizzes, :show, quiz_id: quiz.id))
 
-        # happy path
         true ->
           socket
           |> assign(
             page_title: "Take Quiz",
             page_subtitle: quiz.name,
-            current_path: route(:quizzes, :take, Support.Map.params_to_keyword_list(params)),
+            current_path:
+              route(
+                :quizzes,
+                socket.assigns.live_action,
+                Support.Map.params_to_keyword_list(params)
+              ),
             quiz: quiz
           )
           |> _set_initial_assigns()
       end
 
+    # track user for registered (but not randomly-generated) quizzes
+    if connected?(socket) && socket.assigns.live_action == nil, do: _track_user_presence(socket)
+
     {:ok, socket}
   end
 
+  # need to decrease cyclomatic complexity
+  # credo:disable-for-next-line
   defp _build_generated_quiz(params) do
     try do
       count = String.to_integer(params["count"])
-      deleteme = String.to_integer("deleteme")
-      # %Quiz{
-      #   name: nil,
-      #   subject: :math,
-      # }
+      min = String.to_integer(params["min"])
+      max = String.to_integer(params["max"])
+
+      operations =
+        String.split(params["operations"], ",")
+        |> Enum.map(fn o -> String.to_existing_atom(o) end)
+
+      # validations
+      cond do
+        count not in 1..250 -> raise ArgumentError
+        min < -999_999 or min > 999_999 -> raise ArgumentError
+        max < -999_999 or max > 999_999 -> raise ArgumentError
+        min > max -> raise ArgumentError
+        true -> nil
+      end
+
+      for operation <- operations do
+        if operation not in Support.Ecto.get_enum_field_options(
+             Quiz,
+             :math_random_question_operations
+           ) do
+          raise ArgumentError
+        end
+      end
+
+      %Quiz{
+        id: 0,
+        name: "Random Math Quiz",
+        subject: :math,
+        math_random_question_count: count,
+        math_random_question_operations: operations,
+        math_random_question_value_min: min,
+        math_random_question_value_max: max,
+        cards: []
+      }
     rescue
-      # _ in ArgumentError -> raise S.Exceptions.HttpResponse, plug_status: 404
-      _ -> :invalid_generated_quiz
+      _ in ArgumentError -> :invalid_generated_quiz
     end
   end
 
   defp _set_initial_assigns(socket) do
+    quiz = socket.assigns.quiz
     user = socket.assigns.current_user
-    quiz_state = if user, do: :before_start, else: :enter_display_name
+
+    quiz_state =
+      if quiz.id == 0 || user || socket.assigns[:display_name],
+        do: :before_start,
+        else: :enter_display_name
 
     socket
     |> assign(
-      quiz: socket.assigns.quiz,
+      quiz: quiz,
       quiz_state: quiz_state,
-      display_name: (user && user.display_name) || nil,
+      display_name: socket.assigns[:display_name] || (user && user.display_name) || nil,
       current_card_index: 0,
-      card: _get_next_card(socket.assigns.quiz, 0),
+      card: _get_next_card(quiz, 0),
       score: 0
     )
   end
@@ -199,7 +244,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
   end
 
   def handle_event("reset-quiz", _params, socket) do
-    socket = _set_initial_assigns(socket)
+    socket = _set_initial_assigns(socket) |> assign(quiz_state: :in_progress)
 
     _update_user_presence(socket)
     {:noreply, socket}

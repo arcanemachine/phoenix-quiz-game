@@ -73,12 +73,13 @@ defmodule QuizGameWeb.Support.Router do
       :index -> "/quizzes"
       :index_subject -> "/quizzes/subjects/#{Keyword.fetch!(params, :subject)}"
       :new -> "/quizzes/new"
-      :new_random -> "/quizzes/new/random"
+      :new_random -> "/quizzes/random"
       :create -> "/quizzes/new"
       :edit -> "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/update"
       :update -> "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/update"
       n when n in [:show, :delete] -> "/quizzes/#{Keyword.fetch!(params, :quiz_id)}"
       :take -> "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/take"
+      :take_random -> "/quizzes/random/take"
       :stats -> "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/stats"
     end
   end
