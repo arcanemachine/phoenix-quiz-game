@@ -740,12 +740,14 @@ defmodule QuizGameWeb.CoreComponents do
       <.label for={@id}>
         <%= @label %><%= (@label && @required && "*") || "" %>
       </.label>
-      <div class="mt-1 w-full bg-white border border-base-content rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+      <div class="w-full mt-1 pl-3 pr-10 py-2 bg-white border sm:text-sm text-left cursor-default
+                  rounded-md border-base-content shadow-sm focus:outline-none focus:ring-1
+                  focus:ring-indigo-500 focus:border-indigo-500">
         <input type="hidden" name={@name} value="" />
         <div :for={{label, value} <- @options} class="my-1">
           <label
             for={"#{@name}-#{value}"}
-            class="flex justify-start items-center max-w-content p-2 gap-2 label cursor-pointer"
+            class="flex justify-start items-center gap-2 max-w-content p-2 label cursor-pointer text-black"
           >
             <input
               type="checkbox"
@@ -753,7 +755,7 @@ defmodule QuizGameWeb.CoreComponents do
               name={@name}
               value={value}
               checked={@value && value in @value}
-              class="checkbox"
+              class="checkbox border-slate-300"
               {@rest}
             />
             <%= label %>
