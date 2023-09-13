@@ -26,8 +26,6 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Stats do
        quiz: quiz
      )
      |> _assign_presence_data()}
-
-    # |> _assign_recently_completed_users(presence_data)}
   end
 
   defp _get_quiz_or_404(params) do
