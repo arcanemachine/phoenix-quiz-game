@@ -56,7 +56,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
       end
 
     # track user for registered (but not randomly-generated) quizzes
-    if connected?(socket) && socket.assigns.live_action == nil, do: _track_user_presence(socket)
+    if connected?(socket) && socket.assigns.live_action == :take, do: _track_user_presence(socket)
 
     {:ok, socket}
   end

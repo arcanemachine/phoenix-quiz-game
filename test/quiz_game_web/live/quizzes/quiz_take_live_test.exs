@@ -58,10 +58,6 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLiveTest do
   end
 
   describe "QuizTakeLive" do
-    # defp _start_quiz(), do
-    #   :blah
-    # end
-
     test "renders expected template", %{quiz: quiz} do
       resp_conn = build_conn() |> get(_get_quiz_take_url(quiz.id))
       assert resp_conn.status == 200
