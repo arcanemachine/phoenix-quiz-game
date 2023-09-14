@@ -212,7 +212,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
       else
         socket
         |> clear_flash()
-        |> put_flash(:error, "Incorrect! The correct answer is '#{correct_answer}'.")
+        |> put_flash(:error, "The correct answer is '#{correct_answer}'.")
       end
 
     # check if quiz is completed

@@ -101,8 +101,12 @@
         </div>
       </div>
     <% :in_progress -> %>
-      <%!-- scroll to top of page for each new question (improves UX on small screens) --%>
-      <span id={"el-#{@current_card_index}"} x-init="document.documentElement.scrollTop = 0" />
+      <%!-- scroll to top of card for each new question (improves UX on small screens) --%>
+      <span
+        id={"el-#{@current_card_index}"}
+        x-init="document.documentElement.scrollTop =
+          $el.offsetTop - document.querySelector('[data-label=\'flash-group\']').clientHeight"
+      />
 
       <div
         id="quiz-state-in-progress"
