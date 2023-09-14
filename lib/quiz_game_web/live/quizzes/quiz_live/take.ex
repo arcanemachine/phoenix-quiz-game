@@ -196,7 +196,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
     {:noreply, socket}
   end
 
-  def handle_event("submit-user-answer", params, socket) do
+  def handle_event("submit-user-answer", %{"user-answer" => _} = params, socket) do
     user_answer = _get_user_answer(socket.assigns.card, params)
     correct_answer = _get_correct_answer(socket.assigns.card)
 
@@ -279,8 +279,8 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
   @spec _get_user_answer(Card, map()) :: [integer() | String.t()]
   defp _get_user_answer(card, params) do
     get_choice_atom_from_user_answer = fn user_answer ->
-      ## Safely converts `user_answer` param to one of the 4 Card choice atoms.
-      ## If a bad value is detected, the answer is converted to 1.
+      ## For multiple choice questions, safely convert `user_answer` param to one of the 4 Card
+      ## choice atoms. If a bad value is detected, the answer is converted to 1.
 
       # convert choice to integer (fallback to 1 for invalid value)
       choice_int =
@@ -305,7 +305,13 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
         user_answer
 
       card.format in [:number_entry, :random_math_question] ->
-        Float.parse(params["user-answer"]) |> elem(0) |> trunc()
+        # convert value to integer, then back to string
+        try do
+          Float.parse(params["user-answer"]) |> elem(0) |> trunc() |> to_string()
+        rescue
+          # cast bad value as "1"
+          ArgumentError -> "1"
+        end
 
       true ->
         String.downcase(params["user-answer"])

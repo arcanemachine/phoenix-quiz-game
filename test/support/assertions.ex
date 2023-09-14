@@ -12,7 +12,19 @@ defmodule QuizGame.TestSupport.Assertions do
   end
 
   @doc "Check if a specific HTML element has certain content."
-  @spec html_element_has_content(String.t(), String.t(), String.t()) :: boolean()
+  @spec html_element_has_content(String.t(), String.t(), [String.t() | list(String.t())]) ::
+          boolean()
+  def html_element_has_content(html, selector, contents) when is_list(contents) do
+    # check each item in the list
+    results =
+      for content <- contents do
+        html_element_has_content(html, selector, content)
+      end
+
+    # return false if any of the content values do not match
+    if Enum.member?(results, false), do: false, else: true
+  end
+
   def html_element_has_content(html, selector, content) do
     html
     |> Floki.find(selector)

@@ -46,7 +46,6 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Stats do
       )
     else
       socket
-      |> push_event("update-quiz-presence", %{})
       |> assign(
         presence_users_not_yet_started:
           _get_presence_users_by_quiz_state(presence_data, :enter_display_name) ++
@@ -79,7 +78,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Stats do
           <%= if !@connected || Enum.empty?(@presence_users_not_yet_started) do %>
             <div class="italic">No users are preparing to take this quiz.</div>
           <% else %>
-            <div class="flex flex-wrap">
+            <div class="flex flex-wrap" data-test-id="users-not-yet-started">
               <%= for data <- @presence_users_not_yet_started do %>
                 <._user_detail_card data={data} />
               <% end %>
@@ -95,7 +94,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Stats do
           <%= if !@connected || Enum.empty?(@presence_users_in_progress) do %>
             <div class="italic">No users are taking this quiz.</div>
           <% else %>
-            <div class="flex flex-wrap">
+            <div class="flex flex-wrap" data-test-id="users-in-progress">
               <%= for data <- @presence_users_in_progress do %>
                 <._user_detail_card data={data} />
               <% end %>
@@ -111,7 +110,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Stats do
           <%= if !@connected || Enum.empty?(@presence_users_completed) do %>
             <div class="italic">No users have recently completed this quiz.</div>
           <% else %>
-            <div class="flex flex-wrap gap-4">
+            <div class="flex flex-wrap gap-4" data-test-id="users-completed">
               <%= for data <- @presence_users_completed do %>
                 <._user_detail_card data={data} />
               <% end %>
@@ -164,11 +163,14 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Stats do
             />
           </div>
 
-          <div class="mt-1">
-            <b>
-              <%= Take.get_score_percent_as_integer(@data.score, @data.current_card_index) %>%
-            </b>
-            - <%= @data.score %> / <%= @data.current_card_index %> correct
+          <div class="mt-1" data-test-id="quiz-stats">
+            <span :if={@data.current_card_index > 0}>
+              <b>
+                <%= Take.get_score_percent_as_integer(@data.score, @data.current_card_index) %>%
+              </b>
+              -
+            </span>
+            <%= @data.score %> / <%= @data.current_card_index %> correct
             <%= if @data.quiz_state == :in_progress do %>
               (<%= @data.quiz_length - @data.current_card_index %> remaining)
             <% end %>

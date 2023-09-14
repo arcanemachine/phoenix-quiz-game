@@ -51,7 +51,7 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLiveTest do
       correct_answer: "true"
     })
 
-    # fetch quiz from repo so we can preload the cards
+    # fetch quiz from repo so we can preload the cards and easily access them
     quiz = Repo.one!(from(q in Quiz, where: q.id == ^quiz.id, preload: :cards))
 
     %{conn: conn, user: user, quiz: quiz}
