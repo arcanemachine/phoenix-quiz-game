@@ -307,7 +307,7 @@ defmodule QuizGameWeb.CoreComponents do
     <div
       class="fixed flex flex-col justify-center w-full sm:w-[30rem] top-1.5 lg:mt-2 right-0
                 left-0 [&>*:not(:first-child)]:mt-2 mx-auto px-2"
-      data-label="flash-group"
+      data-id="flash-group"
     >
       <.flash kind={:error} title="Error" id="flash-error" flash={@flash} />
       <.flash kind={:warning} title="Warning" id="flash-warning" flash={@flash} />

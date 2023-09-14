@@ -207,13 +207,13 @@ defmodule QuizGameWeb.Quizzes.StatsLiveTest do
 
       # create other quiz and card so the user can join the new quiz lobby
       other_quiz = quiz_fixture()
-      other_card = card_fixture(quiz_id: other_quiz.id)
+      _other_card = card_fixture(quiz_id: other_quiz.id)
 
       # stats: sanity check - template contains expected content before user joins the quiz lobby
       assert html =~ "No users are preparing to take this quiz."
 
       ## take: unauthenticated user joins the other quiz lobby
-      {:ok, quiz_take_view, _html} = build_conn() |> live(_get_quiz_take_url(other_quiz.id))
+      {:ok, _quiz_take_view, _html} = build_conn() |> live(_get_quiz_take_url(other_quiz.id))
 
       # stats: template still contains initial content
       Process.sleep(5)
