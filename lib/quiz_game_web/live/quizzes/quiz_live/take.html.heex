@@ -131,7 +131,12 @@
       >
         <div class="card-body text-center">
           <.modal_title title={@card.question} />
-          <.simple_form for={%{}} class="max-w-xs mx-auto" phx-submit="submit-user-answer">
+          <.simple_form
+            for={%{}}
+            class="max-w-xs mx-auto"
+            warn_on_exit="always"
+            phx-submit="submit-user-answer"
+          >
             <div :if={@card.format == :multiple_choice}>
               <p class="-mt-8 mb-4">Select your answer:</p>
               <div class="mt-4 text-xl">

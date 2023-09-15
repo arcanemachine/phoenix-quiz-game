@@ -26,7 +26,15 @@ function collapseIn() {
   } as AlpineComponent;
 }
 
-function simpleForm() {
+enum WarnOnExit {
+  "change" = "change",
+  "always" = "always",
+  "never" = "never",
+}
+type SimpleFormOptions = {
+  warnOnExit: WarnOnExit;
+};
+function simpleForm(options: SimpleFormOptions) {
   /**
    * If a form has been modified and the user is attempting to exit the page,
    * then show a warning before exiting the page. This is intended to prevent
@@ -35,7 +43,7 @@ function simpleForm() {
    */
 
   return {
-    form: undefined,
+    // form: undefined,
     // locals: {}, // local variables that can be set in the form
 
     // optional confirmation checkbox
@@ -54,7 +62,9 @@ function simpleForm() {
         // disable in LiveView modals (automatic)
         this.$root.closest("[data-component-kind='modal']") ||
         // via localStorage attribute (manual)
-        localStorage.getItem("formDetectModifications") === "false"
+        localStorage.getItem("formDetectModifications") === "false" ||
+        // via 'warnOnExit' option
+        options.warnOnExit === "never"
         // // via HTML data attribute (manual)
         // || this.$root.children[0].dataset.formDetectModifications === "false"
       )
@@ -133,8 +143,14 @@ function simpleForm() {
     },
 
     handleBeforeUnload(evt: BeforeUnloadEvent) {
-      /** Warn before exiting if any inputs have been modified. */
-      if (this.modifiedInputs.size) {
+      /**
+       * Warn before exiting if any inputs have been modified, or if
+       * options.warnOnExit === 'always'.
+       */
+      if (
+        (options.warnOnExit === "change" && this.modifiedInputs.size) ||
+        options.warnOnExit === "always"
+      ) {
         evt.returnValue = true;
       }
     },

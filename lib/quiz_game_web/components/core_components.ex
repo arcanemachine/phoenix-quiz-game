@@ -1151,6 +1151,8 @@ defmodule QuizGameWeb.CoreComponents do
     default: "I confirm that the form data is correct.",
     doc: "the content of the confirmation checkbox message"
 
+  attr :warn_on_exit, :string, default: nil
+
   attr :rest, :global,
     include: ~w(autocomplete name rel action enctype method novalidate target multipart),
     doc: "the arbitrary HTML attributes to apply to the form tag"
@@ -1164,15 +1166,20 @@ defmodule QuizGameWeb.CoreComponents do
       :let={f}
       for={@for}
       as={@as}
-      {@rest}
       class={[
         (@class && String.contains?(@class, "max-w")) || "max-w-sm",
         "w-full mt-4 mx-auto transition-colors duration-300 rounded-lg",
         @has_errors && "bg-red-200",
         @class
       ]}
+      {@rest}
     >
-      <div class="p-2" x-data="simpleForm">
+      <div
+        class="p-2"
+        x-data={"simpleForm({
+          warnOnExit: #{if @warn_on_exit, do: "'#{@warn_on_exit}'", else: "'change'"}
+        })"}
+      >
         <%= render_slot(@inner_block, f) %>
 
         <%= if @confirmation_required do %>
