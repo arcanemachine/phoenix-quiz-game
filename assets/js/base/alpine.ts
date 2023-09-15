@@ -43,20 +43,13 @@ function simpleForm(options: SimpleFormOptions) {
    */
 
   return {
-    // form: undefined,
-    // locals: {}, // local variables that can be set in the form
+    confirmed: false, // optional confirmation checkbox
 
-    // optional confirmation checkbox
-    confirmed: false,
-
-    // form modification checker
+    // form modification detection
     defaultValue: "arbitraryDefaultValue",
     modifiedInputs: new Set(),
 
     init() {
-      // // @ts-ignore-error - add object reference to component store
-      // this.$store.components.simpleForm = this;
-
       // maybe disable form modification detection
       if (
         // disable in LiveView modals (automatic)
@@ -65,39 +58,28 @@ function simpleForm(options: SimpleFormOptions) {
         localStorage.getItem("formDetectModifications") === "false" ||
         // via 'warnOnExit' option
         options.warnOnExit === "never"
-        // // via HTML data attribute (manual)
-        // || this.$root.children[0].dataset.formDetectModifications === "false"
       )
         return;
 
-      // add form modification event listeners
-      addEventListener("beforeinput", this.handleBeforeInput.bind(this));
-      addEventListener("input", this.handleInput.bind(this) as any);
-      addEventListener("submit", this.handleSubmit.bind(this));
-      addEventListener("beforeunload", this.handleBeforeUnload.bind(this));
+      // add event listeners related to form modification detection
+      this.handleBeforeInput = this.handleBeforeInput.bind(this);
+      this.handleInput = this.handleInput.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
+      this.handleBeforeUnload = this.handleBeforeUnload.bind(this);
+
+      addEventListener("beforeinput", this.handleBeforeInput);
+      addEventListener("input", this.handleInput);
+      addEventListener("submit", this.handleSubmit);
+      addEventListener("beforeunload", this.handleBeforeUnload);
     },
 
     destroy() {
-      // // @ts-ignore-error
-      // delete this.$store.components.simpleForm;
-
-      // maybe disable form modification detection
-      if (
-        // disable in LiveView modals (automatic)
-        this.$root.closest("[data-component-kind='modal']") ||
-        // via localStorage attribute (manual)
-        localStorage.getItem("formDetectModifications") === "false"
-        // // via HTML data attribute (manual)
-        // || this.$root.children[0].dataset.formDetectModifications === "false"
-      )
-        return;
-
       // clear modified input fields
       this.modifiedInputs.clear();
 
-      // remove event listeners
+      // remove event listeners related to form modification detection
       removeEventListener("beforeinput", this.handleBeforeInput);
-      removeEventListener("input", this.handleInput as any);
+      removeEventListener("input", this.handleInput);
       removeEventListener("submit", this.handleSubmit);
       removeEventListener("beforeunload", this.handleBeforeUnload);
     },
