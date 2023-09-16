@@ -50,27 +50,24 @@ function simpleForm(options: SimpleFormOptions) {
     modifiedInputs: new Set(),
 
     init() {
-      // maybe disable form modification detection
-      if (
-        // disable in LiveView modals (automatic)
-        this.$root.closest("[data-component-kind='modal']") ||
-        // via localStorage attribute (manual)
-        localStorage.getItem("formDetectModifications") === "false" ||
-        // via 'warnOnExit' option
-        options.warnOnExit === "never"
-      )
-        return;
-
-      // add event listeners related to form modification detection
+      // bind event listeners locally
       this.handleBeforeInput = this.handleBeforeInput.bind(this);
       this.handleInput = this.handleInput.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
       this.handleBeforeUnload = this.handleBeforeUnload.bind(this);
 
+      // maybe disable form modification detection
+      if (
+        options.warnOnExit === "never" ||
+        // via localStorage attribute (for manual debugging)
+        localStorage.getItem("debug:formDetectModifications") === "false"
+      )
+        return;
+
+      // add event listeners related to form modification detection
       addEventListener("beforeinput", this.handleBeforeInput);
       addEventListener("input", this.handleInput);
       addEventListener("submit", this.handleSubmit);
-      addEventListener("beforeunload", this.handleBeforeUnload);
     },
 
     destroy() {
@@ -87,6 +84,7 @@ function simpleForm(options: SimpleFormOptions) {
     handleBeforeInput(evt: Event) {
       /** Store default values. */
       const target = evt.target as any;
+
       if (
         !(this.defaultValue in target || this.defaultValue in target.dataset)
       ) {
@@ -117,17 +115,27 @@ function simpleForm(options: SimpleFormOptions) {
       } else if (this.modifiedInputs.has(target)) {
         this.modifiedInputs.delete(target);
       }
+
+      // conditionally add or remove the 'beforeunload' event handler
+      if (this.modifiedInputs.size) {
+        addEventListener("beforeunload", this.handleBeforeUnload);
+      } else {
+        removeEventListener("beforeunload", this.handleBeforeUnload);
+      }
     },
 
     handleSubmit() {
       /** Clear modified inputs before submitting the form. */
       this.modifiedInputs.clear();
+
+      // remove 'beforeunload' event listener to improve back/forward caching
+      removeEventListener("beforeunload", this.handleBeforeUnload);
     },
 
     handleBeforeUnload(evt: BeforeUnloadEvent) {
       /**
-       * Warn before exiting if any inputs have been modified, or if
-       * options.warnOnExit === 'always'.
+       * Warn before exiting if any inputs have been modified, or if the form
+       * is configured to always warn before exiting.
        */
       if (
         (options.warnOnExit === "change" && this.modifiedInputs.size) ||
