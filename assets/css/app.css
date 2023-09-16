@@ -48,6 +48,7 @@
   padding: 0.75rem 1rem;
   opacity: 0.8;
   transition: opacity 0.25s;
+  filter: invert(0.5);
 }
 
 .toast-close:hover {
