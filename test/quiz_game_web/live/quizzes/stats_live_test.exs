@@ -190,7 +190,7 @@ defmodule QuizGameWeb.Quizzes.StatsLiveTest do
              )
 
       ## take: exit the view
-      quiz_take_view |> element(~s|a|, "Exit this quiz") |> render_click()
+      GenServer.stop(quiz_take_view.pid())
 
       # stats: template no longer contains information about this user
       Process.sleep(5)
