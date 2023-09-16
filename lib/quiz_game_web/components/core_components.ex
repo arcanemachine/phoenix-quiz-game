@@ -405,7 +405,10 @@ defmodule QuizGameWeb.CoreComponents do
         type={@type}
         content={@content}
         class={["btn-secondary", @class]}
-        onclick={(@url && "location.href = '#{@url}'") || "history.back()"}
+        onclick={
+          (@url && "location.href = '#{@url}'") ||
+            "history.back() || Alpine.store('toasts').show('warning', `Can\'t go any farther back!`)"
+        }
         {@rest}
       />
     </a>
