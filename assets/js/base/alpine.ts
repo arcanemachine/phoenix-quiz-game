@@ -26,127 +26,6 @@ function collapseIn() {
   } as AlpineComponent;
 }
 
-enum WarnOnExit {
-  "change" = "change",
-  "always" = "always",
-  "never" = "never",
-}
-type SimpleFormOptions = {
-  warnOnExit: WarnOnExit;
-};
-function simpleForm(options: SimpleFormOptions) {
-  /**
-   * If a form has been modified and the user is attempting to exit the page,
-   * then show a warning before exiting the page. This is intended to prevent
-   * the form data from being lost during accidental navigation before the form
-   * has been submitted.
-   */
-
-  return {
-    confirmed: false, // optional confirmation checkbox
-
-    // form modification detection
-    defaultValue: "arbitraryDefaultValue",
-    modifiedInputs: new Set(),
-
-    init() {
-      // bind event listeners locally
-      this.handleBeforeInput = this.handleBeforeInput.bind(this);
-      this.handleInput = this.handleInput.bind(this);
-      this.handleSubmit = this.handleSubmit.bind(this);
-      this.handleBeforeUnload = this.handleBeforeUnload.bind(this);
-
-      // maybe disable form modification detection
-      if (
-        options.warnOnExit === "never" ||
-        // via localStorage attribute (for manual debugging)
-        localStorage.getItem("debug:formDetectModifications") === "false"
-      )
-        return;
-
-      // add event listeners related to form modification detection
-      addEventListener("beforeinput", this.handleBeforeInput);
-      addEventListener("input", this.handleInput);
-      addEventListener("submit", this.handleSubmit);
-    },
-
-    destroy() {
-      // clear modified input fields
-      this.modifiedInputs.clear();
-
-      // remove event listeners related to form modification detection
-      removeEventListener("beforeinput", this.handleBeforeInput);
-      removeEventListener("input", this.handleInput);
-      removeEventListener("submit", this.handleSubmit);
-      removeEventListener("beforeunload", this.handleBeforeUnload);
-    },
-
-    handleBeforeInput(evt: Event) {
-      /** Store default values. */
-      const target = evt.target as any;
-
-      if (
-        !(this.defaultValue in target || this.defaultValue in target.dataset)
-      ) {
-        target.dataset[this.defaultValue] = (
-          "" + (target.value || target.textContent)
-        ).trim();
-      }
-    },
-
-    handleInput(evt: InputEvent) {
-      /** Keep a record of which form inputs have been modified. */
-      const target = evt.target as any;
-
-      // ignore elements with no 'name' property (e.g. confirmation checkbox)
-      if (!target.name) return;
-
-      let original: string;
-      if (this.defaultValue in target) {
-        original = target[this.defaultValue];
-      } else {
-        original = target.dataset[this.defaultValue];
-      }
-
-      if (original !== ("" + (target.value || target.textContent)).trim()) {
-        if (!this.modifiedInputs.has(target)) {
-          this.modifiedInputs.add(target);
-        }
-      } else if (this.modifiedInputs.has(target)) {
-        this.modifiedInputs.delete(target);
-      }
-
-      // conditionally add or remove the 'beforeunload' event handler
-      if (this.modifiedInputs.size) {
-        addEventListener("beforeunload", this.handleBeforeUnload);
-      } else {
-        removeEventListener("beforeunload", this.handleBeforeUnload);
-      }
-    },
-
-    handleSubmit() {
-      /** Clear modified inputs before submitting the form. */
-      this.modifiedInputs.clear();
-
-      // remove 'beforeunload' event listener to improve back/forward caching
-      removeEventListener("beforeunload", this.handleBeforeUnload);
-    },
-
-    handleBeforeUnload(evt: BeforeUnloadEvent) {
-      /**
-       * Warn before exiting if any inputs have been modified, or if the form
-       * is configured to always warn before exiting.
-       */
-      if (
-        (options.warnOnExit === "change" && this.modifiedInputs.size) ||
-        options.warnOnExit === "always"
-      ) {
-        evt.returnValue = true;
-      }
-    },
-  } as AlpineComponent;
-}
-
 function themeSelect() {
   return {
     themeOptions: ["Auto", "Light", "Dark"],
@@ -176,10 +55,6 @@ export const data = [
   {
     name: "collapseIn",
     data: collapseIn,
-  },
-  {
-    name: "simpleForm",
-    data: simpleForm,
   },
   {
     name: "themeSelect",

@@ -1013,10 +1013,10 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <div
       id={@id}
-      phx-mounted={@show && show_modal(@id)}
-      phx-remove={hide_modal(@id)}
       class="relative z-40 hidden"
       data-component-kind="modal"
+      phx-mounted={@show && show_modal(@id)}
+      phx-remove={hide_modal(@id)}
     >
       <div
         id={"#{@id}-bg"}
@@ -1036,9 +1036,10 @@ defmodule QuizGameWeb.CoreComponents do
             <.focus_wrap
               id={"#{@id}-container"}
               phx-mounted={@show && show_modal(@id)}
-              phx-window-keydown={hide_modal(@on_cancel, @id)}
+              phx-window-keydown={JS.dispatch("phx:hide", to: "##{@id}")}
               phx-key="escape"
-              phx-click-away={hide_modal(@on_cancel, @id)}
+              phx-click-away={JS.dispatch("phx:hide", to: "##{@id}")}
+              data-phx-hide={hide_modal(@on_cancel, @id)}
               class={[
                 "hidden max-w-[30rem] mx-auto relative rounded-2xl bg-base-100 p-8",
                 "shadow-lg shadow-base-content/20 ring-1 ring-base-content/40 transition"
@@ -1047,7 +1048,7 @@ defmodule QuizGameWeb.CoreComponents do
               <%!-- close button --%>
               <div class="absolute top-5 right-4">
                 <button
-                  phx-click={hide_modal(@on_cancel, @id)}
+                  phx-click={JS.dispatch("phx:hide", to: "##{@id}")}
                   type="button"
                   class="-m-3 flex-none p-3 opacity-20 hover:opacity-40"
                   aria-label={gettext("close")}
@@ -1139,6 +1140,7 @@ defmodule QuizGameWeb.CoreComponents do
   """
   attr :for, :any, required: true, doc: "the datastructure for the form"
   attr :as, :any, default: nil, doc: "the server side parameter to collect all input under"
+  # attr :has_changes, :boolean, default: false, doc: "whether or not the form has changes"
   attr :has_errors, :boolean, default: false, doc: "whether or not the form has errors"
   attr :class, :string, default: nil
 
@@ -1170,14 +1172,18 @@ defmodule QuizGameWeb.CoreComponents do
       for={@for}
       as={@as}
       class={[
-        (@class && String.contains?(@class, "max-w")) || "max-w-sm",
+        (@class && String.contains?(@class, "max-w-")) || "max-w-sm",
         "w-full mt-4 mx-auto transition-colors duration-300 rounded-lg",
         @has_errors && "bg-red-200",
         @class
       ]}
+      phx-hook="SimpleForm"
+      data-has-changes={# @has_changes}
+      data-warn-on-exit={@warn_on_exit}
+      x-data={@confirmation_required && "{ confirmed: false }"}
       {@rest}
     >
-      <div class="p-2" x-data={"simpleForm({ warnOnExit: '#{@warn_on_exit}' })"}>
+      <div class="p-2">
         <%= render_slot(@inner_block, f) %>
 
         <%= if @confirmation_required do %>

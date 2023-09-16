@@ -9,6 +9,6 @@ export type AlpineComponent = any;
 export type AlpineInstance = any;
 export type AlpineStore = any;
 
-export const data: Array<any> = [...baseData];
-export const directives: Array<any> = [...baseDirectives];
-export const stores: Array<Record<string, any>> = [...baseStores];
+export const data = [...baseData];
+export const directives = [...baseDirectives];
+export const stores = [...baseStores];
