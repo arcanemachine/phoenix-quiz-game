@@ -396,7 +396,7 @@ defmodule QuizGameWeb.CoreComponents do
   attr :content, :string, default: "Cancel"
   attr :class, :any, default: nil
   attr :url, :string, default: nil, doc: "the URL to redirect to when cancelling"
-  attr :rest, :global, include: ~w(disabled)
+  attr :rest, :global, include: ~w(disabled onclick)
 
   def form_button_cancel(assigns) do
     ~H"""
@@ -406,7 +406,7 @@ defmodule QuizGameWeb.CoreComponents do
         content={@content}
         class={["btn-secondary", @class]}
         onclick={
-          (@url && "location.href = '#{@url}'") ||
+          @rest[:onclick] || (@url && "location.href = '#{@url}'") ||
             "history.back() || Alpine.store('toasts').show('warning', `Can\'t go any farther back!`)"
         }
         {@rest}
