@@ -1015,6 +1015,8 @@ defmodule QuizGameWeb.CoreComponents do
       id={@id}
       class="relative z-40 hidden"
       data-component-kind="modal"
+      data-phx-hide={hide_modal(@on_cancel, @id)}
+      phx-hook="Modal"
       phx-mounted={@show && show_modal(@id)}
       phx-remove={hide_modal(@id)}
     >
@@ -1039,7 +1041,6 @@ defmodule QuizGameWeb.CoreComponents do
               phx-window-keydown={JS.dispatch("phx:hide", to: "##{@id}")}
               phx-key="escape"
               phx-click-away={JS.dispatch("phx:hide", to: "##{@id}")}
-              data-phx-hide={hide_modal(@on_cancel, @id)}
               class={[
                 "hidden max-w-[30rem] mx-auto relative rounded-2xl bg-base-100 p-8",
                 "shadow-lg shadow-base-content/20 ring-1 ring-base-content/40 transition"

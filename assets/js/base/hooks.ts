@@ -80,8 +80,10 @@ class SimpleFormHook extends Hook {
     // of the scope of this hook
     if (this.modifiedFormFields.size) {
       this.el.setAttribute("data-form-has-modified-inputs", "true");
+      addEventListener("beforeunload", this.handleBeforeUnload);
     } else {
       this.el.removeAttribute("data-form-has-modified-inputs");
+      removeEventListener("beforeunload", this.handleBeforeUnload);
     }
   }
 
@@ -131,9 +133,10 @@ class SimpleFormHook extends Hook {
   }
 
   handleInput(evt: Event): void {
-    console.log("handleInput()");
-    /** Keep a record of which form inputs have been modified. */
-
+    /**
+     * Handle client-side detection of form modifications, and add/remove
+     * the 'beforeunload' handler accordingly.
+     */
     const target = evt.target as HTMLFormElement;
 
     // ignore elements with no 'name' property (e.g. confirmation checkbox)
@@ -152,13 +155,12 @@ class SimpleFormHook extends Hook {
 
     // set event handlers and data attributes based on modified input count
     if (this.modifiedFormFields.size) {
+      this.el.setAttribute("data-form-has-modified-inputs", "true");
       addEventListener("beforeunload", this.handleBeforeUnload);
     } else {
+      this.el.removeAttribute("data-form-has-modified-inputs");
       removeEventListener("beforeunload", this.handleBeforeUnload);
     }
-
-    console.log("Modified form fields after handleInput():");
-    console.log(this.modifiedFormFields);
   }
 
   handleSubmit(): void {
@@ -185,22 +187,16 @@ class SimpleFormHook extends Hook {
       evt.returnValue = true;
     }
   }
-
-  // phoenix events
-  handlePhxHide(): void {
-    console.log("handlePhxHide()");
-    if (this.el.querySelector("[data-form-has-modified-inputs]")) {
-      confirm(
-        "This form has unsaved changes. Are you sure you want to exit the form?",
-      );
-    }
-  }
 }
 
 class ModalHook extends Hook {
   mounted() {
-    /** Add event listeners for LiveView hooks. */
-    this.el.addEventListener("phx:hide", this.handlePhxHide);
+    this.handlePhxHide = this.handlePhxHide.bind(this); // bind event listeners locally
+    this.el.addEventListener("phx:hide", this.handlePhxHide); // add event listeners
+  }
+
+  destroyed() {
+    this.el.removeEventListener("phx:hide", this.handlePhxHide); // remove event listeners
   }
 
   handlePhxHide() {
@@ -209,10 +205,20 @@ class ModalHook extends Hook {
      * elements. If such a form exists, prompt the user before closing the
      * modal.
      */
-    if (this.el.querySelector("[data-form-has-modified-inputs]")) {
-      confirm(
+
+    let modalWillBeHidden = false;
+
+    if (this.el.querySelector("[data-form-has-modified-inputs='true']")) {
+      modalWillBeHidden = confirm(
         "This form has unsaved changes. Are you sure you want to exit the form?",
       );
+    } else {
+      modalWillBeHidden = true;
+    }
+
+    if (modalWillBeHidden) {
+      // @ts-expect-error
+      this.liveSocket.execJS(this.el, this.el.dataset.phxHide);
     }
   }
 }
