@@ -85,7 +85,7 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
         field={@form[:password_confirmation]}
         type="password"
         label="Confirm password"
-        help_text="Re-enter your password to ensure you entered it correctly"
+        help_text="Re-enter your password to make sure it was entered correctly"
         minlength={User.password_length_min()}
         maxlength={User.password_length_max()}
         required
