@@ -697,8 +697,8 @@ defmodule QuizGameWeb.CoreComponents do
     <input
       type="hidden"
       name="_csrf_token"
-      x-bind:value="document.querySelector(`meta[name='csrf-token']`).content"
       class="hidden"
+      x-init="$el.value = document.querySelector(`meta[name='csrf-token']`).content"
     />
     """
   end
