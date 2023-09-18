@@ -134,6 +134,16 @@ defmodule QuizGame.Users.User do
     quiz
     |> cast(attrs, [:display_name])
     |> validate_required([:display_name])
+    |> update_change(:display_name, &String.trim/1)
+    |> case do
+      %{changes: %{display_name: _}} = changeset ->
+        # changeset contains changed display name
+        changeset
+
+      %{} = changeset ->
+        # changeset does not contain changed display name
+        add_error(changeset, :display_name, "should be different than your current display name")
+    end
   end
 
   @doc "A changeset for managing a users's admin permissions."
@@ -154,9 +164,11 @@ defmodule QuizGame.Users.User do
     |> validate_email(opts)
     |> case do
       %{changes: %{email: _}} = changeset ->
+        # changeset contains changed email
         changeset
 
       %{} = changeset ->
+        # changeset does not contain changed email
         add_error(changeset, :email, "should be different than your current email")
     end
   end

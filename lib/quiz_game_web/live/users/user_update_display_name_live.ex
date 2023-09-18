@@ -7,7 +7,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateDisplayNameLive do
   @impl true
   def mount(params, _session, socket) do
     user = socket.assigns.current_user
-    changeset = Users.change_user_display_name(user, user.display_name)
+    changeset = Users.change_user_display_name(user, %{display_name: user.display_name})
 
     socket =
       socket
@@ -30,7 +30,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateDisplayNameLive do
     <.simple_form for={@form} id="form" phx-change="validate" phx-submit="submit">
       <.input
         field={@form[:display_name]}
-        name="display-name"
+        name="display_name"
         type="text"
         label="Your new display name"
         maxlength={User.display_name_length_max()}
@@ -45,17 +45,17 @@ defmodule QuizGameWeb.UsersLive.UserUpdateDisplayNameLive do
   end
 
   @impl true
-  def handle_event("validate", params, socket) do
+  def handle_event("validate", %{"display_name" => display_name}, socket) do
     form =
       socket.assigns.current_user
-      |> Users.change_user_display_name(params)
+      |> Users.change_user_display_name(%{display_name: display_name})
       |> Map.put(:action, :validate)
       |> to_form()
 
     {:noreply, assign(socket, form: form)}
   end
 
-  def handle_event("submit", %{"display-name" => display_name}, socket) do
+  def handle_event("submit", %{"display_name" => display_name}, socket) do
     user = socket.assigns.current_user
 
     case Users.update_user_display_name(user, display_name) do
@@ -66,7 +66,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateDisplayNameLive do
          |> redirect(to: socket.assigns.success_url)}
 
       {:error, changeset} ->
-        {:noreply, assign(socket, password_form: to_form(changeset))}
+        {:noreply, assign(socket, form: to_form(changeset))}
     end
   end
 end

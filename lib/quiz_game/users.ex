@@ -101,20 +101,20 @@ defmodule QuizGame.Users do
 
   ## Examples
 
-      iex> change_user_display_name(user, "Bob")
+      iex> change_user_display_name(user, %{display_name: "Bob"})
       {:ok, %User{display_name: "Bob"}}
 
       iex> change_user_display_name(user, :bad_value)
       {:error, %Ecto.Changeset{}}
 
   """
-  def change_user_display_name(%User{} = user, display_name) do
-    User.display_name_changeset(user, %{display_name: display_name})
+  def change_user_display_name(%User{} = user, attrs) do
+    User.display_name_changeset(user, attrs)
   end
 
   @doc "Updates the user display name."
   def update_user_display_name(user, display_name) do
-    user |> change_user_display_name(display_name) |> Repo.update()
+    user |> change_user_display_name(%{display_name: display_name}) |> Repo.update()
   end
 
   @doc """
