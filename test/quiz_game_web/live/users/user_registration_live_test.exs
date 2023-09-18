@@ -12,7 +12,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
 
   describe "UserRegistrationLive page" do
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, @register_url)
+      {:ok, _view, html} = live(conn, @register_url)
       assert html_has_title(html, "Register New Account")
     end
 
@@ -32,7 +32,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
       valid_attrs = valid_user_attributes()
 
       # make initial request
-      {:ok, lv, html} = live(conn, @register_url)
+      {:ok, view, html} = live(conn, @register_url)
 
       # sanity check: response does not contain markup that should only visible to an
       # authenticated user
@@ -48,27 +48,16 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
           )
       }
 
-      form = form(lv, "#registration_form", form_data)
-      render_submit(form)
-      resp_conn = follow_trigger_action(form, conn)
-
-      # response redirects to expected route
-      assert redirected_to(resp_conn) == route(:users, :show)
-
-      # make a request as the logged-in user
-      resp_conn_2 = get(resp_conn, ~p"/")
-
-      # response contains markup that is only visible to an authenticated user
-      result_html = html_response(resp_conn_2, 200)
-      assert html_has_link(result_html, url: route(:users, :show), content: "Your profile")
-      assert html_has_link(result_html, url: route(:users, :logout_confirm), content: "Logout")
+      assert form(view, "#registration_form", form_data)
+             # user is redirected to users:register_success
+             |> render_submit() == {:error, {:redirect, %{to: route(:users, :register_success)}}}
     end
 
     test "renders expected errors on 'change' event when form data is invalid", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @register_url)
+      {:ok, view, _html} = live(conn, @register_url)
 
       html_after_change =
-        lv
+        view
         |> element("#registration_form")
         |> render_change(
           user: %{
@@ -95,11 +84,11 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
     end
 
     test "renders expected errors on 'submit' event with blank form fields", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @register_url)
+      {:ok, view, _html} = live(conn, @register_url)
 
       # submit the form
       html_after_submit =
-        lv
+        view
         |> element("#registration_form")
         |> render_submit(%{user: %{"username" => "", "display_name" => "", "email" => ""}})
 
@@ -123,10 +112,10 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
     } do
       user = user_fixture()
 
-      {:ok, lv, _html} = live(conn, @register_url)
+      {:ok, view, _html} = live(conn, @register_url)
 
       html_after_submit =
-        lv
+        view
         |> form("#registration_form", user: %{"username" => user.username})
         |> render_submit()
 
@@ -143,10 +132,10 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
     } do
       user = user_fixture()
 
-      {:ok, lv, _html} = live(conn, @register_url)
+      {:ok, view, _html} = live(conn, @register_url)
 
       html_after_submit =
-        lv
+        view
         |> form("#registration_form", user: %{"email" => user.email})
         |> render_submit()
 

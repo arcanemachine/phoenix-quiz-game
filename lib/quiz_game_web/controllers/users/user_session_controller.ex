@@ -7,8 +7,11 @@ defmodule QuizGameWeb.UserSessionController do
   alias QuizGame.Users
   alias QuizGameWeb.UserAuth
 
-  def create(conn, %{"_action" => "registered"} = params) do
-    create(conn, params, "Account created successfully")
+  @doc "Show a success messsage and redirect to the login view"
+  def register_success(conn, _params) do
+    conn
+    |> put_flash(:success, "Account created successfully. You may now log in.")
+    |> redirect(to: route(:users, :login))
   end
 
   def create(conn, %{"_action" => "password_updated"} = params) do

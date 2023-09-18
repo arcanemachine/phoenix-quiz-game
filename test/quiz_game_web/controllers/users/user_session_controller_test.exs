@@ -10,6 +10,21 @@ defmodule QuizGameWeb.UserSessionControllerTest do
     %{user: user_fixture()}
   end
 
+  describe "users:register_success GET" do
+    @register_success_url route(:users, :register_success)
+
+    test "shows expected flash message and redirects to expected route", %{conn: conn} do
+      conn = get(conn, @register_success_url)
+
+      # response redirects to expected route
+      assert redirected_to(conn) == route(:users, :login)
+
+      # response contains expected flash message
+      assert Phoenix.Flash.get(conn.assigns.flash, :success) =~
+               "Account created successfully. You may now log in."
+    end
+  end
+
   describe "users:create POST" do
     @login_url route(:users, :login)
 
@@ -42,9 +57,6 @@ defmodule QuizGameWeb.UserSessionControllerTest do
           }
         })
 
-      # response redirects to expected route
-      assert redirected_to(conn) == ~p"/users/me"
-
       # response contains expected cookie
       assert conn.resp_cookies["_quiz_game_web_user_remember_me"]
     end
@@ -66,24 +78,6 @@ defmodule QuizGameWeb.UserSessionControllerTest do
 
       # response contains expected flash message
       assert Phoenix.Flash.get(conn.assigns.flash, :success) =~ "Logged in successfully"
-    end
-
-    test "automatically logs in the user after registration", %{conn: conn, user: user} do
-      conn =
-        conn
-        |> post(@login_url, %{
-          "_action" => "registered",
-          "user" => %{
-            "email" => user.email,
-            "password" => valid_user_password()
-          }
-        })
-
-      # response redirects to expected route
-      assert redirected_to(conn) == ~p"/users/me"
-
-      # response contains expected flash message
-      assert Phoenix.Flash.get(conn.assigns.flash, :success) =~ "Account created successfully"
     end
 
     test "logs in automatically after updating the user's password", %{conn: conn, user: user} do

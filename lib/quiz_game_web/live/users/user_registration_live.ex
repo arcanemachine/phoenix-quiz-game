@@ -40,9 +40,9 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
     <.simple_form
       for={@form}
       has_errors={@check_errors}
-      id="registration_form"
       action={route(:users, :login) <> query_string(action: "registered")}
       method="post"
+      id="registration_form"
       phx-change="validate"
       phx-submit="save"
       phx-trigger-action={@trigger_submit}
@@ -121,9 +121,13 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
 
   @impl true
   def handle_event("save", %{"user" => user_params} = form_params, socket) do
-    if QuizGameWeb.Support.HTML.Form.captcha_valid?(form_params) do
+    # check if the captcha is valid
+    if S.HTML.Form.captcha_valid?(form_params) do
+      # captcha valid. attempt to register the user
       case Users.register_user(user_params) do
+        # registration successful
         {:ok, user} ->
+          # deliver a confirmation email to the user
           {:ok, _} =
             Users.deliver_email_verify_instructions(
               user,
@@ -133,15 +137,19 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
               )
             )
 
+          # create an empty changeset so we can clear the form before navigating away from it
           changeset = Users.change_user_registration(user)
 
+          # clear all form fields and redirect to the login view
           {:noreply,
            socket
            |> push_event("captcha-reset", %{})
-           |> assign(trigger_submit: true)
-           |> assign_form(changeset)}
+           |> assign_form(changeset)
+           |> redirect(to: route(:users, :register_success))}
 
+        # registration failed
         {:error, %Ecto.Changeset{} = changeset} ->
+          # reset the captcha field and show errors to the user
           {:noreply,
            socket
            |> assign(check_errors: true)
@@ -149,6 +157,7 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
            |> assign_form(changeset)}
       end
     else
+      # captcha invalid. show an error toast message and clear the captcha field
       changeset = Users.change_user_registration(%User{}, user_params)
 
       {:noreply,

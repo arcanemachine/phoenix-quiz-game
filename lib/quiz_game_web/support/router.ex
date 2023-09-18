@@ -121,6 +121,7 @@ defmodule QuizGameWeb.Support.Router do
     case action do
       # auth
       :register -> "/users/register"
+      :register_success -> "/users/register/success"
       :login -> "/users/login"
       :logout_confirm -> "/users/logout"
       :logout -> "/users/logout"

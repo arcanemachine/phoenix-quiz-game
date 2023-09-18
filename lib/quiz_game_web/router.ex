@@ -127,12 +127,13 @@ defmodule QuizGameWeb.Router do
   scope "/users", QuizGameWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
+    get "/register/success", UserSessionController, :register_success
     post "/login", UserSessionController, :create
 
     live_session :logout_required,
       on_mount: [{QuizGameWeb.UserAuth, :redirect_if_user_is_authenticated}] do
-      live "/register", UsersLive.UserRegistrationLive, :new, as: :users_register
-      live "/login", UsersLive.UserLoginLive, :new, as: :users_login
+      live "/register", UsersLive.UserRegistrationLive, :new, as: :register
+      live "/login", UsersLive.UserLoginLive, :new, as: :login
       live "/reset/password", UsersLive.UserForgotPasswordLive, :new
       live "/reset/password/:token", UsersLive.UserResetPasswordLive, :edit
     end
