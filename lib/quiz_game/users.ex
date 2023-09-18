@@ -101,8 +101,8 @@ defmodule QuizGame.Users do
 
   ## Examples
 
-      iex> change_user_display_name(user, %{display_name: "Bob"})
-      {:ok, %User{display_name: "Bob"}}
+      iex> change_user_display_name(user, %{display_name: "Alice"})
+      {:ok, %User{display_name: "Alice"}}
 
       iex> change_user_display_name(user, :bad_value)
       {:error, %Ecto.Changeset{}}

@@ -124,10 +124,59 @@ defmodule QuizGame.UsersTest do
     end
   end
 
-  describe "update_user_is_admin/2" do
-    test "updates user admin permissions when data is valid" do
+  describe "change_user_display_name/2" do
+    test "returns a changeset" do
+      assert %Ecto.Changeset{} =
+               changeset = Users.change_user_display_name(%User{}, %{display_name: "Alice"})
+
+      assert changeset.required == [:display_name]
+    end
+
+    test "allows fields to be set" do
+      display_name = unique_user_display_name()
+
+      # create changeset
+      changeset = Users.change_user_display_name(%User{}, %{display_name: display_name})
+
+      # changeset contains expected values
+      assert changeset.valid?
+      assert get_change(changeset, :display_name) == display_name
+    end
+  end
+
+  describe "update_user_display_name/2" do
+    setup do
+      # create user
       user = user_fixture()
 
+      %{user: user}
+    end
+
+    test "updates user display name when data is valid", %{user: user} do
+      updated_display_name = unique_user_display_name()
+
+      # changeset contains expected values
+      assert {:ok, %User{} = user} = Users.update_user_display_name(user, updated_display_name)
+      assert user.display_name == updated_display_name
+    end
+
+    test "returns error changeset when data is not valid", %{user: user} do
+      assert {:error, %Ecto.Changeset{}} = Users.update_user_display_name(user, :bad_value)
+
+      # user object is unchanged
+      assert user == Users.get_user!(user.id)
+    end
+  end
+
+  describe "update_user_is_admin/2" do
+    setup do
+      # create user
+      user = user_fixture()
+
+      %{user: user}
+    end
+
+    test "updates user admin permissions when data is valid", %{user: user} do
       # add admin permissions
       assert {:ok, %User{} = user} = Users.update_user_is_admin(user, true)
       assert user.is_admin == true
@@ -137,9 +186,7 @@ defmodule QuizGame.UsersTest do
       assert user.is_admin == false
     end
 
-    test "returns error changeset when data is not valid" do
-      user = user_fixture()
-
+    test "returns error changeset when data is not valid", %{user: user} do
       assert {:error, %Ecto.Changeset{}} = Users.update_user_is_admin(user, "invalid value")
       assert user == Users.get_user!(user.id)
     end
