@@ -1141,6 +1141,7 @@ defmodule QuizGameWeb.CoreComponents do
   """
   attr :for, :any, required: true, doc: "the datastructure for the form"
   attr :as, :any, default: nil, doc: "the server side parameter to collect all input under"
+  attr :id, :string, default: nil
   # attr :has_changes, :boolean, default: false, doc: "whether or not the form has changes"
   attr :has_errors, :boolean, default: false, doc: "whether or not the form has errors"
   attr :class, :string, default: nil
@@ -1170,6 +1171,7 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <.form
       :let={f}
+      id={@id || "simple-form-#{System.unique_integer([:positive, :monotonic])}"}
       for={@for}
       as={@as}
       class={[
