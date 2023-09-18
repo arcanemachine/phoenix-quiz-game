@@ -219,33 +219,30 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
     quiz_is_completed =
       socket.assigns.current_card_index == _get_quiz_length(socket.assigns.quiz) - 1
 
-    if quiz_is_completed do
-      # create quiz record
-      QuizGame.Quizzes.create_record(%{
-        quiz_id: socket.assigns.quiz.id,
-        user_id: (socket.assigns.current_user && socket.assigns.current_user.id) || nil,
-        display_name: socket.assigns.display_name,
-        card_count: _get_quiz_length(socket.assigns.quiz),
-        score: socket.assigns.score
-      })
+    socket =
+      if quiz_is_completed do
+        # create quiz record
+        QuizGame.Quizzes.create_record(%{
+          quiz_id: socket.assigns.quiz.id,
+          user_id: (socket.assigns.current_user && socket.assigns.current_user.id) || nil,
+          display_name: socket.assigns.display_name,
+          card_count: _get_quiz_length(socket.assigns.quiz),
+          score: socket.assigns.score
+        })
 
-      socket =
         socket
         |> assign(
           quiz_state: :completed,
           # increment card index so that quiz stats progress tracker will be correct
           current_card_index: socket.assigns.current_card_index + 1
         )
+      else
+        # get next card and increment current card index
+        socket |> _assign_next_card_and_index()
+      end
 
-      _update_user_presence(socket)
-      {:noreply, socket}
-    else
-      # get next card and increment current card index
-      socket = socket |> _assign_next_card_and_index()
-
-      _update_user_presence(socket)
-      {:noreply, socket}
-    end
+    _update_user_presence(socket)
+    {:noreply, socket}
   end
 
   def handle_event("reset-quiz", _params, socket) do
@@ -256,9 +253,9 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
   end
 
   # answer
-  @spec _get_correct_answer(Card) :: [integer() | String.t()]
+  @spec _get_correct_answer(Card) :: String.t()
   defp _get_correct_answer(card) do
-    case card.format do
+    case(card.format) do
       :multiple_choice ->
         # convert choice index to actual answer
         Map.get(card, String.to_existing_atom("choice_#{card.correct_answer}"))
@@ -274,9 +271,10 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Take do
       _ ->
         card.correct_answer
     end
+    |> to_string()
   end
 
-  @spec _get_user_answer(Card, map()) :: [integer() | String.t()]
+  @spec _get_user_answer(Card, map()) :: String.t()
   defp _get_user_answer(card, params) do
     get_choice_atom_from_user_answer = fn user_answer ->
       ## For multiple choice questions, safely convert `user_answer` param to one of the 4 Card
