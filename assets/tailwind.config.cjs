@@ -44,9 +44,14 @@ module.exports = {
     },
   },
   safelist: [
-    "alert-(info|success|warning|error)",
-    "(bg|btn)-(primary-secondary-accent-neutral-info-success-warning-error)",
-    "text-(primary-secondary-accent-neutral-info-success-warning-error)-content",
+    {
+      pattern:
+        /(alert|bg|btn)-(primary|secondary|accent|neutral|info|success|warning|error)/,
+    },
+    {
+      pattern:
+        /text-(primary|secondary|accent|neutral|info|success|warning|error)-content/,
+    },
   ],
   plugins: [
     // require("@tailwindcss/forms"),
