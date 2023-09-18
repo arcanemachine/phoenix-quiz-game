@@ -72,9 +72,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdatePasswordLive do
   end
 
   @impl true
-  def handle_event("validate", params, socket) do
-    %{"current_password" => password, "user" => user_params} = params
-
+  def handle_event("validate", %{"current_password" => password, "user" => user_params}, socket) do
     password_form =
       socket.assigns.current_user
       |> Users.change_user_password(user_params)
