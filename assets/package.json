@@ -19,7 +19,7 @@
     "@alpinejs/collapse": "^3.12.3",
     "@alpinejs/focus": "^3.12.3",
     "@types/alpinejs__focus": "^3.10.0",
-    "alpinejs": "^3.12.3",
+    "alpinejs": "^3.13.0",
     "phoenix_typed_hook": "^0.18.2",
     "tippy.js": "^6.3.7",
     "toastify-js": "^1.12.0"
