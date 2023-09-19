@@ -72,18 +72,6 @@ defmodule QuizGameWeb.UsersLive.UserUpdatePasswordLive do
   end
 
   @impl true
-  def handle_event("validate", params, socket) do
-    %{"current_password" => password, "user" => user_params} = params
-
-    form =
-      socket.assigns.current_user
-      |> Users.change_user_password(user_params)
-      |> Map.put(:action, :validate)
-      |> to_form()
-
-    {:noreply, assign(socket, form: form, current_password: password)}
-  end
-
   def handle_event(
         "submit",
         %{"current_password" => password, "user" => user_params} = _params,
@@ -103,5 +91,17 @@ defmodule QuizGameWeb.UsersLive.UserUpdatePasswordLive do
       {:error, changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}
     end
+  end
+
+  def handle_event("validate", params, socket) do
+    %{"current_password" => password, "user" => user_params} = params
+
+    form =
+      socket.assigns.current_user
+      |> Users.change_user_password(user_params)
+      |> Map.put(:action, :validate)
+      |> to_form()
+
+    {:noreply, assign(socket, form: form, current_password: password)}
   end
 end

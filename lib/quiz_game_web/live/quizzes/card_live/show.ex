@@ -42,7 +42,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
   end
 
   @impl true
-  def handle_event("delete", _params, socket) do
+  def handle_event("delete_card", _params, socket) do
     # delete the card and redirect to the card list
     socket =
       case Quizzes.delete_card(socket.assigns.card) do

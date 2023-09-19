@@ -44,7 +44,7 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
       action={route(:users, :login) <> query_string(action: "registered")}
       method="post"
       phx-change="validate"
-      phx-submit="save"
+      phx-submit="submit"
       phx-trigger-action={@trigger_submit}
     >
       <.input
@@ -120,7 +120,7 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
   end
 
   @impl true
-  def handle_event("save", %{"user" => user_params} = form_params, socket) do
+  def handle_event("submit", %{"user" => user_params} = form_params, socket) do
     # check if the captcha is valid
     if S.HTML.Form.captcha_valid?(form_params) do
       # captcha valid. attempt to register the user

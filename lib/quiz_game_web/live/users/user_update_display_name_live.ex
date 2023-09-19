@@ -49,16 +49,6 @@ defmodule QuizGameWeb.UsersLive.UserUpdateDisplayNameLive do
   end
 
   @impl true
-  def handle_event("validate", %{"display_name" => display_name}, socket) do
-    form =
-      socket.assigns.current_user
-      |> Users.change_user_display_name(%{display_name: display_name})
-      |> Map.put(:action, :validate)
-      |> to_form()
-
-    {:noreply, assign(socket, form: form)}
-  end
-
   def handle_event("submit", %{"display_name" => display_name}, socket) do
     user = socket.assigns.current_user
 
@@ -72,5 +62,15 @@ defmodule QuizGameWeb.UsersLive.UserUpdateDisplayNameLive do
       {:error, changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}
     end
+  end
+
+  def handle_event("validate", %{"display_name" => display_name}, socket) do
+    form =
+      socket.assigns.current_user
+      |> Users.change_user_display_name(%{display_name: display_name})
+      |> Map.put(:action, :validate)
+      |> to_form()
+
+    {:noreply, assign(socket, form: form)}
   end
 end

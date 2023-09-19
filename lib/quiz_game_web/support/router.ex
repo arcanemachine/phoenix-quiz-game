@@ -27,6 +27,9 @@ defmodule QuizGameWeb.Support.Router do
 
       iex> query_string(%{"hello" => "world"})
       "?hello=world"
+
+      iex> query_string(%{})
+      ""
   """
   @spec query_string(Enum.t()) :: String.t()
   def query_string(params) do
