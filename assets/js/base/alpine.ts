@@ -80,7 +80,7 @@ export const directives = [
        *   - An object with a 'content' key containing the tooltip message, and
        *     any other desired tippy.js props
        */
-      if (!expression) return; // abort if expression is empty
+      if (!expression) throw "'x-tooltip' expression cannot be empty";
 
       const defaultOptions = {
         delay: [750, null],

@@ -648,8 +648,14 @@ defmodule QuizGameWeb.CoreComponents do
       >
         <script src="https://js.hcaptcha.com/1/api.js" async defer />
         <script>
+          <%!--
+            the captcha is initialized before the alpine component, but the function referenced in
+            the `data-callback` attribute function must be available during initialization, so
+            this function is used to bridge the gap between the captcha logic and the associated
+            alpine component
+          --%>
           function captchaHandleCompleted() {
-            window.dispatchEvent(new CustomEvent('captcha-completed'))
+            window.dispatchEvent(new CustomEvent('captcha-completed'));
           };
         </script>
 
