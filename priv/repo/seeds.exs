@@ -68,7 +68,7 @@ if Application.get_env(:quiz_game, :server_environment) == :dev do
     %{
       quiz_id: generic_quiz.id,
       format: :text_entry,
-      question: "How do you spell the number 1 using letters?",
+      question: "How do you spell the number 1 as a word?",
       correct_answer: "one"
     },
     unsafe: true
