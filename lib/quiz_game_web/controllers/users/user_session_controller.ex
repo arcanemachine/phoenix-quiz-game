@@ -14,7 +14,7 @@ defmodule QuizGameWeb.UserSessionController do
     |> redirect(to: route(:users, :login))
   end
 
-  def create(conn, %{"_action" => "password_updated"} = params) do
+  def create(conn, %{"_action" => "password-updated"} = params) do
     conn
     |> put_session(:user_return_to, route(:users, :settings))
     |> create(params, "Password updated successfully")

@@ -84,7 +84,7 @@ defmodule QuizGameWeb.UserSessionControllerTest do
       conn =
         conn
         |> post(@login_url, %{
-          "_action" => "password_updated",
+          "_action" => "password-updated",
           "user" => %{
             "email" => user.email,
             "password" => valid_user_password()
