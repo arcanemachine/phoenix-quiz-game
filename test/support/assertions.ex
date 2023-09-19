@@ -45,7 +45,7 @@ defmodule QuizGame.TestSupport.Assertions do
   @spec html_form_has_errors(String.t()) :: boolean()
   def html_form_has_errors(html) do
     html
-    |> Floki.find("[data-component-kind='alert-form-errors']")
+    |> Floki.find("[data-component-name='alert-form-errors']")
     |> (Enum.empty?() |> Kernel.not())
   end
 
