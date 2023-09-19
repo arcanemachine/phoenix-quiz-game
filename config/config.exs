@@ -51,7 +51,7 @@ config :quiz_game, Oban,
     Oban.Plugins.Pruner,
     {Oban.Plugins.Cron,
      crontab: [
-       # {"@hourly", QuizGame.Workers.DeleteOldRecords}
+       {"@daily", QuizGame.Workers.DeleteOldRecords}
      ]}
   ],
   queues: [default: 10]
