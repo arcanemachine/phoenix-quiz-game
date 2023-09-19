@@ -53,7 +53,7 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
       # submit the form and follow the redirect
       {:ok, conn} =
         lv
-        |> form("#password_reset_form",
+        |> form("#user-reset-password-form",
           user: %{
             "password" => "new valid password",
             "password_confirmation" => "new valid password"
@@ -90,7 +90,7 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
       # submit the form
       html_after_change =
         lv
-        |> element("#password_reset_form")
+        |> element("#user-reset-password-form")
         |> render_change(user: %{"password" => "2short", "confirmation_password" => "short"})
 
       # form has expected error message(s)
@@ -112,7 +112,7 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
 
       html_after_submit =
         lv
-        |> form("#password_reset_form",
+        |> form("#user-reset-password-form",
           user: %{
             "password" => "2short",
             "password_confirmation" => "non_matching_password"

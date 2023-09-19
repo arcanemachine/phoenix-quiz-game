@@ -667,7 +667,7 @@ defmodule QuizGameWeb.CoreComponents do
           tabindex="-1"
           aria-hidden="true"
           x-model="captchaCompleted"
-          x-on:focus="hcaptcha.execute()"
+          x-on:focus="hcaptcha.execute"
           phx-update="ignore"
           id="captcha-completed-hidden-checkbox"
         />
@@ -1147,7 +1147,11 @@ defmodule QuizGameWeb.CoreComponents do
   """
   attr :for, :any, required: true, doc: "the datastructure for the form"
   attr :as, :any, default: nil, doc: "the server side parameter to collect all input under"
-  attr :id, :string, default: nil
+
+  attr :id, :string,
+    doc: "required for form modification detection (hook needs ID)",
+    required: true
+
   # attr :has_changes, :boolean, default: false, doc: "whether or not the form has changes"
   attr :has_errors, :boolean, default: false, doc: "whether or not the form has errors"
   attr :class, :string, default: nil
@@ -1164,7 +1168,10 @@ defmodule QuizGameWeb.CoreComponents do
     default: "I confirm that the form data is correct.",
     doc: "the content of the confirmation checkbox message"
 
-  attr :warn_on_exit, :string, values: ["change", "always", "never"], default: "change"
+  attr :warn_on_exit, :string,
+    values: ["change", "always", "never"],
+    default: "change",
+    doc: "warns the user when navigating away from a changed form"
 
   attr :rest, :global,
     include: ~w(autocomplete name rel action enctype method novalidate target multipart),
@@ -1177,7 +1184,8 @@ defmodule QuizGameWeb.CoreComponents do
     ~H"""
     <.form
       :let={f}
-      id={@id || "simple-form-#{System.unique_integer([:positive, :monotonic])}"}
+      phx-hook="SimpleForm"
+      id={@id}
       for={@for}
       as={@as}
       class={[
@@ -1186,7 +1194,6 @@ defmodule QuizGameWeb.CoreComponents do
         @has_errors && "bg-red-200",
         @class
       ]}
-      phx-hook="SimpleForm"
       data-has-changes={# @has_changes}
       data-warn-on-exit={@warn_on_exit}
       x-data={@confirmation_required && "{ confirmed: false }"}

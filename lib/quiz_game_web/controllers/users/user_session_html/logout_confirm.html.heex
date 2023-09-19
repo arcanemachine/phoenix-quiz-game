@@ -3,7 +3,7 @@
     Are you sure you want to log out?
   </.crud_intro_text>
 
-  <.simple_form for={%{}} method="post">
+  <.simple_form id="logout-confirm-form" for={%{}} method="post">
     <.input type="csrf-token" />
     <:actions>
       <.form_button_cancel />
@@ -15,7 +15,7 @@
     You are already logged out.
   </.crud_intro_text>
 
-  <.simple_form for={%{}} id="logout-form">
+  <.simple_form for={%{}} id="logout-confirm-form">
     <:actions>
       <.link href={~p"/"}>
         <.form_button kind="secondary" content="Home" tabindex="-1" />

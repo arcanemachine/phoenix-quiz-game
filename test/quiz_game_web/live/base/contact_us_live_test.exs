@@ -24,16 +24,14 @@ defmodule QuizGameWeb.ContactUsLiveTest do
 
       # build form data
       form_data = %{
-        "contact_us" => %{
-          "name" => "some name",
-          "email" => "some_email@example.com",
-          "message" => "some message"
-        }
+        "name" => "some name",
+        "email" => "some_email@example.com",
+        "message" => "some message"
       }
 
       # submit the form and follow the redirect
       {:ok, resp_conn} =
-        form(lv, "#form_contact_us", form_data)
+        form(lv, "#contact-us-form", form_data)
         |> render_submit()
         |> follow_redirect(conn, ~p"/")
 

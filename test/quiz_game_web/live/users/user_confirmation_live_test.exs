@@ -39,7 +39,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
       # submit the form and follow the redirect
       {:ok, resp_conn} =
         lv
-        |> form("#confirmation_form")
+        |> form("#user-confirmation-form")
         |> render_submit()
         |> follow_redirect(conn, route(:users, :show))
 
@@ -61,7 +61,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
       # submit the form
       {:ok, resp_conn_2} =
         lv
-        |> form("#confirmation_form")
+        |> form("#user-confirmation-form")
         |> render_submit()
         |> follow_redirect(conn, ~p"/")
 
@@ -77,7 +77,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
       # submit the form and follow the redirect
       {:ok, resp_conn_3} =
         lv
-        |> form("#confirmation_form")
+        |> form("#user-confirmation-form")
         |> render_submit()
         |> follow_redirect(conn, route(:users, :show))
 
@@ -96,7 +96,7 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
       # submit the form and follow the redirect
       {:ok, resp_conn} =
         lv
-        |> form("#confirmation_form")
+        |> form("#user-confirmation-form")
         |> render_submit()
         |> follow_redirect(conn, ~p"/")
 

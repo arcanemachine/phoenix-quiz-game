@@ -48,7 +48,12 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
       <p>To confirm your new email address, open that email and click on the activation link.</p>
     </.crud_intro_text>
 
-    <.simple_form for={@email_form} id="email_form" phx-submit="email_update" phx-change="validate">
+    <.simple_form
+      id="user-update-email-form"
+      for={@email_form}
+      phx-submit="submit"
+      phx-change="validate"
+    >
       <.input
         field={@email_form[:email]}
         type="email"
@@ -60,7 +65,6 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
       <.input
         field={@email_form[:current_password]}
         name="current_password"
-        id="current_password_for_email"
         type="password"
         label="Confirm your password"
         value={@email_form_current_password}
@@ -93,7 +97,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
      )}
   end
 
-  def handle_event("email_update", params, socket) do
+  def handle_event("submit", params, socket) do
     %{"current_password" => password, "user" => user_params} = params
     user = socket.assigns.current_user
 

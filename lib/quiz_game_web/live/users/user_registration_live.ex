@@ -38,11 +38,11 @@ defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
     </.crud_intro_text>
 
     <.simple_form
+      id="user-registration-form"
       for={@form}
       has_errors={@check_errors}
       action={route(:users, :login) <> query_string(action: "registered")}
       method="post"
-      id="registration_form"
       phx-change="validate"
       phx-submit="save"
       phx-trigger-action={@trigger_submit}

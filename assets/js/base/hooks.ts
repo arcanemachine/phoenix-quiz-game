@@ -177,7 +177,7 @@ class SimpleFormHook extends Hook {
      * is configured to always warn before exiting.
      *
      * NOTE: Any function that uses the 'beforeunload' event will prevent the
-     * browser from caching that page. Therefore, this function will be bound
+     * browser from caching that page. Therefore, this function SHOULD be bound
      * to a listener only when the form currently has any modifications.
      */
     if (

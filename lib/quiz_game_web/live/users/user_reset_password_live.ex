@@ -20,6 +20,10 @@ defmodule QuizGameWeb.UsersLive.UserResetPasswordLive do
     {:ok, assign_form(socket, form_source), temporary_assigns: [form: nil]}
   end
 
+  defp assign_form(socket, %{} = source) do
+    assign(socket, :form, to_form(source, as: "user"))
+  end
+
   @impl true
   def render(assigns) do
     ~H"""
@@ -27,12 +31,7 @@ defmodule QuizGameWeb.UsersLive.UserResetPasswordLive do
       Fill out the form to finish resetting your password.
     </.crud_intro_text>
 
-    <.simple_form
-      for={@form}
-      id="password_reset_form"
-      phx-submit="password_reset"
-      phx-change="validate"
-    >
+    <.simple_form id="user-reset-password-form" for={@form} phx-change="validate" phx-submit="submit">
       <.input
         field={@form[:password]}
         type="password"
@@ -55,7 +54,7 @@ defmodule QuizGameWeb.UsersLive.UserResetPasswordLive do
   end
 
   @impl true
-  def handle_event("password_reset", %{"user" => user_params}, socket) do
+  def handle_event("submit", %{"user" => user_params}, socket) do
     # to avoid a leaked token giving the user access to the account, do not log the user in after
     # resetting their password
     case Users.reset_user_password(socket.assigns.user, user_params) do
@@ -83,9 +82,5 @@ defmodule QuizGameWeb.UsersLive.UserResetPasswordLive do
       |> put_flash(:error, "Reset password link is invalid, expired, or has already been used.")
       |> redirect(to: ~p"/")
     end
-  end
-
-  defp assign_form(socket, %{} = source) do
-    assign(socket, :form, to_form(source, as: "user"))
   end
 end

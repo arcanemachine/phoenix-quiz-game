@@ -76,27 +76,39 @@
 
 <section class="text-center">
   <div>
-    <.button kind="info" class="w-40 m-1" phx-click="flash-info-show">
+    <.button kind="info" class="w-40 m-1" phx-click="flash-show-info">
       Info Flash
     </.button>
-    <.button kind="success" class="w-40 m-1" phx-click="flash-success-show">
+    <.button kind="success" class="w-40 m-1" phx-click="flash-show-success">
       Success Flash
     </.button>
   </div>
   <div>
-    <.button kind="warning" class="w-40 m-1" phx-click="flash-warning-show">
+    <.button kind="warning" class="w-40 m-1" phx-click="flash-show-warning">
       Warning Flash
     </.button>
-    <.button kind="error" class="w-40 m-1" phx-click="flash-error-show">
+    <.button kind="error" class="w-40 m-1" phx-click="flash-show-error">
       Error Flash
     </.button>
   </div>
   <div>
-    <.button class="w-40 m-1" phx-click="flash-long-show">
+    <.button class="w-40 m-1" phx-click="flash-show-long">
       Long Flash
     </.button>
   </div>
 </section>
+
+<div class="my-8 divider" />
+
+<h3 class="mb-4 text-2xl text-center">Form Actions Default</h3>
+
+<div class="text-center">
+  <.simple_form id="component-showcase-form-actions-default-form" for={%{}}>
+    <:actions>
+      <.form_actions_default />
+    </:actions>
+  </.simple_form>
+</div>
 
 <div class="my-8 divider" />
 
@@ -184,6 +196,7 @@
 <h3 class="text-2xl text-center">Simple Form</h3>
 
 <.simple_form
+  id="component-showcase-simple-form"
   for={@form}
   has_errors={@form_has_errors}
   confirmation_required={true}
@@ -277,18 +290,6 @@
       Loader Demo
     </.button>
   </form>
-</div>
-
-<div class="my-8 divider" />
-
-<h3 class="mb-4 text-2xl text-center">Simple Form Actions Default</h3>
-
-<div class="text-center">
-  <.simple_form for={%{}}>
-    <:actions>
-      <.form_actions_default />
-    </:actions>
-  </.simple_form>
 </div>
 
 <div class="my-8 divider" />

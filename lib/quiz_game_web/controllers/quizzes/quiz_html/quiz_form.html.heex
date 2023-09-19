@@ -1,5 +1,6 @@
 <.simple_form
   :let={f}
+  id="quiz-form"
   for={@changeset}
   action=""
   data-subject={S.Changeset.get_changed_or_existing_value(@changeset, :subject)}
@@ -13,7 +14,6 @@
       $el.dataset.subject === 'math' && JSON.parse($el.dataset.showRandomMathQuestionOptions),
     subject: $el.dataset.subject,
   }"
-  x-title="quiz-edit-form"
 >
   <.input
     field={f[:name]}

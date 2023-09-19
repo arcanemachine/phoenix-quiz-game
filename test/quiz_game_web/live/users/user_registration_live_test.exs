@@ -48,7 +48,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
           )
       }
 
-      assert form(view, "#registration_form", form_data)
+      assert form(view, "#user-registration-form", form_data)
              # user is redirected to users:register_success
              |> render_submit() == {:error, {:redirect, %{to: route(:users, :register_success)}}}
     end
@@ -58,7 +58,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
 
       html_after_change =
         view
-        |> element("#registration_form")
+        |> element("#user-registration-form")
         |> render_change(
           user: %{
             "email" => "invalid email",
@@ -89,7 +89,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
       # submit the form
       html_after_submit =
         view
-        |> element("#registration_form")
+        |> element("#user-registration-form")
         |> render_submit(%{user: %{"username" => "", "display_name" => "", "email" => ""}})
 
       # still on same page due to form error(s)
@@ -116,7 +116,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
 
       html_after_submit =
         view
-        |> form("#registration_form", user: %{"username" => user.username})
+        |> form("#user-registration-form", user: %{"username" => user.username})
         |> render_submit()
 
       # form has expected error message(s)
@@ -136,7 +136,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
 
       html_after_submit =
         view
-        |> form("#registration_form", user: %{"email" => user.email})
+        |> form("#user-registration-form", user: %{"email" => user.email})
         |> render_submit()
 
       # form has expected error message

@@ -24,7 +24,12 @@
       >
         <div class="card-body text-center">
           <.modal_title title="Enter Your Name" />
-          <.simple_form for={%{}} class="max-w-xs mx-auto" phx-submit="submit-display-name">
+          <.simple_form
+            id="quiz-take-enter-display-name-form"
+            for={%{}}
+            class="max-w-xs mx-auto"
+            phx-submit="submit-display-name"
+          >
             <div class="-my-6">
               <.input
                 type="text"
@@ -66,7 +71,12 @@
     <% :before_start -> %>
       <div id="quiz-state-before-start" class="card w-full bg-primary/20 shadow-xl">
         <div class="card-body text-center">
-          <.simple_form for={%{}} class="max-w-sm mx-auto" phx-submit="start-quiz">
+          <.simple_form
+            id="quiz-take-before-start-form"
+            for={%{}}
+            class="max-w-sm mx-auto"
+            phx-submit="start-quiz"
+          >
             <p class="-mt-4">
               You are about to start the following quiz:
             </p>
@@ -132,6 +142,7 @@
         <div class="card-body text-center">
           <.modal_title title={@card.question} />
           <.simple_form
+            id="quiz-take-user-answer-form"
             for={%{}}
             class="max-w-xs mx-auto"
             warn_on_exit="always"

@@ -27,10 +27,14 @@ defmodule QuizGameWeb.UsersLive.UserUpdateDisplayNameLive do
       Fill out the form below to change your display name.
     </.crud_intro_text>
 
-    <.simple_form for={@form} id="form" phx-change="validate" phx-submit="submit">
+    <.simple_form
+      id="user-update-display-name-form"
+      for={@form}
+      phx-change="validate"
+      phx-submit="submit"
+    >
       <.input
         field={@form[:display_name]}
-        name="display_name"
         type="text"
         label="Your new display name"
         maxlength={User.display_name_length_max()}

@@ -18,7 +18,7 @@ defmodule QuizGameWeb.UsersLive.UserConfirmationLive do
         Click the button below to confirm your account.
       </.crud_intro_text>
 
-      <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
+      <.simple_form id="user-confirmation-form" for={@form} phx-submit="submit">
         <.input field={@form[:token]} type="hidden" />
         <:actions>
           <.form_button_submit content="Confirm my account" class="btn-lg w-full" />
@@ -29,7 +29,9 @@ defmodule QuizGameWeb.UsersLive.UserConfirmationLive do
   end
 
   @impl true
-  def handle_event("confirm_account", %{"user" => %{"token" => token}}, socket) do
+  def handle_event("submit", %{"user" => %{"token" => token}}, socket) do
+    ## Attempt to confirm the user's email address.
+
     # to avoid a leaked token giving the user access to the account, do not log the user in after
     # confirming their email
     case Users.confirm_user(token) do

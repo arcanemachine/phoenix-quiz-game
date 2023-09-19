@@ -71,23 +71,23 @@ defmodule QuizGameWeb.DevLive.ComponentShowcaseLive do
   end
 
   @impl Phoenix.LiveView
-  def handle_event("flash-info-show", _params, socket) do
+  def handle_event("flash-show-info", _params, socket) do
     {:noreply, socket |> put_flash(:info, "Info flash message")}
   end
 
-  def handle_event("flash-success-show", _params, socket) do
+  def handle_event("flash-show-success", _params, socket) do
     {:noreply, socket |> put_flash(:success, "Success flash message")}
   end
 
-  def handle_event("flash-warning-show", _params, socket) do
+  def handle_event("flash-show-warning", _params, socket) do
     {:noreply, socket |> put_flash(:warning, "Warning flash message")}
   end
 
-  def handle_event("flash-error-show", _params, socket) do
+  def handle_event("flash-show-error", _params, socket) do
     {:noreply, socket |> put_flash(:error, "Error flash message")}
   end
 
-  def handle_event("flash-long-show", _params, socket) do
+  def handle_event("flash-show-long", _params, socket) do
     {:noreply,
      socket
      |> put_flash(

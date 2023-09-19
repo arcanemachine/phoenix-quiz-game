@@ -29,7 +29,7 @@ defmodule QuizGameWeb.UserConfirmationInstructionsLiveTest do
       # submit the form and follow the redirect
       {:ok, resp_conn} =
         lv
-        |> form("#resend_confirmation_form", user: %{email: user.email})
+        |> form("#user-confirmation-instructions-form", user: %{email: user.email})
         |> render_submit()
         |> follow_redirect(conn, ~p"/")
 
@@ -53,7 +53,7 @@ defmodule QuizGameWeb.UserConfirmationInstructionsLiveTest do
       # submit the form and follow the redirect
       {:ok, resp_conn} =
         lv
-        |> form("#resend_confirmation_form", user: %{email: user.email})
+        |> form("#user-confirmation-instructions-form", user: %{email: user.email})
         |> render_submit()
         |> follow_redirect(conn, ~p"/")
 
@@ -70,7 +70,9 @@ defmodule QuizGameWeb.UserConfirmationInstructionsLiveTest do
       # submit the form and follow the redirect
       {:ok, resp_conn} =
         lv
-        |> form("#resend_confirmation_form", user: %{email: "invalid_email@example.com"})
+        |> form("#user-confirmation-instructions-form",
+          user: %{email: "invalid_email@example.com"}
+        )
         |> render_submit()
         |> follow_redirect(conn, ~p"/")
 

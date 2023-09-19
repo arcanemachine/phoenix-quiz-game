@@ -42,7 +42,7 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
       # submit the form
       html_after_submit =
         lv
-        |> form("#email_form", %{
+        |> form("#user-update-email-form", %{
           "current_password" => password,
           "user" => %{"email" => new_email}
         })
@@ -66,7 +66,7 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
       # change the form
       html_after_change =
         lv
-        |> element("#email_form")
+        |> element("#user-update-email-form")
         |> render_change(%{
           "action" => "email_update",
           "current_password" => "some_password",
@@ -93,7 +93,7 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
       # submit the form
       html_after_submit =
         lv
-        |> form("#email_form", %{
+        |> form("#user-update-email-form", %{
           "current_password" => "incorrect_password",
           "user" => %{"email" => user.email}
         })

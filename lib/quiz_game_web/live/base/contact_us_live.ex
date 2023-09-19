@@ -2,7 +2,7 @@ defmodule QuizGameWeb.BaseLive.ContactUsLive do
   use QuizGameWeb, :live_view
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, form: to_form(%{}, as: "contact_us"), page_title: "Contact Us")}
+    {:ok, assign(socket, form: to_form(%{}), page_title: "Contact Us")}
   end
 
   def render(assigns) do
@@ -12,7 +12,7 @@ defmodule QuizGameWeb.BaseLive.ContactUsLive do
       <p>If necessary, we will get back to you as soon as possible.</p>
     </.crud_intro_text>
 
-    <.simple_form for={@form} id="form_contact_us" phx-submit="submit">
+    <.simple_form id="contact-us-form" for={@form} phx-submit="submit">
       <.input field={@form[:name]} type="text" label="Your name" required />
       <.input field={@form[:email]} type="email" label="Your email" required />
       <.input field={@form[:message]} type="textarea" label="Message" required autocomplete="off" />
@@ -26,12 +26,12 @@ defmodule QuizGameWeb.BaseLive.ContactUsLive do
     """
   end
 
-  def handle_event("submit", %{"contact_us" => contact_us_form_params} = form_params, socket) do
+  def handle_event("submit", form_params, socket) do
     if QuizGameWeb.Support.HTML.Form.captcha_valid?(form_params) do
       QuizGame.Base.BaseNotifier.deliver_contact_us_form(
-        contact_us_form_params["name"],
-        contact_us_form_params["email"],
-        contact_us_form_params["message"]
+        form_params["name"],
+        form_params["email"],
+        form_params["message"]
       )
 
       success_message = "Contact form submitted successfully. Thank you for your feedback!"

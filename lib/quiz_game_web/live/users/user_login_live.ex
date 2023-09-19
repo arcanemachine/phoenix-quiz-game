@@ -19,8 +19,8 @@ defmodule QuizGameWeb.UsersLive.UserLoginLive do
     </.crud_intro_text>
 
     <.simple_form
+      id="user-login-form"
       for={@form}
-      id="login_form"
       action={route(:users, :login) <> query_string(@params)}
       phx-update="ignore"
     >

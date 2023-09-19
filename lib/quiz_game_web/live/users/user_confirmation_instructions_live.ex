@@ -16,7 +16,7 @@ defmodule QuizGameWeb.UsersLive.UserConfirmationInstructionsLive do
       Fill out the form, and we will send you an email with a link to confirm your account.
     </.crud_intro_text>
 
-    <.simple_form for={@form} id="resend_confirmation_form" phx-submit="send_instructions">
+    <.simple_form id="user-confirmation-instructions-form" for={@form} phx-submit="submit">
       <.input
         field={@form[:email]}
         type="email"
@@ -34,7 +34,7 @@ defmodule QuizGameWeb.UsersLive.UserConfirmationInstructionsLive do
   end
 
   @impl true
-  def handle_event("send_instructions", %{"user" => %{"email" => email}} = form_params, socket) do
+  def handle_event("submit", %{"user" => %{"email" => email}} = form_params, socket) do
     if QuizGameWeb.Support.HTML.Form.captcha_valid?(form_params) do
       if user = Users.get_user_by_email(email) do
         Users.deliver_email_verify_instructions(
