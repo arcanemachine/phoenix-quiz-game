@@ -1,4 +1,5 @@
-defmodule QuizGameWeb.UsersLive.UserConfirmationLive do
+defmodule QuizGameWeb.Users.Live.VerifyEmailConfirm do
+  @moduledoc false
   use QuizGameWeb, :live_view
   alias QuizGame.Users
 

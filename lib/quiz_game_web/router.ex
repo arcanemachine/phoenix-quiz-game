@@ -103,39 +103,39 @@ defmodule QuizGameWeb.Router do
   scope "/users/me", QuizGameWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    get "/", UserController, :show
-    get "/quizzes", UserController, :quizzes_index
-    get "/quizzes/records", UserController, :records_index
+    get "/", Users.Controller, :show
+    get "/quizzes", Users.Controller, :quizzes_index
+    get "/quizzes/records", Users.Controller, :records_index
 
     scope "/update" do
-      get "/", UserController, :settings
+      get "/", Users.Controller, :settings
 
       live_session :login_required,
         on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
-        live "/display-name", UsersLive.UserUpdateDisplayNameLive, :edit
-        live "/email", UsersLive.UserUpdateEmailLive, :edit
-        live "/email/:token", UsersLive.UserUpdateEmailLive, :confirm_email
-        live "/password", UsersLive.UserUpdatePasswordLive, :edit
+        live "/display-name", Users.Live.UpdateDisplayName, :edit
+        live "/email", Users.Live.UpdateEmail, :solicit
+        live "/email/:token", Users.Live.UpdateEmail, :confirm
+        live "/password", Users.Live.UpdatePassword, :edit
       end
     end
 
-    get "/delete", UserController, :delete_confirm
-    post "/delete", UserController, :delete
+    get "/delete", Users.Controller, :delete_confirm
+    post "/delete", Users.Controller, :delete
   end
 
   # USERS - logout required
   scope "/users", QuizGameWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
-    get "/register/success", UserSessionController, :register_success
-    post "/login", UserSessionController, :create
+    get "/register/success", Users.Session.Controller, :register_success
+    post "/login", Users.Session.Controller, :create
 
     live_session :logout_required,
       on_mount: [{QuizGameWeb.UserAuth, :redirect_if_user_is_authenticated}] do
-      live "/register", UsersLive.UserRegistrationLive, :new, as: :register
-      live "/login", UsersLive.UserLoginLive, :new, as: :login
-      live "/reset/password", UsersLive.UserForgotPasswordLive, :new
-      live "/reset/password/:token", UsersLive.UserResetPasswordLive, :edit
+      live "/register", Users.Live.Register, :new, as: :register
+      live "/login", Users.Live.Login, :new, as: :login
+      live "/reset/password", Users.Live.ResetPasswordSolicit, :new
+      live "/reset/password/:token", Users.Live.ResetPasswordConfirm, :edit
     end
   end
 
@@ -143,13 +143,13 @@ defmodule QuizGameWeb.Router do
   scope "/users", QuizGameWeb do
     pipe_through :browser
 
-    get "/logout", UserSessionController, :logout_confirm
-    post "/logout", UserSessionController, :logout
+    get "/logout", Users.Session.Controller, :logout_confirm
+    post "/logout", Users.Session.Controller, :logout
 
     live_session :allow_any_user,
       on_mount: [{QuizGameWeb.UserAuth, :mount_current_user}] do
-      live "/verify/email", UsersLive.UserConfirmationInstructionsLive, :new
-      live "/verify/email/:token", UsersLive.UserConfirmationLive, :edit
+      live "/verify/email", Users.Live.VerifyEmailSolicit, :new
+      live "/verify/email/:token", Users.Live.VerifyEmailConfirm, :edit
     end
   end
 

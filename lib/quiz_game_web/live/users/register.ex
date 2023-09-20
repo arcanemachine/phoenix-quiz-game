@@ -1,4 +1,5 @@
-defmodule QuizGameWeb.UsersLive.UserRegistrationLive do
+defmodule QuizGameWeb.Users.Live.Register do
+  @moduledoc false
   use QuizGameWeb, :live_view
 
   alias QuizGame.Users

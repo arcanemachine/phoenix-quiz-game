@@ -1,10 +1,12 @@
-defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
+defmodule QuizGameWeb.Users.Live.UpdateEmail do
+  @moduledoc false
   use QuizGameWeb, :live_view
 
   alias QuizGame.Users
   alias QuizGame.Users.User
 
   @impl true
+  # confirm
   def mount(%{"token" => token}, _session, socket) do
     socket =
       case Users.update_user_email(socket.assigns.current_user, token) do
@@ -22,6 +24,7 @@ defmodule QuizGameWeb.UsersLive.UserUpdateEmailLive do
     {:ok, push_navigate(socket, to: ~p"/users/me")}
   end
 
+  # solicit
   def mount(_params, _session, socket) do
     user = socket.assigns.current_user
     email_changeset = Users.change_user_email(user)

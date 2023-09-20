@@ -1,4 +1,5 @@
-defmodule QuizGameWeb.UserSessionController do
+defmodule QuizGameWeb.Users.Session.Controller do
+  @moduledoc false
   use QuizGameWeb, :controller
 
   import QuizGameWeb.Support.Conn, only: [text_response: 3]
