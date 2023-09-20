@@ -155,15 +155,15 @@ defmodule QuizGameWeb.Router do
 
   # SUPPORT - admin
   use Kaffy.Routes,
-    scope: "/support/admin",
+    scope: "/admin",
     pipe_through: [:fetch_current_user, :require_admin_user]
 
   # SUPPORT - dev
   if Application.compile_env(:quiz_game, :dev_routes) do
     import Phoenix.LiveDashboard.Router
-    alias QuizGameWeb.DevLive
+    alias QuizGameWeb.Dev
 
-    scope "/support/dev" do
+    scope "/dev" do
       pipe_through :browser
 
       # built-in routes
@@ -171,7 +171,7 @@ defmodule QuizGameWeb.Router do
       forward "/mailbox", Plug.Swoosh.MailboxPreview
 
       # custom project routes
-      live("/component-showcase", DevLive.ComponentShowcaseLive)
+      live("/component-showcase", Dev.Live.ComponentShowcase)
     end
   end
 end

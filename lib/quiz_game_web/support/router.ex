@@ -4,10 +4,13 @@ defmodule QuizGameWeb.Support.Router do
   use QuizGameWeb, :verified_routes
 
   @typedoc "The contexts available for route matching."
-  @type context :: :core | :quizzes | :users
+  @type context :: :core | :dev | :quizzes | :users
 
   @typedoc "The actions available in the core context."
   @type core_action :: :root | :contact_us | :privacy_policy | :terms_of_use
+
+  @typedoc "The actions available in the dev context."
+  @type dev_action :: :component_showcase
 
   @typedoc "Generic dead view CRUD actions"
   @type dead_crud_action :: :index | :new | :create | :show
@@ -69,6 +72,13 @@ defmodule QuizGameWeb.Support.Router do
       :contact_us -> ~p"/contact-us"
       :privacy_policy -> ~p"/privacy-policy"
       :terms_of_use -> ~p"/terms-of-use"
+    end
+  end
+
+  @spec route(:dev, dev_action, keyword()) :: String.t()
+  def route(:dev, action, _params) do
+    case action do
+      :component_showcase -> "/dev/component-showcase"
     end
   end
 

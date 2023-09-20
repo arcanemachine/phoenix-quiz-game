@@ -1,8 +1,11 @@
-defmodule QuizGameWeb.DevLive.ComponentShowcaseLive do
+defmodule QuizGameWeb.Dev.Live.ComponentShowcase do
+  @moduledoc false
   use QuizGameWeb, :live_view
 
   # data
   defmodule FormData do
+    @moduledoc false
+
     @types %{
       text: :string,
       email: :string,
@@ -28,6 +31,7 @@ defmodule QuizGameWeb.DevLive.ComponentShowcaseLive do
   end
 
   defmodule TableRow do
+    @moduledoc false
     defstruct id: 0, col1: "Value 1", col2: "Value 2"
   end
 
