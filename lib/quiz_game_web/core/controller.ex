@@ -1,4 +1,5 @@
-defmodule QuizGameWeb.BaseController do
+defmodule QuizGameWeb.Core.Controller do
+  @moduledoc false
   use QuizGameWeb, :controller
 
   def root(conn, _params) do

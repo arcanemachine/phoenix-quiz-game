@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <%!-- meta --%>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <meta
+      name="description"
+      content={
+        assigns[:tag_meta_description] ||
+          "A fun and educational quiz game. Practice alone, or compete against your peers!"
+      }
+    />
+
+    <%!-- title --%>
+    <.live_title suffix={" - #{Application.get_env(:quiz_game, :project_name)}"}>
+      <%= assigns[:tag_title] || assigns[:page_title] ||
+        Application.get_env(:quiz_game, :project_name) %>
+    </.live_title>
+
+    <%!-- css --%>
+    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+
+    <%!-- js --%>
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"} />
+
+    <script>
+      <%!-- if saved theme exists, then set theme before initial render --%>
+      if (localStorage.getItem("theme"))
+        document.documentElement.dataset.theme = localStorage.getItem("theme");
+    </script>
+  </head>
+  <body class="flex flex-col h-full bg-base-100 antialiased">
+    <%!-- navbar --%>
+    <section class="w-full lg:p-2">
+      <nav class="navbar max-w-[100rem] mx-auto py-0 pe-3 bg-brand text-slate-300 lg:rounded-box
+                  lg:shadow-lg lg:shadow-black/20">
+        <%!-- navbar start items --%>
+        <div class="flex-1">
+          <%!-- navbar title --%>
+          <.link navigate="/" class="pl-4 text-2xl !text-slate-300 normal-case btn btn-ghost">
+            Quiz Game
+          </.link>
+        </div>
+
+        <%!-- navbar end items --%>
+        <div class="mr-1 flex-none">
+          <%!-- user actions menu --%>
+          <details
+            class="dropdown dropdown-end"
+            x-data
+            x-title="menu-user-actions"
+            x-on:click.outside="$el.removeAttribute('open')"
+          >
+            <summary
+              class="m-1 btn btn-ghost focus:ring-2"
+              x-tooltip="{ content: 'User Actions', placement: 'left' }"
+              @focus="$el.removeAttribute('open')"
+            >
+              <.icon name="hero-user-circle-solid" class="h-7 w-7" />
+            </summary>
+            <ul class="w-52 p-2 shadow menu dropdown-content bg-base-100 text-base-content
+                       n-transition-background rounded-box rounded-tr-md border-1
+                       border-secondary">
+              <div class="mt-2 mb-3 text-lg text-center font-bold select-none">
+                User Actions
+              </div>
+              <%= if @current_user do %>
+                <li>
+                  <.link href={~p"/users/me"}>Your profile</.link>
+                </li>
+                <li>
+                  <.link href={~p"/users/logout"}>Logout</.link>
+                </li>
+              <% else %>
+                <li>
+                  <.link href={~p"/users/login"}>Login</.link>
+                </li>
+                <li>
+                  <.link href={~p"/users/register"}>Register</.link>
+                </li>
+              <% end %>
+            </ul>
+          </details>
+
+          <%!-- settings menu --%>
+          <div
+            x-data="{ show: false }"
+            x-title="menu-navbar-settings"
+            x-on:click="show = true"
+            @keyup.escape="show = false"
+          >
+            <button
+              class="btn-ghost btn-square btn m-1"
+              x-tooltip="{ content: 'Settings', placement: 'left' }"
+            >
+              <.icon name="hero-cog-6-tooth-solid" class="h-7 w-7" />
+            </button>
+
+            <div
+              class="modal !bg-base-100/50 text-base-content"
+              x-bind:class="show && 'modal-open'"
+            >
+              <div
+                class="relative max-w-xs modal-box border-2 overflow-x-hidden"
+                x-show="show"
+                x-transition.duration.500ms
+                x-trap.inert.noscroll.noreturn="show"
+                x-on:click.outside="show = false"
+              >
+                <div class="mb-12 text-3xl font-bold text-center">Settings</div>
+                <button
+                  x-on:click.stop="show = false"
+                  class="absolute -right-2 -top-2 btn btn-lg btn-circle btn-ghost"
+                >
+                  ✕
+                </button>
+
+                <div class="flex justify-between align-center h-12 w-full max-w-xs my-4 ml-1">
+                  <div class="w-full my-auto pr-6 text-lg font-semibold text-center">
+                    <label for="settings-modal-theme-select">Theme</label>
+                  </div>
+                  <div x-data="themeSelect" x-title="theme-select">
+                    <select
+                      id="settings-modal-theme-select"
+                      class="select select-bordered"
+                      name="theme"
+                      x-model="theme"
+                      @change="handleChange"
+                    >
+                      <option>Auto</option>
+                      <option>Light</option>
+                      <option>Dark</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-control mt-12 w-full max-w-xs">
+                  <button class="btn btn-secondary" x-on:click.stop="show = false">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </section>
+
+    <noscript>
+      <div class="py-4 text-3xl bg-warning text-black text-center">
+        You must enable Javascript to enable full functionality for this website.
+      </div>
+    </noscript>
+
+    <main class="grow flex flex-col max-w-4xl mt-4 mx-auto mb-20 container px-4 sm:px-10 md:px-20">
+      <%= @inner_content %>
+    </main>
+
+    <%!-- footer --%>
+    <section class="w-full lg:p-2">
+      <%!-- limit max width of footer by nesting it inside a full-width element --%>
+      <footer class="max-w-[100rem] mx-auto py-6 bg-brand text-slate-300 text-center
+                  lg:rounded-box lg:shadow-xl lg:shadow-black/20">
+        <ul class="list-none">
+          <li>
+            <div class="text-xl font-bold">
+              <%= Application.get_env(:quiz_game, :project_name) %>
+            </div>
+          </li>
+
+          <%!-- project links --%>
+          <li class="mt-6">
+            <.link href={~p"/"} class="!text-slate-300">
+              Home
+            </.link>
+          </li>
+
+          <%!-- extra links --%>
+          <li class="mt-6">
+            <.link href={route(:core, :terms_of_use)} class="!text-slate-300">
+              Terms of Use
+            </.link>
+          </li>
+          <li class="mt-2">
+            <.link href={route(:core, :privacy_policy)} class="!text-slate-300">
+              Privacy Policy
+            </.link>
+          </li>
+          <li class="mt-2">
+            <.link href={route(:core, :contact_us)} class="!text-slate-300">
+              Contact Us
+            </.link>
+          </li>
+
+          <%!-- legal stuff --%>
+          <li class="mt-6 font-bold">
+            <small>
+              &copy; Copyright <%= DateTime.utc_now().year %>. All rights reserved.
+            </small>
+          </li>
+        </ul>
+      </footer>
+    </section>
+
+    <%!-- toasts --%>
+    <div
+      id="toast-container"
+      x-data
+      x-on:clear="$store.toasts.clear()"
+      x-on:phx:toast-show-primary.window="(evt) => $store.toasts.show('primary', evt.detail)"
+      x-on:phx:toast-show-secondary.window="(evt) => $store.toasts.show('secondary', evt.detail)"
+      x-on:phx:toast-show-accent.window="(evt) => $store.toasts.show('accent', evt.detail)"
+      x-on:phx:toast-show-neutral.window="(evt) => $store.toasts.show('neutral', evt.detail)"
+      x-on:phx:toast-show-info.window="(evt) => $store.toasts.show('info', evt.detail)"
+      x-on:phx:toast-show-success.window="(evt) => $store.toasts.show('success', evt.detail)"
+      x-on:phx:toast-show-warning.window="(evt) => $store.toasts.show('warning', evt.detail)"
+      x-on:phx:toast-show-error.window="(evt) => $store.toasts.show('error', evt.detail)"
+    />
+
+    <template x-if="location.hostname === 'phoenix-quiz-game.nicholasmoen.com'">
+      <script
+        defer
+        data-domain="phoenix-quiz-game.nicholasmoen.com"
+        src="https://pls.moendigitalservices.com/js/pl.js"
+      />
+    </template>
+  </body>
+</html>

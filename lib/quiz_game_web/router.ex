@@ -16,17 +16,17 @@ defmodule QuizGameWeb.Router do
     plug :fetch_current_user
   end
 
-  # BASE - allow any user
+  # CORE - allow any user
   scope "/", QuizGameWeb do
     pipe_through :browser
 
-    get "/", BaseController, :root
-    live "/contact-us", BaseLive.ContactUsLive, :contact_us
-    get "/privacy-policy", BaseController, :privacy_policy
-    get "/terms-of-use", BaseController, :terms_of_use
+    get "/", Core.Controller, :root
+    live "/contact-us", Core.Live.ContactUs, :contact_us
+    get "/privacy-policy", Core.Controller, :privacy_policy
+    get "/terms-of-use", Core.Controller, :terms_of_use
   end
 
-  # quizzes
+  # QUIZZES
   scope "/quizzes", QuizGameWeb.Quizzes do
     pipe_through [:browser]
 

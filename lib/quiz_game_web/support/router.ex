@@ -1,11 +1,13 @@
 defmodule QuizGameWeb.Support.Router do
   @moduledoc "This project's router helpers."
 
-  @typedoc "The contexts available for route matching."
-  @type context :: :base | :quizzes | :users
+  use QuizGameWeb, :verified_routes
 
-  @typedoc "The actions available in the base context."
-  @type base_action :: :root | :contact_us | :privacy_policy | :terms_of_use
+  @typedoc "The contexts available for route matching."
+  @type context :: :core | :quizzes | :users
+
+  @typedoc "The actions available in the core context."
+  @type core_action :: :root | :contact_us | :privacy_policy | :terms_of_use
 
   @typedoc "Generic dead view CRUD actions"
   @type dead_crud_action :: :index | :new | :create | :show
@@ -60,62 +62,62 @@ defmodule QuizGameWeb.Support.Router do
   @spec route(context, atom(), keyword()) :: String.t()
   def route(context, action, params)
 
-  @spec route(:base, base_action, keyword()) :: String.t()
-  def route(:base, action, _params) do
+  @spec route(:core, core_action, keyword()) :: String.t()
+  def route(:core, action, _params) do
     case action do
-      :root -> "/"
-      :contact_us -> "/contact-us"
-      :privacy_policy -> "/privacy-policy"
-      :terms_of_use -> "/terms-of-use"
+      :root -> ~p"/"
+      :contact_us -> ~p"/contact-us"
+      :privacy_policy -> ~p"/privacy-policy"
+      :terms_of_use -> ~p"/terms-of-use"
     end
   end
 
   # credo:disable-for-next-line
   def route(:quizzes, action, params) do
     case action do
-      :index -> "/quizzes"
-      :index_subject -> "/quizzes/subjects/#{Keyword.fetch!(params, :subject)}"
-      :new -> "/quizzes/new"
-      :new_random -> "/quizzes/random"
-      :create -> "/quizzes/new"
-      :edit -> "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/update"
-      :update -> "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/update"
-      n when n in [:show, :delete] -> "/quizzes/#{Keyword.fetch!(params, :quiz_id)}"
-      :take -> "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/take"
-      :take_random -> "/quizzes/random/take"
-      :stats -> "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/stats"
+      :index -> ~p"/quizzes"
+      :index_subject -> ~p"/quizzes/subjects/#{Keyword.fetch!(params, :subject)}"
+      :new -> ~p"/quizzes/new"
+      :new_random -> ~p"/quizzes/random"
+      :create -> ~p"/quizzes/new"
+      :edit -> ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/update"
+      :update -> ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/update"
+      n when n in [:show, :delete] -> ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}"
+      :take -> ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/take"
+      :take_random -> ~p"/quizzes/random/take"
+      :stats -> ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/stats"
     end
   end
 
   def route(:quizzes_cards, action, params) do
     case action do
       :index ->
-        "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards"
+        ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards"
 
       :new ->
-        "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/new"
+        ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/new"
 
       :create ->
-        "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards"
+        ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards"
 
       :show ->
-        "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/#{Keyword.fetch!(params, :card_id)}"
+        ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/#{Keyword.fetch!(params, :card_id)}"
 
       :edit ->
-        "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/#{Keyword.fetch!(params, :card_id)}/update"
+        ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/#{Keyword.fetch!(params, :card_id)}/update"
 
       n when n in [:show, :update, :delete] ->
-        "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/#{Keyword.fetch!(params, :card_id)}"
+        ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/#{Keyword.fetch!(params, :card_id)}"
     end
   end
 
   def route(:quizzes_records, action, params) do
     case action do
       :index ->
-        "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/records"
+        ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/records"
 
       :show ->
-        "/quizzes/#{Keyword.fetch!(params, :quiz_id)}/records/#{Keyword.fetch!(params, :record_id)}"
+        ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/records/#{Keyword.fetch!(params, :record_id)}"
     end
   end
 
@@ -123,27 +125,27 @@ defmodule QuizGameWeb.Support.Router do
   def route(:users, action, params) do
     case action do
       # auth
-      :register -> "/users/register"
-      :register_success -> "/users/register/success"
-      :login -> "/users/login"
-      :logout_confirm -> "/users/logout"
-      :logout -> "/users/logout"
-      :reset_password_solicit -> "/users/reset/password"
-      :reset_password_confirm -> "/users/reset/password/#{Keyword.fetch!(params, :token)}"
-      :verify_email_solicit -> "/users/verify/email"
-      :verify_email_confirm -> "/users/verify/email/#{Keyword.fetch!(params, :token)}"
+      :register -> ~p"/users/register"
+      :register_success -> ~p"/users/register/success"
+      :login -> ~p"/users/login"
+      :logout_confirm -> ~p"/users/logout"
+      :logout -> ~p"/users/logout"
+      :reset_password_solicit -> ~p"/users/reset/password"
+      :reset_password_confirm -> ~p"/users/reset/password/#{Keyword.fetch!(params, :token)}"
+      :verify_email_solicit -> ~p"/users/verify/email"
+      :verify_email_confirm -> ~p"/users/verify/email/#{Keyword.fetch!(params, :token)}"
       # crud
-      :show -> "/users/me"
-      :settings -> "/users/me/update"
-      :update_display_name -> "/users/me/update/display-name"
-      :update_email_solicit -> "/users/me/update/email"
-      :update_email_confirm -> "/users/me/update/email/#{Keyword.fetch!(params, :token)}"
-      :update_password -> "/users/me/update/password"
-      :delete_confirm -> "/users/me/delete"
-      :delete -> "/users/me/delete"
+      :show -> ~p"/users/me"
+      :settings -> ~p"/users/me/update"
+      :update_display_name -> ~p"/users/me/update/display-name"
+      :update_email_solicit -> ~p"/users/me/update/email"
+      :update_email_confirm -> ~p"/users/me/update/email/#{Keyword.fetch!(params, :token)}"
+      :update_password -> ~p"/users/me/update/password"
+      :delete_confirm -> ~p"/users/me/delete"
+      :delete -> ~p"/users/me/delete"
       # quizzes
-      :quizzes_index -> "/users/me/quizzes"
-      :records_index -> "/users/me/quizzes/records"
+      :quizzes_index -> ~p"/users/me/quizzes"
+      :records_index -> ~p"/users/me/quizzes/records"
     end
   end
 end

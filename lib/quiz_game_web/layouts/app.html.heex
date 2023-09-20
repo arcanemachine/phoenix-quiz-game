@@ -1,0 +1,12 @@
+<%!-- page title/subtitle --%>
+<section :if={assigns[:page_title] || assigns[:page_subtitle]} class="mb-8">
+  <h1 :if={assigns[:page_title]} class="text-4xl text-center font-bold">
+    <%= assigns[:page_title] %>
+  </h1>
+  <h2 :if={assigns[:page_subtitle]} class="mt-1 text-xl text-center">
+    <%= assigns[:page_subtitle] %>
+  </h2>
+</section>
+
+<%= @inner_content %>
+<.flash_group flash={@flash} />

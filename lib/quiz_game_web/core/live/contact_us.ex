@@ -1,4 +1,5 @@
-defmodule QuizGameWeb.BaseLive.ContactUsLive do
+defmodule QuizGameWeb.Core.Live.ContactUs do
+  @moduledoc false
   use QuizGameWeb, :live_view
 
   def mount(_params, _session, socket) do
@@ -28,7 +29,7 @@ defmodule QuizGameWeb.BaseLive.ContactUsLive do
 
   def handle_event("submit", form_params, socket) do
     if QuizGameWeb.Support.HTML.Form.captcha_valid?(form_params) do
-      QuizGame.Base.BaseNotifier.deliver_contact_us_form(
+      QuizGame.Core.CoreNotifier.deliver_contact_us_form(
         form_params["name"],
         form_params["email"],
         form_params["message"]

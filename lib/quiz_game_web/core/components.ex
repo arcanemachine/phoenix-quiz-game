@@ -1,5 +1,5 @@
-defmodule QuizGameWeb.CoreComponents do
-  @moduledoc "Provides core UI components."
+defmodule QuizGameWeb.Components.Core do
+  @moduledoc "Core Phoenix function components."
 
   use Phoenix.Component, global_prefixes: ~w(x-)
   use QuizGameWeb, :verified_routes

@@ -41,7 +41,6 @@ defmodule QuizGameWeb.Presence do
   defp data_from_metas(metas) do
     Enum.map(metas, &get_in(&1, [:data]))
     |> List.flatten()
-    # |> Enum.map(&Map.get(&1, :email))
     |> Enum.uniq()
   end
 end

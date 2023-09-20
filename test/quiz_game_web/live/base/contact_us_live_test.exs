@@ -9,7 +9,7 @@ defmodule QuizGameWeb.ContactUsLiveTest do
   import QuizGame.TestSupport.Assertions
   import QuizGameWeb.Support.Router
 
-  @contact_us_url route(:base, :contact_us)
+  @contact_us_url route(:core, :contact_us)
 
   describe "ContactUsLive page" do
     test "renders expected markup", %{conn: conn} do

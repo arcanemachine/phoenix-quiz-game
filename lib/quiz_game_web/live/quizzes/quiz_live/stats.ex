@@ -2,7 +2,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Stats do
   use QuizGameWeb, :live_view
 
   import Ecto.Query
-  import QuizGameWeb.Components.Quizzes
+  import QuizGameWeb.Quizzes.Components
 
   alias QuizGame.Quizzes.Quiz
   alias QuizGame.Repo

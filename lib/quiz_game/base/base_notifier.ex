@@ -1,5 +1,5 @@
-defmodule QuizGame.Base.BaseNotifier do
-  @moduledoc "The base notifier context."
+defmodule QuizGame.Core.CoreNotifier do
+  @moduledoc "The core notifier context."
   import Swoosh.Email
   alias QuizGame.Mailer
 
