@@ -1,4 +1,5 @@
-defmodule QuizGameWeb.Quizzes.RecordController do
+defmodule QuizGameWeb.Quizzes.Record.Controller do
+  @moduledoc false
   use QuizGameWeb, :controller
 
   import Ecto.Query
@@ -17,8 +18,4 @@ defmodule QuizGameWeb.Quizzes.RecordController do
       records: records
     )
   end
-
-  # def show(conn, _params) do
-  #   render(conn, :show, page_title: "Quiz Record Info", quiz: conn.assigns.quiz)
-  # end
 end

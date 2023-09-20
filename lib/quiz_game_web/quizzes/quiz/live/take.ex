@@ -1,4 +1,5 @@
-defmodule QuizGameWeb.Quizzes.QuizLive.Take do
+defmodule QuizGameWeb.Quizzes.Quiz.Live.Take do
+  @moduledoc false
   use QuizGameWeb, :live_view
 
   import Ecto.Query

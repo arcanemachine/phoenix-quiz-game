@@ -1,4 +1,5 @@
-defmodule QuizGameWeb.Quizzes.CardLive.Show do
+defmodule QuizGameWeb.Quizzes.Card.Live.Show do
+  @moduledoc false
   use QuizGameWeb, :live_view
 
   import Ecto.Query
@@ -36,7 +37,7 @@ defmodule QuizGameWeb.Quizzes.CardLive.Show do
   end
 
   @impl true
-  def handle_info({QuizGameWeb.Quizzes.CardLive.FormComponent, {:saved, card}}, socket) do
+  def handle_info({QuizGameWeb.Quizzes.Card.Live.FormComponent, {:saved, card}}, socket) do
     # update the saved card after saving the form
     {:noreply, socket |> assign(card: card)}
   end

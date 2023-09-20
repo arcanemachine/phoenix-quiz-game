@@ -1,4 +1,5 @@
-defmodule QuizGameWeb.Quizzes.QuizLive.Stats do
+defmodule QuizGameWeb.Quizzes.Quiz.Live.Stats do
+  @moduledoc false
   use QuizGameWeb, :live_view
 
   import Ecto.Query
@@ -7,7 +8,7 @@ defmodule QuizGameWeb.Quizzes.QuizLive.Stats do
   alias QuizGame.Quizzes.Quiz
   alias QuizGame.Repo
   alias QuizGameWeb.{Endpoint, Presence}
-  alias QuizGameWeb.Quizzes.QuizLive.Take
+  alias QuizGameWeb.Quizzes.Quiz.Live.Take
 
   @presence_topic "quiz_presence"
 

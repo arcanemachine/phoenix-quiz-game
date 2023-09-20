@@ -17,13 +17,13 @@ defmodule QuizGameWeb.Router do
   end
 
   # CORE - allow any user
-  scope "/", QuizGameWeb do
+  scope "/", QuizGameWeb.Core do
     pipe_through :browser
 
-    get "/", Core.Controller, :root
-    live "/contact-us", Core.Live.ContactUs, :contact_us
-    get "/privacy-policy", Core.Controller, :privacy_policy
-    get "/terms-of-use", Core.Controller, :terms_of_use
+    get "/", Controller, :root
+    live "/contact-us", Live.ContactUs, :contact_us
+    get "/privacy-policy", Controller, :privacy_policy
+    get "/terms-of-use", Controller, :terms_of_use
   end
 
   # QUIZZES
@@ -31,46 +31,46 @@ defmodule QuizGameWeb.Router do
     pipe_through [:browser]
 
     # index views
-    get "/", QuizController, :index
-    get "/subjects/:subject", QuizController, :index_subject
+    get "/", Quiz.Controller, :index
+    get "/subjects/:subject", Quiz.Controller, :index_subject
 
     # randomly-generated quizzes
-    get "/random", QuizController, :new_random
+    get "/random", Quiz.Controller, :new_random
 
     live_session :quiz_take_random,
       on_mount: [{QuizGameWeb.UserAuth, :mount_current_user}] do
-      live "/random/take", QuizLive.Take, :take_random
+      live "/random/take", Quiz.Live.Take, :take_random
     end
 
     scope "/" do
       pipe_through [:require_authenticated_user]
 
-      get "/new", QuizController, :new
-      post "/new", QuizController, :create
+      get "/new", Quiz.Controller, :new
+      post "/new", Quiz.Controller, :create
     end
 
     scope "/:quiz_id" do
       pipe_through [:fetch_quiz]
 
       # quizzes
-      get "/", QuizController, :show
+      get "/", Quiz.Controller, :show
 
       live_session :quiz_take,
         on_mount: [{QuizGameWeb.UserAuth, :mount_current_user}] do
-        live "/take", QuizLive.Take, :take
+        live "/take", Quiz.Live.Take, :take
       end
 
       scope "/" do
         pipe_through [:require_authenticated_user, :require_quiz_permissions]
 
-        get "/update", QuizController, :edit
-        put "/update", QuizController, :update
-        patch "/update", QuizController, :update
-        delete "/", QuizController, :delete
+        get "/update", Quiz.Controller, :edit
+        put "/update", Quiz.Controller, :update
+        patch "/update", Quiz.Controller, :update
+        delete "/", Quiz.Controller, :delete
 
         live_session :quizzes_login_required_quiz_permission_required,
           on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
-          live "/stats", QuizLive.Stats, :stats
+          live "/stats", Quiz.Live.Stats, :stats
         end
       end
 
@@ -78,14 +78,14 @@ defmodule QuizGameWeb.Router do
       scope "/cards" do
         pipe_through [:require_authenticated_user, :require_quiz_permissions]
 
-        live "/", CardLive.Index, :index
+        live "/", Card.Live.Index, :index
 
         live_session :quizzes_cards_login_required,
           on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
-          live "/new", CardLive.Index, :new
+          live "/new", Card.Live.Index, :new
 
-          live "/:card_id", CardLive.Show, :show
-          live "/:card_id/update", CardLive.Show, :edit
+          live "/:card_id", Card.Live.Show, :show
+          live "/:card_id/update", Card.Live.Show, :edit
         end
       end
 
@@ -93,8 +93,8 @@ defmodule QuizGameWeb.Router do
       scope "/records" do
         pipe_through [:require_authenticated_user, :require_quiz_permissions]
 
-        get "/", RecordController, :index
-        put "/:record_id", RecordController, :show
+        get "/", Record.Controller, :index
+        put "/:record_id", Record.Controller, :show
       end
     end
   end

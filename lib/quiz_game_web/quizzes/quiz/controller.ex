@@ -1,4 +1,5 @@
-defmodule QuizGameWeb.Quizzes.QuizController do
+defmodule QuizGameWeb.Quizzes.Quiz.Controller do
+  @moduledoc false
   use QuizGameWeb, :controller
 
   import Ecto.Query
