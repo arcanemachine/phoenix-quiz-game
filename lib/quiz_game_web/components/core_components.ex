@@ -162,7 +162,7 @@ defmodule QuizGameWeb.CoreComponents do
 
   ## Examples
 
-      <.back navigate={"/posts"} class="mt-8" confirm={"Are you sure?"}>
+      <.back navigate={"/posts"} class="mt-8" confirm="Are you sure?">
         Back to posts
       </.back>
   """
@@ -174,9 +174,9 @@ defmodule QuizGameWeb.CoreComponents do
 
   def back(assigns) do
     ~H"""
-    <div class={["-mt-2 mb-4", @class]}>
+    <div class={@class}>
       <.link
-        class="p-2"
+        class="flex items-center gap-2 py-1 text-sm font-semibold"
         navigate={@navigate}
         data-confirm={@confirm}
         x-data={!@navigate && ""}
@@ -184,7 +184,8 @@ defmodule QuizGameWeb.CoreComponents do
           !@navigate && "$el.dataset.confirm && confirm($el.dataset.confirm) && history.go(-1)"
         }
       >
-        <.icon name="hero-arrow-left-solid" class="h-4 w-4" /><%= render_slot(@inner_block) %>
+        <.icon name="hero-arrow-small-left" class="h-5 w-5" />
+        <%= render_slot(@inner_block) %>
       </.link>
     </div>
     """
@@ -232,8 +233,8 @@ defmodule QuizGameWeb.CoreComponents do
 
   def error(assigns) do
     ~H"""
-    <p class="flex items-center gap-3 mb-1 text-sm font-semibold text-error phx-no-feedback:hidden">
-      <.icon name="hero-arrow-small-up" class="h-5 w-5 flex-none" />
+    <p class="flex items-center gap-2 mb-1 text-sm font-semibold text-error phx-no-feedback:hidden">
+      <.icon name="hero-arrow-small-up" class="h-5 w-5" />
       <%= render_slot(@inner_block) %>
     </p>
     """
