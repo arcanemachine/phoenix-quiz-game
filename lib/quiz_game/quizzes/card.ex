@@ -12,7 +12,7 @@ defmodule QuizGame.Quizzes.Card do
     field :question, :string
 
     field :format, Ecto.Enum,
-      values: [:multiple_choice, :number_entry, :true_or_false, :text_entry]
+      values: [:multiple_choice, :number_entry, :text_entry, :true_or_false]
 
     # field :image, :string
 

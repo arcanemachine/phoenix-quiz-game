@@ -1,6 +1,15 @@
 defmodule QuizGameWeb.Support.Atom do
   @moduledoc "This project's `Atom`-related helper functions."
 
+  @doc """
+  Converts an atom to a human-friendly string by converting underscores to spaces, and by
+  capitalizing the first letter of the atom.
+
+  ## Examples
+
+      iex> QuizGameWeb.Support.Atom.to_human_friendly_string(:hello_world)
+      "Hello world"
+  """
   def to_human_friendly_string(atom) do
     Atom.to_string(atom) |> String.replace("_", " ") |> String.capitalize()
   end
@@ -10,16 +19,16 @@ defmodule QuizGameWeb.Support.Changeset do
   @moduledoc "This project's `Ecto.Changeset`-related helper functions."
 
   @doc """
-    Checks a changeset's changed and existing data for a given field, and returns the most
-    up-to-date value.
+  Checks a changeset's changed and existing data for a given field, and returns the most
+  up-to-date value.
 
-    ## Examples
+  ## Examples
 
-      iex> get_changed_or_existing_value(changeset, :field_with_data_in_changes)
-      "changed value"
+    iex> get_changed_or_existing_value(%Ecto.Changeset{}, :field_without_changed_data)
+    "initial value"
 
-      iex> get_changed_or_existing_value(changeset, :field_with_no_data_in_changes)
-      "data value"
+    iex> get_changed_or_existing_value(%Ecto.Changeset{}, :field_with_changed_data)
+    "changed value"
   """
   @spec get_changed_or_existing_value(Ecto.Changeset.t(), atom()) :: any()
   def get_changed_or_existing_value(changeset, field) do
@@ -39,12 +48,15 @@ defmodule QuizGameWeb.Support.Conn do
   @type resp_body :: String.t() | nil
 
   @doc """
-    Return a HTTP text response with a given status code.
+  Return a HTTP text response with a given status code.
 
-    ## Examples
+  ## Examples
 
-      iex> text_response(conn, 401)
-      iex> text_response(conn, 401, "You are not authorized to view this page.")
+    iex> text_response(%Plug.Conn{}, 401)
+    %Plug.Conn{status: 401}
+
+    iex> text_response(%Plug.Conn{}, 401, "You are not authorized to view this page.")
+    %Plug.Conn{status: 401, resp_body: "You are not authorized to view this page."}
   """
   @spec text_response(conn, integer(), resp_body) :: any()
   def text_response(%Plug.Conn{} = conn, status, resp_body \\ nil) do
@@ -61,12 +73,12 @@ defmodule QuizGameWeb.Support.Ecto do
   @moduledoc "This project's `Ecto`-related helper functions."
 
   @doc """
-    Returns a list of options for a given `Ecto.Enum` field.
+  Returns a list of options for a given `Ecto.Enum` field.
 
-    ## Examples
+  ## Examples
 
-      iex> get_enum_field_options(Card, :format)
-      [:multiple_choice, :number_entry, :text_entry, :true_or_false]
+    iex> QuizGameWeb.Support.Ecto.get_enum_field_options(QuizGame.Quizzes.Card, :format)
+    [:multiple_choice, :number_entry, :text_entry, :true_or_false]
   """
   @spec get_enum_field_options(module(), atom()) :: list()
   def get_enum_field_options(module, field) do
@@ -94,38 +106,10 @@ defmodule QuizGameWeb.Support.Exceptions.HttpResponse do
   end
 end
 
-defmodule QuizGameWeb.Support.Integer do
-  @moduledoc "This project's `Integer`-related helper functions."
-
-  @spec is_prime?(integer()) :: boolean()
-  # def is_prime?(n) when n < 0, do: is_prime?(-n)
-  def is_prime?(n) when n == 1, do: false
-  def is_prime?(n) when n in [0, 1, 2, 3], do: true
-
-  def is_prime?(x) do
-    start_lim = div(x, 2)
-
-    Enum.reduce(2..start_lim, {true, start_lim}, fn fac, {is_prime, upper_limit} ->
-      cond do
-        !is_prime ->
-          {false, fac}
-
-        fac > upper_limit ->
-          {is_prime, upper_limit}
-
-        true ->
-          is_prime = rem(x, fac) != 0
-          upper_limit = (is_prime && div(x, fac + 1)) || fac
-          {is_prime, upper_limit}
-      end
-    end)
-    |> elem(0)
-  end
-end
-
 defmodule QuizGameWeb.Support.Math do
   @moduledoc "This project's math-related helper functions."
 
+  @doc "Generate a pair of values that divide without leaving a remainder."
   def generate_divisible_pair(min, max, first_value \\ nil) do
     ## validation
     # ensure that 'min' is not larger than max
@@ -147,6 +131,7 @@ defmodule QuizGameWeb.Support.Math do
     {first_value, second_value}
   end
 
+  @doc "Return any value in a range other than 0."
   def get_non_zero_value_from_range(range) do
     result = Enum.random(range)
 
@@ -164,7 +149,7 @@ defmodule QuizGameWeb.Support.Map do
 
   ## Examples
 
-      iex> params_to_keyword_list(%{"hello" => "world"})
+      iex> QuizGameWeb.Support.Map.params_to_keyword_list(%{"hello" => "world"})
       [{:hello, "world"}]
   """
   @spec params_to_keyword_list(map()) :: keyword()
@@ -191,17 +176,19 @@ defmodule QuizGameWeb.Support.String do
 
   ## Examples
 
-      iex> pluralize("word", 1)
+      iex> QuizGameWeb.Support.String.pluralize("word", 1)
       "word"
 
-      iex> pluralize("word", 2)
+      iex> QuizGameWeb.Support.String.pluralize("word", 2)
       "words"
 
-      iex> pluralize("cherry", 2, "cherries")
+      iex> QuizGameWeb.Support.String.pluralize("cherry", 1, "cherries")
+      "cherry"
+
+      iex> QuizGameWeb.Support.String.pluralize("cherry", 2, "cherries")
       "cherries"
   """
   @spec pluralize(String.t(), integer(), String.t() | nil) :: String.t()
-
   def pluralize(word, count, plural_word \\ nil) do
     if count == 1 do
       word
@@ -219,7 +206,7 @@ defmodule QuizGameWeb.Support.String do
 
   ## Examples
 
-      iex> titlecase("hello world")
+      iex> QuizGameWeb.Support.String.titlecase("hello world")
       "Hello World"
   """
   def titlecase(val) do
