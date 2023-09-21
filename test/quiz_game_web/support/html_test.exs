@@ -1,7 +1,14 @@
+defmodule QuizGameWeb.Support.HTMLTest do
+  @moduledoc false
+  use ExUnit.Case
+  doctest QuizGameWeb.Support.HTML
+end
+
 defmodule QuizGameWeb.Support.HTML.FormTest do
   @moduledoc false
   use ExUnit.Case
   alias QuizGameWeb.Support.HTML.Form
+  doctest QuizGameWeb.Support.HTML.Form
 
   @test_site_key "10000000-ffff-ffff-ffff-000000000001"
   @test_secret_key "0x0000000000000000000000000000000000000000"
