@@ -5,7 +5,8 @@ defmodule QuizGameWeb.Quizzes.StatsLiveTest do
 
   import Ecto.Query
   import Phoenix.LiveViewTest
-  import QuizGame.TestSupport.{Assertions, GenericTests, QuizzesFixtures, UsersFixtures}
+  import QuizGame.TestSupport.{Assertions, GenericTests}
+  import QuizGame.TestSupport.Fixtures.{Quizzes, Users}
 
   # alias QuizGameWeb.Presence
   alias QuizGame.Quizzes.Quiz

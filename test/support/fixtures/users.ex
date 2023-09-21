@@ -1,8 +1,5 @@
-defmodule QuizGame.TestSupport.UsersFixtures do
-  @moduledoc """
-  This module defines test helpers for creating entities via the `QuizGame.Users` context.
-  """
-
+defmodule QuizGame.TestSupport.Fixtures.Users do
+  @moduledoc "Test helpers for creating entities via the `QuizGame.Users` context."
   alias QuizGame.Users
 
   def unique_user_username, do: "user#{System.unique_integer()}"

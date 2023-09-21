@@ -3,7 +3,7 @@ defmodule QuizGame.UsersTest do
 
   use QuizGame.DataCase
 
-  import QuizGame.TestSupport.UsersFixtures
+  import QuizGame.TestSupport.Fixtures.Users
 
   alias QuizGame.Users
   alias QuizGame.Users.{User, UserToken}

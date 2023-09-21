@@ -4,7 +4,8 @@ defmodule QuizGameWeb.Quizzes.CardLiveTest do
   use QuizGameWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import QuizGame.TestSupport.{Assertions, GenericTests, QuizzesFixtures, UsersFixtures}
+  import QuizGame.TestSupport.{Assertions, GenericTests}
+  import QuizGame.TestSupport.Fixtures.{Quizzes, Users}
 
   alias QuizGame.Quizzes.Card
   alias QuizGameWeb.Support, as: S

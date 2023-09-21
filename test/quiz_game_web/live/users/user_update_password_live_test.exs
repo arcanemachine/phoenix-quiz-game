@@ -4,7 +4,8 @@ defmodule QuizGameWeb.UserUpdatePasswordLiveTest do
   use QuizGameWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import QuizGame.TestSupport.{Assertions, GenericTests, UsersFixtures}
+  import QuizGame.TestSupport.{Assertions, GenericTests}
+  import QuizGame.TestSupport.Fixtures.Users
   import QuizGameWeb.Support.Router
 
   alias QuizGame.Users

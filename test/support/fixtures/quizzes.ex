@@ -1,9 +1,8 @@
-defmodule QuizGame.TestSupport.QuizzesFixtures do
+defmodule QuizGame.TestSupport.Fixtures.Quizzes do
   @moduledoc "Test helpers for creating entities via the `QuizGame.Quizzes` context."
-  import QuizGame.TestSupport.UsersFixtures
+  import QuizGame.TestSupport.Fixtures.Users
   alias QuizGame.Quizzes
 
-  @doc "Generate a quiz."
   def quiz_fixture(attrs \\ %{}) do
     # maybe generate user
     user_id = attrs[:user_id] || user_fixture().id
@@ -20,7 +19,6 @@ defmodule QuizGame.TestSupport.QuizzesFixtures do
     quiz
   end
 
-  @doc "Generate a card."
   def card_fixture(attrs \\ %{}) do
     # maybe generate quiz and user
     quiz_id = attrs[:quiz_id] || quiz_fixture().id
@@ -40,7 +38,6 @@ defmodule QuizGame.TestSupport.QuizzesFixtures do
     card
   end
 
-  @doc "Generate a quiz record."
   def record_fixture(attrs \\ %{}) do
     # maybe generate quiz and user
     user_id = attrs[:user_id] || user_fixture().id

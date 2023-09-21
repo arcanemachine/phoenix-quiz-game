@@ -4,8 +4,9 @@ defmodule QuizGameWeb.UserLoginLiveTest do
   use QuizGameWeb.ConnCase
 
   import Phoenix.LiveViewTest
+  import QuizGame.TestSupport.Assertions
+  import QuizGame.TestSupport.Fixtures.Users
   import QuizGameWeb.Support.Router
-  import QuizGame.TestSupport.{Assertions, UsersFixtures}
 
   @login_url route(:users, :login)
 

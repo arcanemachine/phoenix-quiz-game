@@ -1,12 +1,11 @@
 defmodule QuizGame.QuizzesTest do
   @moduledoc false
   use QuizGame.DataCase
-  import QuizGame.TestSupport.{QuizzesFixtures, UsersFixtures}
+  import QuizGame.TestSupport.Fixtures.{Quizzes, Users}
   alias QuizGame.Quizzes
+  alias QuizGame.Quizzes.{Card, Quiz, Record}
 
   describe "quizzes" do
-    alias QuizGame.Quizzes.Quiz
-
     @invalid_attrs %{name: nil}
 
     test "list_quizzes/0 returns all quizzes" do
@@ -57,8 +56,6 @@ defmodule QuizGame.QuizzesTest do
   end
 
   describe "cards" do
-    alias QuizGame.Quizzes.Card
-
     @invalid_attrs %{format: nil, question: nil, answers: nil}
 
     # test "card_list/0 returns all cards" do
@@ -132,10 +129,6 @@ defmodule QuizGame.QuizzesTest do
   end
 
   describe "records" do
-    alias QuizGame.Quizzes.Record
-
-    import QuizGame.TestSupport.QuizzesFixtures
-
     @invalid_attrs %{date: nil, card_count: nil, score: nil}
 
     test "list_records/0 returns all records" do

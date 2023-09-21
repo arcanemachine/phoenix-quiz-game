@@ -5,7 +5,8 @@ defmodule QuizGameWeb.Quizzes.QuizTakeLiveTest do
 
   import Ecto.Query
   import Phoenix.LiveViewTest
-  import QuizGame.TestSupport.{Assertions, QuizzesFixtures, UsersFixtures}
+  import QuizGame.TestSupport.{Assertions}
+  import QuizGame.TestSupport.Fixtures.{Quizzes, Users}
 
   alias QuizGame.Quizzes.{Quiz, Record}
   alias QuizGame.Repo

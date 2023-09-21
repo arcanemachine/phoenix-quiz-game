@@ -46,7 +46,7 @@ defmodule QuizGameWeb.ConnCase do
   It stores an updated connection and a registered user in the test context.
   """
   def register_and_login_user(%{conn: conn}) do
-    user = QuizGame.TestSupport.UsersFixtures.user_fixture()
+    user = QuizGame.TestSupport.Fixtures.Users.user_fixture()
     %{conn: login_user(conn, user), user: user}
   end
 
