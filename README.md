@@ -1,10 +1,34 @@
-# quiz-game
+# phoenix-quiz-game
+
+[View Live Demo](https://phoenix-quiz-game.nicholasmoen.com/)
 
 ---
 
 **All commands in this document should be performed from the project root directory.**
 
 ---
+
+A game that allows you (e.g. teacher) to generate quizzes, and supervise your users (e.g. students) as they take the test.
+
+Also good for generating random math quizzes for you to brush up on your arithmetic. 🤓
+
+Made using the [Phoenix web framework](https://www.phoenixframework.org/), and enhanced with [Phoenix LiveView](https://github.com/phoenixframework/phoenix_live_view).
+
+Features:
+
+- Basic CRUD
+- LiveView CRUD
+- A comprehensive suite of Elixir tests
+- Admin interface via [Kaffy](https://github.com/aesmail/kaffy)
+- Job queueing via [Oban](https://github.com/sorentwo/oban)
+- HCaptcha integration via [hcaptcha](https://github.com/sebastiangrebe/hcaptcha)
+- Releases (vanilla/Docker/fly.io)
+  - Supports `x86_64` + `aarch64` (`ARM64v8`) Docker images
+- Supports a variety of container-based environments using Docker/Podman
+- EditorConfig (standardizes file formatting: spaces per line, etc.)
+- Enforces standardized commit messages with [`git-conventional-commits`](https://github.com/qoomon/git-conventional-commits)
+- Uses [`just`](https://github.com/casey/just) task runner
+  - Run `just` by itself to see the list of available commands.
 
 ## Getting Started
 
@@ -106,8 +130,6 @@ Run the following commands from the project root directory:
   - Create the database and grant privileges to the new user:
     - `CREATE DATABASE quiz_game;`
     - `GRANT ALL PRIVILEGES ON DATABASE myproject TO myprojectuser;`
-  - TODO: Configure Postgres settings like in a Django project?
-    - (e.g. `client_encoding`, `default_transaction_isolation`, `timezone`, etc.)
   - Exit the Postgres prompt:
     - `\q`
 - Set up the Phoenix server:
@@ -238,4 +260,3 @@ There are several types of dependencies throughout this project that should be k
 - Containers (Docker/Podman):
   - `./support/containers/compose.*.yaml`
   - `./support/containers/Dockerfile.*`
-  - `./support/scripts/loadtest-k6`
