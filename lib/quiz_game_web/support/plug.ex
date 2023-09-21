@@ -1,7 +1,6 @@
 defmodule QuizGameWeb.Support.Plug do
   @moduledoc "This project's custom function plugs."
   use QuizGameWeb, :controller
-
   alias QuizGameWeb.Support, as: S
 
   @typep conn :: %Plug.Conn{}

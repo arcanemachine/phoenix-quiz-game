@@ -1,7 +1,10 @@
 defmodule QuizGame.Workers.DeleteOldRecords do
   @moduledoc "Deletes quiz records that are more than 30 days old."
+
   use Oban.Worker, queue: :default
+
   import Ecto.Query
+
   alias QuizGame.Repo
   alias QuizGame.Quizzes.Record
 

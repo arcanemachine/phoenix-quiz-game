@@ -1,5 +1,6 @@
 defmodule QuizGameWeb.Quizzes.Quiz.Live.Stats do
   @moduledoc false
+
   use QuizGameWeb, :live_view
 
   import Ecto.Query

@@ -1,5 +1,6 @@
 defmodule QuizGameWeb.Users.Live.ResetPasswordConfirm do
   @moduledoc false
+
   use QuizGameWeb, :live_view
 
   alias QuizGame.Users

@@ -1,8 +1,8 @@
 defmodule QuizGameWeb.Support.AtomTest do
   @moduledoc false
-  # doctest QuizGameWeb.Support.Atom
   use ExUnit.Case
   alias QuizGameWeb.Support, as: S
+  # doctest QuizGameWeb.Support.Atom
 
   # Conn
   describe("to_human_friendly_string/1") do

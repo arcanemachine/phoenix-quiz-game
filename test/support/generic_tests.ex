@@ -1,5 +1,6 @@
 defmodule QuizGame.TestSupport.GenericTests do
   @moduledoc "This project's generic/reusable tests."
+
   use QuizGameWeb.ConnCase
 
   # import Phoenix.LiveViewTest

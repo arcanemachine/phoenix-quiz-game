@@ -1,5 +1,6 @@
 defmodule QuizGameWeb.Users.Live.UpdatePassword do
   @moduledoc false
+
   use QuizGameWeb, :live_view
 
   alias QuizGame.Users

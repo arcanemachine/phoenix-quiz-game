@@ -1,7 +1,10 @@
 defmodule QuizGame.QuizzesTest do
   @moduledoc false
+
   use QuizGame.DataCase
+
   import QuizGame.TestSupport.Fixtures.{Quizzes, Users}
+
   alias QuizGame.Quizzes
   alias QuizGame.Quizzes.{Card, Quiz, Record}
 

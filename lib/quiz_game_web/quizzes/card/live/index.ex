@@ -1,5 +1,6 @@
 defmodule QuizGameWeb.Quizzes.Card.Live.Index do
   @moduledoc false
+
   use QuizGameWeb, :live_view
 
   import Ecto.Query

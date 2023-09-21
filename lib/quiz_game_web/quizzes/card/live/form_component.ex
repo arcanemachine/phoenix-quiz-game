@@ -1,5 +1,6 @@
 defmodule QuizGameWeb.Quizzes.Card.Live.FormComponent do
   @moduledoc false
+
   use QuizGameWeb, :live_component
 
   alias QuizGame.Quizzes
