@@ -57,7 +57,7 @@ defmodule QuizGameWeb do
       import Phoenix.HTML
 
       # components
-      import QuizGameWeb.Components.Core
+      import QuizGameWeb.Core.Components
 
       # i18n
       import QuizGameWeb.Gettext

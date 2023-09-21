@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Components.Core do
+defmodule QuizGameWeb.Core.Components do
   @moduledoc "Core Phoenix function components."
 
   use Phoenix.Component, global_prefixes: ~w(x-)
