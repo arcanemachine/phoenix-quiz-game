@@ -30,7 +30,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.Take do
         # generated quiz is invalid
         quiz == :invalid_generated_quiz ->
           socket
-          |> put_flash(:warning, "Re-select your quiz options to continue.")
+          |> put_flash(:warning, "Invalid quiz options detected. Please select new quiz options.")
           |> redirect(to: route(:quizzes, :new_random))
 
         # quiz does not have any cards or random math questions.
