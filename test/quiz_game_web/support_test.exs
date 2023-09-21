@@ -72,8 +72,6 @@ defmodule QuizGameWeb.Support.EctoTest do
 
   alias QuizGameWeb.Support, as: S
 
-  doctest QuizGameWeb.Support.Ecto
-
   schema "some_schema" do
     field :some_enum_field, Ecto.Enum, values: [:first_option, :second_option]
   end
