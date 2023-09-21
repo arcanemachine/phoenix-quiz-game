@@ -109,7 +109,19 @@ end
 defmodule QuizGameWeb.Support.Math do
   @moduledoc "This project's math-related helper functions."
 
-  @doc "Generate a pair of values that divide without leaving a remainder."
+  @doc """
+  Generate a pair of values that divide without leaving a remainder.
+
+  ## Examples
+
+      iex> generate_divisible_pair(1, 10)
+      {10, 2}
+
+      iex> generate_divisible_pair(1, 10, 4)
+      {4, 2}
+  """
+  @type first_value :: integer() | nil
+  @spec generate_divisible_pair(integer(), integer(), first_value) :: {integer(), integer()}
   def generate_divisible_pair(min, max, first_value \\ nil) do
     ## validation
     # ensure that 'min' is not larger than max
@@ -117,7 +129,7 @@ defmodule QuizGameWeb.Support.Math do
 
     ## main
     # get or generate first number
-    first_value = first_value || get_non_zero_value_from_range(min..max)
+    first_value = first_value || QuizGameWeb.Support.Range.get_non_zero_value(min..max)
 
     # create a list of numbers which are divisors of the first number (do not check zero)
     divisors =
@@ -129,15 +141,6 @@ defmodule QuizGameWeb.Support.Math do
     second_value = if Enum.empty?(divisors), do: first_value, else: Enum.random(divisors)
 
     {first_value, second_value}
-  end
-
-  @doc "Return any value in a range other than 0."
-  def get_non_zero_value_from_range(range) do
-    result = Enum.random(range)
-
-    if result != 0,
-      do: result,
-      else: get_non_zero_value_from_range(range)
   end
 end
 
@@ -163,6 +166,25 @@ defmodule QuizGameWeb.Support.Map do
         _ in ArgumentError -> raise QuizGameWeb.Support.Exceptions.HttpResponse, plug_status: 404
       end
     end)
+  end
+end
+
+defmodule QuizGameWeb.Support.Range do
+  @moduledoc "This project's range-related helper functions."
+
+  @doc "Return any value in a range other than 0."
+  @spec get_non_zero_value(Range.t()) :: integer()
+  def get_non_zero_value(range) when range == 0..0 do
+    raise ArgumentError, message: "'range' cannot be 0..0"
+  end
+
+  def get_non_zero_value(range) do
+    result = Enum.random(range)
+
+    # run this function recursively until a random value is found
+    if result != 0,
+      do: result,
+      else: get_non_zero_value(range)
   end
 end
 

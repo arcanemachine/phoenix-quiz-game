@@ -109,21 +109,27 @@ defmodule QuizGameWeb.Support.MathTest do
       end
     end
   end
-
-  describe("get_non_zero_value_from_range/1") do
-    test "gets a non-zero value from a range" do
-      for _ <- 1..100 do
-        result = S.Math.get_non_zero_value_from_range(-100..100)
-        refute result == 0
-      end
-    end
-  end
 end
 
 defmodule QuizGameWeb.Support.MapTest do
   @moduledoc false
   use ExUnit.Case
   doctest QuizGameWeb.Support.Map
+end
+
+defmodule QuizGameWeb.Support.RangeTest do
+  @moduledoc false
+  use ExUnit.Case
+  alias QuizGameWeb.Support, as: S
+
+  describe("get_non_zero_value/1") do
+    test "returns a non-zero value from a range" do
+      for _ <- 1..100 do
+        result = S.Range.get_non_zero_value(-100..100)
+        refute result == 0
+      end
+    end
+  end
 end
 
 defmodule QuizGameWeb.Support.StringTest do
