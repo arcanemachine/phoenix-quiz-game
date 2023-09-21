@@ -4,6 +4,11 @@ defmodule QuizGame.Quizzes.Quiz do
   import Ecto.Changeset
   alias QuizGameWeb.Support, as: S
 
+  def math_random_question_count_min(), do: 0
+  def math_random_question_count_max(), do: 500
+  def math_random_question_value_min(), do: -999
+  def math_random_question_value_max(), do: 999
+
   schema "quizzes" do
     # associations
     belongs_to :user, QuizGame.Users.User
@@ -32,11 +37,6 @@ defmodule QuizGame.Quizzes.Quiz do
     quiz.math_random_question_operations
     |> Enum.map_join(", ", fn x -> Atom.to_string(x) |> String.capitalize() end)
   end
-
-  def math_random_question_count_min(), do: 0
-  def math_random_question_count_max(), do: 500
-  def math_random_question_value_min(), do: -999
-  def math_random_question_value_max(), do: 999
 
   @unsafe_fields_required [:user_id]
   @safe_fields_required [:name, :subject]
