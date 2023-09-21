@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.UserUpdateEmailLiveTest do
+defmodule QuizGameWeb.Users.UpdateEmailTest do
   @moduledoc false
 
   use QuizGameWeb.ConnCase
@@ -16,7 +16,7 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
     route(:users, :update_email_confirm, token: opts[:token])
   end
 
-  describe "UserUpdateEmailLive page" do
+  describe "UpdateEmail page" do
     test_redirects_unauthenticated_user_to_login_route(@update_email_solicit_url, "GET")
 
     test "renders expected markup", %{conn: conn} do
@@ -25,7 +25,7 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
     end
   end
 
-  describe "UserUpdateEmailLive form" do
+  describe "UpdateEmail form" do
     setup %{conn: conn} do
       # register and login a user with a specific password
       password = valid_user_password()
@@ -118,7 +118,7 @@ defmodule QuizGameWeb.UserUpdateEmailLiveTest do
     end
   end
 
-  describe "UserUpdateEmailLive confirmation process" do
+  describe "UpdateEmail confirmation process" do
     setup %{conn: conn} do
       # register and login user with a specific password and a new email address to update to
       user = user_fixture()

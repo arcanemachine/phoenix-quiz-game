@@ -2,7 +2,7 @@ defmodule QuizGameWeb.Support.Plug do
   @moduledoc "This project's custom function plugs."
   use QuizGameWeb, :controller
 
-  alias QuizGameWeb.Support.Conn, as: ProjectConn
+  alias QuizGameWeb.Support, as: S
 
   @typep conn :: %Plug.Conn{}
 
@@ -13,7 +13,7 @@ defmodule QuizGameWeb.Support.Plug do
       _ = String.to_integer(param)
       conn
     rescue
-      _ in ArgumentError -> conn |> ProjectConn.text_response(404)
+      _ in ArgumentError -> conn |> S.Conn.text_response(404)
     end
   end
 
@@ -48,7 +48,7 @@ defmodule QuizGameWeb.Support.Plug do
     if quiz.user_id == conn.assigns.current_user.id do
       conn
     else
-      conn |> ProjectConn.text_response(403)
+      conn |> S.Conn.text_response(403)
     end
   end
 end

@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.UserLoginLiveTest do
+defmodule QuizGameWeb.Users.Live.LoginTest do
   @moduledoc false
 
   use QuizGameWeb.ConnCase
@@ -10,7 +10,7 @@ defmodule QuizGameWeb.UserLoginLiveTest do
 
   @login_url route(:users, :login)
 
-  describe "UserLoginLive page" do
+  describe "User login page" do
     test "renders expected markup", %{conn: conn} do
       {:ok, _lv, html} = live(conn, @login_url)
 
@@ -38,7 +38,7 @@ defmodule QuizGameWeb.UserLoginLiveTest do
     end
   end
 
-  describe "UserLoginLive form" do
+  describe "User login form" do
     test "submitted with valid credentials", %{conn: conn} do
       password = "valid_password"
       user = user_fixture(%{password: password})
@@ -76,7 +76,7 @@ defmodule QuizGameWeb.UserLoginLiveTest do
     end
   end
 
-  describe "UserLoginLive navigation" do
+  describe "User login navigation" do
     test "redirects to UserResetPasswordLive when the 'Forgot Password' button is clicked", %{
       conn: conn
     } do

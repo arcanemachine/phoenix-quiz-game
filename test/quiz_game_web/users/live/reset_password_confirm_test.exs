@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.UserResetPasswordLiveTest do
+defmodule QuizGameWeb.Users.Live.ResetPasswordConfirmTest do
   @moduledoc false
 
   use QuizGameWeb.ConnCase
@@ -27,7 +27,7 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
     %{token: token, user: user}
   end
 
-  describe "UserResetPasswordLive page" do
+  describe "ResetPasswordConfirm page" do
     test "renders expected markup", %{conn: conn, token: token} do
       {:ok, _lv, html} = live(conn, get_reset_password_confirm_url(token: token))
       assert html_has_title(html, "Set New Password")
@@ -47,7 +47,7 @@ defmodule QuizGameWeb.UserResetPasswordLiveTest do
     end
   end
 
-  describe "UserResetPasswordLive form" do
+  describe "ResetPasswordConfirm form" do
     test "resets password once when form data is valid", %{conn: conn, token: token, user: user} do
       {:ok, lv, _html} = live(conn, get_reset_password_confirm_url(token: token))
 

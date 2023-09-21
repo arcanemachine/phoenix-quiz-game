@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.ContactUsLiveTest do
+defmodule QuizGameWeb.Core.Live.ContactUsTest do
   @moduledoc false
 
   use QuizGameWeb.ConnCase

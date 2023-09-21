@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.BaseControllerTest do
+defmodule QuizGameWeb.Core.ControllerTest do
   @moduledoc false
   use QuizGameWeb.ConnCase
   import QuizGame.TestSupport.Assertions

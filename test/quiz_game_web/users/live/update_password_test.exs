@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.UserUpdatePasswordLiveTest do
+defmodule QuizGameWeb.Users.Live.UpdatePasswordTest do
   @moduledoc false
 
   use QuizGameWeb.ConnCase
@@ -13,7 +13,7 @@ defmodule QuizGameWeb.UserUpdatePasswordLiveTest do
   @update_password_url route(:users, :update_password)
   @password_length_min QuizGame.Users.User.password_length_min()
 
-  describe "UserUpdatePasswordLive page" do
+  describe "UpdatePassword page" do
     test "renders expected markup", %{conn: conn} do
       {:ok, _lv, html} = conn |> login_user(user_fixture()) |> live(@update_password_url)
       assert html_has_title(html, "Update Password")
@@ -22,7 +22,7 @@ defmodule QuizGameWeb.UserUpdatePasswordLiveTest do
     test_redirects_unauthenticated_user_to_login_route(@update_password_url, "GET")
   end
 
-  describe "UserUpdatePasswordLive form" do
+  describe "UpdatePassword form" do
     setup %{conn: conn} do
       # register and login a user with a specific password
       password = valid_user_password()

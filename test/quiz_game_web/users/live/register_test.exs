@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.UserRegistrationLiveTest do
+defmodule QuizGameWeb.Users.Live.RegisterTest do
   @moduledoc false
 
   use QuizGameWeb.ConnCase
@@ -11,7 +11,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
   @register_url route(:users, :register)
   @password_length_min QuizGame.Users.User.password_length_min()
 
-  describe "UserRegistrationLive page" do
+  describe "User registration page" do
     test "renders expected markup", %{conn: conn} do
       {:ok, _view, html} = live(conn, @register_url)
       assert html_has_title(html, "Register New Account")
@@ -28,7 +28,7 @@ defmodule QuizGameWeb.UserRegistrationLiveTest do
     end
   end
 
-  describe "UserRegistrationLive form" do
+  describe "User registration form" do
     test "creates account and logs the user in when form data is valid", %{conn: conn} do
       valid_attrs = valid_user_attributes()
 

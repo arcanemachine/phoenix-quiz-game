@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Test.Support.HTML.FormTest do
+defmodule QuizGameWeb.Support.HTMLTest do
   @moduledoc false
   use ExUnit.Case
   import QuizGameWeb.Support.HTML.Form, only: [captcha_valid?: 1]
@@ -9,7 +9,6 @@ defmodule QuizGameWeb.Test.Support.HTML.FormTest do
   @valid_form_params %{"h-captcha-response" => "10000000-aaaa-bbbb-cccc-000000000001"}
   @invalid_form_params %{"h-captcha-response" => "invalid_response"}
 
-  # REFACTOR: move into proper submodule
   describe "captcha_valid?/1" do
     setup do
       # set temporary values for hcaptcha environment variables so that the captcha will work

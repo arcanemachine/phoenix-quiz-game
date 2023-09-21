@@ -1,8 +1,9 @@
-defmodule QuizGameWeb.TestSupport.ConnTest do
+defmodule QuizGameWeb.Support.ConnTest do
   @moduledoc false
   use QuizGameWeb.ConnCase
   alias QuizGameWeb.Support.Conn, as: ProjectConn
 
+  # Conn
   describe("text_response/3") do
     test "when is_integer(status)", %{conn: conn} do
       response = ProjectConn.text_response(conn, 200)

@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.UserForgotPasswordLiveTest do
+defmodule QuizGameWeb.Users.Live.ResetPasswordSolicitTest do
   @moduledoc false
 
   use QuizGameWeb.ConnCase
@@ -13,7 +13,7 @@ defmodule QuizGameWeb.UserForgotPasswordLiveTest do
 
   @reset_password_solicit_url route(:users, :reset_password_solicit)
 
-  describe "UserForgotPasswordLive page" do
+  describe "ResetPasswordSolicit page" do
     test "renders expected markup", %{conn: conn} do
       {:ok, _lv, html} = live(conn, @reset_password_solicit_url)
       assert html_has_title(html, "Reset Your Password")
@@ -30,7 +30,7 @@ defmodule QuizGameWeb.UserForgotPasswordLiveTest do
     end
   end
 
-  describe "UserForgotPasswordLive form" do
+  describe "ResetPasswordSolicit form" do
     setup do
       %{user: user_fixture()}
     end

@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.UserConfirmationLiveTest do
+defmodule QuizGameWeb.Users.Live.VerifyEmailConfirmTest do
   @moduledoc false
 
   use QuizGameWeb.ConnCase
@@ -18,14 +18,14 @@ defmodule QuizGameWeb.UserConfirmationLiveTest do
     %{user: user_fixture()}
   end
 
-  describe "UserConfirmationLive page" do
+  describe "VerifyEmailConfirm page" do
     test "renders expected markup", %{conn: conn} do
       {:ok, _lv, html} = live(conn, get_verify_email_confirm_url(token: "some_token"))
       assert html_has_title(html, "Confirm Your Email")
     end
   end
 
-  describe "UserConfirmationLive form" do
+  describe "VerifyEmailConfirm form" do
     test "does not confirm a given token more than once", %{conn: conn, user: user} do
       token =
         extract_user_token(fn url ->
