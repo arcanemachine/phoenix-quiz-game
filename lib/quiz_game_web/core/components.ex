@@ -1178,10 +1178,9 @@ defmodule QuizGameWeb.Core.Components do
       ]}
       data-has-changes={# @has_changes}
       data-warn-on-exit={@warn_on_exit}
-      x-data={@confirmation_required && "{ confirmed: false }"}
       {@rest}
     >
-      <div class="p-2">
+      <div class="p-2" x-data={@confirmation_required && "{ confirmed: false }"}>
         <%= render_slot(@inner_block, f) %>
 
         <%= if @confirmation_required do %>
