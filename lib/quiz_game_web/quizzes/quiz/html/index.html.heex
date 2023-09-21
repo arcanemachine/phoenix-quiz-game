@@ -127,14 +127,14 @@
 <div class="mt-8 divider" />
 
 <.action_links>
-  <.action_links_item>
-    <.link href={route(:users, :quizzes_index)}>
-      View quizzes created by you
-    </.link>
-  </.action_links_item>
   <.action_links_item kind="create">
     <.link href={route(:quizzes, :new)}>
       Create new quiz
+    </.link>
+  </.action_links_item>
+  <.action_links_item>
+    <.link href={route(:users, :quizzes_index)}>
+      View quizzes created by you
     </.link>
   </.action_links_item>
   <.spacer />
