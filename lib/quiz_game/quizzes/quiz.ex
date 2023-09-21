@@ -131,7 +131,7 @@ defmodule QuizGame.Quizzes.Quiz do
       |> validate_number(:math_random_question_value_max,
         greater_than_or_equal_to:
           S.Changeset.get_changed_or_existing_value(changeset, :math_random_question_value_min),
-        message: "cannot be less than the minimum random value"
+        message: "must be greater than the minimum random value"
       )
 
       # chosen value must be less than the allowed maximum value

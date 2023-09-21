@@ -83,7 +83,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.Take do
         count not in 1..250 -> raise ArgumentError
         min < -999_999 or min > 999_999 -> raise ArgumentError
         max < -999_999 or max > 999_999 -> raise ArgumentError
-        min > max -> raise ArgumentError
+        min >= max -> raise ArgumentError
         true -> nil
       end
 
