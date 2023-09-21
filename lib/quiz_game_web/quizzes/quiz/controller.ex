@@ -33,7 +33,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Controller do
     pretty_subject = String.replace(subject, "-", " ")
 
     render(conn, :index_subject,
-      page_title: "'#{pretty_subject |> S.String.titlecase()}' Quizzes",
+      page_title: "'#{pretty_subject |> S.String.to_titlecase()}' Quizzes",
       pretty_subject: pretty_subject,
       quizzes: quizzes
     )

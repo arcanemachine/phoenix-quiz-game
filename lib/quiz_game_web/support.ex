@@ -206,10 +206,10 @@ defmodule QuizGameWeb.Support.String do
 
   ## Examples
 
-      iex> QuizGameWeb.Support.String.titlecase("hello world")
+      iex> QuizGameWeb.Support.String.to_titlecase("hello world")
       "Hello World"
   """
-  def titlecase(val) do
+  def to_titlecase(val) do
     String.split(val, " ") |> Enum.map_join(" ", fn word -> String.capitalize(word) end)
   end
 end
