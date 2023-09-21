@@ -18,7 +18,7 @@ Features:
 
 - Basic CRUD
 - LiveView CRUD
-- A comprehensive suite of Elixir tests
+- A comprehensive suite of Elixir tests (including doctests, where appropriate)
 - Admin interface via [Kaffy](https://github.com/aesmail/kaffy)
 - Job queueing via [Oban](https://github.com/sorentwo/oban)
 - HCaptcha integration via [hcaptcha](https://github.com/sebastiangrebe/hcaptcha)
