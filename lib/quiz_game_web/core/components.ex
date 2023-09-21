@@ -538,25 +538,6 @@ defmodule QuizGameWeb.Core.Components do
     """
   end
 
-  # @doc """
-  # Renders a lock icon with a tooltip.
-
-  # Used to indicate that access to a given page is restricted. Use the `message` param to
-  # indicate the manner in which the page is restricted
-
-  # ## Examples
-
-  #     <.icon_lock message="This page can only be viewed by an administrator." />
-  # """
-  # attr :message, :string, required: true
-  # attr :class, :string, default: nil
-
-  # def icon_lock(%{name: "hero-lock-closed" <> _} = assigns) do
-  #   ~H"""
-  #   <span class={[@name, @class]} x-tooltip={"{ content: `#{@message}` }"} />
-  #   """
-  # end
-
   @doc """
   Renders an input with label and error messages.
 
