@@ -41,11 +41,9 @@ color_reset := "\\033[39m"
 # start a dev server (server-dev-start-interactive)
 @start: dev
 
-# run all tests (test-elixir + test-js-unit + test-js-e2e)
+# run all tests (test-elixir)
 @test:
   just test-elixir
-  just test-js
-  just test-e2e
   just _echo_success "All tests completed successfully"
 
 # create a release (elixir-release-create)
@@ -242,26 +240,6 @@ color_reset := "\\033[39m"
 @test-elixir-watch args='':
   echo "Running Elixir tests in watch mode..."
   @./support/scripts/test-elixir-watch {{ args }}
-
-# run Javascript unit tests with Vitest
-@test-js:
-  echo "Running Javascript unit tests..."
-  @./support/scripts/test-js
-
-# run Javascript unit tests with Vitest (in watch mode)
-@test-js-watch:
-  echo "Running Javascript unit tests in watch mode..."
-  @./support/scripts/test-js-watch
-
-# run end-to-end (E2E) tests with Playwright [args (e.g.): --help]
-test-e2e args="":
-  @echo "Running E2E tests..."
-  ./support/scripts/test-e2e {{ args }}
-
-# run end-to-end (E2E) tests with Playwright (in watch mode) [args (e.g.): --help]
-@test-e2e-watch args="":
-  echo "Running E2E tests in watch mode..."
-  @./support/scripts/test-e2e-watch {{ args }}
 
 # print the OTP version number
 @version-otp:

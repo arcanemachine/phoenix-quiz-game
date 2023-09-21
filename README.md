@@ -69,33 +69,6 @@ Note:
 - The first test run may appear to hang when the console says `Resetting the database...`.
   - Elixir may need a minute or two to compile dependencies for the `test` `MIX_ENV`.
 
-#### Javascript-Based Tests
-
-Before running any Javascript-based tests:
-
-- Ensure that `npm` is installed and working on your system.
-- Navigate to the `test/js/` directory and run `npm install`
-
-Then, navigate back to the project root directory and continue reading for instructions on how to run this project's Javascript-based tests.
-
-##### JS Unit Tests (Vitest)
-
-Run the Javascript-based unit tests using any of these commands:
-
-- `just test-js` - Use the `just` task runner to run the tests
-- `./support/scripts/test-js` - A convenience script for running the Vitest unit tests.
-- `./support/scripts/test-js-watch` - A convenience script for running the Vitest unit tests in watch mode.
-- `cd assets && npx playwright test` - Navigate to the JS test root directory and run the JS E2E tests directly via `npx`.
-
-##### End-To-End Tests (Playwright)
-
-Run the Javascript-based end-to-end (E2E) Playwright tests using any of these commands:
-
-- `just test-e2e` - Use the `just` task runner to run the tests
-- `./support/scripts/test-e2e` - A convenience script for running the Playwright E2E tests.
-- `./support/scripts/test-e2e-watch` - A convenience script for running the Playwright E2E tests in watch mode.
-- `cd assets && npm run test-e2e` - Navigate to the JS test root directory and run the JS unit tests directly.
-
 ### Releases
 
 Releases can be created for either a vanilla/bare metal deployment, or for a Docker-based deployment.
