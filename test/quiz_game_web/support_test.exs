@@ -89,6 +89,40 @@ defmodule QuizGameWeb.Support.ChangesetTest do
       assert result == ["some value", "new value"]
     end
   end
+
+  describe("validate_changed/3") do
+    test "returns unchanged changeset if field value has changed" do
+      # create changeset (empty value for field)
+      data = %{some_field: "some value"}
+      changes = %{some_field: "new value"}
+      changeset = Ecto.Changeset.change({data, @types}, changes)
+
+      result = S.Changeset.validate_changed(changeset, :some_field)
+      assert result == changeset
+    end
+
+    test "adds error if field value has not changed" do
+      # create changeset (empty value for field)
+      data = %{some_field: "some value"}
+      changes = %{}
+      changeset = Ecto.Changeset.change({data, @types}, changes)
+
+      result = S.Changeset.validate_changed(changeset, :some_field)
+      assert result != changeset
+      assert result.errors == [some_field: {"should be different than the original value", []}]
+    end
+
+    test "adds error if field value has not changed (with custom message)" do
+      # create changeset (empty value for field)
+      data = %{some_field: "some value"}
+      changes = %{}
+      changeset = Ecto.Changeset.change({data, @types}, changes)
+
+      result = S.Changeset.validate_changed(changeset, :some_field, message: "should be changed")
+      assert result != changeset
+      assert result.errors == [some_field: {"should be changed", []}]
+    end
+  end
 end
 
 defmodule QuizGameWeb.Support.ConnTest do
