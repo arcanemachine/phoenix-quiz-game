@@ -35,9 +35,7 @@ defmodule QuizGameWeb.Support.Changeset do
   @spec get_changed_or_existing_value(Ecto.Changeset.t(), field_or_fields) :: any()
 
   def get_changed_or_existing_value(changeset, fields) when is_list(fields) do
-    Enum.map(fields, fn field ->
-      get_changed_or_existing_value(changeset, field)
-    end)
+    for field <- fields, do: get_changed_or_existing_value(changeset, field)
   end
 
   def get_changed_or_existing_value(changeset, field) do
@@ -82,7 +80,7 @@ defmodule QuizGameWeb.Support.Ecto do
   @moduledoc "This project's `Ecto`-related helper functions."
 
   @doc """
-  Returns a list of options for a given `Ecto.Enum` field.
+  Returns a list of `Ecto.Enum` options for a given `field` in a given `module`.
 
   ## Examples
 
@@ -184,7 +182,7 @@ defmodule QuizGameWeb.Support.Range do
   @doc "Return any value in a range other than 0."
   @spec get_non_zero_value(Range.t()) :: integer()
   def get_non_zero_value(range) when range == 0..0 do
-    raise ArgumentError, message: "'range' cannot be 0..0"
+    raise ArgumentError, message: "range cannot be 0..0"
   end
 
   def get_non_zero_value(range) do
