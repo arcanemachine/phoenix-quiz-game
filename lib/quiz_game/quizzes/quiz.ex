@@ -103,23 +103,16 @@ defmodule QuizGame.Quizzes.Quiz do
     if !!S.Changeset.get_changed_or_existing_value(changeset, :math_random_question_count) do
       ## Quiz has randomly-generated math questions. Validate data related to them.
 
-      [question_count, operations, min, max] =
-        S.Changeset.get_changed_or_existing_values(changeset, [
-          :math_random_question_count,
-          :math_random_question_operations,
-          :math_random_question_value_min,
-          :math_random_question_value_max
-        ])
-
       changeset
-
-      # TODO: stuff
-      # |> validate_required([
-      #   :math_random_question_count,
-      #   :math_random_question_operations,
-      #   :math_random_question_value_min,
-      #   :math_random_question_value_max
-      # ])
+      # for data related to math questions, insert all changed and unchanged data into the
+      # changeset so that the validation functions will validate the existing data, not just
+      # the changed data
+      |> S.Changeset.changes_from_data([
+        :math_random_question_count,
+        :math_random_question_operations,
+        :math_random_question_value_min,
+        :math_random_question_value_max
+      ])
 
       # must have at least one math operation selected
       |> validate_length(:math_random_question_operations, min: 1)
