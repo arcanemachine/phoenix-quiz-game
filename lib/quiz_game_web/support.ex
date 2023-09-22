@@ -46,7 +46,7 @@ defmodule QuizGameWeb.Support.Changeset do
     Ecto.Changeset.force_change(
       changeset,
       field,
-      get_changed_or_existing_value(changeset, field)
+      get_value_from_changes_or_data(changeset, field)
     )
   end
 
@@ -57,14 +57,14 @@ defmodule QuizGameWeb.Support.Changeset do
 
   ## Examples
 
-      iex> get_changed_or_existing_value(%Ecto.Changeset{}, :field_without_changed_data)
+      iex> get_value_from_changes_or_data(%Ecto.Changeset{}, :field_without_changed_data)
       "initial value"
 
-      iex> get_changed_or_existing_value(%Ecto.Changeset{}, :field_with_changed_data)
+      iex> get_value_from_changes_or_data(%Ecto.Changeset{}, :field_with_changed_data)
       "changed value"
   """
-  @spec get_changed_or_existing_value(Ecto.Changeset.t(), atom()) :: any()
-  def get_changed_or_existing_value(%Ecto.Changeset{} = changeset, field) do
+  @spec get_value_from_changes_or_data(Ecto.Changeset.t(), atom()) :: any()
+  def get_value_from_changes_or_data(%Ecto.Changeset{} = changeset, field) do
     Map.get(changeset.changes, field, Map.get(changeset.data, field))
   end
 
@@ -77,12 +77,12 @@ defmodule QuizGameWeb.Support.Changeset do
 
   ## Examples
 
-    iex> get_changed_or_existing_values(%Ecto.Changeset{}, [:some_field, :another_field])
+    iex> get_values_from_changes_or_data(%Ecto.Changeset{}, [:some_field, :another_field])
     ["some initial value", "another changed value"]
   """
-  @spec get_changed_or_existing_values(Ecto.Changeset.t(), list()) :: list()
-  def get_changed_or_existing_values(%Ecto.Changeset{} = changeset, fields) do
-    for field <- fields, do: get_changed_or_existing_value(changeset, field)
+  @spec get_values_from_changes_or_data(Ecto.Changeset.t(), list()) :: list()
+  def get_values_from_changes_or_data(%Ecto.Changeset{} = changeset, fields) do
+    for field <- fields, do: get_value_from_changes_or_data(changeset, field)
   end
 end
 

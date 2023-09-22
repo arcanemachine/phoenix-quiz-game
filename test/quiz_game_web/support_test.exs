@@ -52,13 +52,13 @@ defmodule QuizGameWeb.Support.ChangesetTest do
     end
   end
 
-  describe("get_changed_or_existing_value/2") do
+  describe("get_value_from_changes_or_data/2") do
     test "returns initial value if changeset does not have changed value" do
       data = %{some_field: "some value"}
       changes = %{}
       changeset = Ecto.Changeset.change({data, @types}, changes)
 
-      result = S.Changeset.get_changed_or_existing_value(changeset, :some_field)
+      result = S.Changeset.get_value_from_changes_or_data(changeset, :some_field)
       assert result == "some value"
     end
 
@@ -71,12 +71,12 @@ defmodule QuizGameWeb.Support.ChangesetTest do
       # sanity check: changeset does not initially contain final value
       refute changeset.data[:some_field] == "new value"
 
-      result = S.Changeset.get_changed_or_existing_value(changeset, :some_field)
+      result = S.Changeset.get_value_from_changes_or_data(changeset, :some_field)
       assert result == "new value"
     end
   end
 
-  describe("get_changed_or_existing_values/2") do
+  describe("get_values_from_changes_or_data/2") do
     test "returns expected list of values" do
       # create changeset (empty value for field)
       data = %{some_field: "some value", other_field: "other value"}
@@ -84,7 +84,7 @@ defmodule QuizGameWeb.Support.ChangesetTest do
       changeset = Ecto.Changeset.change({data, @types}, changes)
 
       result =
-        S.Changeset.get_changed_or_existing_values(changeset, [:some_field, :other_field])
+        S.Changeset.get_values_from_changes_or_data(changeset, [:some_field, :other_field])
 
       assert result == ["some value", "new value"]
     end

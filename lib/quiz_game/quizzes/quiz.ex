@@ -69,10 +69,10 @@ defmodule QuizGame.Quizzes.Quiz do
   @doc "Perform context-dependent validations on a quiz' changeset (e.g. for different subjects)."
   @spec cast_quiz(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def cast_quiz(changeset) do
-    subject = S.Changeset.get_changed_or_existing_value(changeset, :subject)
+    subject = S.Changeset.get_value_from_changes_or_data(changeset, :subject)
 
     math_random_question_count =
-      S.Changeset.get_changed_or_existing_value(changeset, :math_random_question_count)
+      S.Changeset.get_value_from_changes_or_data(changeset, :math_random_question_count)
 
     # if quiz does not have random math questions, then clear the fields related to random
     # math questions
@@ -92,7 +92,7 @@ defmodule QuizGame.Quizzes.Quiz do
   @spec validate_quiz(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def validate_quiz(changeset) do
     # subject
-    if S.Changeset.get_changed_or_existing_value(changeset, :subject) == :math,
+    if S.Changeset.get_value_from_changes_or_data(changeset, :subject) == :math,
       do: validate_subject_math(changeset),
       else: changeset
   end
@@ -100,7 +100,7 @@ defmodule QuizGame.Quizzes.Quiz do
   @doc "Validations for quizzes whose subject is 'math'."
   @spec validate_subject_math(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def validate_subject_math(changeset) do
-    if !!S.Changeset.get_changed_or_existing_value(changeset, :math_random_question_count) do
+    if !!S.Changeset.get_value_from_changes_or_data(changeset, :math_random_question_count) do
       ## Quiz has randomly-generated math questions. Validate data related to them.
 
       changeset
@@ -131,7 +131,7 @@ defmodule QuizGame.Quizzes.Quiz do
       # chosen maximum value must be greater than the chosen minimum value
       |> validate_number(:math_random_question_value_max,
         greater_than:
-          S.Changeset.get_changed_or_existing_value(changeset, :math_random_question_value_min),
+          S.Changeset.get_value_from_changes_or_data(changeset, :math_random_question_value_min),
         message: "must be greater than the minimum random value"
       )
 

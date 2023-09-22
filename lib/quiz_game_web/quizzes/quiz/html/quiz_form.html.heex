@@ -3,10 +3,10 @@
   id="quiz-form"
   for={@changeset}
   action=""
-  data-subject={S.Changeset.get_changed_or_existing_value(@changeset, :subject)}
+  data-subject={S.Changeset.get_value_from_changes_or_data(@changeset, :subject)}
   data-show-random-math-question-options={
     to_string(
-      S.Changeset.get_changed_or_existing_value(@changeset, :math_random_question_count) != nil
+      S.Changeset.get_value_from_changes_or_data(@changeset, :math_random_question_count) != nil
     )
   }
   x-data="{
