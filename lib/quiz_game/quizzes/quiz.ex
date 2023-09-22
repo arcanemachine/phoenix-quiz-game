@@ -48,9 +48,7 @@ defmodule QuizGame.Quizzes.Quiz do
   ]
 
   @doc "A changeset whose fields can be safely modified by the user."
-  def changeset(quiz \\ %__MODULE__{}, attrs \\ %{})
-
-  def changeset(%__MODULE__{} = quiz, attrs) do
+  def changeset(%__MODULE__{} = quiz, attrs \\ %{}) do
     quiz
     |> cast(attrs, @safe_fields_required ++ @safe_fields_optional)
     |> cast_quiz()
@@ -60,9 +58,7 @@ defmodule QuizGame.Quizzes.Quiz do
   end
 
   @doc "A changeset that contains one or more fields that should not be modified by the user."
-  def unsafe_changeset(quiz, attrs \\ %{})
-
-  def unsafe_changeset(%__MODULE__{} = quiz, attrs) do
+  def unsafe_changeset(%__MODULE__{} = quiz, attrs \\ %{}) do
     quiz
     |> changeset(attrs)
     |> cast(attrs, @unsafe_fields_required ++ @safe_fields_required ++ @safe_fields_optional)
@@ -70,6 +66,7 @@ defmodule QuizGame.Quizzes.Quiz do
     |> foreign_key_constraint(:user_id)
   end
 
+  @doc "Perform context-dependent validations on a quiz' changeset (e.g. for different subjects)."
   @spec cast_quiz(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def cast_quiz(changeset) do
     subject = S.Changeset.get_changed_or_existing_value(changeset, :subject)
@@ -103,33 +100,44 @@ defmodule QuizGame.Quizzes.Quiz do
   @doc "Validations for quizzes whose subject is 'math'."
   @spec validate_subject_math(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def validate_subject_math(changeset) do
-    if S.Changeset.get_changed_or_existing_value(changeset, :math_random_question_count) do
-      # quiz has randomly-generated math questions. validate data related to them
-      changeset
-      |> validate_required([
-        :math_random_question_count,
-        :math_random_question_operations,
-        :math_random_question_value_min,
-        :math_random_question_value_max
-      ])
+    if !!S.Changeset.get_changed_or_existing_value(changeset, :math_random_question_count) do
+      ## Quiz has randomly-generated math questions. Validate data related to them.
 
-      # field must have at least one option selected
+      [question_count, operations, min, max] =
+        S.Changeset.get_changed_or_existing_values(changeset, [
+          :math_random_question_count,
+          :math_random_question_operations,
+          :math_random_question_value_min,
+          :math_random_question_value_max
+        ])
+
+      changeset
+
+      # TODO: stuff
+      # |> validate_required([
+      #   :math_random_question_count,
+      #   :math_random_question_operations,
+      #   :math_random_question_value_min,
+      #   :math_random_question_value_max
+      # ])
+
+      # must have at least one math operation selected
       |> validate_length(:math_random_question_operations, min: 1)
 
-      # value must be in the allowed numeric range
+      # random question count must be in the allowed numeric range
       |> validate_number(:math_random_question_count,
         greater_than_or_equal_to: math_random_question_count_min(),
-        less_than_or_equal_to: math_random_question_count_max()
+        less_than: math_random_question_count_max()
       )
 
-      # chosen value must be greater than the allowed minimum value
+      # minimum value must be greater than the allowed minimum value
       |> validate_number(:math_random_question_value_min,
         greater_than_or_equal_to: math_random_question_value_min()
       )
 
       # chosen maximum value must be greater than the chosen minimum value
       |> validate_number(:math_random_question_value_max,
-        greater_than_or_equal_to:
+        greater_than:
           S.Changeset.get_changed_or_existing_value(changeset, :math_random_question_value_min),
         message: "must be greater than the minimum random value"
       )

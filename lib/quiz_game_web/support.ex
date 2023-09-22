@@ -30,16 +30,16 @@ defmodule QuizGameWeb.Support.Changeset do
 
       iex> changes_from_data(%Ecto.Changeset{}, [:some_field, :another_field])
   """
-  @typep field_or_fields :: atom() | list(atom())
+  @typep field_or_fields :: atom() | list()
   @spec changes_from_data(Ecto.Changeset.t(), field_or_fields()) :: Ecto.Changeset.t()
 
-  def changes_from_data(changeset, fields) when is_list(fields) do
+  def changes_from_data(%Ecto.Changeset{} = changeset, fields) when is_list(fields) do
     Enum.reduce(fields, changeset, fn field, changeset ->
       changeset |> changes_from_data(field)
     end)
   end
 
-  def changes_from_data(changeset, field) do
+  def changes_from_data(%Ecto.Changeset{} = changeset, field) do
     key = field
     value = Map.get(changeset.data, key)
     Ecto.Changeset.force_change(changeset, key, value)
@@ -52,14 +52,14 @@ defmodule QuizGameWeb.Support.Changeset do
 
   ## Examples
 
-    iex> get_changed_or_existing_value(%Ecto.Changeset{}, :field_without_changed_data)
-    "initial value"
+      iex> get_changed_or_existing_value(%Ecto.Changeset{}, :field_without_changed_data)
+      "initial value"
 
-    iex> get_changed_or_existing_value(%Ecto.Changeset{}, :field_with_changed_data)
-    "changed value"
+      iex> get_changed_or_existing_value(%Ecto.Changeset{}, :field_with_changed_data)
+      "changed value"
   """
-  @spec get_changed_or_existing_value(Ecto.Changeset, atom()) :: Ecto.Changeset.t()
-  def get_changed_or_existing_value(changeset, field) do
+  @spec get_changed_or_existing_value(Ecto.Changeset.t(), atom()) :: any()
+  def get_changed_or_existing_value(%Ecto.Changeset{} = changeset, field) do
     Map.get(changeset.changes, field, Map.get(changeset.data, field))
   end
 
@@ -75,8 +75,8 @@ defmodule QuizGameWeb.Support.Changeset do
     iex> get_changed_or_existing_values(%Ecto.Changeset{}, [:some_field, :another_field])
     ["some initial value", "another changed value"]
   """
-  @spec get_changed_or_existing_values(Ecto.Changeset, list(atom())) :: list(Ecto.Changeset.t())
-  def get_changed_or_existing_values(changeset, fields) do
+  @spec get_changed_or_existing_values(Ecto.Changeset.t(), list()) :: list()
+  def get_changed_or_existing_values(%Ecto.Changeset{} = changeset, fields) do
     for field <- fields, do: get_changed_or_existing_value(changeset, field)
   end
 end
@@ -97,11 +97,11 @@ defmodule QuizGameWeb.Support.Conn do
 
   ## Examples
 
-    iex> text_response(%Plug.Conn{}, 401)
-    %Plug.Conn{status: 401}
+      iex> text_response(%Plug.Conn{}, 401)
+      %Plug.Conn{status: 401}
 
-    iex> text_response(%Plug.Conn{}, 401, "You are not authorized to view this page.")
-    %Plug.Conn{status: 401, resp_body: "You are not authorized to view this page."}
+      iex> text_response(%Plug.Conn{}, 401, "You are not authorized to view this page.")
+      %Plug.Conn{status: 401, resp_body: "You are not authorized to view this page."}
   """
   @spec text_response(conn, integer(), resp_body) :: any()
   def text_response(%Plug.Conn{} = conn, status, resp_body \\ nil) do
@@ -122,8 +122,8 @@ defmodule QuizGameWeb.Support.Ecto do
 
   ## Examples
 
-    iex> QuizGameWeb.Support.Ecto.get_enum_field_options(QuizGame.Quizzes.Card, :format)
-    [:multiple_choice, :number_entry, :text_entry, :true_or_false]
+      iex> QuizGameWeb.Support.Ecto.get_enum_field_options(QuizGame.Quizzes.Card, :format)
+      [:multiple_choice, :number_entry, :text_entry, :true_or_false]
   """
   @spec get_enum_field_options(module(), atom()) :: list()
   def get_enum_field_options(module, field) do

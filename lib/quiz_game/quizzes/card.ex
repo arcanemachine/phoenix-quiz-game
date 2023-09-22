@@ -40,7 +40,7 @@ defmodule QuizGame.Quizzes.Card do
   end
 
   @doc "A changeset that contains one or more fields that should not be modified by the user."
-  def unsafe_changeset(%__MODULE__{} = card, attrs) do
+  def unsafe_changeset(%__MODULE__{} = card, attrs \\ %{}) do
     card
     |> changeset(attrs)
     |> cast(attrs, @unsafe_fields_required ++ @safe_fields_required ++ @safe_fields_optional)
