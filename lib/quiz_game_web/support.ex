@@ -84,30 +84,6 @@ defmodule QuizGameWeb.Support.Changeset do
   def get_values_from_changes_or_data(%Ecto.Changeset{} = changeset, fields) do
     for field <- fields, do: get_value_from_changes_or_data(changeset, field)
   end
-
-  @doc """
-  Ensures that a changeset field contains changed data.
-
-  ## Examples
-
-    iex> validate_changed(%Ecto.Changeset{}, :some_field)
-    %Ecto.Changeset{}
-
-    iex> validate_changed(%Ecto.Changeset{}, :some_field, message: "should be changed")
-    %Ecto.Changeset{}
-  """
-  @spec validate_changed(Ecto.Changeset.t(), atom(), keyword()) :: Ecto.Changeset.t()
-  def validate_changed(changeset, field, opts \\ []) do
-    if Map.has_key?(changeset.changes, field) do
-      changeset
-    else
-      Ecto.Changeset.add_error(
-        changeset,
-        field,
-        opts[:message] || "should be different than the original value"
-      )
-    end
-  end
 end
 
 defmodule QuizGameWeb.Support.Conn do
