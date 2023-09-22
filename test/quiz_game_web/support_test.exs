@@ -18,13 +18,24 @@ defmodule QuizGameWeb.Support.ChangesetTest do
   use ExUnit.Case
   alias QuizGameWeb.Support, as: S
 
+  @types %{some_field: :string, another_field: :string}
+
   describe("get_changed_or_existing_value/2") do
+    test "returns initial value if changeset does not have changed value" do
+      # create changeset (empty value for field)
+      data = %{some_field: "some value"}
+      changes = %{}
+      changeset = Ecto.Changeset.change({data, @types}, changes)
+
+      result = S.Changeset.get_changed_or_existing_value(changeset, :some_field)
+      assert result == "some value"
+    end
+
     test "returns changed value if changeset has changed value" do
       # create changeset
-      types = %{some_field: :string}
       data = %{some_field: "some value"}
       changes = %{some_field: "new value"}
-      changeset = Ecto.Changeset.change({data, types}, changes)
+      changeset = Ecto.Changeset.change({data, @types}, changes)
 
       # sanity check: changeset does not initially contain final value
       refute changeset.data[:some_field] == "new value"
@@ -33,15 +44,14 @@ defmodule QuizGameWeb.Support.ChangesetTest do
       assert result == "new value"
     end
 
-    test "returns initial value if changeset does not have changed value" do
+    test "returns list of values if 'fields' is a list" do
       # create changeset (empty value for field)
-      types = %{some_field: :string}
-      data = %{some_field: "some value"}
-      changes = %{}
-      changeset = Ecto.Changeset.change({data, types}, changes)
+      data = %{some_field: "some value", another_field: "another value"}
+      changes = %{another_field: "new value"}
+      changeset = Ecto.Changeset.change({data, @types}, changes)
 
-      result = S.Changeset.get_changed_or_existing_value(changeset, :some_field)
-      assert result == "some value"
+      result = S.Changeset.get_changed_or_existing_value(changeset, [:some_field, :another_field])
+      assert result == ["some value", "new value"]
     end
   end
 end

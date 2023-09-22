@@ -19,8 +19,9 @@ defmodule QuizGameWeb.Support.Changeset do
   @moduledoc "This project's `Ecto.Changeset`-related helper functions."
 
   @doc """
-  Checks a changeset's changed and existing data for a given field, and returns the most
-  up-to-date value.
+  Return a changeset's `changes` or `data` for a given field, with preference given to `changes`.
+
+  This allows for the retrieval of the most up-to-date value in the changeset for a given field.
 
   ## Examples
 
@@ -30,7 +31,15 @@ defmodule QuizGameWeb.Support.Changeset do
     iex> get_changed_or_existing_value(%Ecto.Changeset{}, :field_with_changed_data)
     "changed value"
   """
-  @spec get_changed_or_existing_value(Ecto.Changeset.t(), atom()) :: any()
+  @type field_or_fields :: atom() | list(atom())
+  @spec get_changed_or_existing_value(Ecto.Changeset.t(), field_or_fields) :: any()
+
+  def get_changed_or_existing_value(changeset, fields) when is_list(fields) do
+    Enum.map(fields, fn field ->
+      get_changed_or_existing_value(changeset, field)
+    end)
+  end
+
   def get_changed_or_existing_value(changeset, field) do
     Map.get(changeset.changes, field, Map.get(changeset.data, field))
   end
