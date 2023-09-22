@@ -181,10 +181,6 @@ defmodule QuizGameWeb.Core.Components do
         href={@href}
         navigate={@navigate}
         data-confirm={@confirm}
-        x-data={!@navigate && ""}
-        x-on:click={
-          !@navigate && "$el.dataset.confirm && confirm($el.dataset.confirm) && history.go(-1)"
-        }
       >
         <.icon name="hero-arrow-small-left" class="h-5 w-5" />
         <%= render_slot(@inner_block) %>
