@@ -31,15 +31,26 @@ defmodule QuizGameWeb.Support.Changeset do
     iex> get_changed_or_existing_value(%Ecto.Changeset{}, :field_with_changed_data)
     "changed value"
   """
-  @type field_or_fields :: atom() | list(atom())
-  @spec get_changed_or_existing_value(Ecto.Changeset.t(), field_or_fields) :: any()
-
-  def get_changed_or_existing_value(changeset, fields) when is_list(fields) do
-    for field <- fields, do: get_changed_or_existing_value(changeset, field)
-  end
-
+  @spec get_changed_or_existing_value(Ecto.Changeset.t(), atom()) :: any()
   def get_changed_or_existing_value(changeset, field) do
     Map.get(changeset.changes, field, Map.get(changeset.data, field))
+  end
+
+  @doc """
+  Return a changeset's `changes` or `data` for a given list of fields, with preference given to
+  `changes`.
+
+  This allows for the retrieval of the most up-to-date values in the changeset for a given list of
+  fields.
+
+  ## Examples
+
+    iex> get_changed_or_existing_values(%Ecto.Changeset{}, [:some_field, :another_field])
+    ["some initial value", "another changed value"]
+  """
+  @spec get_changed_or_existing_values(Ecto.Changeset.t(), list(atom())) :: any()
+  def get_changed_or_existing_values(changeset, fields) do
+    for field <- fields, do: get_changed_or_existing_value(changeset, field)
   end
 end
 

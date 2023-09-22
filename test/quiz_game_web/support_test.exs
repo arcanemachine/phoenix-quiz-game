@@ -43,14 +43,18 @@ defmodule QuizGameWeb.Support.ChangesetTest do
       result = S.Changeset.get_changed_or_existing_value(changeset, :some_field)
       assert result == "new value"
     end
+  end
 
-    test "returns list of values if 'fields' is a list" do
+  describe("get_changed_or_existing_values/2") do
+    test "returns expected list of values" do
       # create changeset (empty value for field)
       data = %{some_field: "some value", another_field: "another value"}
       changes = %{another_field: "new value"}
       changeset = Ecto.Changeset.change({data, @types}, changes)
 
-      result = S.Changeset.get_changed_or_existing_value(changeset, [:some_field, :another_field])
+      result =
+        S.Changeset.get_changed_or_existing_values(changeset, [:some_field, :another_field])
+
       assert result == ["some value", "new value"]
     end
   end
