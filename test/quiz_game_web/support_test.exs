@@ -18,11 +18,32 @@ defmodule QuizGameWeb.Support.ChangesetTest do
   use ExUnit.Case
   alias QuizGameWeb.Support, as: S
 
-  @types %{some_field: :string, another_field: :string}
+  @types %{some_field: :string, other_field: :string}
+
+  describe("changes_from_data/2") do
+    test "appends the data of a single field to changeset.changes" do
+      data = %{some_field: "some value", other_field: "other value"}
+      changes = %{}
+      changeset = Ecto.Changeset.change({data, @types}, changes)
+
+      result = S.Changeset.changes_from_data(changeset, :some_field) |> Map.get(:changes)
+      assert result == %{some_field: "some value"}
+    end
+
+    test "appends the data of multiple fields to changeset.changes" do
+      data = %{some_field: "some value", other_field: "other value"}
+      changes = %{}
+      changeset = Ecto.Changeset.change({data, @types}, changes)
+
+      result =
+        S.Changeset.changes_from_data(changeset, [:some_field, :other_field]) |> Map.get(:changes)
+
+      assert result == %{some_field: "some value", other_field: "other value"}
+    end
+  end
 
   describe("get_changed_or_existing_value/2") do
     test "returns initial value if changeset does not have changed value" do
-      # create changeset (empty value for field)
       data = %{some_field: "some value"}
       changes = %{}
       changeset = Ecto.Changeset.change({data, @types}, changes)
@@ -48,12 +69,12 @@ defmodule QuizGameWeb.Support.ChangesetTest do
   describe("get_changed_or_existing_values/2") do
     test "returns expected list of values" do
       # create changeset (empty value for field)
-      data = %{some_field: "some value", another_field: "another value"}
-      changes = %{another_field: "new value"}
+      data = %{some_field: "some value", other_field: "other value"}
+      changes = %{other_field: "new value"}
       changeset = Ecto.Changeset.change({data, @types}, changes)
 
       result =
-        S.Changeset.get_changed_or_existing_values(changeset, [:some_field, :another_field])
+        S.Changeset.get_changed_or_existing_values(changeset, [:some_field, :other_field])
 
       assert result == ["some value", "new value"]
     end

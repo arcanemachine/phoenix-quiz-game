@@ -19,6 +19,33 @@ defmodule QuizGameWeb.Support.Changeset do
   @moduledoc "This project's `Ecto.Changeset`-related helper functions."
 
   @doc """
+  For a given `field` or `fields`, assign a the value of one or more changeset `data` properties
+  to its `changes`. In other words, if a changeset has a given key in its `data` struct, the
+  changeset will then assign the same key and value in its `changes` map.
+
+  This allows validation logic to work on existing `data` properties, since the validators only
+  validate against the values in the `changes` map.
+
+  ## Examples
+
+      iex> changes_from_data(%Ecto.Changeset{}, [:some_field, :another_field])
+  """
+  @typep field_or_fields :: atom() | list(atom())
+  @spec changes_from_data(Ecto.Changeset.t(), field_or_fields()) :: Ecto.Changeset.t()
+
+  def changes_from_data(changeset, fields) when is_list(fields) do
+    Enum.reduce(fields, changeset, fn field, changeset ->
+      changeset |> changes_from_data(field)
+    end)
+  end
+
+  def changes_from_data(changeset, field) do
+    key = field
+    value = Map.get(changeset.data, key)
+    Ecto.Changeset.force_change(changeset, key, value)
+  end
+
+  @doc """
   Return a changeset's `changes` or `data` for a given field, with preference given to `changes`.
 
   This allows for the retrieval of the most up-to-date value in the changeset for a given field.
@@ -31,7 +58,7 @@ defmodule QuizGameWeb.Support.Changeset do
     iex> get_changed_or_existing_value(%Ecto.Changeset{}, :field_with_changed_data)
     "changed value"
   """
-  @spec get_changed_or_existing_value(Ecto.Changeset.t(), atom()) :: any()
+  @spec get_changed_or_existing_value(Ecto.Changeset, atom()) :: Ecto.Changeset.t()
   def get_changed_or_existing_value(changeset, field) do
     Map.get(changeset.changes, field, Map.get(changeset.data, field))
   end
@@ -48,7 +75,7 @@ defmodule QuizGameWeb.Support.Changeset do
     iex> get_changed_or_existing_values(%Ecto.Changeset{}, [:some_field, :another_field])
     ["some initial value", "another changed value"]
   """
-  @spec get_changed_or_existing_values(Ecto.Changeset.t(), list(atom())) :: any()
+  @spec get_changed_or_existing_values(Ecto.Changeset, list(atom())) :: list(Ecto.Changeset.t())
   def get_changed_or_existing_values(changeset, fields) do
     for field <- fields, do: get_changed_or_existing_value(changeset, field)
   end
