@@ -40,9 +40,11 @@ defmodule QuizGameWeb.Support.Changeset do
   end
 
   def changes_from_data(%Ecto.Changeset{} = changeset, field) do
-    key = field
-    value = Map.get(changeset.data, key)
-    Ecto.Changeset.force_change(changeset, key, value)
+    Ecto.Changeset.force_change(
+      changeset,
+      field,
+      get_changed_or_existing_value(changeset, field)
+    )
   end
 
   @doc """

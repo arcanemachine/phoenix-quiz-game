@@ -30,6 +30,15 @@ defmodule QuizGameWeb.Support.ChangesetTest do
       assert result == %{some_field: "some value"}
     end
 
+    test "appends the newest data of a single field to changeset.changes" do
+      data = %{some_field: "some value", other_field: "other value"}
+      changes = %{some_field: "new value"}
+      changeset = Ecto.Changeset.change({data, @types}, changes)
+
+      result = S.Changeset.changes_from_data(changeset, :some_field) |> Map.get(:changes)
+      assert result == %{some_field: "new value"}
+    end
+
     test "appends the data of multiple fields to changeset.changes" do
       data = %{some_field: "some value", other_field: "other value"}
       changes = %{}
