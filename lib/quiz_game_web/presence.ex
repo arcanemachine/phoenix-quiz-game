@@ -28,7 +28,7 @@ defmodule QuizGameWeb.Presence do
   end
 
   @doc "Lists all data being tracked via Presence for a given topic."
-  @spec list_data_for(String.t(), integer()) :: List.t()
+  @spec list_data_for(String.t(), integer()) :: list()
   def list_data_for(topic, quiz_id) do
     data = list(topic)
 
