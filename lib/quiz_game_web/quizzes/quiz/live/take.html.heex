@@ -6,10 +6,7 @@
     end
   }
   class="-mt-6 mb-4"
-  confirm={
-    @quiz_state == :in_progress &&
-      "Are you sure you want to exit this quiz? You will lose all your progress!"
-  }
+  confirm="Are you sure you want to exit this quiz? You will lose all your progress!"
 >
   Exit this quiz
 </.back>
@@ -28,6 +25,7 @@
           <.simple_form
             id="quiz-take-enter-display-name-form"
             for={%{}}
+            warn_on_exit="always"
             class="max-w-xs mx-auto"
             phx-submit="submit-display-name"
           >
@@ -75,6 +73,7 @@
           <.simple_form
             id="quiz-take-before-start-form"
             for={%{}}
+            warn_on_exit="always"
             class="max-w-sm mx-auto"
             phx-submit="start-quiz"
           >
@@ -145,8 +144,8 @@
           <.simple_form
             id="quiz-take-user-answer-form"
             for={%{}}
-            class="max-w-xs mx-auto"
             warn_on_exit="always"
+            class="max-w-xs mx-auto"
             phx-submit="submit-user-answer"
           >
             <div :if={@card.format == :multiple_choice}>
