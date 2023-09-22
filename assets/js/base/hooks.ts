@@ -6,12 +6,22 @@ class SimpleFormHook extends Hook {
    * then show a warning before exiting the page. This is intended to prevent
    * the form data from being lost during unintentional navigation before the
    * form has been submitted.
+   *
+   * TODO
+   *   - add 'data-confirm' attribute to all other links when shouldWarnOnExit()
+   *     evaluates to true, and remove the attribute when it evaluates to false
    */
 
   initialFormFieldItems: Record<string, string> = {};
   modifiedFormFields: Set<string> = new Set();
   warnOnExit() {
     return this.el.dataset.warnOnExit;
+  }
+  shouldWarnOnExit() {
+    return (
+      this.warnOnExit() === "always" ||
+      (this.warnOnExit() === "change" && this.modifiedFormFields.size)
+    );
   }
 
   // lifecycle
@@ -36,6 +46,11 @@ class SimpleFormHook extends Hook {
     // add event listeners related to form modification detection
     addEventListener("input", this.handleInput);
     addEventListener("submit", this.handleSubmit);
+
+    // always bind the 'beforeunload' listener if warnOnExit is set to "always"
+    if (this.warnOnExit() === "always") {
+      addEventListener("beforeunload", this.handleBeforeUnload);
+    }
 
     this.initialFormFieldItems = this.getInitialFormFields();
   }
@@ -75,14 +90,17 @@ class SimpleFormHook extends Hook {
       }
     }
 
-    // if form has any modified inputs, then set a relevant 'data' attribute on
-    // the form so that the form's modification status can be detected outside
-    // of the scope of this hook
-    if (this.modifiedFormFields.size) {
+    if (this.shouldWarnOnExit()) {
+      // allow inspection of form status outside of this hook
       this.el.setAttribute("data-form-has-modified-inputs", "true");
+
+      // show warning when exiting the page
       addEventListener("beforeunload", this.handleBeforeUnload);
     } else {
+      // allow inspection of form status outside of this hook
       this.el.removeAttribute("data-form-has-modified-inputs");
+
+      // remove warning when exiting the page
       removeEventListener("beforeunload", this.handleBeforeUnload);
     }
   }
@@ -154,11 +172,17 @@ class SimpleFormHook extends Hook {
     }
 
     // set event handlers and data attributes based on modified input count
-    if (this.modifiedFormFields.size) {
+    if (this.shouldWarnOnExit()) {
+      // allow inspection of form status outside of this hook
       this.el.setAttribute("data-form-has-modified-inputs", "true");
+
+      // show warning when exiting the page
       addEventListener("beforeunload", this.handleBeforeUnload);
     } else {
+      // allow inspection of form status outside of this hook
       this.el.removeAttribute("data-form-has-modified-inputs");
+
+      // remove warning when exiting the page
       removeEventListener("beforeunload", this.handleBeforeUnload);
     }
   }
@@ -173,19 +197,12 @@ class SimpleFormHook extends Hook {
 
   handleBeforeUnload(evt: BeforeUnloadEvent): void {
     /**
-     * Warn before exiting if any inputs have been modified, or if the form
-     * is configured to always warn before exiting.
-     *
-     * NOTE: Any function that uses the 'beforeunload' event will prevent the
-     * browser from caching that page. Therefore, this function SHOULD be bound
-     * to a listener only when the form currently has any modifications.
+     * Always warn before exiting. This event handler will be attached under
+     * the following circumstances:
+     *   - warnOnExit is set to "always"
+     *   - or, warnOnExit is set to "change" and the form has unsaved changes
      */
-    if (
-      this.warnOnExit() === "always" ||
-      (this.warnOnExit() === "change" && this.modifiedFormFields.size)
-    ) {
-      evt.returnValue = true;
-    }
+    evt.returnValue = true;
   }
 }
 
