@@ -166,6 +166,7 @@ defmodule QuizGameWeb.Core.Components do
         Back to posts
       </.back>
   """
+  attr :href, :any, default: nil
   attr :navigate, :any, default: nil
   attr :class, :string, default: nil
   attr :confirm, :string, default: nil
@@ -177,6 +178,7 @@ defmodule QuizGameWeb.Core.Components do
     <div class={@class}>
       <.link
         class="flex items-center gap-2 py-1 text-sm font-semibold"
+        href={@href}
         navigate={@navigate}
         data-confirm={@confirm}
         x-data={!@navigate && ""}
