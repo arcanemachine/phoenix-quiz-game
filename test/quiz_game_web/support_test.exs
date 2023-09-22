@@ -20,13 +20,13 @@ defmodule QuizGameWeb.Support.ChangesetTest do
 
   @types %{some_field: :string, other_field: :string}
 
-  describe("changes_from_data/2") do
+  describe("ensure_data_in_changes/2") do
     test "appends the data of a single field to changeset.changes" do
       data = %{some_field: "some value", other_field: "other value"}
       changes = %{}
       changeset = Ecto.Changeset.change({data, @types}, changes)
 
-      result = S.Changeset.changes_from_data(changeset, :some_field) |> Map.get(:changes)
+      result = S.Changeset.ensure_data_in_changes(changeset, :some_field) |> Map.get(:changes)
       assert result == %{some_field: "some value"}
     end
 
@@ -35,7 +35,7 @@ defmodule QuizGameWeb.Support.ChangesetTest do
       changes = %{some_field: "new value"}
       changeset = Ecto.Changeset.change({data, @types}, changes)
 
-      result = S.Changeset.changes_from_data(changeset, :some_field) |> Map.get(:changes)
+      result = S.Changeset.ensure_data_in_changes(changeset, :some_field) |> Map.get(:changes)
       assert result == %{some_field: "new value"}
     end
 
@@ -45,7 +45,8 @@ defmodule QuizGameWeb.Support.ChangesetTest do
       changeset = Ecto.Changeset.change({data, @types}, changes)
 
       result =
-        S.Changeset.changes_from_data(changeset, [:some_field, :other_field]) |> Map.get(:changes)
+        S.Changeset.ensure_data_in_changes(changeset, [:some_field, :other_field])
+        |> Map.get(:changes)
 
       assert result == %{some_field: "some value", other_field: "other value"}
     end

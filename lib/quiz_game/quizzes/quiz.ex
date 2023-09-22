@@ -107,7 +107,7 @@ defmodule QuizGame.Quizzes.Quiz do
       # for data related to math questions, insert all changed and unchanged data into the
       # changeset so that the validation functions will validate the existing data, not just
       # the changed data
-      |> S.Changeset.changes_from_data([
+      |> S.Changeset.ensure_data_in_changes([
         :math_random_question_count,
         :math_random_question_operations,
         :math_random_question_value_min,

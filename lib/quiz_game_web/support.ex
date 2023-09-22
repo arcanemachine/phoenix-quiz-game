@@ -26,20 +26,23 @@ defmodule QuizGameWeb.Support.Changeset do
   This allows validation logic to work on existing `data` properties, since the validators only
   validate against the values in the `changes` map.
 
+  NOTE: This function will not overwrite any already-changed data in the `changes` map. Changed
+  data takes precedence over unchanged data.
+
   ## Examples
 
-      iex> changes_from_data(%Ecto.Changeset{}, [:some_field, :another_field])
+      iex> ensure_data_in_changes(%Ecto.Changeset{}, [:some_field, :another_field])
   """
   @typep field_or_fields :: atom() | list()
-  @spec changes_from_data(Ecto.Changeset.t(), field_or_fields()) :: Ecto.Changeset.t()
+  @spec ensure_data_in_changes(Ecto.Changeset.t(), field_or_fields()) :: Ecto.Changeset.t()
 
-  def changes_from_data(%Ecto.Changeset{} = changeset, fields) when is_list(fields) do
+  def ensure_data_in_changes(%Ecto.Changeset{} = changeset, fields) when is_list(fields) do
     Enum.reduce(fields, changeset, fn field, changeset ->
-      changeset |> changes_from_data(field)
+      changeset |> ensure_data_in_changes(field)
     end)
   end
 
-  def changes_from_data(%Ecto.Changeset{} = changeset, field) do
+  def ensure_data_in_changes(%Ecto.Changeset{} = changeset, field) do
     Ecto.Changeset.force_change(
       changeset,
       field,
