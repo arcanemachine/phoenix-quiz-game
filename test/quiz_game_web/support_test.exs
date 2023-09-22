@@ -133,6 +133,12 @@ defmodule QuizGameWeb.Support.RangeTest do
   alias QuizGameWeb.Support, as: S
 
   describe("get_non_zero_value/1") do
+    test "raises expected assertion if range is 0..0" do
+      assert_raise(ArgumentError, "range cannot be 0..0", fn ->
+        S.Range.get_non_zero_value(0..0)
+      end)
+    end
+
     test "returns a non-zero value from a range" do
       for _ <- 1..100 do
         result = S.Range.get_non_zero_value(-100..100)
