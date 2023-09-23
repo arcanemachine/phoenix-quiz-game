@@ -72,6 +72,7 @@ defmodule QuizGameWeb.Support.Router do
       :contact_us -> ~p"/contact-us"
       :privacy_policy -> ~p"/privacy-policy"
       :terms_of_use -> ~p"/terms-of-use"
+      _ -> throw("invalid action for :core route context: '#{action}'")
     end
   end
 
@@ -79,6 +80,7 @@ defmodule QuizGameWeb.Support.Router do
   def route(:dev, action, _params) do
     case action do
       :component_showcase -> "/dev/component-showcase"
+      _ -> throw("invalid action for :dev route context: '#{action}'")
     end
   end
 
@@ -87,15 +89,16 @@ defmodule QuizGameWeb.Support.Router do
     case action do
       :index -> ~p"/quizzes"
       :index_subject -> ~p"/quizzes/subjects/#{Keyword.fetch!(params, :subject)}"
-      :new -> ~p"/quizzes/new"
-      :new_random -> ~p"/quizzes/random"
-      :create -> ~p"/quizzes/new"
+      :new -> ~p"/quizzes/create"
+      :create -> ~p"/quizzes/create"
+      :new_random -> ~p"/quizzes/create/random"
       :edit -> ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/update"
       :update -> ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/update"
       n when n in [:show, :delete] -> ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}"
       :take -> ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/take"
       :take_random -> ~p"/quizzes/random/take"
       :stats -> ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/stats"
+      _ -> throw("invalid action for :quizzes route context")
     end
   end
 
@@ -105,25 +108,26 @@ defmodule QuizGameWeb.Support.Router do
         ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards"
 
       :new ->
-        ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/new"
+        ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/create"
 
       :create ->
         ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards"
 
-      :show ->
+      n when n in [:show, :update, :delete] ->
         ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/#{Keyword.fetch!(params, :card_id)}"
 
       :edit ->
         ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/#{Keyword.fetch!(params, :card_id)}/update"
 
-      n when n in [:show, :update, :delete] ->
-        ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/#{Keyword.fetch!(params, :card_id)}"
+      _ ->
+        throw("invalid action for :quizzes_cards route context: '#{action}'")
     end
   end
 
   def route(:quizzes_records, action, params) do
     case action do
       :index -> ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/records"
+      _ -> throw("invalid action for :quizzes_records route context: '#{action}'")
     end
   end
 
@@ -134,12 +138,12 @@ defmodule QuizGameWeb.Support.Router do
       :register -> ~p"/users/register"
       :register_success -> ~p"/users/register/success"
       :login -> ~p"/users/login"
-      :logout_confirm -> ~p"/users/logout"
-      :logout -> ~p"/users/logout"
       :reset_password_solicit -> ~p"/users/reset/password"
       :reset_password_confirm -> ~p"/users/reset/password/#{Keyword.fetch!(params, :token)}"
       :verify_email_solicit -> ~p"/users/verify/email"
       :verify_email_confirm -> ~p"/users/verify/email/#{Keyword.fetch!(params, :token)}"
+      :logout_confirm -> ~p"/users/logout"
+      :logout -> ~p"/users/logout"
       # crud
       :show -> ~p"/users/me"
       :settings -> ~p"/users/me/update"
@@ -152,6 +156,7 @@ defmodule QuizGameWeb.Support.Router do
       # quizzes
       :quizzes_index -> ~p"/users/me/quizzes"
       :records_index -> ~p"/users/me/quizzes/records"
+      _ -> throw("invalid action for :users route context: '#{action}'")
     end
   end
 end
