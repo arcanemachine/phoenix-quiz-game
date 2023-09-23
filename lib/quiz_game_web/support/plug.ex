@@ -33,7 +33,7 @@ defmodule QuizGameWeb.Support.Plug do
     if conn.request_path != "/" && String.last(conn.request_path) == "/" do
       conn
       |> put_status(301)
-      |> redirect(to: String.slice(conn.request_path, 0..-2//1))
+      |> redirect(to: conn.request_path |> String.trim_trailing("/"))
       |> halt()
     else
       conn
