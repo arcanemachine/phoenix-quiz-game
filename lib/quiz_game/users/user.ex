@@ -69,6 +69,7 @@ defmodule QuizGame.Users.User do
   defp validate_display_name(changeset) do
     changeset
     |> validate_required([:display_name])
+    |> update_change(:display_name, &String.trim/1)
     |> validate_length(:display_name, max: display_name_length_max())
   end
 
@@ -133,17 +134,7 @@ defmodule QuizGame.Users.User do
   def display_name_changeset(quiz, attrs, _opts \\ []) do
     quiz
     |> cast(attrs, [:display_name])
-    |> validate_required([:display_name])
-    |> update_change(:display_name, &String.trim/1)
-    |> case do
-      %{changes: %{display_name: _}} = changeset ->
-        # changeset contains changed display name
-        changeset
-
-      %{} = changeset ->
-        # changeset does not contain changed display name
-        add_error(changeset, :display_name, "should be different than your current display name")
-    end
+    |> validate_display_name()
   end
 
   @doc "A changeset for managing a users's admin permissions."

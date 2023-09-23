@@ -14,9 +14,9 @@ defmodule QuizGameWeb.Users.Live.UpdateDisplayName do
     socket =
       socket
       |> assign(
-        page_title: "Change Display Name",
+        page_title: "Update Display Name",
         form: to_form(changeset),
-        success_url: Map.get(params, "next") || route(:users, :show)
+        success_url: Map.get(params, "next") || route(:users, :settings)
       )
 
     {:ok, socket}
@@ -30,8 +30,9 @@ defmodule QuizGameWeb.Users.Live.UpdateDisplayName do
     </.crud_intro_text>
 
     <.simple_form
-      id="user-update-display-name-form"
+      id="update-display-name-form"
       for={@form}
+      autocomplete="off"
       phx-change="validate"
       phx-submit="submit"
     >
@@ -51,7 +52,7 @@ defmodule QuizGameWeb.Users.Live.UpdateDisplayName do
   end
 
   @impl true
-  def handle_event("submit", %{"display_name" => display_name}, socket) do
+  def handle_event("submit", %{"user" => %{"display_name" => display_name}}, socket) do
     user = socket.assigns.current_user
 
     case Users.update_user_display_name(user, display_name) do
@@ -66,7 +67,7 @@ defmodule QuizGameWeb.Users.Live.UpdateDisplayName do
     end
   end
 
-  def handle_event("validate", %{"display_name" => display_name}, socket) do
+  def handle_event("validate", %{"user" => %{"display_name" => display_name}}, socket) do
     form =
       socket.assigns.current_user
       |> Users.change_user_display_name(%{display_name: display_name})
