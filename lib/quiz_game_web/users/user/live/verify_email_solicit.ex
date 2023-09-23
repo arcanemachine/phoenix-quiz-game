@@ -18,7 +18,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailSolicit do
       Fill out the form, and we will send you an email with a link to confirm your account.
     </.crud_intro_text>
 
-    <.simple_form id="user-confirmation-instructions-form" for={@form} phx-submit="submit">
+    <.simple_form id="verify-email-solicit-form" for={@form} phx-submit="submit">
       <.input
         field={@form[:email]}
         type="email"

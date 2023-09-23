@@ -33,7 +33,12 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordConfirm do
       Fill out the form to finish resetting your password.
     </.crud_intro_text>
 
-    <.simple_form id="user-reset-password-form" for={@form} phx-change="validate" phx-submit="submit">
+    <.simple_form
+      id="reset-password-confirm-form"
+      for={@form}
+      phx-change="validate"
+      phx-submit="submit"
+    >
       <.input
         field={@form[:password]}
         type="password"

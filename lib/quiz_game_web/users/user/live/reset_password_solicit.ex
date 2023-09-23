@@ -18,7 +18,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordSolicit do
       Fill out the form, and we will send you an email with a link to reset your password.
     </.crud_intro_text>
 
-    <.simple_form id="user-forgot-password-form" for={@form} phx-submit="submit">
+    <.simple_form id="reset-password-solicit-form" for={@form} phx-submit="submit">
       <.input
         field={@form[:email]}
         type="email"

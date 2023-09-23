@@ -40,7 +40,7 @@ defmodule QuizGameWeb.Users.User.Live.Register do
     </.crud_intro_text>
 
     <.simple_form
-      id="user-registration-form"
+      id="register-form"
       for={@form}
       has_errors={@check_errors}
       action={route(:users, :login) <> query_string(action: "registered")}

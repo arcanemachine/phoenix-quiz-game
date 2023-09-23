@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Users.User.Live.Login do
+defmodule QuizGameWeb.Users.Session.Live.Login do
   @moduledoc false
   use QuizGameWeb, :live_view
   alias QuizGame.Users.User
@@ -20,7 +20,7 @@ defmodule QuizGameWeb.Users.User.Live.Login do
     </.crud_intro_text>
 
     <.simple_form
-      id="user-login-form"
+      id="login-form"
       for={@form}
       action={route(:users, :login) <> query_string(@params)}
       phx-update="ignore"
