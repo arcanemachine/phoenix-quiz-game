@@ -15,7 +15,7 @@ defmodule QuizGameWeb.Users.Controller do
   end
 
   def settings(conn, _params) do
-    conn |> render(:settings, page_title: "Manage Your Profile")
+    conn |> render(:settings, page_title: "Manage Your Account")
   end
 
   def delete_confirm(conn, _params) do
