@@ -133,7 +133,7 @@ defmodule QuizGameWeb.Router do
     live_session :logout_required,
       on_mount: [{QuizGameWeb.UserAuth, :redirect_if_user_is_authenticated}] do
       live "/register", Users.User.Live.Register, :new, as: :register
-      live "/login", Users.User.Live.Login, :new, as: :login
+      live "/login", Users.Session.Live.Login, :new, as: :login
       live "/reset/password", Users.User.Live.ResetPasswordSolicit, :new
       live "/reset/password/:token", Users.User.Live.ResetPasswordConfirm, :edit
     end
