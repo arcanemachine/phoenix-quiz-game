@@ -18,6 +18,10 @@ defmodule QuizGameWeb.Quizzes.Quiz.ControllerTest do
   @quiz_create_url route(:quizzes, :create)
   @quiz_new_url route(:quizzes, :new)
 
+  defp _get_quiz_index_subject_url(subject) do
+    route(:quizzes, :index_subject, subject: subject)
+  end
+
   defp _get_quiz_show_url(quiz_id) do
     route(:quizzes, :show, quiz_id: quiz_id)
   end
@@ -44,6 +48,29 @@ defmodule QuizGameWeb.Quizzes.Quiz.ControllerTest do
     test "renders expected markup", %{conn: conn} do
       resp_conn = get(conn, @quiz_index_url)
       assert html_has_title(resp_conn.resp_body, "Quiz List")
+    end
+  end
+
+  describe "quiz :index_subject" do
+    test "renders expected markup for valid subject", %{conn: conn} do
+      math_quiz = quiz_fixture(%{name: "some math quiz", subject: :math})
+      science_quiz = quiz_fixture(%{name: "some science quiz", subject: :science})
+
+      # renders expected markup
+      html = get(conn, _get_quiz_index_subject_url("math")) |> Map.get(:resp_body)
+      assert html_has_title(html, "Math Quizzes")
+
+      # shows expected quiz for this subject
+      assert html_has_content(html, math_quiz.name)
+
+      # does not show quiz for a different subject
+      refute html_has_content(html, science_quiz.name)
+    end
+
+    test "returns 404 for non-existent subject", %{conn: conn} do
+      assert_raise(QuizGameWeb.Support.Exceptions.HttpResponse, "Not Found", fn ->
+        get(conn, _get_quiz_index_subject_url("invalid-subject"))
+      end)
     end
   end
 

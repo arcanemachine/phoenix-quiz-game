@@ -20,22 +20,26 @@ defmodule QuizGameWeb.Quizzes.Quiz.Controller do
   end
 
   def index_subject(conn, %{"subject" => subject} = _params) do
-    subject_as_atom =
-      try do
-        String.to_existing_atom(subject |> String.replace("-", "_"))
-      rescue
-        # credo:disable-for-next-line
-        _ in ArgumentError -> raise S.Exceptions.HttpResponse, plug_status: 404
+    # replace hyphenated subject name with underscore so we can do ecto lookups against the atoms
+    subject = subject |> String.replace("-", "_")
+
+    # get list of valid subjects
+    subject_list =
+      for subject_atom <- S.Ecto.get_enum_field_options(Quiz, :subject) do
+        subject_atom |> to_string()
       end
 
-    quizzes =
-      Repo.all(from q in Quiz, where: q.subject == ^subject_as_atom, order_by: [{:asc, :name}])
+    # return 404 for invalid subject
+    if subject not in subject_list, do: raise(S.Exceptions.HttpResponse, plug_status: 404)
 
-    pretty_subject = String.replace(subject, "-", " ")
+    # get all quizzes for subject
+    quizzes = Repo.all(from q in Quiz, where: q.subject == ^subject, order_by: [{:asc, :name}])
+
+    pretty_subject = subject |> String.replace("_", " ")
 
     render(conn, :index_subject,
-      page_title: "'#{pretty_subject |> S.String.to_titlecase()}' Quizzes",
-      pretty_subject: pretty_subject,
+      page_title: "#{pretty_subject |> S.String.to_titlecase()} Quizzes",
+      subject: pretty_subject,
       quizzes: quizzes
     )
   end
