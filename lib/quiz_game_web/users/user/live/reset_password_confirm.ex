@@ -34,7 +34,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordConfirm do
     </.crud_intro_text>
 
     <.simple_form
-      id="reset-password-confirm-form"
+      id="user-reset-password-confirm-form"
       for={@form}
       phx-change="validate"
       phx-submit="submit"

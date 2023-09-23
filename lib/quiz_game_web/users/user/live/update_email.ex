@@ -52,7 +52,12 @@ defmodule QuizGameWeb.Users.User.Live.UpdateEmail do
       <p>To confirm your new email address, open that email and click on the activation link.</p>
     </.crud_intro_text>
 
-    <.simple_form id="update-email-form" for={@email_form} phx-submit="submit" phx-change="validate">
+    <.simple_form
+      id="user-update-email-form"
+      for={@email_form}
+      phx-submit="submit"
+      phx-change="validate"
+    >
       <.input
         field={@email_form[:email]}
         type="email"

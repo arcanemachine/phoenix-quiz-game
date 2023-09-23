@@ -39,7 +39,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateDisplayNameTest do
       form_data = %{"user[display_name]" => updated_display_name}
 
       # submit the form and follow the redirect
-      form = form(lv, "#update-display-name-form", form_data)
+      form = form(lv, "#user-update-display-name-form", form_data)
       render_submit(form)
 
       # view redirects to expected route and has expected flash message(s)
@@ -62,7 +62,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateDisplayNameTest do
       form_data = %{"user[display_name]" => updated_display_name}
 
       # submit the form and follow the redirect
-      form = form(lv, "#update-display-name-form", form_data)
+      form = form(lv, "#user-update-display-name-form", form_data)
       render_submit(form)
 
       # view redirects to expected route and has expected flash message(s)
@@ -79,7 +79,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateDisplayNameTest do
 
       html_after_change =
         lv
-        |> element("#update-display-name-form")
+        |> element("#user-update-display-name-form")
         |> render_change(%{"user[display_name]" => ""})
 
       # still on the same page
@@ -99,7 +99,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateDisplayNameTest do
       # submit the form
       html_after_submit =
         lv
-        |> form("#update-display-name-form", %{
+        |> form("#user-update-display-name-form", %{
           "user" => %{"display_name" => ""}
         })
         |> render_submit()

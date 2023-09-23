@@ -28,7 +28,7 @@ defmodule QuizGame.TestSupport.Assertions do
   def html_element_has_content(html, selector, content) do
     html
     |> Floki.find(selector)
-    |> Floki.find(":fl-contains('#{content}')")
+    |> Floki.find(~s|:fl-contains("#{content}")|)
     |> (Enum.empty?() |> Kernel.not())
   end
 
@@ -36,8 +36,8 @@ defmodule QuizGame.TestSupport.Assertions do
   @spec html_form_field_has_error_message(String.t(), String.t(), String.t()) :: boolean()
   def html_form_field_has_error_message(html, field_name, message) do
     html
-    |> Floki.find("[phx-feedback-for='#{field_name}']")
-    |> Floki.find(":fl-contains('#{message}')")
+    |> Floki.find(~s|[phx-feedback-for="#{field_name}"]|)
+    |> Floki.find(~s|:fl-contains("#{message}")|)
     |> (Enum.empty?() |> Kernel.not())
   end
 
@@ -45,7 +45,7 @@ defmodule QuizGame.TestSupport.Assertions do
   @spec html_form_has_errors(String.t()) :: boolean()
   def html_form_has_errors(html) do
     html
-    |> Floki.find("[data-component-name='alert-form-errors']")
+    |> Floki.find(~s|[data-component-name="alert-form-errors"]|)
     |> (Enum.empty?() |> Kernel.not())
   end
 
@@ -66,7 +66,7 @@ defmodule QuizGame.TestSupport.Assertions do
   def html_has_flash_message(html, kind, message) do
     html
     |> Floki.find("#flash-#{kind}")
-    |> Floki.find(":fl-contains('#{message}')")
+    |> Floki.find(~s|:fl-contains("#{message}")|)
     |> (Enum.empty?() |> Kernel.not())
   end
 

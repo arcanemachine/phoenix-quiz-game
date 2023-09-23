@@ -30,7 +30,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateDisplayName do
     </.crud_intro_text>
 
     <.simple_form
-      id="update-display-name-form"
+      id="user-update-display-name-form"
       for={@form}
       autocomplete="off"
       phx-change="validate"

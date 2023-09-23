@@ -48,7 +48,7 @@ defmodule QuizGameWeb.Users.User.Live.LoginTest do
 
       # submit form data
       form_data = [user: %{email: user.email, password: password, remember_me: true}]
-      form = form(lv, "#login-form", form_data)
+      form = form(lv, "#user-login-form", form_data)
       resp_conn = submit_form(form, conn)
 
       # redirects to expected route
@@ -65,7 +65,7 @@ defmodule QuizGameWeb.Users.User.Live.LoginTest do
         user: %{email: "non_existent_user@example.com", password: "non_existent_password"}
       ]
 
-      form = form(lv, "#login-form", form_data)
+      form = form(lv, "#user-login-form", form_data)
       resp_conn = submit_form(form, conn)
 
       # response has expected error message

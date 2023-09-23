@@ -19,7 +19,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailConfirm do
         Click the button below to confirm your account.
       </.crud_intro_text>
 
-      <.simple_form id="verify-email-confirm-form" for={@form} phx-submit="submit">
+      <.simple_form id="user-verify-email-confirm-form" for={@form} phx-submit="submit">
         <.input field={@form[:token]} type="hidden" />
         <:actions>
           <.form_button_submit content="Confirm my account" class="btn-lg w-full" />

@@ -41,7 +41,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordSolicitTest do
       # submit the form
       {:ok, conn} =
         lv
-        |> form("#reset-password-solicit-form", user: %{"email" => user.email})
+        |> form("#user-reset-password-solicit-form", user: %{"email" => user.email})
         |> render_submit()
         |> follow_redirect(conn, ~p"/")
 
@@ -58,7 +58,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordSolicitTest do
       # submit the form and follow the redirect
       {:ok, conn} =
         lv
-        |> form("#reset-password-solicit-form", user: %{"email" => "unknown@example.com"})
+        |> form("#user-reset-password-solicit-form", user: %{"email" => "unknown@example.com"})
         |> render_submit()
         |> follow_redirect(conn, ~p"/")
 

@@ -48,7 +48,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdatePasswordTest do
       }
 
       # submit the form and follow the redirect
-      form = form(lv, "#update-password-form", valid_form_data)
+      form = form(lv, "#user-update-password-form", valid_form_data)
       render_submit(form)
       resp_conn = follow_trigger_action(form, conn)
 
@@ -70,7 +70,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdatePasswordTest do
 
       html_after_change =
         lv
-        |> element("#update-password-form")
+        |> element("#user-update-password-form")
         |> render_change(%{
           "current_password" => "invalid_password",
           "user" => %{
@@ -102,7 +102,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdatePasswordTest do
       # submit the form
       html_after_submit =
         lv
-        |> form("#update-password-form", %{
+        |> form("#user-update-password-form", %{
           "current_password" => "some_password",
           "user" => %{
             "password" => "2short",

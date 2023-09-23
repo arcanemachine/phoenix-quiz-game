@@ -30,7 +30,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailSolicitTest do
       # submit the form and follow the redirect
       {:ok, resp_conn} =
         lv
-        |> form("#verify-email-solicit-form", user: %{email: user.email})
+        |> form("#user-verify-email-solicit-form", user: %{email: user.email})
         |> render_submit()
         |> follow_redirect(conn, ~p"/")
 
@@ -54,7 +54,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailSolicitTest do
       # submit the form and follow the redirect
       {:ok, resp_conn} =
         lv
-        |> form("#verify-email-solicit-form", user: %{email: user.email})
+        |> form("#user-verify-email-solicit-form", user: %{email: user.email})
         |> render_submit()
         |> follow_redirect(conn, ~p"/")
 
@@ -71,7 +71,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailSolicitTest do
       # submit the form and follow the redirect
       {:ok, resp_conn} =
         lv
-        |> form("#verify-email-solicit-form",
+        |> form("#user-verify-email-solicit-form",
           user: %{email: "invalid_email@example.com"}
         )
         |> render_submit()

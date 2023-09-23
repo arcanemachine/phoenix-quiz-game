@@ -1,9 +1,9 @@
-<%= if assigns[:current_user] do %>
+<%= if @current_user do %>
   <.crud_intro_text>
     Are you sure you want to log out?
   </.crud_intro_text>
 
-  <.simple_form id="logout-confirm-form" for={%{}} method="post">
+  <.simple_form id="user-logout-confirm-form" for={%{}} method="post">
     <.input type="csrf-token" />
     <:actions>
       <.form_button_cancel />
@@ -15,12 +15,12 @@
     You are already logged out.
   </.crud_intro_text>
 
-  <.simple_form for={%{}} id="logout-confirm-form">
+  <.simple_form for={%{}} id="user-logout-confirm-form">
     <:actions>
       <.link href={~p"/"}>
         <.form_button kind="secondary" content="Home" tabindex="-1" />
       </.link>
-      <.link href={~p"/users/login"}>
+      <.link href={route(:users, :login)}>
         <.form_button class="primary" content="Login" tabindex="-1" />
       </.link>
     </:actions>

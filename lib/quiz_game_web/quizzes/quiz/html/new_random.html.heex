@@ -19,7 +19,6 @@
     name="count"
     type="number"
     label="Number of questions"
-    id="quiz-random-form-count"
     help_text="How many random math questions should be in each quiz"
     value="10"
     min="1"
@@ -33,7 +32,6 @@
     type="checkbox-multiple"
     multiple={true}
     label="Operations"
-    id="quiz-random-form-operations"
     help_text="Select which operations should be used for random math questions"
     required
     options={
@@ -49,7 +47,6 @@
     name="min"
     type="number"
     label="Minimum random value"
-    id="quiz-random-form-min"
     help_text="The lowest value to use when generating random math questions"
     value="1"
     min="-999"
@@ -62,7 +59,6 @@
     name="max"
     type="number"
     label="Maximum random value"
-    id="quiz-random-form-max"
     help_text="The highest value to use when generating random math questions"
     value="10"
     min="-999"
@@ -75,8 +71,7 @@
     name="left-constant"
     type="number"
     label="Constant left-side value (optional)"
-    id="quiz-random-form-constant"
-    help_text="Use a specific number in the left-side value. Good for practicing with specific numbers (e.g. times tables). Leave blank to disable."
+    help_text="Use a specific number in the left-side value. Good for practicing with specific numbers (e.g. addition, subtraction, times tables). Leave blank to disable."
     min="-999"
     max="999"
     x-model="leftConstant"

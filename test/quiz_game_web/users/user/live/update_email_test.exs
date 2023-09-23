@@ -49,7 +49,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateEmailTest do
       # submit the form
       html_after_submit =
         lv
-        |> form("#update-email-form", valid_form_data)
+        |> form("#user-update-email-form", valid_form_data)
         |> render_submit()
 
       # markup contains expected flash message
@@ -70,7 +70,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateEmailTest do
       # change the form
       html_after_change =
         lv
-        |> element("#update-email-form")
+        |> element("#user-update-email-form")
         |> render_change(%{
           "action" => "email_update",
           "current_password" => "some_password",
@@ -97,7 +97,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateEmailTest do
       # submit the form
       html_after_submit =
         lv
-        |> form("#update-email-form", %{
+        |> form("#user-update-email-form", %{
           "current_password" => "incorrect_password",
           "user" => %{"email" => user.email}
         })
