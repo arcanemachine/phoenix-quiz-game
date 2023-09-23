@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Users.Live.UpdatePassword do
+defmodule QuizGameWeb.Users.User.Live.UpdatePassword do
   @moduledoc false
 
   use QuizGameWeb, :live_view

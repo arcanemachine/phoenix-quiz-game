@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Users.Live.ResetPasswordSolicitTest do
+defmodule QuizGameWeb.Users.User.Live.ResetPasswordSolicitTest do
   @moduledoc false
 
   use QuizGameWeb.ConnCase

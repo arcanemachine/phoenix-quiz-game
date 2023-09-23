@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Users.Live.VerifyEmailSolicitTest do
+defmodule QuizGameWeb.Users.User.Live.VerifyEmailSolicitTest do
   @moduledoc false
 
   use QuizGameWeb.ConnCase

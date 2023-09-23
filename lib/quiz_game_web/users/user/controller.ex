@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Users.Controller do
+defmodule QuizGameWeb.Users.User.Controller do
   @moduledoc false
 
   use QuizGameWeb, :controller

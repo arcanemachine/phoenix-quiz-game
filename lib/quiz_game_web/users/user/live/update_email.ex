@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Users.Live.UpdateEmail do
+defmodule QuizGameWeb.Users.User.Live.UpdateEmail do
   @moduledoc false
 
   use QuizGameWeb, :live_view

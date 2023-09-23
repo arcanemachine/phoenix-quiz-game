@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Users.Live.UpdateDisplayName do
+defmodule QuizGameWeb.Users.User.Live.UpdateDisplayName do
   @moduledoc false
 
   use QuizGameWeb, :live_view

@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Users.Live.UpdateDisplayNameTest do
+defmodule QuizGameWeb.Users.User.Live.UpdateDisplayNameTest do
   @moduledoc false
 
   use QuizGameWeb.ConnCase
@@ -11,7 +11,6 @@ defmodule QuizGameWeb.Users.Live.UpdateDisplayNameTest do
   alias QuizGame.Users
 
   @update_display_name_url route(:users, :update_display_name)
-  # @display_name_length_max QuizGame.Users.User.display_name_length_max()
 
   describe "UpdateDisplayName page" do
     test "renders expected markup", %{conn: conn} do

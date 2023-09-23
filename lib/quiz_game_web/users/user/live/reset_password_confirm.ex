@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Users.Live.ResetPasswordConfirm do
+defmodule QuizGameWeb.Users.User.Live.ResetPasswordConfirm do
   @moduledoc false
 
   use QuizGameWeb, :live_view
