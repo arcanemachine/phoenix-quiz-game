@@ -123,11 +123,7 @@ defmodule QuizGameWeb.Support.Router do
 
   def route(:quizzes_records, action, params) do
     case action do
-      :index ->
-        ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/records"
-
-      :show ->
-        ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/records/#{Keyword.fetch!(params, :record_id)}"
+      :index -> ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/records"
     end
   end
 

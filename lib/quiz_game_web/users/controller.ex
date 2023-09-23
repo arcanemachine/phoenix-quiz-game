@@ -26,13 +26,11 @@ defmodule QuizGameWeb.Users.Controller do
     Users.delete_user(conn.assigns[:current_user])
 
     conn
-    # queue success message
     |> put_flash(:success, "Account deleted successfully")
-    # log the user out
     |> UserAuth.logout_user()
   end
 
-  # quizzes
+  # related objects
   def quizzes_index(conn, _params) do
     query = from q in Quiz, where: q.user_id == ^conn.assigns.current_user.id
     quizzes = Repo.all(query)
