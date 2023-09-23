@@ -33,7 +33,7 @@ defmodule QuizGameWeb.Support.Changeset do
 
       iex> ensure_data_in_changes(%Ecto.Changeset{}, [:some_field, :another_field])
   """
-  @typep field_or_fields :: atom() | list()
+  @typep field_or_fields :: atom() | list(atom())
   @spec ensure_data_in_changes(Ecto.Changeset.t(), field_or_fields()) :: Ecto.Changeset.t()
 
   def ensure_data_in_changes(%Ecto.Changeset{} = changeset, fields) when is_list(fields) do
@@ -80,7 +80,7 @@ defmodule QuizGameWeb.Support.Changeset do
     iex> get_values_from_changes_or_data(%Ecto.Changeset{}, [:some_field, :another_field])
     ["some initial value", "another changed value"]
   """
-  @spec get_values_from_changes_or_data(Ecto.Changeset.t(), list()) :: list()
+  @spec get_values_from_changes_or_data(Ecto.Changeset.t(), list(atom())) :: list()
   def get_values_from_changes_or_data(%Ecto.Changeset{} = changeset, fields) do
     for field <- fields, do: get_value_from_changes_or_data(changeset, field)
   end
@@ -130,7 +130,7 @@ defmodule QuizGameWeb.Support.Ecto do
       iex> QuizGameWeb.Support.Ecto.get_enum_field_options(QuizGame.Quizzes.Card, :format)
       [:multiple_choice, :number_entry, :text_entry, :true_or_false]
   """
-  @spec get_enum_field_options(module(), atom()) :: list()
+  @spec get_enum_field_options(module(), atom()) :: list(atom())
   def get_enum_field_options(module, field) do
     Ecto.Enum.mappings(module, field) |> Keyword.keys()
   end
