@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Quizzes.Live.StatsTest do
+defmodule QuizGameWeb.Quizzes.Quiz.Live.StatsTest do
   @moduledoc false
 
   use QuizGameWeb.ConnCase, async: true
