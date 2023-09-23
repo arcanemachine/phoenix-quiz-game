@@ -40,13 +40,16 @@ defmodule QuizGameWeb.Users.UpdateEmailTest do
       # make initial request
       {:ok, lv, _html} = live(conn, @update_email_solicit_url)
 
+      # build valid form data
+      valid_form_data = %{
+        "current_password" => password,
+        "user" => %{"email" => new_email}
+      }
+
       # submit the form
       html_after_submit =
         lv
-        |> form("#user-update-email-form", %{
-          "current_password" => password,
-          "user" => %{"email" => new_email}
-        })
+        |> form("#user-update-email-form", valid_form_data)
         |> render_submit()
 
       # markup contains expected flash message

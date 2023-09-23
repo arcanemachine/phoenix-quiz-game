@@ -37,8 +37,8 @@ defmodule QuizGameWeb.Users.Live.UpdatePasswordTest do
       # make initial request
       {:ok, lv, _html} = live(conn, @update_password_url)
 
-      # build form data
-      form_data = %{
+      # build valid form data
+      valid_form_data = %{
         "current_password" => password,
         "user" => %{
           "email" => user.email,
@@ -48,7 +48,7 @@ defmodule QuizGameWeb.Users.Live.UpdatePasswordTest do
       }
 
       # submit the form and follow the redirect
-      form = form(lv, "#user-update-password-form", form_data)
+      form = form(lv, "#user-update-password-form", valid_form_data)
       render_submit(form)
       resp_conn = follow_trigger_action(form, conn)
 
