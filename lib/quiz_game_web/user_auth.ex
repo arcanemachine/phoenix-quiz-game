@@ -5,6 +5,7 @@ defmodule QuizGameWeb.UserAuth do
 
   import Plug.Conn
   import Phoenix.Controller
+  import QuizGameWeb.Support.Router
 
   alias QuizGame.Users
 
@@ -83,7 +84,7 @@ defmodule QuizGameWeb.UserAuth do
     conn
     |> renew_session()
     |> delete_resp_cookie(@remember_me_cookie)
-    |> redirect(to: ~p"/")
+    |> redirect(to: "/")
   end
 
   @doc """
@@ -97,7 +98,7 @@ defmodule QuizGameWeb.UserAuth do
 
     conn
     |> put_flash(:info, "Account deleted successfully")
-    |> redirect(to: ~p"/")
+    |> redirect(to: "/")
   end
 
   @doc """
@@ -172,7 +173,7 @@ defmodule QuizGameWeb.UserAuth do
       socket =
         socket
         |> Phoenix.LiveView.put_flash(:warning, "You must login to continue.")
-        |> Phoenix.LiveView.redirect(to: ~p"/users/login")
+        |> Phoenix.LiveView.redirect(to: route(:users, :login))
 
       {:halt, socket}
     end
@@ -232,7 +233,7 @@ defmodule QuizGameWeb.UserAuth do
       conn
       |> put_flash(:warning, "You must login to continue.")
       |> maybe_store_return_to()
-      |> redirect(to: ~p"/users/login")
+      |> redirect(to: route(:users, :login))
       |> halt()
     end
   end
@@ -249,5 +250,5 @@ defmodule QuizGameWeb.UserAuth do
 
   defp maybe_store_return_to(conn), do: conn
 
-  defp signed_in_path(_conn), do: ~p"/users/me"
+  defp signed_in_path(_conn), do: route(:users, :show)
 end

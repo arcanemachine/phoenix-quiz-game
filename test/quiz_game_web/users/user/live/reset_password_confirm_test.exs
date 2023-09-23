@@ -42,7 +42,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordConfirmTest do
                flash: %{
                  "error" => "Reset password link is invalid, expired, or has already been used."
                },
-               to: ~p"/"
+               to: "/"
              }
     end
   end
@@ -78,7 +78,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordConfirmTest do
                flash: %{
                  "error" => "Reset password link is invalid, expired, or has already been used."
                },
-               to: ~p"/"
+               to: "/"
              }
     end
 

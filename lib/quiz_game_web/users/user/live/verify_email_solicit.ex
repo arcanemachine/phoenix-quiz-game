@@ -52,7 +52,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailSolicit do
       {:noreply,
        socket
        |> put_flash(:info, info)
-       |> redirect(to: ~p"/")}
+       |> redirect(to: "/")}
     else
       {:noreply,
        socket

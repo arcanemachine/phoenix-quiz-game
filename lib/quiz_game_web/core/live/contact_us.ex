@@ -40,7 +40,7 @@ defmodule QuizGameWeb.Core.Live.ContactUs do
       {:noreply,
        socket
        |> put_flash(:success, success_message)
-       |> redirect(to: ~p"/")}
+       |> redirect(to: "/")}
     else
       {:noreply,
        socket

@@ -51,7 +51,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordSolicit do
       {:noreply,
        socket
        |> put_flash(:info, info)
-       |> redirect(to: ~p"/")}
+       |> redirect(to: "/")}
     else
       {:noreply,
        socket

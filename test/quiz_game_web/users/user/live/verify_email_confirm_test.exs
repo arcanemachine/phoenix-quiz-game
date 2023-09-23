@@ -64,7 +64,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailConfirmTest do
         lv
         |> form("#user-verify-email-confirm-form")
         |> render_submit()
-        |> follow_redirect(conn, ~p"/")
+        |> follow_redirect(conn, "/")
 
       assert conn_has_flash_message(
                resp_conn_2,
@@ -99,7 +99,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailConfirmTest do
         lv
         |> form("#user-verify-email-confirm-form")
         |> render_submit()
-        |> follow_redirect(conn, ~p"/")
+        |> follow_redirect(conn, "/")
 
       # response contains expected flash message
       assert conn_has_flash_message(

@@ -18,7 +18,7 @@
 <h3 class="mb-4 text-2xl text-center">Back</h3>
 
 <div class="text-center">
-  <.back navigate={~p"/"}>
+  <.back navigate="/">
     Back
   </.back>
 </div>
@@ -241,7 +241,7 @@
 
   <%!-- actions --%>
   <:actions>
-    <.form_button_cancel url={~p"/"} />
+    <.form_button_cancel url="/" />
     <.form_button content="Reset" class="btn-warning" phx-click="form-reset" />
     <.form_button_submit />
   </:actions>

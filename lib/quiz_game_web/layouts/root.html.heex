@@ -68,17 +68,17 @@
               </div>
               <%= if @current_user do %>
                 <li>
-                  <.link href={~p"/users/me"}>Your profile</.link>
+                  <.link href={route(:users, :show)}>Your profile</.link>
                 </li>
                 <li>
-                  <.link href={~p"/users/logout"}>Logout</.link>
+                  <.link href={route(:users, :logout_confirm)}>Logout</.link>
                 </li>
               <% else %>
                 <li>
-                  <.link href={~p"/users/login"}>Login</.link>
+                  <.link href={route(:users, :login)}>Login</.link>
                 </li>
                 <li>
-                  <.link href={~p"/users/register"}>Register</.link>
+                  <.link href={route(:users, :register)}>Register</.link>
                 </li>
               <% end %>
             </ul>
@@ -170,7 +170,7 @@
 
           <%!-- project links --%>
           <li class="mt-6">
-            <.link href={~p"/"} class="!text-slate-300">
+            <.link href="/" class="!text-slate-300">
               Home
             </.link>
           </li>

@@ -1,6 +1,7 @@
 defmodule QuizGameWeb.Users.User.Live.VerifyEmailConfirm do
   @moduledoc false
   use QuizGameWeb, :live_view
+  import QuizGameWeb.Support.Router
   alias QuizGame.Users
 
   @impl true
@@ -40,7 +41,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailConfirm do
         {:noreply,
          socket
          |> put_flash(:success, "Your email address has been confirmed.")
-         |> redirect(to: ~p"/users/me")}
+         |> redirect(to: route(:users, :show))}
 
       :error ->
         case socket.assigns do
@@ -48,7 +49,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailConfirm do
             {:noreply,
              socket
              |> put_flash(:info, "Your email address has already been confirmed.")
-             |> redirect(to: ~p"/users/me")}
+             |> redirect(to: route(:users, :show))}
 
           %{} ->
             {:noreply,

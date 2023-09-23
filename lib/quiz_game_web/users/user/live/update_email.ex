@@ -5,6 +5,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateEmail do
 
   alias QuizGame.Users
   alias QuizGame.Users.User
+  import QuizGameWeb.Support.Router
 
   @impl true
   # confirm
@@ -22,7 +23,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateEmail do
           )
       end
 
-    {:ok, push_navigate(socket, to: ~p"/users/me")}
+    {:ok, push_navigate(socket, to: route(:users, :show))}
   end
 
   # solicit

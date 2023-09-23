@@ -32,7 +32,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailSolicitTest do
         lv
         |> form("#user-verify-email-solicit-form", user: %{email: user.email})
         |> render_submit()
-        |> follow_redirect(conn, ~p"/")
+        |> follow_redirect(conn, "/")
 
       # response contains expected flash message
       assert conn_has_flash_message(resp_conn, :info, "If your email is in our system")
@@ -56,7 +56,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailSolicitTest do
         lv
         |> form("#user-verify-email-solicit-form", user: %{email: user.email})
         |> render_submit()
-        |> follow_redirect(conn, ~p"/")
+        |> follow_redirect(conn, "/")
 
       # response contains expected flash message (same as when valid form is submitted)
       assert conn_has_flash_message(resp_conn, :info, "If your email is in our system")
@@ -75,7 +75,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailSolicitTest do
           user: %{email: "invalid_email@example.com"}
         )
         |> render_submit()
-        |> follow_redirect(conn, ~p"/")
+        |> follow_redirect(conn, "/")
 
       # response contains same message as when valid form is submitted
       assert conn_has_flash_message(resp_conn, :info, "If your email is in our system")

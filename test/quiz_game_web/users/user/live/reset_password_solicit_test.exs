@@ -43,7 +43,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordSolicitTest do
         lv
         |> form("#user-reset-password-solicit-form", user: %{"email" => user.email})
         |> render_submit()
-        |> follow_redirect(conn, ~p"/")
+        |> follow_redirect(conn, "/")
 
       # response contains expected flash message
       assert conn_has_flash_message(conn, :info, "If your email is in our system")
@@ -60,7 +60,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordSolicitTest do
         lv
         |> form("#user-reset-password-solicit-form", user: %{"email" => "unknown@example.com"})
         |> render_submit()
-        |> follow_redirect(conn, ~p"/")
+        |> follow_redirect(conn, "/")
 
       # response contains expected flash message
       assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "If your email is in our system"

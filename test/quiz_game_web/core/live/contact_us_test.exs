@@ -33,7 +33,7 @@ defmodule QuizGameWeb.Core.Live.ContactUsTest do
       {:ok, resp_conn} =
         form(lv, "#contact-us-form", form_data)
         |> render_submit()
-        |> follow_redirect(conn, ~p"/")
+        |> follow_redirect(conn, "/")
 
       # response contains flash message
       assert conn_has_flash_message(resp_conn, :success, "Contact form submitted successfully")

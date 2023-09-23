@@ -42,7 +42,7 @@ defmodule QuizGameWeb.Users.Session.ControllerTest do
       assert get_session(conn, :user_token)
 
       # make a request as a logged-in user and check for logged-in menu items
-      conn = get(conn, ~p"/")
+      conn = get(conn, "/")
       response = html_response(conn, 200)
       assert response =~ route(:users, :show)
       assert response =~ route(:users, :logout)
@@ -93,7 +93,7 @@ defmodule QuizGameWeb.Users.Session.ControllerTest do
         })
 
       # response redirects to expected route
-      assert redirected_to(conn) == ~p"/users/me/update"
+      assert redirected_to(conn) == "/users/me/update"
 
       # response contains expected flash message
       assert Phoenix.Flash.get(conn.assigns.flash, :success) =~ "Password updated successfully"
@@ -133,7 +133,7 @@ defmodule QuizGameWeb.Users.Session.ControllerTest do
       conn = conn |> login_user(user) |> post(@user_logout_url)
 
       # response redirects to expected route
-      assert redirected_to(conn) == ~p"/"
+      assert redirected_to(conn) == "/"
 
       # response contains expected session data
       refute get_session(conn, :user_token)
@@ -146,7 +146,7 @@ defmodule QuizGameWeb.Users.Session.ControllerTest do
       conn = post(conn, @user_logout_url)
 
       # response redirects to expected route
-      assert redirected_to(conn) == ~p"/"
+      assert redirected_to(conn) == "/"
 
       # response contains expected session data
       refute get_session(conn, :user_token)
