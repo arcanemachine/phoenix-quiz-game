@@ -3,6 +3,9 @@ defmodule QuizGame.TestSupport.Fixtures.Quizzes do
   import QuizGame.TestSupport.Fixtures.Users
   alias QuizGame.Quizzes
 
+  def unique_quiz_name, do: "quiz#{System.unique_integer()}"
+  def unique_display_name, do: "quiz#{System.unique_integer()}"
+
   def quiz_fixture(attrs \\ %{}) do
     # maybe generate user
     user_id = attrs[:user_id] || user_fixture().id
@@ -11,7 +14,7 @@ defmodule QuizGame.TestSupport.Fixtures.Quizzes do
       attrs
       |> Enum.into(%{
         user_id: user_id,
-        name: "some name",
+        name: unique_quiz_name(),
         subject: :other
       })
       |> Quizzes.create_quiz(unsafe: true)
@@ -48,7 +51,7 @@ defmodule QuizGame.TestSupport.Fixtures.Quizzes do
       |> Enum.into(%{
         user_id: user_id,
         quiz_id: quiz_id,
-        display_name: "some name",
+        display_name: "display_name#{System.unique_integer()}",
         card_count: 42,
         score: 42
       })
