@@ -1,6 +1,35 @@
 import { Hook, makeHook } from "phoenix_typed_hook";
 
-class SimpleFormHook extends Hook {
+class HookEventProxy extends Hook {
+  /**
+   * Passes all hook events into the element on which the hook is registered.
+   * Intended for use with Alpine.js components so that they can be integrated
+   * with the LiveView lifecycle.
+   */
+
+  mounted() {
+    this.el.dispatchEvent(
+      new CustomEvent("mounted", { detail: { hook: this } }),
+    );
+  }
+  beforeUpdate() {
+    this.el.dispatchEvent(new CustomEvent("before-update"));
+  }
+  updated() {
+    this.el.dispatchEvent(new CustomEvent("updated"));
+  }
+  destroyed() {
+    this.el.dispatchEvent(new CustomEvent("destroyed"));
+  }
+  disconnected() {
+    this.el.dispatchEvent(new CustomEvent("disconnected"));
+  }
+  reconnected() {
+    this.el.dispatchEvent(new CustomEvent("reconnected"));
+  }
+}
+
+class SimpleForm extends Hook {
   /**
    * If a form has been modified and the user is attempting to exit the page,
    * then show a warning before exiting the page. This is intended to prevent
@@ -206,7 +235,12 @@ class SimpleFormHook extends Hook {
   }
 }
 
-class ModalHook extends Hook {
+class Modal extends Hook {
+  /**
+   * A generic modal hook. Prevents modals with forms from being closed if form
+   * data has been modified.
+   */
+
   mounted() {
     this.handlePhxHide = this.handlePhxHide.bind(this); // bind event listeners locally
     this.el.addEventListener("phx:hide", this.handlePhxHide); // add event listeners
@@ -241,8 +275,9 @@ class ModalHook extends Hook {
 }
 
 const Hooks = {
-  SimpleForm: makeHook(SimpleFormHook),
-  Modal: makeHook(ModalHook),
+  HookEventProxy: makeHook(HookEventProxy),
+  SimpleForm: makeHook(SimpleForm),
+  Modal: makeHook(Modal),
 };
 
 export default Hooks;

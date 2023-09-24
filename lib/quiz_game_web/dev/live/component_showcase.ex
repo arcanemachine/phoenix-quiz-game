@@ -138,4 +138,9 @@ defmodule QuizGameWeb.Dev.Live.ComponentShowcase do
     Process.sleep(1000)
     {:noreply, socket}
   end
+
+  def handle_event("reactivity-demo-handle-click", _params, socket) do
+    {:noreply,
+     socket |> assign(reactivity_demo_count: (socket.assigns[:reactivity_demo_count] || 0) + 1)}
+  end
 end

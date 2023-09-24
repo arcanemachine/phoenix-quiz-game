@@ -160,6 +160,35 @@
 
 <div class="my-8 divider" />
 
+<h3 class="mb-4 text-2xl text-center">LiveView + Alpine Reactivity Demo</h3>
+
+<div x-data x-init="$el.scrollIntoView()" />
+
+<div
+  phx-hook="HookEventProxy"
+  id="hook-event-proxy-demo"
+  class="max-w-md mx-auto my-12 p-4 bg-secondary/20 text-center rounded-box"
+  data-lv-count={assigns[:reactivity_demo_count] || 0}
+  x-data="{
+    init() {
+      this.count = Number(this.$root.dataset.lvCount);
+    },
+    mounted(evt) { this.hook = evt.detail.hook; },
+    updated(evt) { this.init() },
+  }"
+  x-on:mounted="mounted"
+  x-on:updated="updated"
+>
+  <div class="mt-4 flex flex-center">
+    Count: <span class="pl-2 font-bold" x-text="count" />
+  </div>
+  <div class="my-4">
+    <button class="btn btn-primary" phx-click="reactivity-demo-handle-click">Increment</button>
+  </div>
+</div>
+
+<div class="my-8 divider" />
+
 <h3 class="mb-4 text-2xl text-center">Modal</h3>
 
 <section class="text-center">
