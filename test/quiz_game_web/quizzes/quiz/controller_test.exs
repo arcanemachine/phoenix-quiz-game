@@ -5,7 +5,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.ControllerTest do
 
   import QuizGame.TestSupport.{Assertions, GenericTests}
   import QuizGame.TestSupport.Fixtures.{Quizzes, Users}
-  import QuizGameWeb.Support.Router, only: [route: 2, route: 3]
+  import QuizGameWeb.Support.Router
 
   alias QuizGame.Quizzes.Quiz
 
@@ -46,8 +46,13 @@ defmodule QuizGameWeb.Quizzes.Quiz.ControllerTest do
 
   describe "quiz :index" do
     test "renders expected markup", %{conn: conn} do
-      resp_conn = get(conn, @quiz_index_url)
-      assert html_has_title(resp_conn.resp_body, "Quiz List")
+      quiz = quiz_fixture()
+
+      html = get(conn, @quiz_index_url) |> Map.get(:resp_body)
+      assert html_has_title(html, "Quiz List")
+
+      # template contains quiz information
+      assert html_has_content(html, quiz.name)
     end
   end
 
