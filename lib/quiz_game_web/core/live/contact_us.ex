@@ -9,7 +9,7 @@ defmodule QuizGameWeb.Core.Live.ContactUs do
   def render(assigns) do
     ~H"""
     <.crud_intro_text>
-      <p>Please enter your contact information and message.</p>
+      <p>Enter your contact information and message in the form below.</p>
       <p>If necessary, we will get back to you as soon as possible.</p>
     </.crud_intro_text>
 
