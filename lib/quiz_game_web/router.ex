@@ -80,7 +80,7 @@ defmodule QuizGameWeb.Router do
 
         live "/", Card.Live.Index, :index
 
-        live_session :quizzes_cards_login_required,
+        live_session :quizzes_card_login_required,
           on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
           live "/create", Card.Live.Index, :new
 

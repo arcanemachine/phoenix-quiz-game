@@ -49,7 +49,7 @@
 
 <.action_links>
   <.action_links_item>
-    <.link href={route(:quizzes_cards, :index, quiz_id: @quiz.id)}>
+    <.link href={route(:quizzes_card, :index, quiz_id: @quiz.id)}>
       View questions for this quiz
     </.link>
   </.action_links_item>
@@ -63,7 +63,7 @@
   <%= if @current_user && @current_user.id == @quiz.user_id do %>
     <.spacer />
     <.action_links_item>
-      <.link href={route(:quizzes_records, :index, quiz_id: @quiz.id)}>
+      <.link href={route(:quizzes_record, :index, quiz_id: @quiz.id)}>
         View records for this quiz
       </.link>
     </.action_links_item>

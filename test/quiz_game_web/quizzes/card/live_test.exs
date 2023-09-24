@@ -29,15 +29,15 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
     # correct_answer: nil # do not pass this value if :format is null
   }
 
-  defp _get_card_index_url(quiz_id), do: route(:quizzes_cards, :index, quiz_id: quiz_id)
+  defp _get_card_index_url(quiz_id), do: route(:quizzes_card, :index, quiz_id: quiz_id)
 
-  defp _get_card_new_url(quiz_id), do: route(:quizzes_cards, :new, quiz_id: quiz_id)
+  defp _get_card_new_url(quiz_id), do: route(:quizzes_card, :new, quiz_id: quiz_id)
 
   defp _get_card_show_url(quiz_id, card_id),
-    do: route(:quizzes_cards, :show, quiz_id: quiz_id, card_id: card_id)
+    do: route(:quizzes_card, :show, quiz_id: quiz_id, card_id: card_id)
 
   defp _get_card_edit_url(quiz_id, card_id) do
-    route(:quizzes_cards, :edit, quiz_id: quiz_id, card_id: card_id)
+    route(:quizzes_card, :edit, quiz_id: quiz_id, card_id: card_id)
   end
 
   setup do

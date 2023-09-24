@@ -26,7 +26,7 @@ defmodule QuizGameWeb.Support.Router do
     if Enum.empty?(params), do: "", else: "?#{URI.encode_query(params)}"
   end
 
-  @typep route_context :: :core | :dev | :quizzes | :quizzes_cards | :quizzes_records | :users
+  @typep route_context :: :core | :dev | :quizzes | :quizzes_card | :quizzes_record | :users
   @spec route(route_context, atom(), keyword()) :: String.t()
   def route(context, action, params \\ [])
 
@@ -66,24 +66,24 @@ defmodule QuizGameWeb.Support.Router do
   def route(:quizzes, :take_random, []), do: ~p"/quizzes/random/take"
 
   # quizzes - card
-  def route(:quizzes_cards, :index, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/cards"
-  def route(:quizzes_cards, :new, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/cards/create"
-  def route(:quizzes_cards, :create, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/cards"
+  def route(:quizzes_card, :index, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/cards"
+  def route(:quizzes_card, :new, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/cards/create"
+  def route(:quizzes_card, :create, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/cards"
 
-  def route(:quizzes_cards, :show, quiz_id: quiz_id, card_id: card_id),
+  def route(:quizzes_card, :show, quiz_id: quiz_id, card_id: card_id),
     do: ~p"/quizzes/#{quiz_id}/cards/#{card_id}"
 
-  def route(:quizzes_cards, :edit, quiz_id: quiz_id, card_id: card_id),
+  def route(:quizzes_card, :edit, quiz_id: quiz_id, card_id: card_id),
     do: ~p"/quizzes/#{quiz_id}/cards/#{card_id}/update"
 
-  def route(:quizzes_cards, :update, quiz_id: quiz_id, card_id: card_id),
+  def route(:quizzes_card, :update, quiz_id: quiz_id, card_id: card_id),
     do: ~p"/quizzes/#{quiz_id}/cards/#{card_id}"
 
-  def route(:quizzes_cards, :delete, quiz_id: quiz_id, card_id: card_id),
+  def route(:quizzes_card, :delete, quiz_id: quiz_id, card_id: card_id),
     do: ~p"/quizzes/#{quiz_id}/cards/#{card_id}"
 
   # quizzes - record
-  def route(:quizzes_records, :index, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/records"
+  def route(:quizzes_record, :index, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/records"
 
   # users
   def route(:users, :register, []), do: ~p"/users/register"

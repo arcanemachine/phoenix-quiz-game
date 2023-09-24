@@ -53,7 +53,7 @@ defmodule QuizGameWeb.Quizzes.Card.Live.Show do
           # |> put_flash(:success, "Question deleted successfully")
           |> push_redirect(
             to:
-              route(:quizzes_cards, :index, quiz_id: socket.assigns.card.quiz_id) <>
+              route(:quizzes_card, :index, quiz_id: socket.assigns.card.quiz_id) <>
                 query_string(%{"delete-question-success" => "1"}),
             replace: true
           )
@@ -63,7 +63,7 @@ defmodule QuizGameWeb.Quizzes.Card.Live.Show do
           # |> put_flash(:error, "Could not delete the question. Has it already been deleted?")
           |> push_redirect(
             to:
-              route(:quizzes_cards, :index, quiz_id: socket.assigns.card.quiz_id) <>
+              route(:quizzes_card, :index, quiz_id: socket.assigns.card.quiz_id) <>
                 query_string(%{"delete-question-error" => "1"}),
             replace: true
           )
