@@ -80,7 +80,7 @@ defmodule QuizGameWeb.Support.Changeset do
     iex> get_values_from_changes_or_data(%Ecto.Changeset{}, [:some_field, :another_field])
     ["some initial value", "another changed value"]
   """
-  @spec get_values_from_changes_or_data(Ecto.Changeset.t(), list(atom())) :: list()
+  @spec get_values_from_changes_or_data(Ecto.Changeset.t(), list(atom())) :: list(any())
   def get_values_from_changes_or_data(%Ecto.Changeset{} = changeset, fields) do
     for field <- fields, do: get_value_from_changes_or_data(changeset, field)
   end

@@ -35,7 +35,7 @@ defmodule QuizGameWeb.Router do
     get "/subjects/:subject", Quiz.Controller, :index_subject
 
     # randomly-generated quizzes
-    get "/create/random", Quiz.Controller, :new_random
+    get "/random/create", Quiz.Controller, :new_random
 
     live_session :quiz_take_random,
       on_mount: [{QuizGameWeb.UserAuth, :mount_current_user}] do

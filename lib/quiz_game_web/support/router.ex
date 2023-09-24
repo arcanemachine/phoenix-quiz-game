@@ -3,21 +3,6 @@ defmodule QuizGameWeb.Support.Router do
 
   use QuizGameWeb, :verified_routes
 
-  @typedoc "The contexts available for route matching."
-  @type context :: :core | :dev | :quizzes | :users
-
-  @typedoc "The actions available in the core context."
-  @type core_action :: :root | :contact_us | :privacy_policy | :terms_of_use
-
-  @typedoc "The actions available in the dev context."
-  @type dev_action :: :component_showcase
-
-  @typedoc "Generic dead view CRUD actions"
-  @type dead_crud_action :: :index | :new | :create | :show
-
-  @typedoc "Generic live view CRUD actions"
-  @type live_crud_action :: :index | :show | :new | :edit
-
   @doc """
   Converts params to a query string.
 
@@ -41,122 +26,83 @@ defmodule QuizGameWeb.Support.Router do
     if Enum.empty?(params), do: "", else: "?#{URI.encode_query(params)}"
   end
 
-  @doc """
-  Match against a route with no URL parameters.
-
-  ## Examples
-
-      iex> route(:users, :login)
-      "/users/login"
-  """
-
-  @spec route(context, atom()) :: String.t()
-  def route(context, action), do: route(context, action, [])
+  @typep route_context :: :core | :dev | :quizzes | :quizzes_cards | :quizzes_records | :users
+  @spec route(route_context, atom(), keyword()) :: String.t()
+  def route(context, action, params \\ [])
 
   @doc """
   Match against a route that contains a given set of URL parameters.
 
   ## Examples
 
-      iex> route(:users, :verify_email_confirm, token: 123)
-      "nusers/verify/email/123"
+      iex> QuizGameWeb.Support.Router.route(:users, :verify_email_solicit)
+      "/users/verify/email"
+
+      iex> QuizGameWeb.Support.Router.route(:users, :verify_email_confirm, token: 123)
+      "/users/verify/email/123"
   """
 
-  @spec route(context, atom(), keyword()) :: String.t()
-  def route(context, action, params)
+  # core
+  def route(:core, :root, []), do: ~p"/"
+  def route(:core, :contact_us, []), do: ~p"/contact-us"
+  def route(:core, :privacy_policy, []), do: ~p"/privacy-policy"
+  def route(:core, :terms_of_use, []), do: ~p"/terms-of-use"
 
-  @spec route(:core, core_action, keyword()) :: String.t()
-  def route(:core, action, _params) do
-    case action do
-      :root -> ~p"/"
-      :contact_us -> ~p"/contact-us"
-      :privacy_policy -> ~p"/privacy-policy"
-      :terms_of_use -> ~p"/terms-of-use"
-      _ -> throw("invalid action for :core route context: '#{action}'")
-    end
-  end
+  # dev
+  def route(:dev, :component_showcase, _params), do: "/dev/component-showcase"
 
-  @spec route(:dev, dev_action, keyword()) :: String.t()
-  def route(:dev, action, _params) do
-    case action do
-      :component_showcase -> "/dev/component-showcase"
-      _ -> throw("invalid action for :dev route context: '#{action}'")
-    end
-  end
+  # quizzes
+  def route(:quizzes, :index, []), do: ~p"/quizzes"
+  def route(:quizzes, :index_subject, subject: subject), do: ~p"/quizzes/subjects/#{subject}"
+  def route(:quizzes, :new, []), do: ~p"/quizzes/create"
+  def route(:quizzes, :create, []), do: ~p"/quizzes/create"
+  def route(:quizzes, :show, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}"
+  def route(:quizzes, :edit, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/update"
+  def route(:quizzes, :update, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/update"
+  def route(:quizzes, :delete, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}"
+  def route(:quizzes, :take, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/take"
+  def route(:quizzes, :stats, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/stats"
+  def route(:quizzes, :new_random, []), do: ~p"/quizzes/random/create"
+  def route(:quizzes, :take_random, []), do: ~p"/quizzes/random/take"
 
-  # credo:disable-for-next-line
-  def route(:quizzes, action, params) do
-    case action do
-      :index -> ~p"/quizzes"
-      :index_subject -> ~p"/quizzes/subjects/#{Keyword.fetch!(params, :subject)}"
-      :new -> ~p"/quizzes/create"
-      :create -> ~p"/quizzes/create"
-      :new_random -> ~p"/quizzes/create/random"
-      :edit -> ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/update"
-      :update -> ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/update"
-      n when n in [:show, :delete] -> ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}"
-      :take -> ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/take"
-      :take_random -> ~p"/quizzes/random/take"
-      :stats -> ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/stats"
-      _ -> throw("invalid action for :quizzes route context")
-    end
-  end
+  # quizzes - card
+  def route(:quizzes_cards, :index, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/cards"
+  def route(:quizzes_cards, :new, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/cards/create"
+  def route(:quizzes_cards, :create, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/cards"
 
-  def route(:quizzes_cards, action, params) do
-    case action do
-      :index ->
-        ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards"
+  def route(:quizzes_cards, :show, quiz_id: quiz_id, card_id: card_id),
+    do: ~p"/quizzes/#{quiz_id}/cards/#{card_id}"
 
-      :new ->
-        ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/create"
+  def route(:quizzes_cards, :edit, quiz_id: quiz_id, card_id: card_id),
+    do: ~p"/quizzes/#{quiz_id}/cards/#{card_id}/update"
 
-      :create ->
-        ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards"
+  def route(:quizzes_cards, :update, quiz_id: quiz_id, card_id: card_id),
+    do: ~p"/quizzes/#{quiz_id}/cards/#{card_id}"
 
-      n when n in [:show, :update, :delete] ->
-        ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/#{Keyword.fetch!(params, :card_id)}"
+  def route(:quizzes_cards, :delete, quiz_id: quiz_id, card_id: card_id),
+    do: ~p"/quizzes/#{quiz_id}/cards/#{card_id}"
 
-      :edit ->
-        ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/cards/#{Keyword.fetch!(params, :card_id)}/update"
+  # quizzes - record
+  def route(:quizzes_records, :index, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/records"
 
-      _ ->
-        throw("invalid action for :quizzes_cards route context: '#{action}'")
-    end
-  end
-
-  def route(:quizzes_records, action, params) do
-    case action do
-      :index -> ~p"/quizzes/#{Keyword.fetch!(params, :quiz_id)}/records"
-      _ -> throw("invalid action for :quizzes_records route context: '#{action}'")
-    end
-  end
-
-  # credo:disable-for-next-line
-  def route(:users, action, params) do
-    case action do
-      # auth
-      :register -> ~p"/users/register"
-      :register_success -> ~p"/users/register/success"
-      :login -> ~p"/users/login"
-      :reset_password_solicit -> ~p"/users/reset/password"
-      :reset_password_confirm -> ~p"/users/reset/password/#{Keyword.fetch!(params, :token)}"
-      :verify_email_solicit -> ~p"/users/verify/email"
-      :verify_email_confirm -> ~p"/users/verify/email/#{Keyword.fetch!(params, :token)}"
-      :logout_confirm -> ~p"/users/logout"
-      :logout -> ~p"/users/logout"
-      # crud
-      :show -> ~p"/users/me"
-      :settings -> ~p"/users/me/update"
-      :update_display_name -> ~p"/users/me/update/display-name"
-      :update_email_solicit -> ~p"/users/me/update/email"
-      :update_email_confirm -> ~p"/users/me/update/email/#{Keyword.fetch!(params, :token)}"
-      :update_password -> ~p"/users/me/update/password"
-      :delete_confirm -> ~p"/users/me/delete"
-      :delete -> ~p"/users/me/delete"
-      # quizzes
-      :quizzes_index -> ~p"/users/me/quizzes"
-      :records_index -> ~p"/users/me/quizzes/records"
-      _ -> throw("invalid action for :users route context: '#{action}'")
-    end
-  end
+  # users
+  def route(:users, :register, []), do: ~p"/users/register"
+  def route(:users, :register_success, []), do: ~p"/users/register/success"
+  def route(:users, :login, []), do: ~p"/users/login"
+  def route(:users, :reset_password_solicit, []), do: ~p"/users/reset/password"
+  def route(:users, :reset_password_confirm, token: token), do: ~p"/users/reset/password/#{token}"
+  def route(:users, :verify_email_solicit, []), do: ~p"/users/verify/email"
+  def route(:users, :verify_email_confirm, token: token), do: ~p"/users/verify/email/#{token}"
+  def route(:users, :logout_confirm, []), do: ~p"/users/logout"
+  def route(:users, :logout, []), do: ~p"/users/logout"
+  def route(:users, :show, []), do: ~p"/users/me"
+  def route(:users, :settings, []), do: ~p"/users/me/update"
+  def route(:users, :update_display_name, []), do: ~p"/users/me/update/display-name"
+  def route(:users, :update_email_solicit, []), do: ~p"/users/me/update/email"
+  def route(:users, :update_email_confirm, token: token), do: ~p"/users/me/update/email/#{token}"
+  def route(:users, :update_password, []), do: ~p"/users/me/update/password"
+  def route(:users, :delete_confirm, []), do: ~p"/users/me/delete"
+  def route(:users, :delete, []), do: ~p"/users/me/delete"
+  def route(:users, :quizzes_index, []), do: ~p"/users/me/quizzes"
+  def route(:users, :records_index, []), do: ~p"/users/me/quizzes/records"
 end
