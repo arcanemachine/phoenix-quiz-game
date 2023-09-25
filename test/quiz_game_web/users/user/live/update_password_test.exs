@@ -6,20 +6,18 @@ defmodule QuizGameWeb.Users.User.Live.UpdatePasswordTest do
   import Phoenix.LiveViewTest
   import QuizGame.TestSupport.{Assertions, GenericTests}
   import QuizGame.TestSupport.Fixtures.Users
-  import QuizGameWeb.Support.Router
 
   alias QuizGame.Users
 
-  @update_password_url route(:users, :update_password)
   @password_length_min QuizGame.Users.User.password_length_min()
 
   describe "UpdatePassword page" do
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = conn |> login_user(user_fixture()) |> live(@update_password_url)
+      {:ok, _lv, html} = conn |> login_user(user_fixture()) |> live(~p"/users/me/update/password")
       assert html_has_title(html, "Update Password")
     end
 
-    test_redirects_unauthenticated_user_to_login_route(@update_password_url, "GET")
+    test_redirects_unauthenticated_user_to_login_route(~p"/users/me/update/password", "GET")
   end
 
   describe "UpdatePassword form" do
@@ -35,7 +33,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdatePasswordTest do
       updated_password = valid_user_password()
 
       # make initial request
-      {:ok, lv, _html} = live(conn, @update_password_url)
+      {:ok, lv, _html} = live(conn, ~p"/users/me/update/password")
 
       # build valid form data
       valid_form_data = %{
@@ -53,7 +51,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdatePasswordTest do
       resp_conn = follow_trigger_action(form, conn)
 
       # response redirects to expected route
-      assert redirected_to(resp_conn) == route(:users, :settings)
+      assert redirected_to(resp_conn) == ~p"/users/me/update"
 
       # session has been updated with new token
       assert get_session(resp_conn, :user_token) != get_session(conn, :user_token)
@@ -66,7 +64,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdatePasswordTest do
     end
 
     test "renders expected errors on 'change' event when form data is invalid", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @update_password_url)
+      {:ok, lv, _html} = live(conn, ~p"/users/me/update/password")
 
       html_after_change =
         lv
@@ -97,7 +95,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdatePasswordTest do
     end
 
     test "renders expected errors on 'submit' event when form data is invalid", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @update_password_url)
+      {:ok, lv, _html} = live(conn, ~p"/users/me/update/password")
 
       # submit the form
       html_after_submit =
@@ -134,12 +132,12 @@ defmodule QuizGameWeb.Users.User.Live.UpdatePasswordTest do
     conn = build_conn()
 
     # make request
-    {:error, {:redirect, redirect_resp_conn}} = live(conn, @update_password_url)
+    {:error, {:redirect, redirect_resp_conn}} = live(conn, ~p"/users/me/update/password")
 
     # response redirects to expected route
     assert redirect_resp_conn == %{
              flash: %{"warning" => "You must login to continue."},
-             to: route(:users, :login)
+             to: ~p"/users/login"
            }
   end
 end

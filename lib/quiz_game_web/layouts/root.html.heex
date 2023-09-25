@@ -68,17 +68,17 @@
               </div>
               <%= if @current_user do %>
                 <li>
-                  <.link href={route(:users, :show)}>Your profile</.link>
+                  <.link href={~p"/users/me"}>Your profile</.link>
                 </li>
                 <li>
-                  <.link href={route(:users, :logout_confirm)}>Logout</.link>
+                  <.link href={~p"/users/logout"}>Logout</.link>
                 </li>
               <% else %>
                 <li>
-                  <.link href={route(:users, :login)}>Login</.link>
+                  <.link href={~p"/users/login"}>Login</.link>
                 </li>
                 <li>
-                  <.link href={route(:users, :register)}>Register</.link>
+                  <.link href={~p"/users/register"}>Register</.link>
                 </li>
               <% end %>
             </ul>

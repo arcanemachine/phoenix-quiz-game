@@ -39,10 +39,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailSolicit do
   def handle_event("submit", %{"user" => %{"email" => email}} = form_params, socket) do
     if QuizGameWeb.Support.HTML.Form.captcha_valid?(form_params) do
       if user = Users.get_user_by_email(email) do
-        Users.deliver_email_verify_instructions(
-          user,
-          &unverified_url(QuizGameWeb.Endpoint, route(:users, :verify_email_confirm, token: &1))
-        )
+        Users.deliver_email_verify_instructions(user, &url(~p"/users/verify/email/#{&1}"))
       end
 
       info =

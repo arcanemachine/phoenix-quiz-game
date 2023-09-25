@@ -6,14 +6,10 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordConfirmTest do
   import Phoenix.LiveViewTest
   import QuizGame.TestSupport.Assertions
   import QuizGame.TestSupport.Fixtures.Users
-  import QuizGameWeb.Support.Router
 
   alias QuizGame.Users
 
   @password_length_min QuizGame.Users.User.password_length_min()
-
-  def get_reset_password_confirm_url(opts),
-    do: route(:users, :reset_password_confirm, token: opts[:token])
 
   setup do
     # create user and token
@@ -29,13 +25,13 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordConfirmTest do
 
   describe "ResetPasswordConfirm page" do
     test "renders expected markup", %{conn: conn, token: token} do
-      {:ok, _lv, html} = live(conn, get_reset_password_confirm_url(token: token))
+      {:ok, _lv, html} = live(conn, ~p"/users/reset/password/#{token}")
       assert html_has_title(html, "Set New Password")
     end
 
     test "returns expected redirect when password reset token is invalid", %{conn: conn} do
       {:error, {:redirect, redirect_resp_conn}} =
-        live(conn, get_reset_password_confirm_url(token: "invalid_token"))
+        live(conn, ~p"/users/reset/password/invalid-token")
 
       # redirect contains expected values
       assert redirect_resp_conn == %{
@@ -49,7 +45,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordConfirmTest do
 
   describe "ResetPasswordConfirm form" do
     test "resets password once when form data is valid", %{conn: conn, token: token, user: user} do
-      {:ok, lv, _html} = live(conn, get_reset_password_confirm_url(token: token))
+      {:ok, lv, _html} = live(conn, ~p"/users/reset/password/#{token}")
 
       # submit the form and follow the redirect
       {:ok, conn} =
@@ -61,7 +57,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordConfirmTest do
           }
         )
         |> render_submit()
-        |> follow_redirect(conn, route(:users, :login))
+        |> follow_redirect(conn, ~p"/users/login")
 
       # user token has been removed from session data
       refute get_session(conn, :user_token)
@@ -72,7 +68,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordConfirmTest do
 
       # password reset link is now expired (request now redirects to expected route)
       {:error, {:redirect, redirect_resp_conn}} =
-        live(conn, get_reset_password_confirm_url(token: token))
+        live(conn, ~p"/users/reset/password/#{token}")
 
       assert redirect_resp_conn == %{
                flash: %{
@@ -86,7 +82,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordConfirmTest do
       conn: conn,
       token: token
     } do
-      {:ok, lv, _html} = live(conn, get_reset_password_confirm_url(token: token))
+      {:ok, lv, _html} = live(conn, ~p"/users/reset/password/#{token}")
 
       # submit the form
       html_after_change =

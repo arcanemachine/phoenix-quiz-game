@@ -6,19 +6,18 @@ defmodule QuizGameWeb.Users.User.Live.UpdateDisplayNameTest do
   import Phoenix.LiveViewTest
   import QuizGame.TestSupport.{Assertions, GenericTests}
   import QuizGame.TestSupport.Fixtures.Users
-  import QuizGameWeb.Support.Router
 
   alias QuizGame.Users
 
-  @update_display_name_url route(:users, :update_display_name)
-
   describe "UpdateDisplayName page" do
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = conn |> login_user(user_fixture()) |> live(@update_display_name_url)
+      {:ok, _lv, html} =
+        conn |> login_user(user_fixture()) |> live(~p"/users/me/update/display-name")
+
       assert html_has_title(html, "Update Display Name")
     end
 
-    test_redirects_unauthenticated_user_to_login_route(@update_display_name_url, "GET")
+    test_redirects_unauthenticated_user_to_login_route(~p"/users/me/update/display-name", "GET")
   end
 
   describe "UpdateDisplayName form" do
@@ -33,7 +32,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateDisplayNameTest do
       updated_display_name = "updated display name"
 
       # make initial request
-      {:ok, lv, _html} = live(conn, @update_display_name_url)
+      {:ok, lv, _html} = live(conn, ~p"/users/me/update/display-name")
 
       # build valid form data
       form_data = %{"user[display_name]" => updated_display_name}
@@ -43,7 +42,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateDisplayNameTest do
       render_submit(form)
 
       # view redirects to expected route and has expected flash message(s)
-      flash = assert_redirect(lv, route(:users, :settings))
+      flash = assert_redirect(lv, ~p"/users/me/update")
       assert flash == %{"success" => "Display name updated successfully"}
 
       # record has been updated with expected value
@@ -56,7 +55,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateDisplayNameTest do
       next_url_path = "/some-next-url/"
 
       # make initial request
-      {:ok, lv, _html} = live(conn, @update_display_name_url <> query_string(next: next_url_path))
+      {:ok, lv, _html} = live(conn, ~p"/users/me/update/display-name?#{%{next: next_url_path}}")
 
       # build valid form data
       form_data = %{"user[display_name]" => updated_display_name}
@@ -75,7 +74,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateDisplayNameTest do
     end
 
     test "renders expected errors on 'change' event when form data is invalid", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @update_display_name_url)
+      {:ok, lv, _html} = live(conn, ~p"/users/me/update/display-name")
 
       html_after_change =
         lv
@@ -94,7 +93,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateDisplayNameTest do
     end
 
     test "renders expected errors on 'submit' event when form data is invalid", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @update_display_name_url)
+      {:ok, lv, _html} = live(conn, ~p"/users/me/update/display-name")
 
       # submit the form
       html_after_submit =

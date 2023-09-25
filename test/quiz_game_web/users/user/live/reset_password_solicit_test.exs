@@ -6,16 +6,13 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordSolicitTest do
   import Phoenix.LiveViewTest
   import QuizGame.TestSupport.Assertions
   import QuizGame.TestSupport.Fixtures.Users
-  import QuizGameWeb.Support.Router
 
   alias QuizGame.Users
   alias QuizGame.Repo
 
-  @reset_password_solicit_url route(:users, :reset_password_solicit)
-
   describe "ResetPasswordSolicit page" do
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, @reset_password_solicit_url)
+      {:ok, _lv, html} = live(conn, ~p"/users/reset/password")
       assert html_has_title(html, "Reset Your Password")
     end
 
@@ -23,8 +20,8 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordSolicitTest do
       result =
         conn
         |> login_user(user_fixture())
-        |> live(@reset_password_solicit_url)
-        |> follow_redirect(conn, route(:users, :show))
+        |> live(~p"/users/reset/password")
+        |> follow_redirect(conn, ~p"/users/me")
 
       assert {:ok, _conn} = result
     end
@@ -36,7 +33,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordSolicitTest do
     end
 
     test "sends a new reset password token", %{conn: conn, user: user} do
-      {:ok, lv, _html} = live(conn, @reset_password_solicit_url)
+      {:ok, lv, _html} = live(conn, ~p"/users/reset/password")
 
       # submit the form
       {:ok, conn} =
@@ -53,7 +50,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordSolicitTest do
     end
 
     test "does not send reset password token if email is invalid", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @reset_password_solicit_url)
+      {:ok, lv, _html} = live(conn, ~p"/users/reset/password")
 
       # submit the form and follow the redirect
       {:ok, conn} =

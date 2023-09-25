@@ -1,10 +1,7 @@
 defmodule QuizGame.TestSupport.GenericTests do
   @moduledoc "This project's generic/reusable tests."
-
   use QuizGameWeb.ConnCase
-
   # import Phoenix.LiveViewTest
-  import QuizGameWeb.Support.Router
 
   # @doc """
   # A macro that wraps the 'auth-required' test functionality into a single line.
@@ -39,7 +36,7 @@ defmodule QuizGame.TestSupport.GenericTests do
   #   # redirect contains expected values
   #   assert redirect_resp_conn == %{
   #            flash: %{"warning" => "You must login to continue."},
-  #            to: route(:users, :login)
+  #            to: ~p"/users/login"
   #          }
   # end
 
@@ -82,7 +79,7 @@ defmodule QuizGame.TestSupport.GenericTests do
 
     # response contains temporary redirect to login route
     assert resp_conn.status == 302
-    assert get_resp_header(resp_conn, "location") == [route(:users, :login)]
+    assert get_resp_header(resp_conn, "location") == [~p"/users/login"]
 
     # response contains expected flash message
     assert Phoenix.Flash.get(resp_conn.assigns.flash, :warning) =~

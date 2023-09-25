@@ -4,7 +4,6 @@ defmodule QuizGameWeb.Users.Session.Controller do
   use QuizGameWeb, :controller
 
   import QuizGameWeb.Support.Conn, only: [text_response: 3]
-  import QuizGameWeb.Support.Router, only: [route: 2]
 
   alias QuizGame.Users
   alias QuizGameWeb.UserAuth
@@ -13,12 +12,12 @@ defmodule QuizGameWeb.Users.Session.Controller do
   def register_success(conn, _params) do
     conn
     |> put_flash(:success, "Account created successfully. You may now log in.")
-    |> redirect(to: route(:users, :login))
+    |> redirect(to: ~p"/users/login")
   end
 
   def create(conn, %{"_action" => "password-updated"} = params) do
     conn
-    |> put_session(:user_return_to, route(:users, :settings))
+    |> put_session(:user_return_to, ~p"/users/me/update")
     |> create(params, "Password updated successfully")
   end
 
@@ -49,7 +48,7 @@ defmodule QuizGameWeb.Users.Session.Controller do
       conn
       |> put_flash(:error, "Invalid email or password")
       |> put_flash(:email, String.slice(email, 0, 160))
-      |> redirect(to: route(:users, :login))
+      |> redirect(to: ~p"/users/login")
     end
   end
 

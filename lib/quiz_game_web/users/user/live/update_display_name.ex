@@ -16,7 +16,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateDisplayName do
       |> assign(
         page_title: "Update Display Name",
         form: to_form(changeset),
-        success_url: Map.get(params, "next") || route(:users, :settings)
+        success_url: Map.get(params, "next") || ~p"/users/me/update"
       )
 
     {:ok, socket}

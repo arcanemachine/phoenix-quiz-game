@@ -43,7 +43,7 @@ defmodule QuizGameWeb.Users.User.Live.Register do
       id="user-register-form"
       for={@form}
       has_errors={@check_errors}
-      action={route(:users, :login) <> query_string(action: "registered")}
+      action={~p"/users/login?action=registered"}
       method="post"
       phx-change="validate"
       phx-submit="submit"
@@ -102,18 +102,18 @@ defmodule QuizGameWeb.Users.User.Live.Register do
 
     <.action_links>
       <.action_links_item>
-        <.link href={route(:users, :login)}>
+        <.link href={~p"/users/login"}>
           Login to an existing account
         </.link>
       </.action_links_item>
       <.spacer />
       <.action_links_item>
-        <.link href={route(:users, :reset_password_solicit)}>
+        <.link href={~p"/users/reset/password"}>
           Forgot your password?
         </.link>
       </.action_links_item>
       <.action_links_item>
-        <.link href={route(:users, :verify_email_solicit)}>
+        <.link href={~p"/users/verify/email"}>
           Didn't receive a confirmation email?
         </.link>
       </.action_links_item>
@@ -131,13 +131,7 @@ defmodule QuizGameWeb.Users.User.Live.Register do
         {:ok, user} ->
           # deliver a confirmation email to the user
           {:ok, _} =
-            Users.deliver_email_verify_instructions(
-              user,
-              &unverified_url(
-                QuizGameWeb.Endpoint,
-                route(:users, :verify_email_confirm, token: &1)
-              )
-            )
+            Users.deliver_email_verify_instructions(user, &url(~p"/users/verify/email/#{&1}"))
 
           # create an empty changeset so we can clear the form before navigating away from it
           changeset = Users.change_user_registration(user)
@@ -147,7 +141,7 @@ defmodule QuizGameWeb.Users.User.Live.Register do
            socket
            |> push_event("captcha-reset", %{})
            |> assign_form(changeset)
-           |> redirect(to: route(:users, :register_success))}
+           |> redirect(to: ~p"/users/register/success")}
 
         # registration failed
         {:error, %Ecto.Changeset{} = changeset} ->

@@ -5,7 +5,6 @@ defmodule QuizGameWeb.Users.User.Live.UpdateEmail do
 
   alias QuizGame.Users
   alias QuizGame.Users.User
-  import QuizGameWeb.Support.Router
 
   @impl true
   # confirm
@@ -23,7 +22,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateEmail do
           )
       end
 
-    {:ok, push_navigate(socket, to: route(:users, :show))}
+    {:ok, push_navigate(socket, to: ~p"/users/me")}
   end
 
   # solicit
@@ -77,7 +76,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateEmail do
         required
       />
       <:actions>
-        <.form_button_cancel url={route(:users, :settings)} />
+        <.form_button_cancel url={~p"/users/me/update"} />
         <.form_button_submit />
       </:actions>
     </.simple_form>
@@ -94,7 +93,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateEmail do
         Users.deliver_email_update_instructions(
           applied_user,
           user.email,
-          &unverified_url(QuizGameWeb.Endpoint, route(:users, :update_email_confirm, token: &1))
+          &url(~p"/users/me/update/email/#{&1}")
         )
 
         {:noreply,

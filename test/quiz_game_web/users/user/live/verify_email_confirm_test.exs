@@ -6,13 +6,8 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailConfirmTest do
   import Phoenix.LiveViewTest
   import QuizGame.TestSupport.Assertions
   import QuizGame.TestSupport.Fixtures.Users
-  import QuizGameWeb.Support.Router
 
-  alias QuizGame.Users
-  alias QuizGame.Repo
-
-  def get_verify_email_confirm_url(opts),
-    do: route(:users, :verify_email_confirm, token: opts[:token])
+  alias QuizGame.{Repo, Users}
 
   setup do
     %{user: user_fixture()}
@@ -20,7 +15,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailConfirmTest do
 
   describe "VerifyEmailConfirm page" do
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, get_verify_email_confirm_url(token: "some_token"))
+      {:ok, _lv, html} = live(conn, ~p"/users/verify/email/SOME_TOKEN")
       assert html_has_title(html, "Confirm Your Email")
     end
   end
@@ -32,7 +27,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailConfirmTest do
           Users.deliver_email_verify_instructions(user, url)
         end)
 
-      verify_email_confirm_url = get_verify_email_confirm_url(token: token)
+      verify_email_confirm_url = ~p"/users/verify/email/#{token}"
 
       # make initial request
       {:ok, lv, _html} = live(conn, verify_email_confirm_url)
@@ -42,7 +37,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailConfirmTest do
         lv
         |> form("#user-verify-email-confirm-form")
         |> render_submit()
-        |> follow_redirect(conn, route(:users, :show))
+        |> follow_redirect(conn, ~p"/users/me")
 
       # response contains expected flash message
       assert conn_has_flash_message(resp_conn, :success, "Your email address has been confirmed.")
@@ -80,7 +75,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailConfirmTest do
         lv
         |> form("#user-verify-email-confirm-form")
         |> render_submit()
-        |> follow_redirect(conn, route(:users, :show))
+        |> follow_redirect(conn, ~p"/users/me")
 
       # response contains expected flash message
       assert conn_has_flash_message(
@@ -92,7 +87,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailConfirmTest do
 
     test "does not confirm email address if token is invalid", %{conn: conn, user: user} do
       # make request
-      {:ok, lv, _html} = live(conn, get_verify_email_confirm_url(token: "invalid_token"))
+      {:ok, lv, _html} = live(conn, ~p"/users/verify/email/INVALID_TOKEN")
 
       # submit the form and follow the redirect
       {:ok, resp_conn} =

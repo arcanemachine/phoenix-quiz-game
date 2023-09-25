@@ -20,7 +20,7 @@
       <.link href="/">
         <.form_button kind="secondary" content="Home" tabindex="-1" />
       </.link>
-      <.link href={route(:users, :login)}>
+      <.link href={~p"/users/login"}>
         <.form_button class="primary" content="Login" tabindex="-1" />
       </.link>
     </:actions>

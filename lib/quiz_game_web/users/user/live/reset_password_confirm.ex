@@ -3,8 +3,6 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordConfirm do
 
   use QuizGameWeb, :live_view
 
-  import QuizGameWeb.Support.Router
-
   alias QuizGame.Users
   alias QuizGame.Users.User
 
@@ -71,7 +69,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordConfirm do
         {:noreply,
          socket
          |> put_flash(:success, "Password reset successfully.")
-         |> redirect(to: route(:users, :login))}
+         |> redirect(to: ~p"/users/login")}
 
       {:error, changeset} ->
         {:noreply, assign_form(socket, Map.put(changeset, :action, :insert))}

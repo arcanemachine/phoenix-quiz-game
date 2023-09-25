@@ -1,28 +1,28 @@
 <section>
   <.action_links>
     <.action_links_item>
-      <.link href={route(:users, :update_display_name)}>
+      <.link href={~p"/users/me/update/display-name"}>
         Change your display name
       </.link>
     </.action_links_item>
     <.action_links_item>
-      <.link navigate={route(:users, :update_email_solicit)}>
+      <.link navigate={~p"/users/me/update/email"}>
         Change your email address
       </.link>
     </.action_links_item>
     <.action_links_item>
-      <.link href={route(:users, :update_password)}>
+      <.link href={~p"/users/me/update/password"}>
         Change your password
       </.link>
     </.action_links_item>
     <.spacer />
     <.action_links_item>
-      <.link href={route(:users, :delete_confirm)} class="!text-error">
+      <.link href={~p"/users/me/delete"} class="!text-error">
         Delete your account
       </.link>
     </.action_links_item>
     <.action_links_item kind="back" class="mt-6">
-      <.link href={route(:users, :show)}>
+      <.link href={~p"/users/me"}>
         Return to your profile
       </.link>
     </.action_links_item>

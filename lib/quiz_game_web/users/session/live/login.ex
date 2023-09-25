@@ -22,7 +22,7 @@ defmodule QuizGameWeb.Users.Session.Live.Login do
     <.simple_form
       id="user-login-form"
       for={@form}
-      action={route(:users, :login) <> query_string(@params)}
+      action={~p"/users/login?#{@params}"}
       phx-update="ignore"
     >
       <.input
@@ -53,18 +53,18 @@ defmodule QuizGameWeb.Users.Session.Live.Login do
 
     <.action_links>
       <.action_links_item>
-        <.link href={route(:users, :register)}>
+        <.link href={~p"/users/register"}>
           Register new account
         </.link>
       </.action_links_item>
       <.spacer />
       <.action_links_item>
-        <.link href={route(:users, :reset_password_solicit)}>
+        <.link href={~p"/users/reset/password"}>
           Forgot your password?
         </.link>
       </.action_links_item>
       <.action_links_item>
-        <.link href={route(:users, :verify_email_solicit)}>
+        <.link href={~p"/users/verify/email"}>
           Didn't receive a confirmation email?
         </.link>
       </.action_links_item>

@@ -6,17 +6,9 @@ defmodule QuizGameWeb.Users.User.ControllerTest do
   import Ecto.Query
   import QuizGame.TestSupport.{Assertions, GenericTests}
   import QuizGame.TestSupport.Fixtures.{Quizzes, Users}
-  import QuizGameWeb.Support.Router
 
   alias QuizGame.Repo
   alias QuizGame.Users.User
-
-  @user_show_url route(:users, :show)
-  @user_settings_url route(:users, :settings)
-  @user_delete_confirm_url route(:users, :delete_confirm)
-  @user_delete_url route(:users, :delete_confirm)
-  @user_quizzes_index_url route(:users, :quizzes_index)
-  @user_records_index_url route(:users, :records_index)
 
   # setup
   setup do
@@ -24,36 +16,34 @@ defmodule QuizGameWeb.Users.User.ControllerTest do
   end
 
   describe "users :show" do
-    test_redirects_unauthenticated_user_to_login_route(@user_show_url, "GET")
+    test_redirects_unauthenticated_user_to_login_route(~p"/users/me", "GET")
 
     test "renders expected template", %{conn: conn, user: user} do
-      resp_conn = conn |> login_user(user) |> get(@user_show_url)
+      resp_conn = conn |> login_user(user) |> get(~p"/users/me")
       assert html_has_title(resp_conn.resp_body, "Your Profile")
     end
   end
 
   describe "users :settings" do
-    test_redirects_unauthenticated_user_to_login_route(@user_settings_url, "GET")
+    test_redirects_unauthenticated_user_to_login_route(~p"/users/me/update", "GET")
 
     test "renders expected template", %{conn: conn, user: user} do
-      resp_conn = conn |> login_user(user) |> get(@user_settings_url)
+      resp_conn = conn |> login_user(user) |> get(~p"/users/me/update")
       assert html_has_title(resp_conn.resp_body, "Manage Your Account")
     end
   end
 
   describe "users :delete_confirm" do
-    test_redirects_unauthenticated_user_to_login_route(@user_delete_confirm_url, "GET")
+    test_redirects_unauthenticated_user_to_login_route(~p"/users/me/delete", "GET")
 
     test "renders expected template", %{conn: conn, user: user} do
-      resp_conn = conn |> login_user(user) |> get(@user_delete_url)
+      resp_conn = conn |> login_user(user) |> get(~p"/users/me/delete")
       assert html_has_title(resp_conn.resp_body, "Delete Your Account")
     end
   end
 
   describe "users :delete" do
-    @user_delete_url route(:users, :delete_confirm)
-
-    test_redirects_unauthenticated_user_to_login_route(@user_delete_url, "POST")
+    test_redirects_unauthenticated_user_to_login_route(~p"/users/me/delete", "POST")
 
     test "deletes expected user", %{conn: conn, user: user} do
       # get initial record count before deletion
@@ -61,7 +51,7 @@ defmodule QuizGameWeb.Users.User.ControllerTest do
       initial_record_count = get_user_count.()
 
       # make request
-      resp_conn = conn |> login_user(user) |> post(@user_delete_url)
+      resp_conn = conn |> login_user(user) |> post(~p"/users/me/delete")
 
       # response contains expected flash message
       assert conn_has_flash_message(
@@ -81,7 +71,7 @@ defmodule QuizGameWeb.Users.User.ControllerTest do
   end
 
   describe "users :quizzes_index" do
-    test_redirects_unauthenticated_user_to_login_route(@user_quizzes_index_url, "GET")
+    test_redirects_unauthenticated_user_to_login_route(~p"/users/me/quizzes", "GET")
 
     test "renders expected content", %{conn: conn, user: user} do
       # create quizzes
@@ -89,7 +79,7 @@ defmodule QuizGameWeb.Users.User.ControllerTest do
       other_user_quiz = quiz_fixture(%{user_id: user_fixture().id})
 
       # renders expected template
-      html = conn |> login_user(user) |> get(@user_quizzes_index_url) |> Map.get(:resp_body)
+      html = conn |> login_user(user) |> get(~p"/users/me/quizzes") |> Map.get(:resp_body)
       assert html_has_title(html, "Your Quizzes")
 
       # contains user quiz content
@@ -101,7 +91,7 @@ defmodule QuizGameWeb.Users.User.ControllerTest do
   end
 
   describe "users :records_index" do
-    test_redirects_unauthenticated_user_to_login_route(@user_records_index_url, "GET")
+    test_redirects_unauthenticated_user_to_login_route(~p"/users/me/quizzes/records", "GET")
 
     test "renders expected content", %{conn: conn, user: user} do
       # create records
@@ -112,7 +102,7 @@ defmodule QuizGameWeb.Users.User.ControllerTest do
       record_fixture(%{quiz_id: other_quiz.id, user_id: user_fixture().id})
 
       # renders expected template
-      html = conn |> login_user(user) |> get(@user_records_index_url) |> Map.get(:resp_body)
+      html = conn |> login_user(user) |> get(~p"/users/me/quizzes/records") |> Map.get(:resp_body)
       assert html_has_title(html, "Your Quiz Records")
 
       # contains user's quiz record content

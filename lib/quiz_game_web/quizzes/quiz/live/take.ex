@@ -176,8 +176,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.Take do
        |> redirect(
          # redirect to user display name update form, and return to this page when finished
          to:
-           route(:users, :update_display_name) <>
-             query_string(next: ~p"/quizzes/#{socket.assigns.quiz.id}/take")
+           ~p"/users/me/update/display-name?#{%{next: ~p"/quizzes/#{socket.assigns.quiz.id}/take"}}"
        )}
     else
       socket = socket |> assign(display_name: nil, quiz_state: :enter_display_name)

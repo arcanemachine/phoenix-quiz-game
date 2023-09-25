@@ -1,6 +1,6 @@
 <.list_show>
   <:item label="Display name">
-    <%= @current_user.display_name %> (<a href={route(:users, :update_display_name)}>Edit</a>)
+    <%= @current_user.display_name %> (<a href={~p"/users/me/update/display-name"}>Edit</a>)
   </:item>
   <:item label="Email">
     <%= @current_user.email %>
@@ -9,8 +9,7 @@
     <%= if @current_user.confirmed_at do %>
       Confirmed
     <% else %>
-      Unconfirmed
-      <.link href={route(:users, :verify_email_solicit)}>(Confirm your account)</.link>
+      Unconfirmed <.link href={~p"/users/verify/email"}>(Confirm your account)</.link>
     <% end %>
   </:item>
 </.list_show>
@@ -19,23 +18,23 @@
 
 <.action_links>
   <.action_links_item>
-    <.link navigate={route(:users, :records_index)}>
+    <.link navigate={~p"/users/me/quizzes/records"}>
       View your quiz records
     </.link>
   </.action_links_item>
   <.action_links_item>
-    <.link navigate={route(:users, :quizzes_index)}>
+    <.link navigate={~p"/users/me/quizzes"}>
       View quizzes created by you
     </.link>
   </.action_links_item>
   <.spacer />
   <.action_links_item>
-    <.link navigate={route(:users, :settings)}>
+    <.link navigate={~p"/users/me/update"}>
       Manage your profile
     </.link>
   </.action_links_item>
   <.action_links_item>
-    <.link href={route(:users, :logout)}>
+    <.link href={~p"/users/logout"}>
       Logout
     </.link>
   </.action_links_item>

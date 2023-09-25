@@ -4,7 +4,6 @@ defmodule QuizGameWeb.UserAuthTest do
   use QuizGameWeb.ConnCase, async: true
 
   import QuizGame.TestSupport.Fixtures.Users
-  import QuizGameWeb.Support.Router
 
   alias Phoenix.LiveView
   alias QuizGame.Users
@@ -26,7 +25,7 @@ defmodule QuizGameWeb.UserAuthTest do
       conn = UserAuth.login_user(conn, user)
       assert token = get_session(conn, :user_token)
       assert get_session(conn, :live_socket_id) == "users_sessions:#{Base.url_encode64(token)}"
-      assert redirected_to(conn) == route(:users, :show)
+      assert redirected_to(conn) == ~p"/users/me"
       assert Users.get_user_by_session_token(token)
     end
 
@@ -225,7 +224,7 @@ defmodule QuizGameWeb.UserAuthTest do
         |> UserAuth.redirect_if_user_is_authenticated([])
 
       assert conn.halted
-      assert redirected_to(conn) == route(:users, :show)
+      assert redirected_to(conn) == ~p"/users/me"
     end
 
     test "does not redirect if user is not authenticated", %{conn: conn} do
@@ -277,7 +276,7 @@ defmodule QuizGameWeb.UserAuthTest do
       conn = conn |> fetch_flash() |> UserAuth.require_authenticated_user([])
       assert conn.halted
 
-      assert redirected_to(conn) == route(:users, :login)
+      assert redirected_to(conn) == ~p"/users/login"
 
       assert Phoenix.Flash.get(conn.assigns.flash, :warning) == "You must login to continue."
     end

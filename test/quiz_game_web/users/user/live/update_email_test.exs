@@ -6,21 +6,14 @@ defmodule QuizGameWeb.Users.User.Live.UpdateEmailTest do
   import Phoenix.LiveViewTest
   import QuizGame.TestSupport.{Assertions, GenericTests}
   import QuizGame.TestSupport.Fixtures.Users
-  import QuizGameWeb.Support.Router
 
   alias QuizGame.Users
 
-  @update_email_solicit_url route(:users, :update_email_solicit)
-
-  def test_url_path_confirm(opts) do
-    route(:users, :update_email_confirm, token: opts[:token])
-  end
-
   describe "UpdateEmail page" do
-    test_redirects_unauthenticated_user_to_login_route(@update_email_solicit_url, "GET")
+    test_redirects_unauthenticated_user_to_login_route(~p"/users/me/update/email", "GET")
 
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = conn |> login_user(user_fixture()) |> live(@update_email_solicit_url)
+      {:ok, _lv, html} = conn |> login_user(user_fixture()) |> live(~p"/users/me/update/email")
       assert html_has_title(html, "Update Email")
     end
   end
@@ -38,7 +31,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateEmailTest do
       new_email = unique_user_email()
 
       # make initial request
-      {:ok, lv, _html} = live(conn, @update_email_solicit_url)
+      {:ok, lv, _html} = live(conn, ~p"/users/me/update/email")
 
       # build valid form data
       valid_form_data = %{
@@ -65,7 +58,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateEmailTest do
     end
 
     test "renders expected errors on 'change' event when form data is invalid", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @update_email_solicit_url)
+      {:ok, lv, _html} = live(conn, ~p"/users/me/update/email")
 
       # change the form
       html_after_change =
@@ -92,7 +85,7 @@ defmodule QuizGameWeb.Users.User.Live.UpdateEmailTest do
       conn: conn,
       user: user
     } do
-      {:ok, lv, _html} = live(conn, @update_email_solicit_url)
+      {:ok, lv, _html} = live(conn, ~p"/users/me/update/email")
 
       # submit the form
       html_after_submit =
@@ -138,12 +131,12 @@ defmodule QuizGameWeb.Users.User.Live.UpdateEmailTest do
     test "updates the user email once", %{conn: conn, user: user, token: token, email: email} do
       # make request to password confirmation route
       {:error, {:live_redirect, redirect_resp_conn}} =
-        live(conn, test_url_path_confirm(token: token))
+        live(conn, ~p"/users/me/update/email/#{token}")
 
       # live redirect contains expected values
       assert redirect_resp_conn == %{
                flash: %{"success" => "Email updated successfully"},
-               to: route(:users, :show)
+               to: ~p"/users/me"
              }
 
       # record has been updated in the database
@@ -152,28 +145,28 @@ defmodule QuizGameWeb.Users.User.Live.UpdateEmailTest do
 
       # try to use email confirmation token again
       {:error, {:live_redirect, redirect_resp_conn_2}} =
-        live(conn, test_url_path_confirm(token: token))
+        live(conn, ~p"/users/me/update/email/#{token}")
 
       # live redirect contains expected values
       assert redirect_resp_conn_2 == %{
                flash: %{
                  "error" => "Email update link is invalid, expired, or has already been used."
                },
-               to: route(:users, :show)
+               to: ~p"/users/me"
              }
     end
 
     test "does not update email if token is invalid", %{conn: conn, user: user} do
       # make request to password confirmation route
       {:error, {:live_redirect, redirect_resp_conn}} =
-        live(conn, test_url_path_confirm(token: "invalid_token"))
+        live(conn, ~p"/users/me/update/email/INVALID_TOKEN")
 
       # live redirect contains expected values
       assert redirect_resp_conn == %{
                flash: %{
                  "error" => "Email update link is invalid, expired, or has already been used."
                },
-               to: route(:users, :show)
+               to: ~p"/users/me"
              }
 
       # user's email address is unchanged
@@ -188,12 +181,12 @@ defmodule QuizGameWeb.Users.User.Live.UpdateEmailTest do
 
       # make request to password confirmation route
       {:error, {:redirect, redirect_resp_conn}} =
-        live(conn, test_url_path_confirm(token: token))
+        live(conn, ~p"/users/me/update/email/#{token}")
 
       # redirect contains expected values
       assert redirect_resp_conn == %{
                flash: %{"warning" => "You must login to continue."},
-               to: route(:users, :login)
+               to: ~p"/users/login"
              }
     end
   end
