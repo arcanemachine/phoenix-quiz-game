@@ -32,6 +32,8 @@ Features:
 
 ## Getting Started
 
+First, you'll need to clone this repo: `git clone https://github.com/arcanemachine/phoenix-quiz-game`
+
 ### Working in a `dev` Environment
 
 - Setup your local environment variables:
