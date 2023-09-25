@@ -1,4 +1,4 @@
-defmodule QuizGameWeb.Users.User.Live.LoginTest do
+defmodule QuizGameWeb.Users.Session.Live.LoginTest do
   @moduledoc false
 
   use QuizGameWeb.ConnCase
