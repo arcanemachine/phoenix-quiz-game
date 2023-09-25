@@ -55,6 +55,7 @@
   </.action_links_item>
 
   <%= if @current_user && @current_user.id == @quiz.user_id do %>
+    <.spacer />
     <.action_links_sublist>
       <:title>
         Manage this quiz:
@@ -76,7 +77,7 @@
       </.action_links_item>
       <.action_links_item>
         <.link href={~p"/quizzes/#{@quiz.id}/records"}>
-          Manage records for this quiz
+          View records for this quiz
         </.link>
       </.action_links_item>
     </.action_links_sublist>
