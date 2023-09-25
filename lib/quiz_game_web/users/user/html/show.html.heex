@@ -1,6 +1,9 @@
 <.list_show>
   <:item label="Display name">
-    <%= @current_user.display_name %> (<a href={~p"/users/me/update/display-name"}>Edit</a>)
+    <%= @current_user.display_name %>
+    <span>
+      (<a href={~p"/users/me/update/display-name?#{%{next: ~p"/users/me"}}"}>Edit</a>)
+    </span>
   </:item>
   <:item label="Email">
     <%= @current_user.email %>
