@@ -64,7 +64,7 @@ defmodule QuizGameWeb.Users.Session.Live.Login do
         </.link>
       </.action_links_item>
       <.action_links_item>
-        <.link href={~p"/users/verify/email"}>
+        <.link href={~p"/users/verify-email"}>
           Didn't receive a confirmation email?
         </.link>
       </.action_links_item>

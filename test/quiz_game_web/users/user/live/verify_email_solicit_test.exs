@@ -15,14 +15,14 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailSolicitTest do
 
   describe "VerifyEmailSolicit page" do
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, ~p"/users/verify/email")
+      {:ok, _lv, html} = live(conn, ~p"/users/verify-email")
       assert html_has_title(html, "Resend Confirmation Email")
     end
   end
 
   describe "VerifyEmailSolicit form" do
     test "sends a new confirmation token when form data is valid", %{conn: conn, user: user} do
-      {:ok, lv, _html} = live(conn, ~p"/users/verify/email")
+      {:ok, lv, _html} = live(conn, ~p"/users/verify-email")
 
       # submit the form and follow the redirect
       {:ok, resp_conn} =
@@ -46,7 +46,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailSolicitTest do
       Repo.update!(Users.User.confirm_changeset(user))
 
       # make initial request
-      {:ok, lv, _html} = live(conn, ~p"/users/verify/email")
+      {:ok, lv, _html} = live(conn, ~p"/users/verify-email")
 
       # submit the form and follow the redirect
       {:ok, resp_conn} =
@@ -63,7 +63,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailSolicitTest do
     end
 
     test "sends email but no token if email is invalid", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, ~p"/users/verify/email")
+      {:ok, lv, _html} = live(conn, ~p"/users/verify-email")
 
       # submit the form and follow the redirect
       {:ok, resp_conn} =

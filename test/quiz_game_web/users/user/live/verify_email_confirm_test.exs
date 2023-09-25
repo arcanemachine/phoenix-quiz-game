@@ -15,7 +15,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailConfirmTest do
 
   describe "VerifyEmailConfirm page" do
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, ~p"/users/verify/email/SOME_TOKEN")
+      {:ok, _lv, html} = live(conn, ~p"/users/verify-email/SOME_TOKEN")
       assert html_has_title(html, "Confirm Your Email")
     end
   end
@@ -27,7 +27,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailConfirmTest do
           Users.deliver_email_verify_instructions(user, url)
         end)
 
-      verify_email_confirm_url = ~p"/users/verify/email/#{token}"
+      verify_email_confirm_url = ~p"/users/verify-email/#{token}"
 
       # make initial request
       {:ok, lv, _html} = live(conn, verify_email_confirm_url)
@@ -87,7 +87,7 @@ defmodule QuizGameWeb.Users.User.Live.VerifyEmailConfirmTest do
 
     test "does not confirm email address if token is invalid", %{conn: conn, user: user} do
       # make request
-      {:ok, lv, _html} = live(conn, ~p"/users/verify/email/INVALID_TOKEN")
+      {:ok, lv, _html} = live(conn, ~p"/users/verify-email/INVALID_TOKEN")
 
       # submit the form and follow the redirect
       {:ok, resp_conn} =

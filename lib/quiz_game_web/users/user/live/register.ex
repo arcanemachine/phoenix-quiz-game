@@ -113,7 +113,7 @@ defmodule QuizGameWeb.Users.User.Live.Register do
         </.link>
       </.action_links_item>
       <.action_links_item>
-        <.link href={~p"/users/verify/email"}>
+        <.link href={~p"/users/verify-email"}>
           Didn't receive a confirmation email?
         </.link>
       </.action_links_item>
@@ -131,7 +131,7 @@ defmodule QuizGameWeb.Users.User.Live.Register do
         {:ok, user} ->
           # deliver a confirmation email to the user
           {:ok, _} =
-            Users.deliver_email_verify_instructions(user, &url(~p"/users/verify/email/#{&1}"))
+            Users.deliver_email_verify_instructions(user, &url(~p"/users/verify-email/#{&1}"))
 
           # create an empty changeset so we can clear the form before navigating away from it
           changeset = Users.change_user_registration(user)

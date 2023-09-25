@@ -148,8 +148,8 @@ defmodule QuizGameWeb.Router do
 
     live_session :allow_any_user,
       on_mount: [{QuizGameWeb.UserAuth, :mount_current_user}] do
-      live "/verify/email", Users.User.Live.VerifyEmailSolicit, :new
-      live "/verify/email/:token", Users.User.Live.VerifyEmailConfirm, :edit
+      live "/verify-email", Users.User.Live.VerifyEmailSolicit, :new
+      live "/verify-email/:token", Users.User.Live.VerifyEmailConfirm, :edit
     end
   end
 
