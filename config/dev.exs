@@ -35,7 +35,8 @@ config :quiz_game, QuizGameWeb.Endpoint,
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/quiz_game_web/.*/(html/|live/|components).*(ex|heex|js)$"
+      ~r"lib/quiz_game_web/.*/(html/|live/|components).*(ex|heex|js)$",
+      ~r"lib/quiz_game_web/layouts.*(ex|heex)$"
     ]
   ]
 
