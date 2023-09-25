@@ -1,4 +1,8 @@
-<.alert :if={@quiz.math_random_question_count} kind="warning" class="text-center font-bold">
+<.alert
+  :if={@quiz.subject == :math && @quiz.math_random_question_count}
+  kind="warning"
+  class="text-center font-bold"
+>
   <div class="text-center">
     <p>
       This quiz is configured to use randomly-generated math questions.
