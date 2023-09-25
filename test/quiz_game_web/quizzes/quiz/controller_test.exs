@@ -236,7 +236,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.ControllerTest do
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
       redirects_unauthenticated_user_to_login_route(
         conn,
-        ~p"/quizzes/#{quiz.id}",
+        ~p"/quizzes/#{quiz.id}/delete",
         "DELETE"
       )
     end
@@ -245,7 +245,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.ControllerTest do
       # login as quiz creator
       conn = login_user(conn, user)
 
-      resp_conn = delete(conn, ~p"/quizzes/#{quiz.id}")
+      resp_conn = delete(conn, ~p"/quizzes/#{quiz.id}/delete")
 
       # redirects to object index
       assert redirected_to(resp_conn) == ~p"/quizzes"
