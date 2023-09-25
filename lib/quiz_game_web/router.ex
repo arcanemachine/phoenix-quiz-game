@@ -35,7 +35,7 @@ defmodule QuizGameWeb.Router do
     get "/subjects/:subject", Quiz.Controller, :index_subject
 
     # randomly-generated quizzes
-    get "/random/create", Quiz.Controller, :new_random
+    get "/random/new", Quiz.Controller, :new_random
 
     live_session :quiz_take_random,
       on_mount: [{QuizGameWeb.UserAuth, :mount_current_user}] do
@@ -45,8 +45,8 @@ defmodule QuizGameWeb.Router do
     scope "/" do
       pipe_through [:require_authenticated_user]
 
-      get "/create", Quiz.Controller, :new
-      post "/create", Quiz.Controller, :create
+      get "/new", Quiz.Controller, :new
+      post "/new", Quiz.Controller, :create
     end
 
     scope "/:quiz_id" do
@@ -82,7 +82,7 @@ defmodule QuizGameWeb.Router do
 
         live_session :quizzes_card_login_required,
           on_mount: [{QuizGameWeb.UserAuth, :ensure_authenticated}] do
-          live "/create", Card.Live.Index, :new
+          live "/new", Card.Live.Index, :new
 
           live "/:card_id", Card.Live.Show, :show
           live "/:card_id/update", Card.Live.Show, :edit

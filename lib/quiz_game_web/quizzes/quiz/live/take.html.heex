@@ -2,7 +2,7 @@
   navigate={
     case @live_action do
       :take -> ~p"/quizzes/#{@quiz.id}"
-      :take_random -> ~p"/quizzes/random/create"
+      :take_random -> ~p"/quizzes/random/new"
     end
   }
   class="-mt-6 mb-4"
