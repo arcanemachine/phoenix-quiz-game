@@ -13,7 +13,7 @@ defmodule QuizGameWeb.Users.Session.Live.LoginTest do
 
       assert html_has_title(html, "Login")
       assert html_has_link(html, url: ~p"/users/register", content: "Register new account")
-      assert html_has_link(html, url: ~p"/users/reset/password", content: "Forgot your password?")
+      assert html_has_link(html, url: ~p"/users/reset-password", content: "Forgot your password?")
     end
 
     test "redirects authenticated user to expected route", %{conn: conn} do
@@ -76,7 +76,7 @@ defmodule QuizGameWeb.Users.Session.Live.LoginTest do
         lv
         |> element(~s|a:fl-contains("Forgot your password?")|)
         |> render_click()
-        |> follow_redirect(conn, ~p"/users/reset/password")
+        |> follow_redirect(conn, ~p"/users/reset-password")
 
       # response has expected title
       assert html_has_title(conn.resp_body, "Reset Your Password")

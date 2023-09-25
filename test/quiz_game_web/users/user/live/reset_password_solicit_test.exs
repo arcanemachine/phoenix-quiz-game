@@ -12,7 +12,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordSolicitTest do
 
   describe "ResetPasswordSolicit page" do
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, ~p"/users/reset/password")
+      {:ok, _lv, html} = live(conn, ~p"/users/reset-password")
       assert html_has_title(html, "Reset Your Password")
     end
 
@@ -20,7 +20,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordSolicitTest do
       result =
         conn
         |> login_user(user_fixture())
-        |> live(~p"/users/reset/password")
+        |> live(~p"/users/reset-password")
         |> follow_redirect(conn, ~p"/users/me")
 
       assert {:ok, _conn} = result
@@ -33,7 +33,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordSolicitTest do
     end
 
     test "sends a new reset password token", %{conn: conn, user: user} do
-      {:ok, lv, _html} = live(conn, ~p"/users/reset/password")
+      {:ok, lv, _html} = live(conn, ~p"/users/reset-password")
 
       # submit the form
       {:ok, conn} =
@@ -50,7 +50,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordSolicitTest do
     end
 
     test "does not send reset password token if email is invalid", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, ~p"/users/reset/password")
+      {:ok, lv, _html} = live(conn, ~p"/users/reset-password")
 
       # submit the form and follow the redirect
       {:ok, conn} =

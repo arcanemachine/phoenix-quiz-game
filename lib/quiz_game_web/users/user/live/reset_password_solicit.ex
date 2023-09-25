@@ -41,7 +41,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordSolicit do
       if user = Users.get_user_by_email(email) do
         Users.deliver_password_reset_instructions(
           user,
-          &url(~p"/users/reset/password/#{&1}")
+          &url(~p"/users/reset-password/#{&1}")
         )
       end
 

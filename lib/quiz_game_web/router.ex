@@ -134,8 +134,8 @@ defmodule QuizGameWeb.Router do
       on_mount: [{QuizGameWeb.UserAuth, :redirect_if_user_is_authenticated}] do
       live "/register", Users.User.Live.Register, :new, as: :register
       live "/login", Users.Session.Live.Login, :new, as: :login
-      live "/reset/password", Users.User.Live.ResetPasswordSolicit, :new
-      live "/reset/password/:token", Users.User.Live.ResetPasswordConfirm, :edit
+      live "/reset-password", Users.User.Live.ResetPasswordSolicit, :new
+      live "/reset-password/:token", Users.User.Live.ResetPasswordConfirm, :edit
     end
   end
 

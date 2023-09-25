@@ -25,13 +25,13 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordConfirmTest do
 
   describe "ResetPasswordConfirm page" do
     test "renders expected markup", %{conn: conn, token: token} do
-      {:ok, _lv, html} = live(conn, ~p"/users/reset/password/#{token}")
+      {:ok, _lv, html} = live(conn, ~p"/users/reset-password/#{token}")
       assert html_has_title(html, "Set New Password")
     end
 
     test "returns expected redirect when password reset token is invalid", %{conn: conn} do
       {:error, {:redirect, redirect_resp_conn}} =
-        live(conn, ~p"/users/reset/password/invalid-token")
+        live(conn, ~p"/users/reset-password/invalid-token")
 
       # redirect contains expected values
       assert redirect_resp_conn == %{
@@ -45,7 +45,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordConfirmTest do
 
   describe "ResetPasswordConfirm form" do
     test "resets password once when form data is valid", %{conn: conn, token: token, user: user} do
-      {:ok, lv, _html} = live(conn, ~p"/users/reset/password/#{token}")
+      {:ok, lv, _html} = live(conn, ~p"/users/reset-password/#{token}")
 
       # submit the form and follow the redirect
       {:ok, conn} =
@@ -68,7 +68,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordConfirmTest do
 
       # password reset link is now expired (request now redirects to expected route)
       {:error, {:redirect, redirect_resp_conn}} =
-        live(conn, ~p"/users/reset/password/#{token}")
+        live(conn, ~p"/users/reset-password/#{token}")
 
       assert redirect_resp_conn == %{
                flash: %{
@@ -82,7 +82,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordConfirmTest do
       conn: conn,
       token: token
     } do
-      {:ok, lv, _html} = live(conn, ~p"/users/reset/password/#{token}")
+      {:ok, lv, _html} = live(conn, ~p"/users/reset-password/#{token}")
 
       # submit the form
       html_after_change =
@@ -105,7 +105,7 @@ defmodule QuizGameWeb.Users.User.Live.ResetPasswordConfirmTest do
     end
 
     test "does not reset password when form data is invalid", %{conn: conn, token: token} do
-      {:ok, lv, _html} = live(conn, ~p"/users/reset/password/#{token}")
+      {:ok, lv, _html} = live(conn, ~p"/users/reset-password/#{token}")
 
       html_after_submit =
         lv

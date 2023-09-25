@@ -108,7 +108,7 @@ defmodule QuizGameWeb.Users.User.Live.Register do
       </.action_links_item>
       <.spacer />
       <.action_links_item>
-        <.link href={~p"/users/reset/password"}>
+        <.link href={~p"/users/reset-password"}>
           Forgot your password?
         </.link>
       </.action_links_item>
