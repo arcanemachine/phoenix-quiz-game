@@ -8,7 +8,7 @@
     </p>
   </div>
   <div class="mt-4">
-    <a href={~p"/quizzes/update?next=#{~p"/quizzes/#{@quiz.id}/cards"}"}>
+    <a href={~p"/quizzes/#{@quiz.id}/update?#{%{next: ~p"/quizzes/#{@quiz.id}/cards"}}"}>
       Edit this quiz
     </a>
   </div>
