@@ -4,7 +4,6 @@ defmodule QuizGameWeb.Quizzes.Quiz.Controller do
   use QuizGameWeb, :controller
 
   import Ecto.Query
-  import QuizGameWeb.Support.Router, only: [route: 2, route: 3]
 
   alias QuizGame.{Quizzes, Repo}
   alias QuizGame.Quizzes.Quiz
@@ -73,7 +72,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Controller do
       {:ok, quiz} ->
         conn
         |> put_flash(:success, "Quiz created successfully")
-        |> redirect(to: route(:quizzes, :show, quiz_id: quiz.id))
+        |> redirect(to: ~p"/quizzes/#{quiz.id}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, :new,
@@ -109,7 +108,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Controller do
 
     case Quizzes.update_quiz(quiz, quiz_params) do
       {:ok, quiz} ->
-        success_url = Map.get(params, "next") || route(:quizzes, :show, quiz_id: quiz.id)
+        success_url = Map.get(params, "next") || ~p"/quizzes/#{quiz.id}"
 
         conn
         |> put_flash(:success, "Quiz updated successfully")
@@ -129,6 +128,6 @@ defmodule QuizGameWeb.Quizzes.Quiz.Controller do
 
     conn
     |> put_flash(:success, "Quiz deleted successfully")
-    |> redirect(to: route(:quizzes, :index))
+    |> redirect(to: ~p"/quizzes")
   end
 end

@@ -38,7 +38,7 @@
 
 <.action_links>
   <.action_links_item kind="back">
-    <.link href={route(:quizzes, :show, quiz_id: @quiz.id)}>
+    <.link href={~p"/quizzes/#{@quiz.id}"}>
       Return to quiz
     </.link>
   </.action_links_item>

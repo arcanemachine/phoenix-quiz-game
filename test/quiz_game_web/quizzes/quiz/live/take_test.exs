@@ -11,8 +11,6 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.TakeTest do
   alias QuizGame.Quizzes.{Quiz, Record}
   alias QuizGame.Repo
 
-  defp _get_quiz_take_url(quiz_id), do: route(:quizzes, :take, quiz_id: quiz_id)
-
   setup %{conn: conn} do
     user = user_fixture()
     conn = conn |> login_user(user)
@@ -60,7 +58,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.TakeTest do
 
   describe "QuizTakeLive" do
     test "renders expected template", %{quiz: quiz} do
-      resp_conn = build_conn() |> get(_get_quiz_take_url(quiz.id))
+      resp_conn = build_conn() |> get(~p"/quizzes/#{quiz.id}/take")
       assert resp_conn.status == 200
     end
 
@@ -69,7 +67,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.TakeTest do
       user: user,
       quiz: quiz
     } do
-      {:ok, _view, html} = conn |> live(_get_quiz_take_url(quiz.id))
+      {:ok, _view, html} = conn |> live(~p"/quizzes/#{quiz.id}/take")
 
       assert html_element_has_content(
                html,
@@ -79,7 +77,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.TakeTest do
     end
 
     test "requires unauthenticated user to enter a display name", %{conn: conn, quiz: quiz} do
-      {:ok, view, html} = conn |> logout_user() |> live(_get_quiz_take_url(quiz.id))
+      {:ok, view, html} = conn |> logout_user() |> live(~p"/quizzes/#{quiz.id}/take")
 
       # sanity check: template contains expected content
       assert html_element_has_content(
@@ -101,7 +99,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.TakeTest do
     end
 
     test "starts the quiz", %{conn: conn, quiz: quiz} do
-      {:ok, view, _html} = conn |> live(_get_quiz_take_url(quiz.id))
+      {:ok, view, _html} = conn |> live(~p"/quizzes/#{quiz.id}/take")
 
       # click the button that starts the quiz
       submitted_html = view |> form(~s|[phx-submit="start-quiz"]|) |> render_submit()
@@ -133,7 +131,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.TakeTest do
     end
 
     test "handles correctly-answered questions", %{conn: conn, quiz: quiz} do
-      {:ok, view, _html} = conn |> live(_get_quiz_take_url(quiz.id))
+      {:ok, view, _html} = conn |> live(~p"/quizzes/#{quiz.id}/take")
 
       # start the quiz
       assert view |> form(~s|[phx-submit="start-quiz"]|) |> render_submit()
@@ -160,7 +158,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.TakeTest do
     end
 
     test "handles incorrectly-answered questions", %{conn: conn, quiz: quiz} do
-      {:ok, view, _html} = conn |> live(_get_quiz_take_url(quiz.id))
+      {:ok, view, _html} = conn |> live(~p"/quizzes/#{quiz.id}/take")
 
       # start the quiz
       assert view |> form(~s|[phx-submit="start-quiz"]|) |> render_submit()
@@ -186,7 +184,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.TakeTest do
     end
 
     test "completes the quiz", %{conn: conn, user: user, quiz: quiz} do
-      {:ok, view, _html} = conn |> live(_get_quiz_take_url(quiz.id))
+      {:ok, view, _html} = conn |> live(~p"/quizzes/#{quiz.id}/take")
 
       # start the quiz
       assert view |> form(~s|[phx-submit="start-quiz"]|) |> render_submit()

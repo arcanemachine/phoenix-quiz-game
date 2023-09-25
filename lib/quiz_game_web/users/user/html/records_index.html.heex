@@ -4,7 +4,7 @@
 
 <ul class="list-index">
   <li :for={record <- @records}>
-    <a href={route(:quizzes, :show, quiz_id: record.quiz.id)}>
+    <a href={~p"/quizzes/#{record.quiz.id}"}>
       <%= record.quiz.name %>
     </a>
     <ul class="list">

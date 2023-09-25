@@ -4,7 +4,7 @@
 
 <ul class="list-index">
   <li :for={quiz <- @quizzes}>
-    <a href={route(:quizzes, :show, quiz_id: quiz.id)}>
+    <a href={~p"/quizzes/#{quiz.id}"}>
       <%= quiz.name %>
     </a>
   </li>
@@ -17,12 +17,12 @@
     </.link>
   </.action_links_item>
   <.action_links_item>
-    <.link href={route(:quizzes, :index)}>
+    <.link href={~p"/quizzes"}>
       View all quizzes
     </.link>
   </.action_links_item>
   <.action_links_item kind="create">
-    <.link href={route(:quizzes, :new)}>
+    <.link href={~p"/quizzes/create"}>
       Create new quiz
     </.link>
   </.action_links_item>

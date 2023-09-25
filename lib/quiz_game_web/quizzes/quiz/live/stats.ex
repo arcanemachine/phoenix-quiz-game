@@ -124,7 +124,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.Stats do
 
     <.action_links class="mt-12">
       <.action_links_item kind="back">
-        <.link href={route(:quizzes, :show, quiz_id: @quiz.id)}>
+        <.link href={~p"/quizzes/#{@quiz.id}"}>
           Return to quiz
         </.link>
       </.action_links_item>

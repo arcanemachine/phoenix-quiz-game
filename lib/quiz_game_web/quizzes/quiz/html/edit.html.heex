@@ -4,12 +4,12 @@
   Fill out the form below to edit this quiz.
 </.crud_intro_text>
 
-<.quiz_form changeset={@changeset} action={route(:quizzes, :update, quiz_id: @quiz.id)} />
+<.quiz_form changeset={@changeset} action={~p"/quizzes/#{@quiz.id}/update"} />
 
 <.action_links>
   <.action_links_item kind="delete">
     <.link
-      href={route(:quizzes, :delete, quiz_id: @quiz.id)}
+      href={~p"/quizzes/#{@quiz.id}"}
       class="!text-error"
       method="delete"
       data-confirm="Are you sure you want to delete this quiz?"
@@ -19,12 +19,12 @@
   </.action_links_item>
   <.spacer />
   <.action_links_item kind="back">
-    <.link href={route(:quizzes, :show, quiz_id: @quiz.id)}>
+    <.link href={~p"/quizzes/#{@quiz.id}"}>
       Return to quiz info
     </.link>
   </.action_links_item>
   <.action_links_item kind="back-2">
-    <.link href={route(:quizzes, :index)}>
+    <.link href={~p"/quizzes"}>
       Return to quiz list
     </.link>
   </.action_links_item>

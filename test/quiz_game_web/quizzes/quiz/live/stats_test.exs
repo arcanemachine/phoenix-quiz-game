@@ -14,9 +14,6 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.StatsTest do
 
   # @presence_topic "quiz_presence"
 
-  defp _get_quiz_stats_url(quiz_id), do: route(:quizzes, :stats, quiz_id: quiz_id)
-  defp _get_quiz_take_url(quiz_id), do: route(:quizzes, :take, quiz_id: quiz_id)
-
   setup %{conn: conn} do
     # create users
     user = user_fixture()
@@ -50,25 +47,25 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.StatsTest do
 
   describe "QuizTakeLive" do
     test "renders expected template for permissioned user", %{conn: conn, quiz: quiz} do
-      resp_conn = conn |> get(_get_quiz_stats_url(quiz.id))
+      resp_conn = conn |> get(~p"/quizzes/#{quiz.id}/stats")
       assert resp_conn.status == 200
     end
 
     test "redirects unauthenticated user to login route", %{quiz: quiz} do
       assert build_conn()
-             |> redirects_unauthenticated_user_to_login_route(_get_quiz_stats_url(quiz.id))
+             |> redirects_unauthenticated_user_to_login_route(~p"/quizzes/#{quiz.id}/stats")
     end
 
     test "forbids unpermissioned user", %{other_user: other_user, quiz: quiz} do
       assert build_conn()
              |> login_user(other_user)
-             |> get(_get_quiz_stats_url(quiz.id))
+             |> get(~p"/quizzes/#{quiz.id}/stats")
              |> Map.get(:status) == 403
     end
 
     ## presence
     test "renders expected content when no users are present", %{conn: conn, quiz: quiz} do
-      {:ok, _view, html} = conn |> live(_get_quiz_stats_url(quiz.id))
+      {:ok, _view, html} = conn |> live(~p"/quizzes/#{quiz.id}/stats")
 
       assert html =~ "No users are preparing to take this quiz."
     end
@@ -78,7 +75,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.StatsTest do
       conn: conn,
       quiz: quiz
     } do
-      {:ok, quiz_stats_view, html} = conn |> live(_get_quiz_stats_url(quiz.id))
+      {:ok, quiz_stats_view, html} = conn |> live(~p"/quizzes/#{quiz.id}/stats")
 
       # get_presence_data = fn -> Presence.list_data_for(@presence_topic, quiz.id) end
       #
@@ -89,7 +86,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.StatsTest do
       assert html =~ "No users are preparing to take this quiz."
 
       ## take: unauthenticated user joins the quiz lobby
-      {:ok, quiz_take_view, _html} = build_conn() |> live(_get_quiz_take_url(quiz.id))
+      {:ok, quiz_take_view, _html} = build_conn() |> live(~p"/quizzes/#{quiz.id}/take")
 
       # # presence data now contains an entry for the user
       # assert length(get_presence_data.()) == 1
@@ -204,7 +201,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.StatsTest do
       conn: conn,
       quiz: quiz
     } do
-      {:ok, quiz_stats_view, html} = conn |> live(_get_quiz_stats_url(quiz.id))
+      {:ok, quiz_stats_view, html} = conn |> live(~p"/quizzes/#{quiz.id}/stats")
 
       # create other quiz and card so the user can join the new quiz lobby
       other_quiz = quiz_fixture()
@@ -214,7 +211,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.StatsTest do
       assert html =~ "No users are preparing to take this quiz."
 
       ## take: unauthenticated user joins the other quiz lobby
-      {:ok, _quiz_take_view, _html} = build_conn() |> live(_get_quiz_take_url(other_quiz.id))
+      {:ok, _quiz_take_view, _html} = build_conn() |> live(~p"/quizzes/#{other_quiz.id}/take")
 
       # stats: template still contains initial content
       Process.sleep(5)

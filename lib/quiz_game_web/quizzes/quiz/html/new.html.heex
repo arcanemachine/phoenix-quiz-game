@@ -4,11 +4,11 @@
   Fill out the form below to create a new quiz.
 </.crud_intro_text>
 
-<.quiz_form changeset={@changeset} action={route(:quizzes, :index)} />
+<.quiz_form changeset={@changeset} action={~p"/quizzes"} />
 
 <.action_links>
   <.action_links_item kind="back">
-    <.link href={route(:quizzes, :index)}>
+    <.link href={~p"/quizzes"}>
       Return to quiz list
     </.link>
   </.action_links_item>

@@ -8,7 +8,7 @@
     </p>
   </div>
   <div class="mt-4">
-    <a href={route(:quizzes, :edit, quiz_id: @quiz.id) <> query_string(next: route(:quizzes_card, :index, quiz_id: @quiz.id))}>
+    <a href={~p"/quizzes/update?next=#{~p"/quizzes/#{@quiz.id}/cards"}"}>
       Edit this quiz
     </a>
   </div>
@@ -43,7 +43,7 @@
     </.link>
   </.action_links_item>
   <.action_links_item kind="back">
-    <.link href={route(:quizzes, :show, quiz_id: @quiz.id)}>
+    <.link href={~p"/quizzes/#{@quiz.id}"}>
       Return to quiz
     </.link>
   </.action_links_item>

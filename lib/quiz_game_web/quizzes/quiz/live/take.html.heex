@@ -1,8 +1,8 @@
 <.back
   navigate={
     case @live_action do
-      :take -> route(:quizzes, :show, quiz_id: @quiz.id)
-      :take_random -> route(:quizzes, :new_random)
+      :take -> ~p"/quizzes/#{@quiz.id}"
+      :take_random -> ~p"/quizzes/random/create"
     end
   }
   class="-mt-6 mb-4"

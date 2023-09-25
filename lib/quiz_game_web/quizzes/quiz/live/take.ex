@@ -32,14 +32,14 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.Take do
         quiz == :invalid_generated_quiz ->
           socket
           |> put_flash(:warning, "Invalid quiz options detected. Please select new quiz options.")
-          |> redirect(to: route(:quizzes, :new_random))
+          |> redirect(to: ~p"/quizzes/random/create")
 
         # quiz does not have any cards or random math questions.
         Enum.empty?(quiz.cards) && !quiz.math_random_question_count ->
           # redirect and notify user
           socket
           |> put_flash(:error, "This quiz cannot be taken because it has no cards.")
-          |> redirect(to: route(:quizzes, :show, quiz_id: quiz.id))
+          |> redirect(to: ~p"/quizzes/#{quiz.id}")
 
         true ->
           socket
@@ -177,7 +177,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.Take do
          # redirect to user display name update form, and return to this page when finished
          to:
            route(:users, :update_display_name) <>
-             query_string(next: route(:quizzes, :take, quiz_id: socket.assigns.quiz.id))
+             query_string(next: ~p"/quizzes/#{socket.assigns.quiz.id}/take")
        )}
     else
       socket = socket |> assign(display_name: nil, quiz_state: :enter_display_name)

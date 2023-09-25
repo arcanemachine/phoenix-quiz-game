@@ -6,7 +6,7 @@
   <li>
     <div class="text-xl font-bold">
       Language
-      (<a href={route(:quizzes, :index_subject, subject: "language")}>View all</a>)
+      (<a href={~p"/quizzes/subjects/language"}>View all</a>)
     </div>
     <ul class="list">
       <li
@@ -20,7 +20,7 @@
           Enum.filter(@quizzes, fn quiz -> quiz.subject == :language end)
           |> Enum.slice(0..4)
       }>
-        <a href={route(:quizzes, :show, quiz_id: quiz.id)}>
+        <a href={~p"/quizzes/#{quiz.id}"}>
           <%= quiz.name %>
         </a>
       </li>
@@ -30,7 +30,7 @@
   <li class="mt-8">
     <div class="text-xl font-bold">
       Math
-      (<a href={route(:quizzes, :index_subject, subject: "math")}>View all</a>)
+      (<a href={~p"/quizzes/subjects/math"}>View all</a>)
     </div>
     <ul class="list">
       <li
@@ -44,7 +44,7 @@
           Enum.filter(@quizzes, fn quiz -> quiz.subject == :math end)
           |> Enum.slice(0..4)
       }>
-        <a href={route(:quizzes, :show, quiz_id: quiz.id)}>
+        <a href={~p"/quizzes/#{quiz.id}"}>
           <%= quiz.name %>
         </a>
       </li>
@@ -54,7 +54,7 @@
   <li class="mt-8">
     <div class="text-xl font-bold">
       Science
-      (<a href={route(:quizzes, :index_subject, subject: "science")}>View all</a>)
+      (<a href={~p"/quizzes/subjects/science"}>View all</a>)
     </div>
     <ul class="list">
       <li
@@ -68,7 +68,7 @@
           Enum.filter(@quizzes, fn quiz -> quiz.subject == :science end)
           |> Enum.slice(0..4)
       }>
-        <a href={route(:quizzes, :show, quiz_id: quiz.id)}>
+        <a href={~p"/quizzes/#{quiz.id}"}>
           <%= quiz.name %>
         </a>
       </li>
@@ -78,7 +78,7 @@
   <li class="mt-8">
     <div class="text-xl font-bold">
       Social Studies
-      (<a href={route(:quizzes, :index_subject, subject: "social-studies")}>View all</a>)
+      (<a href={~p"/quizzes/subjects/social-studies"}>View all</a>)
     </div>
     <ul class="list">
       <li
@@ -92,7 +92,7 @@
           Enum.filter(@quizzes, fn quiz -> quiz.subject == :social_studies end)
           |> Enum.slice(0..4)
       }>
-        <a href={route(:quizzes, :show, quiz_id: quiz.id)}>
+        <a href={~p"/quizzes/#{quiz.id}"}>
           <%= quiz.name %>
         </a>
       </li>
@@ -102,7 +102,7 @@
   <li class="mt-8">
     <div class="text-xl font-bold">
       Other
-      (<a href={route(:quizzes, :index_subject, subject: "other")}>View all</a>)
+      (<a href={~p"/quizzes/subjects/other"}>View all</a>)
     </div>
     <ul class="list">
       <li
@@ -116,7 +116,7 @@
           Enum.filter(@quizzes, fn quiz -> quiz.subject == :other end)
           |> Enum.slice(0..4)
       }>
-        <a href={route(:quizzes, :show, quiz_id: quiz.id)}>
+        <a href={~p"/quizzes/#{quiz.id}"}>
           <%= quiz.name %>
         </a>
       </li>
@@ -128,7 +128,7 @@
 
 <.action_links>
   <.action_links_item kind="create">
-    <.link href={route(:quizzes, :new)}>
+    <.link href={~p"/quizzes/create"}>
       Create new quiz
     </.link>
   </.action_links_item>
@@ -138,7 +138,7 @@
     </.link>
   </.action_links_item>
   <.action_links_item>
-    <.link href={route(:quizzes, :new_random)}>
+    <.link href={~p"/quizzes/random/create"}>
       Take a random math quiz
     </.link>
   </.action_links_item>

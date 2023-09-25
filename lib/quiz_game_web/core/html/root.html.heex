@@ -16,12 +16,12 @@
         </p>
         <div class="text-xl">
           <div>
-            <.link href={route(:quizzes, :index)} class="text-xl">
+            <.link href={~p"/quizzes"} class="text-xl">
               View quizzes
             </.link>
           </div>
           <div class="mt-4">
-            <.link href={route(:quizzes, :new_random)} class="text-xl">
+            <.link href={~p"/quizzes/random/create"} class="text-xl">
               Take a random math quiz
             </.link>
           </div>

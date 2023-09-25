@@ -49,7 +49,7 @@
 
 <.action_links>
   <.action_links_item>
-    <.link href={route(:quizzes, :take, quiz_id: @quiz.id)}>
+    <.link href={~p"/quizzes/#{@quiz.id}/take"}>
       Take this quiz
     </.link>
   </.action_links_item>
@@ -60,12 +60,12 @@
         Manage this quiz:
       </:title>
       <.action_links_item>
-        <.link href={route(:quizzes, :edit, quiz_id: @quiz.id)}>
+        <.link href={~p"/quizzes/#{@quiz.id}/update"}>
           Edit this quiz
         </.link>
       </.action_links_item>
       <.action_links_item>
-        <.link href={route(:quizzes, :stats, quiz_id: @quiz.id)}>
+        <.link href={~p"/quizzes/#{@quiz.id}/stats"}>
           View live quiz stats
         </.link>
       </.action_links_item>
@@ -84,7 +84,7 @@
 
   <.spacer />
   <.action_links_item kind="back">
-    <.link href={route(:quizzes, :index)}>
+    <.link href={~p"/quizzes"}>
       Return to quiz list
     </.link>
   </.action_links_item>
