@@ -199,10 +199,28 @@
           </li>
 
           <%!-- legal stuff --%>
-          <li class="mt-6 font-bold">
+          <li class="mt-8 mx-auto font-bold">
             <small>
-              &copy; Copyright <%= DateTime.utc_now().year %>. All rights reserved.
+              &copy; Copyright <%= DateTime.utc_now().year %>.
             </small>
+            <small>
+              Licensed under <a
+                class="!text-slate-300 underline"
+                href="https://github.com/arcanemachine/phoenix-quiz-game/blob/master/LICENSE"
+              >MIT-0</a>.
+            </small>
+            <small>
+              Made with <a
+                class="!text-slate-300 underline"
+                href="https://www.phoenixframework.org/"
+              >Phoenix + LiveView</a>.
+            </small>
+          </li>
+          <li class="mt-4 mx-auto font-bold">
+            Check out this project on <a
+              class="!text-slate-300 underline"
+              href="https://github.com/arcanemachine/phoenix-quiz-game"
+            >GitHub</a>!
           </li>
         </ul>
       </footer>
