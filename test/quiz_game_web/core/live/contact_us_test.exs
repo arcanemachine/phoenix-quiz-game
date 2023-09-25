@@ -7,20 +7,15 @@ defmodule QuizGameWeb.Core.Live.ContactUsTest do
   import Swoosh.TestAssertions
 
   import QuizGame.TestSupport.Assertions
-  import QuizGameWeb.Support.Router
-
-  @contact_us_url route(:core, :contact_us)
 
   describe "ContactUsLive page" do
     test "renders expected markup", %{conn: conn} do
-      {:ok, _lv, html} = live(conn, @contact_us_url)
+      {:ok, _lv, html} = live(conn, ~p"/contact-us")
       assert html_has_title(html, "Contact Us")
     end
-  end
 
-  describe "ContactUsLive form" do
     test "sends contact email when form data is valid", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, @contact_us_url)
+      {:ok, lv, _html} = live(conn, ~p"/contact-us")
 
       # build form data
       form_data = %{
