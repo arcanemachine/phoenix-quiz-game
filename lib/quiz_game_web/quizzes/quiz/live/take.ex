@@ -381,8 +381,8 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.Take do
 
   # quiz
   defp _get_quiz_length(quiz) do
-    # add the number of cards to the number of random math questions
-    length(quiz.cards) + (quiz.math_random_question_count || 0)
+    # return either the number of random math questions, or the number or custom cards
+    quiz.math_random_question_count || length(quiz.cards)
   end
 
   # support
