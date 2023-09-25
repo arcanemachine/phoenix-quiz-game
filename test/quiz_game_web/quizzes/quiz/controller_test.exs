@@ -57,10 +57,10 @@ defmodule QuizGameWeb.Quizzes.Quiz.ControllerTest do
   describe "quiz :new" do
     setup [:register_and_login_user]
 
-    test_redirects_unauthenticated_user_to_login_route(~p"/quizzes/new")
+    test_redirects_unauthenticated_user_to_login_route(~p"/quizzes/create")
 
     test "renders expected template", %{conn: conn} do
-      resp_conn = get(conn, ~p"/quizzes/new")
+      resp_conn = get(conn, ~p"/quizzes/create")
       assert html_has_title(resp_conn.resp_body, "Create Quiz")
     end
   end
@@ -68,10 +68,10 @@ defmodule QuizGameWeb.Quizzes.Quiz.ControllerTest do
   describe "quiz :create" do
     setup [:register_and_login_user]
 
-    test_redirects_unauthenticated_user_to_login_route(~p"/quizzes/new", "POST")
+    test_redirects_unauthenticated_user_to_login_route(~p"/quizzes/create", "POST")
 
     test "creates expected object", %{conn: conn} do
-      resp_conn = post(conn, ~p"/quizzes/new", quiz: @valid_attrs)
+      resp_conn = post(conn, ~p"/quizzes/create", quiz: @valid_attrs)
 
       # redirects to quiz :show
       assert %{quiz_id: quiz_id} = redirected_params(resp_conn)
@@ -86,7 +86,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.ControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn} do
       ## name - blank
-      resp_conn_name_blank = post(conn, ~p"/quizzes/new", quiz: %{@valid_attrs | name: ""})
+      resp_conn_name_blank = post(conn, ~p"/quizzes/create", quiz: %{@valid_attrs | name: ""})
 
       # form has expected error message(s)
       assert html_form_has_errors(resp_conn_name_blank.resp_body)
@@ -101,7 +101,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.ControllerTest do
       too_long_name = String.duplicate("x", @name_length_max + 1)
 
       resp_conn_name_too_long =
-        post(conn, ~p"/quizzes/new", quiz: %{@valid_attrs | name: too_long_name})
+        post(conn, ~p"/quizzes/create", quiz: %{@valid_attrs | name: too_long_name})
 
       # form has expected error message(s)
       assert html_form_has_errors(resp_conn_name_too_long.resp_body)
@@ -114,7 +114,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.ControllerTest do
 
       ## subject - blank
       resp_conn_subject_blank =
-        post(conn, ~p"/quizzes/new", quiz: %{@valid_attrs | subject: ""})
+        post(conn, ~p"/quizzes/create", quiz: %{@valid_attrs | subject: ""})
 
       # form has expected error message(s)
       assert html_form_has_errors(resp_conn_subject_blank.resp_body)
@@ -127,7 +127,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.ControllerTest do
 
       ## subject - invalid choice
       resp_conn_subject_choice_invalid =
-        post(conn, ~p"/quizzes/new", quiz: %{@valid_attrs | subject: "invalid-subject"})
+        post(conn, ~p"/quizzes/create", quiz: %{@valid_attrs | subject: "invalid-subject"})
 
       # form has expected error message(s)
       assert html_form_has_errors(resp_conn_subject_choice_invalid.resp_body)

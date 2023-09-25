@@ -41,7 +41,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.Take do
       quiz == :invalid_generated_quiz ->
         socket
         |> put_flash(:warning, "Invalid quiz options detected. Please select new quiz options.")
-        |> redirect(to: ~p"/quizzes/random/new")
+        |> redirect(to: ~p"/quizzes/random/create")
 
       # invalid - quiz does not have any cards or random math questions
       Enum.empty?(quiz.cards) && !quiz.math_random_question_count ->
