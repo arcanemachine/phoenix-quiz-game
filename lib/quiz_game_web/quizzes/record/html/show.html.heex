@@ -63,7 +63,7 @@
   <%= if @current_user && @current_user.id == @quiz.user_id do %>
     <.spacer />
     <.action_links_item>
-      <.link href={route(:quizzes_record, :index, quiz_id: @quiz.id)}>
+      <.link href={~p"/quizzes/#{@quiz.id}/records"}>
         View records for this quiz
       </.link>
     </.action_links_item>

@@ -6,14 +6,9 @@ defmodule QuizGameWeb.Quizzes.Record.ControllerTest do
   import Ecto.Query
   import QuizGame.TestSupport.{Assertions, GenericTests}
   import QuizGame.TestSupport.Fixtures.{Quizzes, Users}
-  import QuizGameWeb.Support.Router
 
   alias QuizGame.Quizzes.Quiz
   alias QuizGame.Repo
-
-  defp _get_record_index_url(quiz_id) do
-    route(:quizzes_record, :index, quiz_id: quiz_id)
-  end
 
   setup %{conn: conn} do
     # create users
@@ -36,7 +31,7 @@ defmodule QuizGameWeb.Quizzes.Record.ControllerTest do
       other_record = record_fixture()
 
       html =
-        conn |> login_user(user) |> get(_get_record_index_url(quiz.id)) |> Map.get(:resp_body)
+        conn |> login_user(user) |> get(~p"/quizzes/#{quiz.id}/records") |> Map.get(:resp_body)
 
       assert html_has_title(html, "Quiz Records")
       assert html_has_content(html, quiz.name)
@@ -51,13 +46,13 @@ defmodule QuizGameWeb.Quizzes.Record.ControllerTest do
 
     test "redirects unauthenticated user to login route", %{quiz: quiz} do
       assert build_conn()
-             |> redirects_unauthenticated_user_to_login_route(_get_record_index_url(quiz.id))
+             |> redirects_unauthenticated_user_to_login_route(~p"/quizzes/#{quiz.id}/records")
     end
 
     test "forbids unpermissioned user", %{other_user: other_user, quiz: quiz} do
       assert build_conn()
              |> login_user(other_user)
-             |> get(_get_record_index_url(quiz.id))
+             |> get(~p"/quizzes/#{quiz.id}/records")
              |> Map.get(:status) == 403
     end
   end

@@ -75,7 +75,7 @@
         </.link>
       </.action_links_item>
       <.action_links_item>
-        <.link href={route(:quizzes_record, :index, quiz_id: @quiz.id)}>
+        <.link href={~p"/quizzes/#{@quiz.id}/records"}>
           Manage records for this quiz
         </.link>
       </.action_links_item>
