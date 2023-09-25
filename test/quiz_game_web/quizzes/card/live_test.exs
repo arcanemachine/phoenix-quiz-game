@@ -29,17 +29,6 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
     # correct_answer: nil # do not pass this value if :format is null
   }
 
-  defp _get_card_index_url(quiz_id), do: route(:quizzes_card, :index, quiz_id: quiz_id)
-
-  defp _get_card_new_url(quiz_id), do: route(:quizzes_card, :new, quiz_id: quiz_id)
-
-  defp _get_card_show_url(quiz_id, card_id),
-    do: route(:quizzes_card, :show, quiz_id: quiz_id, card_id: card_id)
-
-  defp _get_card_edit_url(quiz_id, card_id) do
-    route(:quizzes_card, :edit, quiz_id: quiz_id, card_id: card_id)
-  end
-
   setup do
     user = user_fixture()
     quiz = quiz_fixture(user_id: user.id)
@@ -48,12 +37,12 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
     # create other user for checking permissions
     other_user = user_fixture()
 
-    %{user: user, other_user: other_user, card: card, quiz: quiz}
+    %{user: user, other_user: other_user, quiz: quiz, card: card}
   end
 
   describe "CRUD" do
     test "lists all cards", %{conn: conn, card: card, user: user} do
-      {:ok, _view, html} = conn |> login_user(user) |> live(_get_card_index_url(card.quiz_id))
+      {:ok, _view, html} = conn |> login_user(user) |> live(~p"/quizzes/#{card.quiz_id}/cards")
 
       # template contains expected content
       assert html =~ "Question List"
@@ -61,7 +50,7 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
     end
 
     test "saves new card", %{conn: conn, user: user, quiz: quiz} do
-      {:ok, view, _html} = conn |> login_user(user) |> live(_get_card_index_url(quiz.id))
+      {:ok, view, _html} = conn |> login_user(user) |> live(~p"/quizzes/#{quiz.id}/cards")
 
       # click event on expected element renders expected content
       assert view
@@ -69,7 +58,7 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
              |> render_click() =~ "New Question"
 
       # redirects to expected route via live patch
-      assert_patch(view, _get_card_new_url(quiz.id))
+      assert_patch(view, ~p"/quizzes/#{quiz.id}/cards/create")
 
       # attempt to submit form with invalid data
       assert view
@@ -86,7 +75,7 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
       assert view |> form("#card-form", card: @create_attrs) |> render_submit()
 
       # redirects to expected route via live patch
-      assert_patch(view, _get_card_index_url(quiz.id))
+      assert_patch(view, ~p"/quizzes/#{quiz.id}/cards")
 
       # template contains expected content
       html = render(view)
@@ -96,7 +85,7 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
 
     test "displays expected card", %{conn: conn, user: user, card: card} do
       {:ok, _view, html} =
-        conn |> login_user(user) |> live(_get_card_show_url(card.quiz_id, card.id))
+        conn |> login_user(user) |> live(~p"/quizzes/#{card.quiz_id}/cards/#{card.id}")
 
       # template contains expected content
       assert html =~ "Question Info"
@@ -107,7 +96,7 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
       {:ok, view, _html} =
         conn
         |> login_user(user)
-        |> live(_get_card_show_url(card.quiz_id, card.id))
+        |> live(~p"/quizzes/#{card.quiz_id}/cards/#{card.id}")
 
       # click event on expected element renders expected content
       assert view
@@ -115,7 +104,7 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
              |> render_click() =~ "Edit Question"
 
       # redirects to expected route via live patch
-      assert_patch(view, _get_card_edit_url(card.quiz_id, card.id))
+      assert_patch(view, ~p"/quizzes/#{card.quiz_id}/cards/#{card.id}/update")
 
       # attempt to submit form with invalid data
       assert view
@@ -131,7 +120,7 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
       assert view |> form("#card-form", card: @update_attrs) |> render_submit()
 
       # redirects to expected route via live patch
-      assert_patch(view, _get_card_show_url(card.quiz_id, card.id))
+      assert_patch(view, ~p"/quizzes/#{card.quiz_id}/cards/#{card.id}")
 
       # template contains expected content
       html = render(view)
@@ -140,11 +129,10 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
     end
 
     test "deletes expected card", %{conn: conn, user: user, card: card} do
-      success_url =
-        _get_card_index_url(card.quiz_id) <> query_string(%{"delete-question-success" => "1"})
+      success_url = ~p"/quizzes/#{card.quiz_id}/cards?delete-question-success=1"
 
       {:ok, view, _html} =
-        conn |> login_user(user) |> live(_get_card_show_url(card.quiz_id, card.id))
+        conn |> login_user(user) |> live(~p"/quizzes/#{card.quiz_id}/cards/#{card.id}")
 
       # delete expected object
       view |> element("[data-test-id='delete-card']") |> render_click()
@@ -158,7 +146,7 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
 
       # template does not contain expected content after redirect
       {:ok, _view, html_after_redirect} =
-        conn |> login_user(user) |> live(_get_card_index_url(card.quiz_id))
+        conn |> login_user(user) |> live(~p"/quizzes/#{card.quiz_id}/cards")
 
       refute html_after_redirect =~ card.question
     end
@@ -166,26 +154,29 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
 
   describe ":index" do
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
-      assert conn |> redirects_unauthenticated_user_to_login_route(_get_card_index_url(quiz.id))
+      assert conn |> redirects_unauthenticated_user_to_login_route(~p"/quizzes/#{quiz.id}/cards")
     end
 
     test "forbids unpermissioned user", %{conn: conn, other_user: other_user, quiz: quiz} do
       assert conn
              |> login_user(other_user)
-             |> get(_get_card_new_url(quiz.id))
+             |> get(~p"/quizzes/#{quiz.id}/cards/create")
              |> Map.get(:status) == 403
     end
   end
 
   describe ":new" do
     test "redirects unauthenticated user to login route", %{conn: conn, quiz: quiz} do
-      assert conn |> redirects_unauthenticated_user_to_login_route(_get_card_new_url(quiz.id))
+      assert conn
+             |> redirects_unauthenticated_user_to_login_route(
+               ~p"/quizzes/#{quiz.id}/cards/create"
+             )
     end
 
     test "forbids unpermissioned user", %{conn: conn, other_user: other_user, quiz: quiz} do
       assert conn
              |> login_user(other_user)
-             |> get(_get_card_new_url(quiz.id))
+             |> get(~p"/quizzes/#{quiz.id}/cards/create")
              |> Map.get(:status) == 403
     end
   end
@@ -194,14 +185,14 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
     test "redirects unauthenticated user to login route", %{conn: conn, card: card} do
       assert conn
              |> redirects_unauthenticated_user_to_login_route(
-               _get_card_show_url(card.quiz_id, card.id)
+               ~p"/quizzes/#{card.quiz_id}/cards/#{card.id}"
              )
     end
 
     test "forbids unpermissioned user", %{conn: conn, other_user: other_user, card: card} do
       assert conn
              |> login_user(other_user)
-             |> get(_get_card_show_url(card.quiz_id, card.id))
+             |> get(~p"/quizzes/#{card.quiz_id}/cards/#{card.id}")
              |> Map.get(:status) == 403
     end
   end
@@ -210,14 +201,14 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
     test "redirects unauthenticated user to login route", %{conn: conn, card: card} do
       assert conn
              |> redirects_unauthenticated_user_to_login_route(
-               _get_card_show_url(card.quiz_id, card.id)
+               ~p"/quizzes/#{card.quiz_id}/cards/#{card.id}"
              )
     end
 
     test "forbids unpermissioned user", %{conn: conn, other_user: other_user, card: card} do
       assert conn
              |> login_user(other_user)
-             |> get(_get_card_show_url(card.quiz_id, card.id))
+             |> get(~p"/quizzes/#{card.quiz_id}/cards/#{card.id}")
              |> Map.get(:status) == 403
     end
   end
@@ -228,7 +219,7 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
       user: user,
       quiz: quiz
     } do
-      {:ok, _view, html} = conn |> login_user(user) |> live(_get_card_new_url(quiz.id))
+      {:ok, _view, html} = conn |> login_user(user) |> live(~p"/quizzes/#{quiz.id}/cards/create")
 
       # form should display expected result by default, so we can make our assertions immediately
       # after the HTML has rendered
@@ -246,7 +237,7 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
       user: user,
       quiz: quiz
     } do
-      {:ok, view, html} = conn |> login_user(user) |> live(_get_card_new_url(quiz.id))
+      {:ok, view, html} = conn |> login_user(user) |> live(~p"/quizzes/#{quiz.id}/cards/create")
 
       # sanity check: expected field(s) are not visible
       refute html_has_element(html, ~s|input[name="card[correct_answer]"]|)
@@ -274,7 +265,7 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
       user: user,
       quiz: quiz
     } do
-      {:ok, view, html} = conn |> login_user(user) |> live(_get_card_new_url(quiz.id))
+      {:ok, view, html} = conn |> login_user(user) |> live(~p"/quizzes/#{quiz.id}/cards/create")
 
       # sanity check: expected field(s) are not visible
       refute html_has_element(html, ~s|input[name="card[choice_1]"]|)
@@ -300,7 +291,7 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
       user: user,
       quiz: quiz
     } do
-      {:ok, view, html} = conn |> login_user(user) |> live(_get_card_new_url(quiz.id))
+      {:ok, view, html} = conn |> login_user(user) |> live(~p"/quizzes/#{quiz.id}/cards/create")
 
       # sanity check: expected field(s) are not visible
       refute html_has_element(html, ~s|select[name="card[correct_answer]"]|)
@@ -318,7 +309,7 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
       user: user,
       quiz: quiz
     } do
-      {:ok, view, html} = conn |> login_user(user) |> live(_get_card_new_url(quiz.id))
+      {:ok, view, html} = conn |> login_user(user) |> live(~p"/quizzes/#{quiz.id}/cards/create")
 
       # sanity check: expected field(s) are not visible
       refute html_has_element(html, ~s|select[name="card[correct_answer]"]|)
@@ -336,7 +327,7 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
       user: user,
       quiz: quiz
     } do
-      {:ok, view, html} = conn |> login_user(user) |> live(_get_card_new_url(quiz.id))
+      {:ok, view, html} = conn |> login_user(user) |> live(~p"/quizzes/#{quiz.id}/cards/create")
 
       # sanity check: expected field(s) are not visible
       refute html_has_element(html, ~s|select[name="card[correct_answer]"]|)
@@ -354,7 +345,7 @@ defmodule QuizGameWeb.Quizzes.Card.LiveTest do
       user: user,
       quiz: quiz
     } do
-      {:ok, view, html} = conn |> login_user(user) |> live(_get_card_new_url(quiz.id))
+      {:ok, view, html} = conn |> login_user(user) |> live(~p"/quizzes/#{quiz.id}/cards/create")
 
       # sanity check: expected field(s) are not visible
       refute html_has_element(html, ~s|select[name="card[correct_answer]"]|)

@@ -35,7 +35,7 @@
 
 <.action_links>
   <.action_links_item kind="edit">
-    <.link patch={route(:quizzes_card, :edit, quiz_id: @card.quiz.id, card_id: @card.id)}>
+    <.link patch={~p"/quizzes/#{@card.quiz_id}/cards/#{@card.id}/update"}>
       Edit this question
     </.link>
   </.action_links_item>
@@ -51,7 +51,7 @@
   </.action_links_item>
   <.spacer />
   <.action_links_item kind="back">
-    <.link patch={route(:quizzes_card, :index, quiz_id: @card.quiz.id)}>
+    <.link patch={~p"/quizzes/#{@card.quiz.id}/cards"}>
       Return to question list
     </.link>
   </.action_links_item>
@@ -66,7 +66,7 @@
   :if={@live_action == :edit}
   id="card-modal"
   show
-  on_cancel={JS.patch(route(:quizzes_card, :show, quiz_id: @card.quiz.id, card_id: @card.id))}
+  on_cancel={JS.patch(~p"/quizzes/#{@card.quiz_id}/cards/#{@card.id}")}
 >
   <.live_component
     module={QuizGameWeb.Quizzes.Card.Live.FormComponent}
@@ -74,6 +74,6 @@
     title="Edit Question"
     action={@live_action}
     card={@card}
-    patch={route(:quizzes_card, :show, quiz_id: @card.quiz.id, card_id: @card.id)}
+    patch={~p"/quizzes/#{@card.quiz.id}/cards/#{@card.id}"}
   />
 </.modal>

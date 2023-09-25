@@ -68,19 +68,12 @@ defmodule QuizGameWeb.Support.Router do
   # quizzes - card
   def route(:quizzes_card, :index, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/cards"
   def route(:quizzes_card, :new, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/cards/create"
-  def route(:quizzes_card, :create, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/cards"
 
   def route(:quizzes_card, :show, quiz_id: quiz_id, card_id: card_id),
     do: ~p"/quizzes/#{quiz_id}/cards/#{card_id}"
 
   def route(:quizzes_card, :edit, quiz_id: quiz_id, card_id: card_id),
     do: ~p"/quizzes/#{quiz_id}/cards/#{card_id}/update"
-
-  def route(:quizzes_card, :update, quiz_id: quiz_id, card_id: card_id),
-    do: ~p"/quizzes/#{quiz_id}/cards/#{card_id}"
-
-  def route(:quizzes_card, :delete, quiz_id: quiz_id, card_id: card_id),
-    do: ~p"/quizzes/#{quiz_id}/cards/#{card_id}"
 
   # quizzes - record
   def route(:quizzes_record, :index, quiz_id: quiz_id), do: ~p"/quizzes/#{quiz_id}/records"

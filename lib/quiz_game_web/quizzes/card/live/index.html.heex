@@ -30,7 +30,7 @@
 
 <ol class="list-index" id="list-cards" phx-update="stream">
   <li :for={{id, card} <- @streams.cards} id={id}>
-    <.link patch={route(:quizzes_card, :show, quiz_id: @quiz.id, card_id: card.id)}>
+    <.link patch={~p"/quizzes/#{@quiz.id}/cards/#{card.id}"}>
       <%= card.question %>
     </.link>
   </li>
@@ -38,7 +38,7 @@
 
 <.action_links>
   <.action_links_item kind="create">
-    <.link patch={route(:quizzes_card, :new, quiz_id: @quiz.id)}>
+    <.link patch={~p"/quizzes/#{@quiz.id}/cards/create"}>
       Create new question
     </.link>
   </.action_links_item>
@@ -53,7 +53,7 @@
   :if={@live_action == :new}
   id="card-modal"
   show
-  on_cancel={JS.patch(route(:quizzes_card, :index, quiz_id: @quiz.id))}
+  on_cancel={JS.patch(~p"/quizzes/#{@quiz.id}/cards")}
 >
   <.live_component
     module={QuizGameWeb.Quizzes.Card.Live.FormComponent}
@@ -62,6 +62,6 @@
     action={@live_action}
     quiz={@quiz}
     card={@card}
-    patch={route(:quizzes_card, :index, quiz_id: @quiz.id)}
+    patch={~p"/quizzes/#{@quiz.id}/cards"}
   />
 </.modal>

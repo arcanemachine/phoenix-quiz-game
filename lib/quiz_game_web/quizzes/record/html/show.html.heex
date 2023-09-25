@@ -49,7 +49,7 @@
 
 <.action_links>
   <.action_links_item>
-    <.link href={route(:quizzes_card, :index, quiz_id: @quiz.id)}>
+    <.link href={~p"/quizzes/#{@quiz.id}/cards"}>
       View questions for this quiz
     </.link>
   </.action_links_item>
