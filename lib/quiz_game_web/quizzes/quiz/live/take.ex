@@ -16,6 +16,15 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.Take do
 
   @impl true
   def mount(params, _session, socket) do
+    socket = _build_initial_socket(params, socket)
+
+    # track user for registered (but not randomly-generated) quizzes
+    if connected?(socket) && socket.assigns.live_action == :take, do: _track_user_presence(socket)
+
+    {:ok, socket}
+  end
+
+  defp _build_initial_socket(params, socket) do
     # fetch or build quiz
     quiz =
       case socket.assigns.live_action do
@@ -26,41 +35,38 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.Take do
           _build_generated_quiz(params)
       end
 
-    socket =
-      cond do
-        # generated quiz is invalid
-        quiz == :invalid_generated_quiz ->
-          socket
-          |> put_flash(:warning, "Invalid quiz options detected. Please select new quiz options.")
-          |> redirect(to: ~p"/quizzes/random/create")
+    # check if the quiz can be taken
+    cond do
+      # invalid - bad values used to generate the quiz
+      quiz == :invalid_generated_quiz ->
+        socket
+        |> put_flash(:warning, "Invalid quiz options detected. Please select new quiz options.")
+        |> redirect(to: ~p"/quizzes/random/create")
 
-        # quiz does not have any cards or random math questions.
-        Enum.empty?(quiz.cards) && !quiz.math_random_question_count ->
-          # redirect and notify user
-          socket
-          |> put_flash(:error, "This quiz cannot be taken because it has no cards.")
-          |> redirect(to: ~p"/quizzes/#{quiz.id}")
+      # invalid - quiz does not have any cards or random math questions
+      Enum.empty?(quiz.cards) && !quiz.math_random_question_count ->
+        # redirect and notify user
+        socket
+        |> put_flash(:error, "This quiz cannot be taken because it has no cards.")
+        |> redirect(to: ~p"/quizzes/#{quiz.id}")
 
-        true ->
-          socket
-          |> assign(
-            page_title: "Take Quiz",
-            page_subtitle: quiz.name,
-            current_path:
-              route(
-                :quizzes,
-                socket.assigns.live_action,
-                Support.Map.params_to_keyword_list(params)
-              ),
-            quiz: quiz
-          )
-          |> _set_initial_assigns()
-      end
+      # valid
+      true ->
+        current_path =
+          case socket.assigns.live_action do
+            :take -> ~p"/quizzes/#{quiz.id}/take"
+            :take_random -> ~p"/quizzes/random/take?#{params}"
+          end
 
-    # track user for registered (but not randomly-generated) quizzes
-    if connected?(socket) && socket.assigns.live_action == :take, do: _track_user_presence(socket)
-
-    {:ok, socket}
+        socket
+        |> assign(
+          page_title: "Take Quiz",
+          page_subtitle: quiz.name,
+          current_path: current_path,
+          quiz: quiz
+        )
+        |> _set_initial_assigns()
+    end
   end
 
   # need to decrease cyclomatic complexity
