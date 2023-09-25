@@ -80,7 +80,7 @@ defmodule QuizGameWeb.Support.HTML.Form do
   def select_options_get_from_schema_and_field(queryable, field) do
     Ecto.Enum.values(queryable, field)
     |> Enum.map(fn item ->
-      {item |> QuizGameWeb.Support.Atom.to_human_friendly_string(), item}
+      {item |> QuizGameWeb.Support.Atom.to_pretty_string(), item}
     end)
   end
 end

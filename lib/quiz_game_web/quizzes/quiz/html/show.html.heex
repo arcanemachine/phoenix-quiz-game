@@ -13,7 +13,7 @@
     <% end %>
   </:item>
   <:item label="Subject">
-    <%= QuizGameWeb.Support.Atom.to_human_friendly_string(@quiz.subject) %>
+    <%= QuizGameWeb.Support.Atom.to_pretty_string(@quiz.subject) %>
   </:item>
   <:item label="Number of questions" class_item="mt-6">
     <%= QuizGame.Quizzes.quiz_card_count(@quiz) %>

@@ -6,7 +6,7 @@
     <%= @card.question %>
   </:item>
   <:item label="Format">
-    <%= QuizGameWeb.Support.Atom.to_human_friendly_string(@card.format) %>
+    <%= QuizGameWeb.Support.Atom.to_pretty_string(@card.format) %>
   </:item>
   <:item :if={@card.format == :multiple_choice} label="Choices">
     <ol class="list">

@@ -5,9 +5,9 @@ defmodule QuizGameWeb.Support.AtomTest do
   # doctest QuizGameWeb.Support.Atom
 
   # Conn
-  describe("to_human_friendly_string/1") do
+  describe("to_pretty_string/1") do
     test "converts atom to human-friendly string" do
-      result = S.Atom.to_human_friendly_string(:some_value)
+      result = S.Atom.to_pretty_string(:some_value)
       assert result == "Some value"
     end
   end

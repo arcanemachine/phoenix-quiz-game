@@ -7,10 +7,10 @@ defmodule QuizGameWeb.Support.Atom do
 
   ## Examples
 
-      iex> QuizGameWeb.Support.Atom.to_human_friendly_string(:hello_world)
+      iex> QuizGameWeb.Support.Atom.to_pretty_string(:hello_world)
       "Hello world"
   """
-  def to_human_friendly_string(atom) do
+  def to_pretty_string(atom) do
     Atom.to_string(atom) |> String.replace("_", " ") |> String.capitalize()
   end
 end
