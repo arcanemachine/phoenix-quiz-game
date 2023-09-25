@@ -51,14 +51,14 @@ defmodule QuizGameWeb.Quizzes.Card.Live.Show do
         {:ok, _} ->
           socket
           |> push_redirect(
-            to: ~p"/quizzes/#{socket.assigns.card.quiz_id}/cards?delete-question-success=1",
+            to: ~p"/quizzes/#{socket.assigns.card.quiz_id}/questions?delete-question-success=1",
             replace: true
           )
 
         {:error, _} ->
           socket
           |> push_redirect(
-            to: ~p"/quizzes/#{socket.assigns.card.quiz_id}/cards?delete-question-error=1",
+            to: ~p"/quizzes/#{socket.assigns.card.quiz_id}/questions?delete-question-error=1",
             replace: true
           )
       end
