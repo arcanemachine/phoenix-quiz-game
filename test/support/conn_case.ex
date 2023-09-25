@@ -28,8 +28,6 @@ defmodule QuizGameWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import QuizGameWeb.ConnCase
-
-      import QuizGameWeb.Support.Router
     end
   end
 

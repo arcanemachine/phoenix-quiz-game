@@ -68,7 +68,6 @@ defmodule QuizGameWeb do
       unquote(verified_routes())
 
       # custom
-      import QuizGameWeb.Support.Router
       import QuizGameWeb.Support.HTML
       alias QuizGameWeb.Support, as: S
     end
