@@ -2,7 +2,8 @@ import Config
 
 # project
 config :quiz_game,
-  email_recipient_contact_form: System.fetch_env!("EMAIL_RECIPIENT_CONTACT_FORM")
+  email_recipient_contact_form:
+    System.get_env("EMAIL_RECIPIENT_CONTACT_FORM", "arcanemachine@tutanota.com")
 
 # hcaptcha
 config :hcaptcha,
