@@ -10,7 +10,7 @@
 
 A game that allows you (e.g. teacher) to generate quizzes, and supervise your users (e.g. students) as they take the test.
 
-Also good for generating random math quizzes for you to brush up on your arithmetic. 🤓
+Also good for generating random math quizzes for you to brush up on your arithmetic.
 
 Made using the [Phoenix web framework](https://www.phoenixframework.org/), and enhanced with [Phoenix LiveView](https://github.com/phoenixframework/phoenix_live_view).
 
