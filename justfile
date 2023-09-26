@@ -41,6 +41,9 @@ color_reset := "\\033[39m"
 # start a dev server (server-dev-start-interactive)
 @start: dev
 
+# reset the database
+@reset: db-reset
+
 # run all tests (test-elixir)
 @test:
   just test-elixir
