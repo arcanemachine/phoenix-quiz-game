@@ -206,8 +206,8 @@ Environment=AWS_REGION=\"$AWS_REGION\"
 Environment=AWS_ACCESS_KEY=\"$AWS_ACCESS_KEY\"
 Environment=AWS_SECRET=\"$AWS_SECRET\"
 
-# sentry
-Environment=SENTRY_DSN=\"$SENTRY_DSN\"
+# # sentry
+# Environment=SENTRY_DSN=\"$SENTRY_DSN\"
 
 # traefik
 Environment=TRAEFIK_HOST=\"$TRAEFIK_HOST\"
