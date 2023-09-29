@@ -1,6 +1,6 @@
 # misc
-*.tmp
-*gitignored*
+*.gitignored
+gitignored.*
 
 # dotenv
 .env
