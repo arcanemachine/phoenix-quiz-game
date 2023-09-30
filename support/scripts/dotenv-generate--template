@@ -44,6 +44,7 @@ HCAPTCHA_PUBLIC_KEY=\"${HCAPTCHA_PUBLIC_KEY:-your_hcaptcha_public_key}\"
 
 # database
 POSTGRES_DB=\"${POSTGRES_DB:-quiz_game}\"
+POSTGRES_HOST=\"${POSTGRES_HOST:-postgres}\"
 POSTGRES_USER=\"${POSTGRES_USER:-postgres}\"
 POSTGRES_PASSWORD=\"${POSTGRES_PASSWORD:-postgres}\"
 DATABASE_URL=\"${DATABASE_URL:-ecto://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-localhost}/${POSTGRES_DB:-quiz_game}}\"
