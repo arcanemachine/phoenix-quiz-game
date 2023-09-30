@@ -210,10 +210,6 @@ Environment=EMAIL_RECIPIENT_CONTACT_FORM=\"$EMAIL_RECIPIENT_CONTACT_FORM\"
 # # sentry
 # Environment=SENTRY_DSN=\"$SENTRY_DSN\"
 
-# traefik
-Environment=TRAEFIK_HOST=\"$TRAEFIK_HOST\"
-
-
 # LIFECYCLE #
 ExecStartPre=$command_to_run down
 ExecStart=$command_to_run up

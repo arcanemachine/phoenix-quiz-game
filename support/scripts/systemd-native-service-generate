@@ -68,10 +68,11 @@ Environment=POSTGRES_PASSWORD=\"$POSTGRES_PASSWORD\"
 # # traefik
 # Environment=TRAEFIK_HOST=\"$TRAEFIK_HOST\"
 
-# # email
-# Environment=AWS_REGION=\"$AWS_REGION\"
-# Environment=AWS_ACCESS_KEY=\"$AWS_ACCESS_KEY\"
-# Environment=AWS_SECRET=\"$AWS_SECRET\"
+# email
+Environment=AWS_REGION=\"$AWS_REGION\"
+Environment=AWS_ACCESS_KEY=\"$AWS_ACCESS_KEY\"
+Environment=AWS_SECRET=\"$AWS_SECRET\"
+Environment=EMAIL_RECIPIENT_CONTACT_FORM=\"$EMAIL_RECIPIENT_CONTACT_FORM\"
 
 Environment=\"HOME=${working_directory}\"
 ExecStart=${project_root_directory}/support/scripts/server-prod-migrate-start
