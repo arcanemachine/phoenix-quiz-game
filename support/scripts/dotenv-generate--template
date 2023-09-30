@@ -42,11 +42,11 @@ SECRET_KEY_BASE=\"${SECRET_KEY_BASE:-$(openssl rand -base64 48)}\"
 HCAPTCHA_PRIVATE_KEY=\"${HCAPTCHA_PRIVATE_KEY:-your_hcaptcha_private_key}\"
 HCAPTCHA_PUBLIC_KEY=\"${HCAPTCHA_PUBLIC_KEY:-your_hcaptcha_public_key}\"
 
-# db
+# database
 POSTGRES_DB=\"${POSTGRES_DB:-quiz_game}\"
 POSTGRES_USER=\"${POSTGRES_USER:-postgres}\"
 POSTGRES_PASSWORD=\"${POSTGRES_PASSWORD:-postgres}\"
-DATABASE_URL=\"${DATABASE_URL:-ecto://postgres:postgres@localhost/quiz_game}\"
+DATABASE_URL=\"${DATABASE_URL:-ecto://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-localhost}/${POSTGRES_DB:-quiz_game}}\"
 
 # docker
 COMPOSE_PROJECT_NAME=\"${COMPOSE_PROJECT_NAME:-phoenix-quiz-game}\"
