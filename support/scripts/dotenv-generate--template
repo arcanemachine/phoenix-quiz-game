@@ -28,7 +28,7 @@ done
 if [ "$is_vagrant" = "1" ]; then
   # configure environment for use with vagrant
   PHX_HOST=phoenix-quiz-game.localhost
-  TRAEFIK_HOST=localhost
+  TRAEFIK_DASHBOARD_FQDN=localhost
 fi
 
 default_phx_host=phoenix-quiz-game.localhost
@@ -63,4 +63,4 @@ EMAIL_RECIPIENT_CONTACT_FORM=\"${EMAIL_RECIPIENT_CONTACT_FORM:-email@example.com
 # SENTRY_DSN=\"${SENTRY_DSN}\"
 
 # traefik
-TRAEFIK_HOST=\"${TRAEFIK_HOST:-localhost}\""
+TRAEFIK_DASHBOARD_FQDN=\"${TRAEFIK_DASHBOARD_FQDN:-localhost}\""
