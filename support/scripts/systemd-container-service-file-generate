@@ -194,6 +194,7 @@ Environment=DATABASE_URL=\"$DATABASE_URL\"
 Environment=POSTGRES_DB=\"$POSTGRES_DB\"
 Environment=POSTGRES_USER=\"$POSTGRES_USER\"
 Environment=POSTGRES_PASSWORD=\"$POSTGRES_PASSWORD\"
+Environment=POSTGRES_PORT=\"$POSTGRES_PORT\"
 
 # docker
 # fix container timeout issues caused by slow CPU and/or RAM
