@@ -9,7 +9,7 @@ NOTE: To use this script's default values, any matching environment variables
 must first be unset.
 
 Optional flags:
-  --force - Overwrite an existing dotenv file
+--force - Overwrite an existing dotenv file (handled by 'dotenv-generate')
   --vagrant - Generate params for deployment in a Vagrant host"
   exit
 fi
