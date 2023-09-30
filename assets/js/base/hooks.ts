@@ -36,7 +36,7 @@ class SimpleForm extends Hook {
    * the form data from being lost during unintentional navigation before the
    * form has been submitted.
    *
-   * TODO
+   * TO-DO:
    *   - add 'data-confirm' attribute to all other links when shouldWarnOnExit()
    *     evaluates to true, and remove the attribute when it evaluates to false
    */
