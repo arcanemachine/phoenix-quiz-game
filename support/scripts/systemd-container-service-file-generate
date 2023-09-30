@@ -205,6 +205,7 @@ Environment=COMPOSE_PROJECT_NAME=\"${COMPOSE_PROJECT_NAME:-$service_name}\"
 Environment=AWS_REGION=\"$AWS_REGION\"
 Environment=AWS_ACCESS_KEY=\"$AWS_ACCESS_KEY\"
 Environment=AWS_SECRET=\"$AWS_SECRET\"
+Environment=EMAIL_RECIPIENT_CONTACT_FORM=\"$EMAIL_RECIPIENT_CONTACT_FORM\"
 
 # # sentry
 # Environment=SENTRY_DSN=\"$SENTRY_DSN\"
