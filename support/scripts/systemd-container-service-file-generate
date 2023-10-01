@@ -164,7 +164,7 @@ command_to_run="$(which docker-compose) ${maybe_podman_config} $containers_to_ru
 
 if [ "$dry_run" != 1 ]; then
   # create script for managing the container service manually (helps with debugging compose issues)
-  container_management_script="$working_directory/container-management-script.ignore"
+  container_management_script="$working_directory/container-management-script.gitignored"
   printf "\033[96mCreating a container service management helper script: '%s'...\033[39m\n" "$container_management_script"
   echo "cd $working_directory && $command_to_run \"\$@\"" >"$container_management_script"
   chmod +x "$container_management_script"
@@ -182,34 +182,34 @@ RequiresMountsFor=/run/user/$(id -u)/containers
 Restart=always
 WorkingDirectory=$working_directory
 
-
 # ENVIRONMENT #
-# phoenix
+## docker
+Environment=COMPOSE_PROJECT_NAME=\"${COMPOSE_PROJECT_NAME:-$service_name}\"
+
+# fix container timeout issues caused by slow CPU and/or RAM
+Environment=DOCKER_CLIENT_TIMEOUT=180
+Environment=COMPOSE_HTTP_TIMEOUT=180
+
+## phoenix
 Environment=PHX_HOST=\"$PHX_HOST\"
 Environment=PORT=\"$PORT\"
 Environment=SECRET_KEY_BASE=\"$SECRET_KEY_BASE\"
 
-# db
+## database
 Environment=DATABASE_URL=\"$DATABASE_URL\"
 Environment=POSTGRES_DB=\"$POSTGRES_DB\"
 Environment=POSTGRES_HOST=\"$POSTGRES_HOST\"
 Environment=POSTGRES_USER=\"$POSTGRES_USER\"
 Environment=POSTGRES_PASSWORD=\"$POSTGRES_PASSWORD\"
 
-# docker
-# fix container timeout issues caused by slow CPU and/or RAM
-# Environment=DOCKER_CLIENT_TIMEOUT=180
-# Environment=COMPOSE_HTTP_TIMEOUT=180
-Environment=COMPOSE_PROJECT_NAME=\"${COMPOSE_PROJECT_NAME:-$service_name}\"
-
-# email
+## email
 Environment=AWS_REGION=\"$AWS_REGION\"
 Environment=AWS_ACCESS_KEY=\"$AWS_ACCESS_KEY\"
 Environment=AWS_SECRET=\"$AWS_SECRET\"
 Environment=EMAIL_RECIPIENT_CONTACT_FORM=\"$EMAIL_RECIPIENT_CONTACT_FORM\"
 
-# # sentry
-# Environment=SENTRY_DSN=\"$SENTRY_DSN\"
+## sentry
+Environment=SENTRY_DSN=\"$SENTRY_DSN\"
 
 # LIFECYCLE #
 ExecStartPre=$command_to_run down

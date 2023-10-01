@@ -9,7 +9,7 @@ services:
       PORT: "${PORT:?}"
       SECRET_KEY_BASE: "${SECRET_KEY_BASE:?}"
 
-      # db
+      # database
       DATABASE_URL: "${DATABASE_URL:?}"
 
       # email
