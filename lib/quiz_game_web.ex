@@ -17,7 +17,7 @@ defmodule QuizGameWeb do
   those modules here.
   """
 
-  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
+  def static_paths, do: ~w(assets fonts images js favicon.ico robots.txt)
 
   def channel do
     quote do

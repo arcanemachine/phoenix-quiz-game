@@ -9,9 +9,7 @@
   </p>
 </.crud_intro_text>
 
-<script>
-  <%= raw(File.read!("lib/quiz_game_web/quizzes/quiz/html/new_random.js")) %>
-</script>
+<script src={~p"/js/quiz/new_random.js"} />
 
 <form class="mt-8 max-w-sm mx-auto" x-data="randomQuizForm" x-on:submit.prevent="handleSubmit">
   <.input
