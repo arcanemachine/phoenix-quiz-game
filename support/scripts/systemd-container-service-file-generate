@@ -117,6 +117,8 @@ if [ "$use_podman" = 1 ]; then
   # configure service for use with podman
   podman_socket_path=$(podman info --format '{{.Host.RemoteSocket.Path}}')
   maybe_podman_config=" -H unix:${podman_socket_path}"
+else
+  use_docker=1 # use docker-specific options in the systemd service file
 fi
 
 # set $deployment_type based on whether or not the '--remote' flag was passed
@@ -178,10 +180,11 @@ fi
 # generate the service file
 echo "[Unit]
 Description=$service_name
-Wants=network-online.target
-After=network-online.target
-Requires=podman.service
-RequiresMountsFor=/run/user/$(id -u)/containers
+${use_docker:+After=docker.service}
+${use_podman:+Wants=network-online.target}
+${use_podman:+After=network-online.target}
+${use_podman:+Requires=podman.service}
+${use_podman:+RequiresMountsFor=/run/user/$(id -u)/containers}
 
 [Service]
 Restart=always
@@ -197,7 +200,7 @@ Environment=COMPOSE_HTTP_TIMEOUT=180
 
 ## phoenix
 Environment=PHX_HOST=\"$PHX_HOST\"
-Environment=PORT=\"$PORT\"
+Environment=PORT=$PORT
 Environment=SECRET_KEY_BASE=\"$SECRET_KEY_BASE\"
 
 ## database
