@@ -5,15 +5,15 @@ services:
       DATABASE_URL: "${DATABASE_URL:?}"
     networks:
       - "traefik-global-proxy"
-      - "postgres" # uncomment this line if you are running a postgres container outside of this project's compose service
+      # - "postgres" # uncomment this line if you are running a postgres container outside of this project's compose service
     ports:
       - "${PORT:?}"
     labels:
       # enable gzip compression
-      - "traefik.http.middlewares.phoenix-quiz-game--compress.compress=true"
-      - "traefik.http.routers.phoenix-quiz-game.middlewares=phoenix-quiz-game--compress"
+      - "traefik.http.middlewares.phoenix-quiz-game--compress.compress=true" # define middleware
+      - "traefik.http.routers.phoenix-quiz-game.middlewares=phoenix-quiz-game--compress" # use middleware
 
 networks:
   traefik-global-proxy:
     external: true
-  postgres: # uncomment this line if you are running a postgres container outside of this project's compose service
+# postgres: # uncomment this line if you are running a postgres container outside of this project's compose service

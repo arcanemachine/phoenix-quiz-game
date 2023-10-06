@@ -4,7 +4,7 @@ phoenix-quiz-game.localhost {
 
 	basicauth /metrics {
 		# use 'mkpasswd --method=bcrypt' to generate a secure password
-		# password for local config is 'admin'
+		# default password for dev config is 'admin'
 		admin $2b$05$Z0uqobvCRq0E11ZUmNwON.BJQKU3xXwGndjblofiQ.6DC9JUYu7Be
 	}
 }
@@ -16,7 +16,7 @@ dev.phoenix-quiz-game.localhost {
 	# # use `mkpasswd --method=bcrypt` to generate a secure password
 	# basicauth /metrics {
 	#   # use 'mkpasswd --method=bcrypt' to generate a secure password
-	#   # password for local config is 'admin'
+	#   # default password for dev config is 'admin'
 	# 	admin $2b$05$Z0uqobvCRq0E11ZUmNwON.BJQKU3xXwGndjblofiQ.6DC9JUYu7Be
 	# }
 }
