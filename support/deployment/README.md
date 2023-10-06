@@ -203,6 +203,7 @@ You can use the `support/scripts/systemd-container-service-file-generate` to eas
   - To generate a Podman container, pass the `--podman` flag when running this script.
 - When this script is run, it will generate `systemd` service file called `~/.config/systemd/user/phoenix-quiz-game.service` (unless the `--dry-run` flag is set)
 - Other flags:
+
   - `--dry-run` - Display the service file in the terminal instead of writing to a file.
     - No permanent changes are made when this flag is used.
     - The output of a `--dry-run` is identical to the real service file, and can be piped as needed.
@@ -222,9 +223,9 @@ You can use the `support/scripts/systemd-container-service-file-generate` to eas
     - `--prod` - Configures Traefik to work in a production environment.
       - Supports HTTPS certificates via Let's Encrypt
 
-**NOTE:** If using a Postgres container alongside this service, it may be easier to preserve your dotenv file's Postgres settings when creating your container service, so that the default `localhost` Postgres dev server doesn't interfere with the container network's Postgres server, whose hostname is set to `postgres`.
-
 - e.g. `POSTGRES_DB=postgres DATABASE_URL=ecto://postgres:postgres@postgres/quiz_game ./support/scripts/systemd-container-service-file-generate --postgres --traefik-client`
+
+**NOTE:** If using a Postgres container alongside this service, make sure you don't mix up the `POSTGRES_HOST` variables if running multiple instances of the same service simulataneously (e.g. in development). An apparent Postgres connection error may just be a value you forgot to change (or change back) when you were updating the dotenv file so you could get the service up and running. (This one has bitten me a couple times.)
 
 After running the `systemd-container-service-file-generate` script:
 
