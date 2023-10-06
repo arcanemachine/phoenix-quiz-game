@@ -2,7 +2,7 @@ import Config
 
 # project
 config :quiz_game,
-  server_environment: :test
+  deployment_type: :test
 
 # bcrypt - remove the complexity from the password hashing algorithm to make tests run faster
 config :bcrypt_elixir, :log_rounds, 1

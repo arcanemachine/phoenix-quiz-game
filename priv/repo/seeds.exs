@@ -5,7 +5,7 @@ alias QuizGame.Quizzes
 # alias QuizGame.Users.User
 alias QuizGame.Users
 
-if Application.get_env(:quiz_game, :server_environment) == :dev do
+if Application.get_env(:quiz_game, :deployment_type) == :dev do
   # ADMIN USER #
   # create admin user
   {:ok, admin_user} =

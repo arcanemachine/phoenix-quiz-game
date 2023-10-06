@@ -1,7 +1,7 @@
 import Config
 
 config :quiz_game,
-  server_environment: :dev
+  deployment_type: :dev
 
 # database
 database_name = System.get_env("POSTGRES_DB", "quiz_game") <> "_dev"
