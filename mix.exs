@@ -50,7 +50,8 @@ defmodule QuizGame.MixProject do
       {:hcaptcha, "~> 0.0.1"},
       {:phoenix_view, "~> 2.0.2"},
       {:kaffy, "~> 0.9.2"},
-      {:oban, "~> 2.15"}
+      {:oban, "~> 2.15"},
+      {:gen_smtp, "~> 1.2"}
     ]
   end
 

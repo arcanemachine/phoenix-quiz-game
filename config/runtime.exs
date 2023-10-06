@@ -55,7 +55,7 @@ if config_env() == :prod do
     secret_key_base: secret_key_base
 
   if System.get_env("AWS_SECRET", "") != "" do
-    # use live email adapter on non-localhost URLs if amazon AWS settings are configured
+    # use live email adapter if Amazon SES settings are configured
     config :quiz_game, QuizGame.Mailer,
       adapter: Swoosh.Adapters.AmazonSES,
       region: System.fetch_env!("AWS_REGION"),
