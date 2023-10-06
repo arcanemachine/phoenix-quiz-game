@@ -1,4 +1,4 @@
-!/bin/sh
+#!/bin/sh
 service_name="phoenix-quiz-game"
 service_file="${HOME}/.config/systemd/user/${service_name}.service"
 
@@ -237,12 +237,16 @@ Environment=PHX_HOST=\"$PHX_HOST\"
 Environment=PORT=$PORT
 Environment=SECRET_KEY_BASE=\"$SECRET_KEY_BASE\"
 
+## captcha
+Environment=HCAPTCHA_PRIVATE_KEY=\"$HCAPTCHA_PRIVATE_KEY\"
+Environment=HCAPTCHA_PUBLIC_KEY=\"$HCAPTCHA_PUBLIC_KEY\"
+
 ## database
-Environment=DATABASE_URL=\"$DATABASE_URL\"
 Environment=POSTGRES_DB=\"$POSTGRES_DB\"
 Environment=POSTGRES_HOST=\"$POSTGRES_HOST\"
 Environment=POSTGRES_USER=\"$POSTGRES_USER\"
 Environment=POSTGRES_PASSWORD=\"$POSTGRES_PASSWORD\"
+Environment=DATABASE_URL=\"$DATABASE_URL\"
 
 ## email
 Environment=AWS_REGION=\"$AWS_REGION\"
