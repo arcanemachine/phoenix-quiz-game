@@ -3,3 +3,13 @@ services:
   phoenix:
     depends_on:
       - "postgres"
+    networks:
+      - "phoenix-quiz-game"
+  postgres:
+    networks:
+      - "phoenix-quiz-game"
+    ports:
+      - "5432"
+
+networks:
+  phoenix-quiz-game:
