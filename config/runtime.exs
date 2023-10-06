@@ -15,6 +15,7 @@ if System.get_env("PHX_SERVER") do
 end
 
 if config_env() == :test do
+  # do not display the captcha when running elixir tests
   config :hcaptcha,
     public_key: false,
     secret: false
