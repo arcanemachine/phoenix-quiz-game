@@ -222,7 +222,7 @@ You can use the `support/scripts/systemd-container-service-file-generate` to eas
     - `--prod` - Configures Traefik to work in a production environment.
       - Supports HTTPS certificates via Let's Encrypt
 
-**NOTE:** If using a Postgres container alongside this service, it may be easier to preserve your dotenv file's Postgres settings so that the default `localhost` Postgres dev server doesn't interfere with the container network's Postgres server, whose hostname is set to `postgres`.
+**NOTE:** If using a Postgres container alongside this service, it may be easier to preserve your dotenv file's Postgres settings when creating your container service, so that the default `localhost` Postgres dev server doesn't interfere with the container network's Postgres server, whose hostname is set to `postgres`.
 
 - e.g. `POSTGRES_DB=postgres DATABASE_URL=ecto://postgres:postgres@postgres/quiz_game ./support/scripts/systemd-container-service-file-generate --postgres --traefik-client`
 
