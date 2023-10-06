@@ -230,9 +230,6 @@ Environment=AWS_ACCESS_KEY=\"$AWS_ACCESS_KEY\"
 Environment=AWS_SECRET=\"$AWS_SECRET\"
 Environment=EMAIL_RECIPIENT_CONTACT_FORM=\"$EMAIL_RECIPIENT_CONTACT_FORM\"
 
-## sentry
-Environment=SENTRY_DSN=\"$SENTRY_DSN\"
-
 # LIFECYCLE #
 ExecStartPre=$command_to_run down
 ExecStart=$command_to_run up

@@ -61,8 +61,5 @@ AWS_SECRET=\"${AWS_SECRET}\"
 EMAIL_FROM_DEFAULT=\"${EMAIL_FROM_DEFAULT:-no-reply@${PHX_HOST:-$default_phx_host}}\"
 EMAIL_RECIPIENT_CONTACT_FORM=\"${EMAIL_RECIPIENT_CONTACT_FORM:-email@example.com}\"
 
-# # sentry
-# SENTRY_DSN=\"${SENTRY_DSN}\"
-
 # traefik
 TRAEFIK_DASHBOARD_FQDN=\"${TRAEFIK_DASHBOARD_FQDN:-localhost}\""
