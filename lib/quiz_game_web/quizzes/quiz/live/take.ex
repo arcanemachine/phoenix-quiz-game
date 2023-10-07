@@ -334,7 +334,7 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.Take do
 
   # card
   defp _get_next_card(quiz, card_index) do
-    if quiz.math_random_question_count,
+    if quiz.math_random_question_count && quiz.math_random_question_count != 0,
       do: _build_card_as_random_math_question(quiz),
       else: quiz.cards |> Enum.at(card_index)
   end
@@ -382,7 +382,9 @@ defmodule QuizGameWeb.Quizzes.Quiz.Live.Take do
   # quiz
   defp _get_quiz_length(quiz) do
     # return either the number of random math questions, or the number or custom cards
-    quiz.math_random_question_count || length(quiz.cards)
+    if quiz.math_random_question_count && quiz.math_random_question_count > 0,
+      do: quiz.math_random_question_count,
+      else: length(quiz.cards)
   end
 
   # support
