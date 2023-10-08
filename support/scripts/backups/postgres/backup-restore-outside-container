@@ -16,10 +16,12 @@ if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
 elif [ "$1" = "" ]; then
   show_help
   exit 2
-elif [ "$2" = "--docker" ]; then
-  container_program=docker
-else
+fi
+
+if [ "$1" = "--podman" ]; then
   container_program=podman
+else
+  container_program=docker
 fi
 
 $container_program exec -it postgres /var/lib/postgresql/backups/backup-restore-inside-container "$1"
