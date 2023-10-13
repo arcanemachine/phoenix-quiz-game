@@ -1,6 +1,5 @@
 # misc
-*.gitignored
-gitignored.*
+*gitignored*
 
 # dotenv
 .env
@@ -10,11 +9,6 @@ gitignored.*
 
 # python
 __pycache__/
-
-# vim
-*.sw?
-Session*.vim
-
 
 # MIX DEFAULTS #
 # The directory Mix will write compiled artifacts to.
