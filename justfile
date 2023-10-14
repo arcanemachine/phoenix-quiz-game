@@ -194,16 +194,6 @@ color_reset := "\\033[39m"
   echo "Installing JS dependencies via 'npm'..."
   cd assets && npm install
 
-# run a basic loadtest with 'k6'
-@loadtest-k6:
-  echo "Running a basic load test with 'k6'..."
-  @./support/scripts/loadtest-k6 --basic
-
-# run a basic loadtest with 'wrk' (must have 'wrk' installed)
-@loadtest-wrk:
-  echo "Running a basic load test with 'wrk'..."
-  @./support/scripts/loadtest-wrk
-
 # run pre-commit hooks (must have 'pre-commit' installed)
 @pre-commit:
   echo "Running pre-commit hooks..."
