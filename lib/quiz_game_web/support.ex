@@ -162,6 +162,12 @@ defmodule QuizGameWeb.Support.Math do
   @doc """
   Generate a pair of values that divide without leaving a remainder.
 
+  The first and second parameters represent the minimum and maximum range of allowed values.
+
+  The optional third parameter will, if assigned, set the left-side value to that of the third
+  parameter. This is used for practicing with specific numbers in the left-side value (e.g.
+  when practicing with division tables for the number 12, e.g. `12 / 6 = ?`, `12 / 4 = ?`, etc.).
+
   ## Examples
 
       iex> generate_divisible_pair(1, 10)
