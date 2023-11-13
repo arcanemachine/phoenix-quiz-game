@@ -3,7 +3,7 @@ defmodule QuizGame.Repo do
     otp_app: :quiz_game,
     adapter: Ecto.Adapters.Postgres
 
-  import Ecto.Query, warn: false
+  import Ecto.Query
 
   @doc """
   Shows the number of objects in a given table.

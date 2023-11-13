@@ -1,8 +1,6 @@
 defmodule QuizGame.Users do
   @moduledoc "The Users context."
 
-  import Ecto.Query, warn: false
-
   alias QuizGame.Repo
   alias QuizGame.Users.{User, UserToken, UserNotifier}
 
