@@ -4,6 +4,5 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.phoenix-quiz-game.rule=Host(`${PHX_HOST:?}`)"
-      - "traefik.http.routers.phoenix-quiz-game.middlewares=redirect-www-to-non-www@file"
       - "traefik.http.routers.phoenix-quiz-game.entrypoints=websecure"
       - "traefik.http.routers.phoenix-quiz-game.tls.certresolver=letsencrypt"
