@@ -194,6 +194,8 @@ To build an `aarch64` (a.k.a `ARM64`/`armv8`/`arm64v8`) image, follow the instru
 
 When generating a dotenv file, the generator script will detect your CPU architecture (`x86_64` or `aarch64`) so you automatically pull the proper image when using the deployment scripts in `./support/scripts/`.
 
+Note to self: Use this command to build an `aarch64` image: `docker build -t arcanemachine/phoenix-quiz-game:aarch64 .`
+
 ###### Running a Basic Phoenix Container
 
 **Using a Locally-Built Image**
