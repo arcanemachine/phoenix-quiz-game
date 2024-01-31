@@ -26,6 +26,13 @@ defmodule QuizGameWeb.Router do
     get "/terms-of-use", Controller, :terms_of_use
   end
 
+  # DEV - allow any user
+  scope "/dev", QuizGameWeb.Dev do
+    pipe_through :browser
+
+    live "/component-showcase", Live.ComponentShowcase
+  end
+
   # QUIZZES
   scope "/quizzes", QuizGameWeb.Quizzes do
     pipe_through [:browser]
@@ -161,7 +168,6 @@ defmodule QuizGameWeb.Router do
   # SUPPORT - dev
   if Application.compile_env(:quiz_game, :dev_routes) do
     import Phoenix.LiveDashboard.Router
-    alias QuizGameWeb.Dev
 
     scope "/dev" do
       pipe_through :browser
@@ -169,9 +175,6 @@ defmodule QuizGameWeb.Router do
       # built-in routes
       live_dashboard("/dashboard", metrics: QuizGameWeb.Telemetry)
       forward "/mailbox", Plug.Swoosh.MailboxPreview
-
-      # custom project routes
-      live("/component-showcase", Dev.Live.ComponentShowcase)
     end
   end
 end
