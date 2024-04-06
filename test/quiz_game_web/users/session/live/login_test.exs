@@ -28,7 +28,7 @@ defmodule QuizGameWeb.Users.Session.Live.LoginTest do
   end
 
   describe "User login form" do
-    test "submitted with valid credentials", %{conn: conn} do
+    test "logs the user in when the form is submitted with valid credentials", %{conn: conn} do
       password = "valid_password"
       user = user_fixture(%{password: password})
 
