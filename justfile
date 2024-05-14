@@ -120,13 +120,14 @@ color_reset := "\\033[39m"
   docker build -t "{{ image_name }}:$(uname -m)" .
 
   # build versioned image
+  just _echo_info "NOTE: The versioned image may fail to build the first time. Try running the same command again if it fails."
   just _echo_info "Building a versioned image..."
   docker build -t "{{ image_name }}:$(just version-project)-erlang-$(just version-otp)-$(uname -m)" .
 
-  # build 'latest' image to Docker Hub if we are on the 'x86_64' CPU architecture
+  # build 'latest' image if we are on the 'x86_64' CPU architecture
   if [ "$(uname -m)" = "{{ default_cpu_arch }}" ] && \
      [ "$(just version-otp)" = "{{ newest_supported_otp }}" ]; then \
-    just _echo_info "Building the 'latest' image on Docker Hub since we're using the default CPU architecture ({{ default_cpu_arch }}) architecture and our latest supported version of OTP ({{ newest_supported_otp }})..."; \
+    just _echo_info "Building the 'latest' image since we're using the default CPU architecture ({{ default_cpu_arch }}) architecture and our latest supported version of OTP ({{ newest_supported_otp }})..."; \
     docker build -t "{{ image_name }}:latest" .; \
   fi
 
